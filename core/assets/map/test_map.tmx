@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" tiledversion="1.0.1" orientation="orthogonal" renderorder="right-down" width="20" height="10" tilewidth="8" tileheight="8" nextobjectid="10">
+ <properties>
+  <property name="mapHeight" type="int" value="10"/>
+  <property name="mapWidth" type="int" value="20"/>
+  <property name="tileSize" type="int" value="8"/>
+ </properties>
+ <tileset firstgid="1" name="set" tilewidth="8" tileheight="8" tilecount="3" columns="3">
+  <image source="tileset.png" width="24" height="8"/>
+ </tileset>
+ <layer name="tile" width="20" height="10">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,
+0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,
+0,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <objectgroup name="collision">
+  <object id="1" x="0" y="40" width="8" height="8"/>
+  <object id="2" x="16" y="24" width="8" height="8"/>
+  <object id="3" x="40" y="16" width="8" height="8"/>
+  <object id="4" x="64" y="8" width="8" height="8"/>
+  <object id="5" x="8" y="56" width="40" height="8"/>
+  <object id="6" x="64" y="64" width="24" height="8"/>
+  <object id="7" x="96" y="48" width="8" height="8"/>
+  <object id="8" x="112" y="32" width="8" height="8"/>
+  <object id="9" x="128" y="40" width="32" height="8"/>
+ </objectgroup>
+</map>
