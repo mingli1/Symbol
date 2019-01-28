@@ -9,6 +9,7 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer
 import com.badlogic.gdx.maps.tiled.TmxMapLoader
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer
 import com.badlogic.gdx.math.Rectangle
+import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.utils.Array
 import com.badlogic.gdx.utils.Disposable
 
@@ -33,6 +34,8 @@ class TileMapManager(batch: Batch, private val cam: OrthographicCamera) : Dispos
     var mapHeight: Int = 0
         private set
 
+    var playerSpawnPosition: Vector2 = Vector2()
+
     val collisionBoxes: Array<Rectangle> = Array()
 
     fun load(mapName: String) {
@@ -41,6 +44,8 @@ class TileMapManager(batch: Batch, private val cam: OrthographicCamera) : Dispos
         tileSize = tiledMap.properties.get("tileSize", Int::class.java)
         mapWidth = tiledMap.properties.get("mapWidth", Int::class.java)
         mapHeight = tiledMap.properties.get("mapHeight", Int::class.java)
+        playerSpawnPosition.set(tiledMap.properties.get("playerX", Float::class.java),
+                tiledMap.properties.get("playerY", Float::class.java))
 
         tileLayer = tiledMap.layers.get(TILE_LAYER) as TiledMapTileLayer
         collisionLayer = tiledMap.layers.get(COLLISION_LAYER)
@@ -60,7 +65,7 @@ class TileMapManager(batch: Batch, private val cam: OrthographicCamera) : Dispos
     }
 
     fun render() {
-        renderer.render()
+        renderer.renderTileLayer(tileLayer)
     }
 
     override fun dispose() {

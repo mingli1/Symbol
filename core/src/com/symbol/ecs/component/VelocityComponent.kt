@@ -3,7 +3,10 @@ package com.symbol.ecs.component
 import com.badlogic.ashley.core.Component
 import com.badlogic.gdx.utils.Pool
 
-data class VelocityComponent(var dx: Float = 0f, var dy: Float = 0f) : Component, Pool.Poolable {
+class VelocityComponent : Component, Pool.Poolable {
+
+    var dx: Float = 0f
+    var dy: Float = 0f
 
     override fun reset() {
         dx = 0f

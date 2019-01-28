@@ -3,6 +3,8 @@
  <properties>
   <property name="mapHeight" type="int" value="10"/>
   <property name="mapWidth" type="int" value="20"/>
+  <property name="playerX" type="float" value="16"/>
+  <property name="playerY" type="float" value="32"/>
   <property name="tileSize" type="int" value="8"/>
  </properties>
  <tileset firstgid="1" name="set" tilewidth="8" tileheight="8" tilecount="3" columns="3">

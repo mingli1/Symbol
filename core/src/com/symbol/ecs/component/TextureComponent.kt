@@ -4,7 +4,10 @@ import com.badlogic.ashley.core.Component
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.utils.Pool
 
-data class TextureComponent(var texture: TextureRegion?) : Component, Pool.Poolable {
+class TextureComponent : Component, Pool.Poolable {
+
+    var texture: TextureRegion? = null
+
     override fun reset() {
         texture = null
     }

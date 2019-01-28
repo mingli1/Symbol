@@ -11,15 +11,21 @@ class Resources : Disposable {
 
     private val atlas: TextureAtlas
 
-    private val single: Map<String, TextureRegion> = HashMap()
-    private val multiple: Map<String, Array<TextureRegion>> = HashMap()
-    private val sheet: Map<String, Array<Array<TextureRegion>>> = HashMap()
+    private val single: Map<String, TextureRegion>
+    private val multiple: Map<String, Array<TextureRegion>>
+    private val sheet: Map<String, Array<Array<TextureRegion>>>
 
     init {
+        single = HashMap()
+        multiple = HashMap()
+        sheet = HashMap()
+
         assetManager.load("textures/textures.atlas", TextureAtlas::class.java)
         assetManager.finishLoading()
 
         atlas = assetManager.get("textures/textures.atlas", TextureAtlas::class.java)
+
+        single["player"] = atlas.findRegion("player")
     }
 
     fun getSingleTexture(key: String): TextureRegion? {

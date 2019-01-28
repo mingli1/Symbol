@@ -4,7 +4,10 @@ import com.badlogic.ashley.core.Component
 import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.utils.Pool
 
-data class BoundingBoxComponent(var rect: Rectangle) : Component, Pool.Poolable {
+class BoundingBoxComponent : Component, Pool.Poolable {
+
+    var rect: Rectangle = Rectangle(0f, 0f, 0f, 0f)
+
     override fun reset() {
         rect.set(0f, 0f, 0f, 0f)
     }
