@@ -22,6 +22,7 @@ class Player : Entity() {
         add(VelocityComponent())
         add(SpeedComponent())
         add(DoubleJumpComponent())
+        add(DirectionComponent())
     }
 
 }

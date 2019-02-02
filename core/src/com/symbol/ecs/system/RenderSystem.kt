@@ -14,8 +14,15 @@ class RenderSystem(private val batch: Batch) : IteratingSystem(
     override fun processEntity(entity: Entity?, deltaTime: Float) {
         val texture = Mapper.TEXTURE_MAPPER.get(entity)
         val position = Mapper.POS_MAPPER.get(entity)
+        val dir = Mapper.DIR_MAPPER.get(entity)
 
-        batch.draw(texture.texture, position.x, position.y)
+        val width = texture.texture!!.regionWidth.toFloat()
+
+        if (dir.facingRight) {
+            batch.draw(texture.texture, position.x, position.y)
+        } else {
+            batch.draw(texture.texture, position.x + width, position.y, -width, texture.texture!!.regionHeight.toFloat())
+        }
     }
 
 }

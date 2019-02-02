@@ -22,4 +22,6 @@ object Mapper {
 
     val DOUBLE_JUMP_MAPPER: ComponentMapper<DoubleJumpComponent> = ComponentMapper.getFor(DoubleJumpComponent::class.java)
 
+    val DIR_MAPPER: ComponentMapper<DirectionComponent> = ComponentMapper.getFor(DirectionComponent::class.java)
+
 }
