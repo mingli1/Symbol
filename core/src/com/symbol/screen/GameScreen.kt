@@ -4,11 +4,8 @@ import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.core.PooledEngine
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.GL20
-import com.badlogic.gdx.math.Rectangle
-import com.badlogic.gdx.math.Vector2
 import com.symbol.ecs.EntityFactory
 import com.symbol.ecs.Mapper
-import com.symbol.ecs.Player
 import com.symbol.ecs.system.GravitySystem
 import com.symbol.ecs.system.MapCollisionSystem
 import com.symbol.ecs.system.MovementSystem
@@ -30,9 +27,7 @@ class GameScreen(game: Symbol) : AbstractScreen(game) {
     init {
         initSystems()
 
-        player = EntityFactory.createPlayer(engine, Vector2(),
-                Rectangle(0f, 0f, Player.BOUNDS_WIDTH, Player.BOUNDS_HEIGHT),
-                game.res.getSingleTexture("player")!!, Player.SPEED)
+        player = EntityFactory.createPlayer(engine, game.res)
 
         val keyInputSystem = KeyInputSystem()
         input = KeyInput(keyInputSystem)
@@ -78,6 +73,7 @@ class GameScreen(game: Symbol) : AbstractScreen(game) {
 
     override fun dispose() {
         super.dispose()
+        tmm.dispose()
     }
 
 }

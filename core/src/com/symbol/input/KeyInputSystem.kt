@@ -7,6 +7,7 @@ import com.badlogic.ashley.core.Family
 import com.symbol.ecs.Mapper
 import com.symbol.ecs.component.VelocityComponent
 import com.symbol.ecs.component.player.PlayerComponent
+import com.symbol.ecs.entity.PLAYER_JUMP_IMPULSE
 
 class KeyInputSystem : EntitySystem(), KeyInputHandler {
 
@@ -35,11 +36,11 @@ class KeyInputSystem : EntitySystem(), KeyInputHandler {
         val doubleJump = Mapper.DOUBLE_JUMP_MAPPER.get(player)
 
         if (gravity.onGround) {
-            vel.dy = 150f
+            vel.dy = PLAYER_JUMP_IMPULSE
             doubleJump.canDoubleJump = true
         }
         else if (doubleJump.canDoubleJump) {
-            vel.dy = 150f
+            vel.dy = PLAYER_JUMP_IMPULSE
             doubleJump.canDoubleJump = false
         }
     }

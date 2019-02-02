@@ -6,8 +6,8 @@ import com.badlogic.ashley.systems.IteratingSystem
 import com.symbol.ecs.Mapper
 import com.symbol.ecs.component.GravityComponent
 
-private const val GRAVITY = -9.8f
-private const val TERMINAL_VELOCITY = -64.8f
+private const val GRAVITY = -12.8f
+private const val TERMINAL_VELOCITY = -80.8f
 
 class GravitySystem : IteratingSystem(Family.all(GravityComponent::class.java).get()) {
 

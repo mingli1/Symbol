@@ -1,50 +1,27 @@
 package com.symbol.ecs
 
-import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.core.PooledEngine
-import com.badlogic.gdx.graphics.g2d.TextureRegion
-import com.badlogic.gdx.math.Rectangle
-import com.badlogic.gdx.math.Vector2
-import com.symbol.ecs.component.*
-import com.symbol.ecs.component.player.DoubleJumpComponent
-import com.symbol.ecs.component.player.PlayerComponent
+import com.symbol.ecs.entity.PLAYER_BOUNDS_HEIGHT
+import com.symbol.ecs.entity.PLAYER_BOUNDS_WIDTH
+import com.symbol.ecs.entity.PLAYER_SPEED
+import com.symbol.ecs.entity.Player
+import com.symbol.util.Resources
 
 object EntityFactory {
 
-    fun createPlayer(engine: PooledEngine, position: Vector2, bounds: Rectangle,
-                     texture: TextureRegion, speed: Float) : Entity {
-        val playerComponent = engine.createComponent(PlayerComponent::class.java)
-        val positionComponent = engine.createComponent(PositionComponent::class.java)
-        val prevPositionComponent = engine.createComponent(PreviousPositionComponent::class.java)
-        val gravityComponent = engine.createComponent(GravityComponent::class.java)
-        val boundingBoxComponent = engine.createComponent(BoundingBoxComponent::class.java)
-        val textureComponent = engine.createComponent(TextureComponent::class.java)
-        val velocityComponent = engine.createComponent(VelocityComponent::class.java)
-        val speedComponent = engine.createComponent(SpeedComponent::class.java)
-        val doubleJumpComponent = engine.createComponent(DoubleJumpComponent::class.java)
+    fun createPlayer(engine: PooledEngine, res: Resources) : Player {
+        val player = Player()
+        engine.addEntity(player)
 
-        positionComponent.x = position.x
-        positionComponent.y = position.y
-        prevPositionComponent.x = position.x
-        prevPositionComponent.y = position.y
-        boundingBoxComponent.rect = bounds
-        textureComponent.texture = texture
-        speedComponent.speed = speed
+        val bounds = Mapper.BOUNDING_BOX_MAPPER.get(player)
+        val texture = Mapper.TEXTURE_MAPPER.get(player)
+        val speed = Mapper.SPEED_MAPPER.get(player)
 
-        val entity = engine.createEntity()
+        bounds.rect.setSize(PLAYER_BOUNDS_WIDTH, PLAYER_BOUNDS_HEIGHT)
+        texture.texture = res.getSingleTexture("player")
+        speed.speed = PLAYER_SPEED
 
-        entity.add(playerComponent)
-        entity.add(positionComponent)
-        entity.add(prevPositionComponent)
-        entity.add(gravityComponent)
-        entity.add(boundingBoxComponent)
-        entity.add(textureComponent)
-        entity.add(velocityComponent)
-        entity.add(speedComponent)
-        entity.add(doubleJumpComponent)
-
-        engine.addEntity(entity)
-        return entity
+        return player
     }
 
 }
