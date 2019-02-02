@@ -60,8 +60,11 @@ class TileMapManager(batch: Batch, private val cam: OrthographicCamera) : Dispos
         val objects = collisionLayer.objects
         for (rectangleMapObject in objects.getByType(RectangleMapObject::class.java)) {
             val mapObjectRect = rectangleMapObject.rectangle
-            val mapObjectType = rectangleMapObject.properties[MAP_OBJECT_TYPE] ?: MapObjectType.Ground
-            mapObjects.add(MapObject(mapObjectRect, mapObjectType as MapObjectType))
+            val typeProp = rectangleMapObject.properties[MAP_OBJECT_TYPE]
+
+            val mapObjectType = if (typeProp == null) MapObjectType.Ground else MapObjectType.getType(typeProp.toString())!!
+
+            mapObjects.add(MapObject(mapObjectRect, mapObjectType))
         }
 
         renderer.map = tiledMap
