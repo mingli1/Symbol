@@ -17,4 +17,6 @@ object Mapper {
 
     val SPEED_MAPPER: ComponentMapper<SpeedComponent> = ComponentMapper.getFor(SpeedComponent::class.java)
 
+    val GRAVITY_MAPPER: ComponentMapper<GravityComponent> = ComponentMapper.getFor(GravityComponent::class.java)
+
 }
