@@ -7,7 +7,7 @@ import com.symbol.ecs.component.player.PlayerComponent
 
 const val PLAYER_BOUNDS_WIDTH = 7f
 const val PLAYER_BOUNDS_HEIGHT = 7f
-const val PLAYER_SPEED = 25f
+const val PLAYER_SPEED = 35f
 const val PLAYER_JUMP_IMPULSE = 160f
 
 class Player : Entity() {

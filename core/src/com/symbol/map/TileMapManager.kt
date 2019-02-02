@@ -8,15 +8,17 @@ import com.badlogic.gdx.maps.tiled.TiledMap
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer
 import com.badlogic.gdx.maps.tiled.TmxMapLoader
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer
-import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.utils.Array
 import com.badlogic.gdx.utils.Disposable
 
 private const val DIR = "map/"
+
 private const val PLAYER_SPAWN_LAYER = "player"
 private const val TILE_LAYER = "tile"
 private const val COLLISION_LAYER = "collision"
+
+private const val MAP_OBJECT_TYPE = "type"
 
 class TileMapManager(batch: Batch, private val cam: OrthographicCamera) : Disposable {
 
@@ -38,7 +40,7 @@ class TileMapManager(batch: Batch, private val cam: OrthographicCamera) : Dispos
 
     var playerSpawnPosition: Vector2 = Vector2()
 
-    val collisionBoxes: Array<Rectangle> = Array()
+    val mapObjects: Array<MapObject> = Array()
 
     fun load(mapName: String) {
         tiledMap = mapLoader.load("$DIR$mapName.tmx")
@@ -54,11 +56,12 @@ class TileMapManager(batch: Batch, private val cam: OrthographicCamera) : Dispos
         val spawn = playerSpawnLayer.objects.getByType(RectangleMapObject::class.java)[0].rectangle
         playerSpawnPosition.set(spawn.x, spawn.y)
 
-        collisionBoxes.clear()
+        mapObjects.clear()
         val objects = collisionLayer.objects
         for (rectangleMapObject in objects.getByType(RectangleMapObject::class.java)) {
-            val collisionBox = rectangleMapObject.rectangle
-            collisionBoxes.add(collisionBox)
+            val mapObjectRect = rectangleMapObject.rectangle
+            val mapObjectType = rectangleMapObject.properties[MAP_OBJECT_TYPE] ?: MapObjectType.Ground
+            mapObjects.add(MapObject(mapObjectRect, mapObjectType as MapObjectType))
         }
 
         renderer.map = tiledMap

@@ -3,13 +3,14 @@ package com.symbol.ecs.system
 import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.core.Family
 import com.badlogic.ashley.systems.IteratingSystem
-import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.utils.Array
 import com.symbol.ecs.Mapper
 import com.symbol.ecs.component.BoundingBoxComponent
 import com.symbol.ecs.component.GravityComponent
 import com.symbol.ecs.component.PositionComponent
 import com.symbol.ecs.component.PreviousPositionComponent
+import com.symbol.map.MapObject
+import com.symbol.map.MapObjectType
 
 private const val NUM_SUB_STEPS = 30
 
@@ -17,7 +18,7 @@ class MapCollisionSystem : IteratingSystem(
         Family.all(BoundingBoxComponent::class.java, GravityComponent::class.java).get()
 ) {
 
-    private var mapCollisions: Array<Rectangle> = Array()
+    private var mapObjects: Array<MapObject> = Array()
 
     private var stepX: Float = 0f
     private var stepY: Float = 0f
@@ -36,8 +37,8 @@ class MapCollisionSystem : IteratingSystem(
             savePreviousPosition(position, prevPosition)
             position.x += stepX
             bb.rect.setPosition(position.x + (width - bb.rect.width) / 2, position.y + (height - bb.rect.height) / 2)
-            for (collision in mapCollisions) {
-                if (bb.rect.overlaps(collision)) {
+            for (mapObject in mapObjects) {
+                if (mapObject.type == MapObjectType.Ground && bb.rect.overlaps(mapObject.bounds)) {
                     revertCurrentPosition(position, prevPosition)
                 }
             }
@@ -48,8 +49,8 @@ class MapCollisionSystem : IteratingSystem(
             savePreviousPosition(position, prevPosition)
             position.y += stepY
             bb.rect.setPosition(position.x + (width - bb.rect.width) / 2, position.y + (height - bb.rect.height) / 2)
-            for (collision in mapCollisions) {
-                if (bb.rect.overlaps(collision)) {
+            for (mapObject in mapObjects) {
+                if (mapObject.type == MapObjectType.Ground && bb.rect.overlaps(mapObject.bounds)) {
                     revertCurrentPosition(position, prevPosition)
                     if (velocity.dy < 0) gravity.onGround = true
                     velocity.dy = 0f
@@ -59,9 +60,9 @@ class MapCollisionSystem : IteratingSystem(
         if (velocity.dy != 0f) gravity.onGround = false
     }
 
-    fun setMapData(mapCollisions: Array<Rectangle>) {
-        this.mapCollisions.clear()
-        this.mapCollisions.addAll(mapCollisions)
+    fun setMapData(mapObjects: Array<MapObject>) {
+        this.mapObjects.clear()
+        this.mapObjects.addAll(mapObjects)
     }
 
     private fun savePreviousPosition(position: PositionComponent, prevPosition: PreviousPositionComponent) {

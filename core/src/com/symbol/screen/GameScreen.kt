@@ -49,7 +49,7 @@ class GameScreen(game: Symbol) : AbstractScreen(game) {
         playerPosition.x = tmm.playerSpawnPosition.x
         playerPosition.y = tmm.playerSpawnPosition.y
 
-        engine.getSystem(MapCollisionSystem::class.java).setMapData(tmm.collisionBoxes)
+        engine.getSystem(MapCollisionSystem::class.java).setMapData(tmm.mapObjects)
     }
 
     private fun update(dt: Float) {
