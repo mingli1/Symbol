@@ -7,7 +7,7 @@ import com.symbol.ecs.Mapper
 import com.symbol.ecs.component.GravityComponent
 
 private const val GRAVITY = -9.8f
-private const val TERMINAL_VELOCITY = -32.8f
+private const val TERMINAL_VELOCITY = -64.8f
 
 class GravitySystem : IteratingSystem(Family.all(GravityComponent::class.java).get()) {
 

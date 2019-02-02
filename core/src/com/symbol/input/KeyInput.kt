@@ -9,6 +9,7 @@ class KeyInput(private val handler: KeyInputHandler) : InputProcessor {
         when (keycode) {
             Input.Keys.RIGHT -> handler.move(true)
             Input.Keys.LEFT -> handler.move(false)
+            Input.Keys.Z -> handler.jump()
         }
         return true
     }

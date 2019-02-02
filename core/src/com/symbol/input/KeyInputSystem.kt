@@ -5,31 +5,44 @@ import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.core.EntitySystem
 import com.badlogic.ashley.core.Family
 import com.symbol.ecs.Mapper
+import com.symbol.ecs.component.VelocityComponent
 import com.symbol.ecs.component.player.PlayerComponent
 
 class KeyInputSystem : EntitySystem(), KeyInputHandler {
 
     private lateinit var player: Entity
+    private lateinit var vel: VelocityComponent
 
     override fun addedToEngine(engine: Engine?) {
         player = engine!!.getEntitiesFor(Family.all(PlayerComponent::class.java).get()).get(0)
+        vel = Mapper.VEL_MAPPER.get(player)
     }
 
     override fun move(right: Boolean) {
-        val vel = Mapper.VEL_MAPPER.get(player)
         val speed = Mapper.SPEED_MAPPER.get(player)
         vel.move(right, speed.speed)
     }
 
     override fun stop(right: Boolean) {
-        val vel = Mapper.VEL_MAPPER.get(player)
         when (right) {
             true -> if (vel.dx > 0) vel.dx = 0f
             false -> if (vel.dx < 0) vel.dx = 0f
         }
     }
 
-    override fun jump() {}
+    override fun jump() {
+        val gravity = Mapper.GRAVITY_MAPPER.get(player)
+        val doubleJump = Mapper.DOUBLE_JUMP_MAPPER.get(player)
+
+        if (gravity.onGround) {
+            vel.dy = 150f
+            doubleJump.canDoubleJump = true
+        }
+        else if (doubleJump.canDoubleJump) {
+            vel.dy = 150f
+            doubleJump.canDoubleJump = false
+        }
+    }
 
     override fun shoot() {}
 

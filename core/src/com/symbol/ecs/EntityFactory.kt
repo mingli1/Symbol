@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.math.Vector2
 import com.symbol.ecs.component.*
+import com.symbol.ecs.component.player.DoubleJumpComponent
 import com.symbol.ecs.component.player.PlayerComponent
 
 object EntityFactory {
@@ -20,6 +21,7 @@ object EntityFactory {
         val textureComponent = engine.createComponent(TextureComponent::class.java)
         val velocityComponent = engine.createComponent(VelocityComponent::class.java)
         val speedComponent = engine.createComponent(SpeedComponent::class.java)
+        val doubleJumpComponent = engine.createComponent(DoubleJumpComponent::class.java)
 
         positionComponent.x = position.x
         positionComponent.y = position.y
@@ -39,6 +41,7 @@ object EntityFactory {
         entity.add(textureComponent)
         entity.add(velocityComponent)
         entity.add(speedComponent)
+        entity.add(doubleJumpComponent)
 
         engine.addEntity(entity)
         return entity

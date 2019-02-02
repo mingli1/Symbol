@@ -39,7 +39,6 @@ class MapCollisionSystem : IteratingSystem(
             for (collision in mapCollisions) {
                 if (bb.rect.overlaps(collision)) {
                     revertCurrentPosition(position, prevPosition)
-                    velocity.dx = 0f
                 }
             }
         }
