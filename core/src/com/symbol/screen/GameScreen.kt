@@ -52,7 +52,7 @@ class GameScreen(game: Symbol) : AbstractScreen(game) {
         engine.getSystem(MapCollisionSystem::class.java).setMapData(tmm.collisionBoxes)
     }
 
-    fun update(dt: Float) {
+    private fun update(dt: Float) {
         tmm.update()
     }
 

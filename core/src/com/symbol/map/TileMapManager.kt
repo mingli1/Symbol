@@ -14,6 +14,7 @@ import com.badlogic.gdx.utils.Array
 import com.badlogic.gdx.utils.Disposable
 
 private const val DIR = "map/"
+private const val PLAYER_SPAWN_LAYER = "player"
 private const val TILE_LAYER = "tile"
 private const val COLLISION_LAYER = "collision"
 
@@ -25,6 +26,7 @@ class TileMapManager(batch: Batch, private val cam: OrthographicCamera) : Dispos
 
     private lateinit var tileLayer: TiledMapTileLayer
     private lateinit var collisionLayer: MapLayer
+    private lateinit var playerSpawnLayer: MapLayer
 
     var tileSize: Int = 0
         private set
@@ -41,14 +43,16 @@ class TileMapManager(batch: Batch, private val cam: OrthographicCamera) : Dispos
     fun load(mapName: String) {
         tiledMap = mapLoader.load("$DIR$mapName.tmx")
 
-        tileSize = tiledMap.properties.get("tileSize", Int::class.java)
-        mapWidth = tiledMap.properties.get("mapWidth", Int::class.java)
-        mapHeight = tiledMap.properties.get("mapHeight", Int::class.java)
-        playerSpawnPosition.set(tiledMap.properties.get("playerX", Float::class.java),
-                tiledMap.properties.get("playerY", Float::class.java))
-
         tileLayer = tiledMap.layers.get(TILE_LAYER) as TiledMapTileLayer
         collisionLayer = tiledMap.layers.get(COLLISION_LAYER)
+        playerSpawnLayer = tiledMap.layers.get(PLAYER_SPAWN_LAYER)
+
+        tileSize = tileLayer.tileWidth.toInt()
+        mapWidth = tileLayer.width
+        mapHeight = tileLayer.height
+
+        val spawn = playerSpawnLayer.objects.getByType(RectangleMapObject::class.java)[0].rectangle
+        playerSpawnPosition.set(spawn.x, spawn.y)
 
         collisionBoxes.clear()
         val objects = collisionLayer.objects
