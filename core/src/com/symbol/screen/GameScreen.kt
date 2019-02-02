@@ -12,6 +12,8 @@ import com.symbol.input.KeyInput
 import com.symbol.input.KeyInputSystem
 import com.symbol.map.TileMapManager
 
+private const val CAMERA_LERP = 2.5f
+
 class GameScreen(game: Symbol) : AbstractScreen(game) {
 
     private val engine = PooledEngine()
@@ -51,7 +53,17 @@ class GameScreen(game: Symbol) : AbstractScreen(game) {
     }
 
     private fun update(dt: Float) {
+        updateCamera(dt)
         tmm.update()
+    }
+
+    private fun updateCamera(dt: Float) {
+        val playerPos = Mapper.POS_MAPPER.get(player)
+
+        cam.position.x += (playerPos.x + (tmm.tileSize / 2) - cam.position.x) * CAMERA_LERP * dt
+        cam.position.y += (playerPos.y + (tmm.tileSize / 2) - cam.position.y) * CAMERA_LERP * dt
+
+        cam.update()
     }
 
     override fun render(dt: Float) {
