@@ -19,7 +19,7 @@ class GameScreen(game: Symbol) : AbstractScreen(game) {
     private val engine = PooledEngine()
 
     private val input: KeyInput
-    private val mm: MapManager = MapManager(game.batch, cam)
+    private val mm: MapManager = MapManager(game.batch, cam, engine, game.res)
 
     private var player: Entity
 

@@ -1,5 +1,6 @@
 package com.symbol.map
 
+import com.badlogic.ashley.core.PooledEngine
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.maps.MapLayer
@@ -11,6 +12,9 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.utils.Array
 import com.badlogic.gdx.utils.Disposable
+import com.symbol.ecs.EntityFactory
+import com.symbol.ecs.entity.EnemyType
+import com.symbol.util.Resources
 
 private const val DIR = "map/"
 
@@ -21,7 +25,11 @@ private const val ENEMY_LAYER = "enemy"
 
 private const val MAP_OBJECT_TYPE = "type"
 
-class MapManager(batch: Batch, private val cam: OrthographicCamera) : Disposable {
+private const val ENEMY_TYPE = "type"
+private const val ENEMY_FACING_RIGHT = "facingRight"
+
+class MapManager(batch: Batch, private val cam: OrthographicCamera,
+                 private val engine: PooledEngine, private val res: Resources) : Disposable {
 
     private val mapLoader: TmxMapLoader = TmxMapLoader()
     private lateinit var tiledMap: TiledMap
@@ -59,6 +67,16 @@ class MapManager(batch: Batch, private val cam: OrthographicCamera) : Disposable
         val spawn = playerSpawnLayer.objects.getByType(RectangleMapObject::class.java)[0].rectangle
         playerSpawnPosition.set(spawn.x, spawn.y)
 
+        loadMapObjects()
+
+        if (enemyLayer != null) {
+            loadEnemies()
+        }
+
+        renderer.map = tiledMap
+    }
+
+    private fun loadMapObjects() {
         mapObjects.clear()
         val objects = collisionLayer.objects
         for (rectangleMapObject in objects.getByType(RectangleMapObject::class.java)) {
@@ -69,19 +87,19 @@ class MapManager(batch: Batch, private val cam: OrthographicCamera) : Disposable
 
             mapObjects.add(MapObject(mapObjectRect, mapObjectType))
         }
-
-        if (enemyLayer != null) {
-            loadEnemies()
-        }
-
-        renderer.map = tiledMap
     }
 
     private fun loadEnemies() {
         val enemyObjects = enemyLayer?.objects
         for (enemyMapObject in enemyObjects!!.getByType(RectangleMapObject::class.java)) {
             val enemyObjectRect = enemyMapObject.rectangle
+            val typeProp = enemyMapObject.properties[ENEMY_TYPE]
+            val facingRightProp = enemyMapObject.properties[ENEMY_FACING_RIGHT]
 
+            val enemyObjectType = if (typeProp == null) EnemyType.None else EnemyType.getType(typeProp.toString())!!
+            val facingRight = if (facingRightProp == null) true else facingRightProp as Boolean
+
+            EntityFactory.createEnemy(engine, res, enemyObjectType, enemyObjectRect, facingRight)
         }
     }
 
