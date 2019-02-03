@@ -26,6 +26,7 @@ class Resources : Disposable {
         atlas = assetManager.get("textures/textures.atlas", TextureAtlas::class.java)
 
         single["player"] = atlas.findRegion("player")
+        single["p_dot"] = atlas.findRegion("p_dot")
     }
 
     fun getSingleTexture(key: String): TextureRegion? {

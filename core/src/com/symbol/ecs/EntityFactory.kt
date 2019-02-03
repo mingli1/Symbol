@@ -1,6 +1,10 @@
 package com.symbol.ecs
 
+import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.core.PooledEngine
+import com.badlogic.gdx.graphics.g2d.TextureRegion
+import com.symbol.ecs.component.*
+import com.symbol.ecs.component.projectile.ProjectileComponent
 import com.symbol.ecs.entity.PLAYER_BOUNDS_HEIGHT
 import com.symbol.ecs.entity.PLAYER_BOUNDS_WIDTH
 import com.symbol.ecs.entity.PLAYER_SPEED
@@ -22,6 +26,34 @@ object EntityFactory {
         speed.speed = PLAYER_SPEED
 
         return player
+    }
+
+    fun createProjectile(engine: PooledEngine, bw: Float, bh: Float, speed: Float, texture: TextureRegion) : Entity {
+        val projectileComponent = engine.createComponent(ProjectileComponent::class.java)
+        val positionComponent = engine.createComponent(PositionComponent::class.java)
+        val boundingBoxComponent = engine.createComponent(BoundingBoxComponent::class.java)
+        val textureComponent = engine.createComponent(TextureComponent::class.java)
+        val velocityComponent = engine.createComponent(VelocityComponent::class.java)
+        val speedComponent = engine.createComponent(SpeedComponent::class.java)
+        val directionComponent = engine.createComponent(DirectionComponent::class.java)
+        val removeComponent = engine.createComponent(RemoveComponent::class.java)
+
+        boundingBoxComponent.rect.setSize(bw, bh)
+        speedComponent.speed = speed
+        textureComponent.texture = texture
+
+        val projectile = engine.createEntity()
+        projectile.add(projectileComponent)
+        projectile.add(positionComponent)
+        projectile.add(boundingBoxComponent)
+        projectile.add(textureComponent)
+        projectile.add(velocityComponent)
+        projectile.add(speedComponent)
+        projectile.add(directionComponent)
+        projectile.add(removeComponent)
+
+        engine.addEntity(projectile)
+        return projectile
     }
 
 }

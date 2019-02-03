@@ -28,7 +28,7 @@ class GameScreen(game: Symbol) : AbstractScreen(game) {
 
         player = EntityFactory.createPlayer(engine, game.res)
 
-        val keyInputSystem = KeyInputSystem()
+        val keyInputSystem = KeyInputSystem(game.res)
         input = KeyInput(keyInputSystem)
         engine.addSystem(keyInputSystem)
     }
@@ -39,6 +39,7 @@ class GameScreen(game: Symbol) : AbstractScreen(game) {
         engine.addSystem(DirectionSystem())
         engine.addSystem(GravitySystem())
         engine.addSystem(RenderSystem(game.batch))
+        engine.addSystem(RemoveSystem())
     }
 
     override fun show() {

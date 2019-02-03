@@ -24,4 +24,6 @@ object Mapper {
 
     val PLAYER_MAPPER: ComponentMapper<PlayerComponent> = ComponentMapper.getFor(PlayerComponent::class.java)
 
+    val REMOVE_MAPPER: ComponentMapper<RemoveComponent> = ComponentMapper.getFor(RemoveComponent::class.java)
+
 }
