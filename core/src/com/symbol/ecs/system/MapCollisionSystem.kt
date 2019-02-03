@@ -8,7 +8,6 @@ import com.symbol.ecs.Mapper
 import com.symbol.ecs.component.BoundingBoxComponent
 import com.symbol.ecs.component.GravityComponent
 import com.symbol.ecs.component.PositionComponent
-import com.symbol.ecs.component.PreviousPositionComponent
 import com.symbol.map.MapObject
 import com.symbol.map.MapObjectType
 
@@ -26,7 +25,6 @@ class MapCollisionSystem : IteratingSystem(
     override fun processEntity(entity: Entity?, dt: Float) {
         val bb = Mapper.BOUNDING_BOX_MAPPER.get(entity)
         val position = Mapper.POS_MAPPER.get(entity)
-        val prevPosition = Mapper.PREV_POS_MAPPER.get(entity)
         val velocity = Mapper.VEL_MAPPER.get(entity)
         val width = Mapper.TEXTURE_MAPPER.get(entity).texture!!.regionWidth
         val height = Mapper.TEXTURE_MAPPER.get(entity).texture!!.regionHeight
@@ -34,24 +32,24 @@ class MapCollisionSystem : IteratingSystem(
 
         stepX = velocity.dx * dt / NUM_SUB_STEPS
         for (i in 0 until NUM_SUB_STEPS) {
-            savePreviousPosition(position, prevPosition)
+            savePreviousPosition(position)
             position.x += stepX
             bb.rect.setPosition(position.x + (width - bb.rect.width) / 2, position.y + (height - bb.rect.height) / 2)
             for (mapObject in mapObjects) {
                 if (mapObject.type == MapObjectType.Ground && bb.rect.overlaps(mapObject.bounds)) {
-                    revertCurrentPosition(position, prevPosition)
+                    revertCurrentPosition(position)
                 }
             }
         }
 
         stepY = velocity.dy * dt / NUM_SUB_STEPS
         for (i in 0 until NUM_SUB_STEPS) {
-            savePreviousPosition(position, prevPosition)
+            savePreviousPosition(position)
             position.y += stepY
             bb.rect.setPosition(position.x + (width - bb.rect.width) / 2, position.y + (height - bb.rect.height) / 2)
             for (mapObject in mapObjects) {
                 if (mapObject.type == MapObjectType.Ground && bb.rect.overlaps(mapObject.bounds)) {
-                    revertCurrentPosition(position, prevPosition)
+                    revertCurrentPosition(position)
                     if (velocity.dy < 0) {
                         gravity.onGround = true
                         gravity.platform.set(mapObject.bounds)
@@ -68,12 +66,12 @@ class MapCollisionSystem : IteratingSystem(
         this.mapObjects.addAll(mapObjects)
     }
 
-    private fun savePreviousPosition(position: PositionComponent, prevPosition: PreviousPositionComponent) {
-        prevPosition.set(position.x, position.y)
+    private fun savePreviousPosition(position: PositionComponent) {
+        position.setPrev(position.x, position.y)
     }
 
-    private fun revertCurrentPosition(position: PositionComponent, prevPosition: PreviousPositionComponent) {
-        position.set(prevPosition.x, prevPosition.y)
+    private fun revertCurrentPosition(position: PositionComponent) {
+        position.set(position.prevX, position.prevY)
     }
 
 }

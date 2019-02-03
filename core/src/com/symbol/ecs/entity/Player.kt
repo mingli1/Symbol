@@ -22,7 +22,6 @@ class Player : Entity() {
     init {
         add(PlayerComponent())
         add(PositionComponent())
-        add(PreviousPositionComponent())
         add(GravityComponent())
         add(BoundingBoxComponent())
         add(TextureComponent())

@@ -69,7 +69,6 @@ object EntityFactory {
                                  rect: Rectangle, speed: Float, facingRight: Boolean, texture: TextureRegion) : Entity {
         val enemyComponent = engine.createComponent(EnemyComponent::class.java)
         val positionComponent = engine.createComponent(PositionComponent::class.java)
-        val prevPositionComponent = engine.createComponent(PreviousPositionComponent::class.java)
         val boundingBoxComponent = engine.createComponent(BoundingBoxComponent::class.java)
         val textureComponent = engine.createComponent(TextureComponent::class.java)
         val velocityComponent = engine.createComponent(VelocityComponent::class.java)
@@ -89,7 +88,6 @@ object EntityFactory {
         val enemy = engine.createEntity()
         enemy.add(enemyComponent)
         enemy.add(positionComponent)
-        enemy.add(prevPositionComponent)
         enemy.add(boundingBoxComponent)
         enemy.add(textureComponent)
         enemy.add(velocityComponent)

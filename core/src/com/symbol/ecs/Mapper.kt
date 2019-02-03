@@ -10,8 +10,6 @@ object Mapper {
 
     val POS_MAPPER: ComponentMapper<PositionComponent> = ComponentMapper.getFor(PositionComponent::class.java)
 
-    val PREV_POS_MAPPER: ComponentMapper<PreviousPositionComponent> = ComponentMapper.getFor(PreviousPositionComponent::class.java)
-
     val VEL_MAPPER: ComponentMapper<VelocityComponent> = ComponentMapper.getFor(VelocityComponent::class.java)
 
     val TEXTURE_MAPPER: ComponentMapper<TextureComponent> = ComponentMapper.getFor(TextureComponent::class.java)
