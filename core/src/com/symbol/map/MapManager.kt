@@ -17,10 +17,11 @@ private const val DIR = "map/"
 private const val PLAYER_SPAWN_LAYER = "player"
 private const val TILE_LAYER = "tile"
 private const val COLLISION_LAYER = "collision"
+private const val ENEMY_LAYER = "enemy"
 
 private const val MAP_OBJECT_TYPE = "type"
 
-class TileMapManager(batch: Batch, private val cam: OrthographicCamera) : Disposable {
+class MapManager(batch: Batch, private val cam: OrthographicCamera) : Disposable {
 
     private val mapLoader: TmxMapLoader = TmxMapLoader()
     private lateinit var tiledMap: TiledMap
@@ -29,6 +30,7 @@ class TileMapManager(batch: Batch, private val cam: OrthographicCamera) : Dispos
     private lateinit var tileLayer: TiledMapTileLayer
     private lateinit var collisionLayer: MapLayer
     private lateinit var playerSpawnLayer: MapLayer
+    private var enemyLayer: MapLayer? = null
 
     var tileSize: Int = 0
         private set
@@ -48,6 +50,7 @@ class TileMapManager(batch: Batch, private val cam: OrthographicCamera) : Dispos
         tileLayer = tiledMap.layers.get(TILE_LAYER) as TiledMapTileLayer
         collisionLayer = tiledMap.layers.get(COLLISION_LAYER)
         playerSpawnLayer = tiledMap.layers.get(PLAYER_SPAWN_LAYER)
+        enemyLayer = tiledMap.layers.get(ENEMY_LAYER)
 
         tileSize = tileLayer.tileWidth.toInt()
         mapWidth = tileLayer.width
@@ -67,7 +70,19 @@ class TileMapManager(batch: Batch, private val cam: OrthographicCamera) : Dispos
             mapObjects.add(MapObject(mapObjectRect, mapObjectType))
         }
 
+        if (enemyLayer != null) {
+            loadEnemies()
+        }
+
         renderer.map = tiledMap
+    }
+
+    private fun loadEnemies() {
+        val enemyObjects = enemyLayer?.objects
+        for (enemyMapObject in enemyObjects!!.getByType(RectangleMapObject::class.java)) {
+            val enemyObjectRect = enemyMapObject.rectangle
+
+        }
     }
 
     fun update() {

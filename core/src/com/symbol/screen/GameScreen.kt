@@ -10,7 +10,7 @@ import com.symbol.ecs.system.*
 import com.symbol.game.Symbol
 import com.symbol.input.KeyInput
 import com.symbol.input.KeyInputSystem
-import com.symbol.map.TileMapManager
+import com.symbol.map.MapManager
 
 private const val CAMERA_LERP = 2.5f
 
@@ -19,7 +19,7 @@ class GameScreen(game: Symbol) : AbstractScreen(game) {
     private val engine = PooledEngine()
 
     private val input: KeyInput
-    private val tmm: TileMapManager = TileMapManager(game.batch, cam)
+    private val mm: MapManager = MapManager(game.batch, cam)
 
     private var player: Entity
 
@@ -45,26 +45,26 @@ class GameScreen(game: Symbol) : AbstractScreen(game) {
 
     override fun show() {
         Gdx.input.inputProcessor = input
-        tmm.load("test_map")
+        mm.load("test_map")
 
         val playerPosition = Mapper.POS_MAPPER.get(player)
-        playerPosition.set(tmm.playerSpawnPosition.x, tmm.playerSpawnPosition.y)
+        playerPosition.set(mm.playerSpawnPosition.x, mm.playerSpawnPosition.y)
 
-        engine.getSystem(MapCollisionSystem::class.java).setMapData(tmm.mapObjects)
-        engine.getSystem(ProjectileCollisionSystem::class.java).setMapData(tmm.mapObjects,
-                tmm.mapWidth * tmm.tileSize, tmm.mapHeight * tmm.tileSize)
+        engine.getSystem(MapCollisionSystem::class.java).setMapData(mm.mapObjects)
+        engine.getSystem(ProjectileCollisionSystem::class.java).setMapData(mm.mapObjects,
+                mm.mapWidth * mm.tileSize, mm.mapHeight * mm.tileSize)
     }
 
     private fun update(dt: Float) {
         updateCamera(dt)
-        tmm.update()
+        mm.update()
     }
 
     private fun updateCamera(dt: Float) {
         val playerPos = Mapper.POS_MAPPER.get(player)
 
-        cam.position.x += (playerPos.x + (tmm.tileSize / 2) - cam.position.x) * CAMERA_LERP * dt
-        cam.position.y += (playerPos.y + (tmm.tileSize / 2) - cam.position.y) * CAMERA_LERP * dt
+        cam.position.x += (playerPos.x + (mm.tileSize / 2) - cam.position.x) * CAMERA_LERP * dt
+        cam.position.y += (playerPos.y + (mm.tileSize / 2) - cam.position.y) * CAMERA_LERP * dt
 
         cam.update()
     }
@@ -78,7 +78,7 @@ class GameScreen(game: Symbol) : AbstractScreen(game) {
         game.batch.projectionMatrix = cam.combined
         game.batch.begin()
 
-        tmm.render()
+        mm.render()
         engine.update(dt)
 
         game.batch.end()
@@ -86,7 +86,7 @@ class GameScreen(game: Symbol) : AbstractScreen(game) {
 
     override fun dispose() {
         super.dispose()
-        tmm.dispose()
+        mm.dispose()
     }
 
 }
