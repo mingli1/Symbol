@@ -2,7 +2,6 @@ package com.symbol.ecs.entity
 
 import com.badlogic.ashley.core.Entity
 import com.symbol.ecs.component.*
-import com.symbol.ecs.component.player.DoubleJumpComponent
 import com.symbol.ecs.component.player.PlayerComponent
 
 const val PLAYER_BOUNDS_WIDTH = 7f
@@ -21,7 +20,6 @@ class Player : Entity() {
         add(TextureComponent())
         add(VelocityComponent())
         add(SpeedComponent())
-        add(DoubleJumpComponent())
         add(DirectionComponent())
     }
 

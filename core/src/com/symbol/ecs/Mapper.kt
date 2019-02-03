@@ -2,7 +2,7 @@ package com.symbol.ecs
 
 import com.badlogic.ashley.core.ComponentMapper
 import com.symbol.ecs.component.*
-import com.symbol.ecs.component.player.DoubleJumpComponent
+import com.symbol.ecs.component.player.PlayerComponent
 
 object Mapper {
 
@@ -20,8 +20,8 @@ object Mapper {
 
     val GRAVITY_MAPPER: ComponentMapper<GravityComponent> = ComponentMapper.getFor(GravityComponent::class.java)
 
-    val DOUBLE_JUMP_MAPPER: ComponentMapper<DoubleJumpComponent> = ComponentMapper.getFor(DoubleJumpComponent::class.java)
-
     val DIR_MAPPER: ComponentMapper<DirectionComponent> = ComponentMapper.getFor(DirectionComponent::class.java)
+
+    val PLAYER_MAPPER: ComponentMapper<PlayerComponent> = ComponentMapper.getFor(PlayerComponent::class.java)
 
 }
