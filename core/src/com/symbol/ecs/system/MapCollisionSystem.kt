@@ -52,7 +52,10 @@ class MapCollisionSystem : IteratingSystem(
             for (mapObject in mapObjects) {
                 if (mapObject.type == MapObjectType.Ground && bb.rect.overlaps(mapObject.bounds)) {
                     revertCurrentPosition(position, prevPosition)
-                    if (velocity.dy < 0) gravity.onGround = true
+                    if (velocity.dy < 0) {
+                        gravity.onGround = true
+                        gravity.platform.set(mapObject.bounds)
+                    }
                     velocity.dy = 0f
                 }
             }

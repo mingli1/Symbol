@@ -2,6 +2,7 @@ package com.symbol.ecs
 
 import com.badlogic.ashley.core.ComponentMapper
 import com.symbol.ecs.component.*
+import com.symbol.ecs.component.enemy.EnemyComponent
 import com.symbol.ecs.component.player.PlayerComponent
 import com.symbol.ecs.component.projectile.ProjectileComponent
 
@@ -28,5 +29,7 @@ object Mapper {
     val REMOVE_MAPPER: ComponentMapper<RemoveComponent> = ComponentMapper.getFor(RemoveComponent::class.java)
 
     val PROJ_MAPPER: ComponentMapper<ProjectileComponent> = ComponentMapper.getFor(ProjectileComponent::class.java)
+
+    val ENEMY_MAPPER: ComponentMapper<EnemyComponent> = ComponentMapper.getFor(EnemyComponent::class.java)
 
 }

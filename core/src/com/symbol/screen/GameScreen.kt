@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.GL20
 import com.symbol.ecs.EntityFactory
 import com.symbol.ecs.Mapper
 import com.symbol.ecs.system.*
+import com.symbol.ecs.system.enemy.EnemyMovementSystem
 import com.symbol.game.Symbol
 import com.symbol.input.KeyInput
 import com.symbol.input.KeyInputSystem
@@ -37,6 +38,7 @@ class GameScreen(game: Symbol) : AbstractScreen(game) {
         engine.addSystem(MovementSystem())
         engine.addSystem(MapCollisionSystem())
         engine.addSystem(ProjectileCollisionSystem())
+        engine.addSystem(EnemyMovementSystem())
         engine.addSystem(DirectionSystem())
         engine.addSystem(GravitySystem())
         engine.addSystem(RenderSystem(game.batch))

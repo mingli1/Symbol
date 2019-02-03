@@ -27,6 +27,7 @@ class Resources : Disposable {
 
         single["player"] = atlas.findRegion("player")
         single["p_dot"] = atlas.findRegion("p_dot")
+        single["e_e"] = atlas.findRegion("e_e")
     }
 
     fun getSingleTexture(key: String): TextureRegion? {
