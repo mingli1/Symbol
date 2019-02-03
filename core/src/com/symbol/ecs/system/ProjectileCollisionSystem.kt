@@ -1,10 +1,13 @@
 package com.symbol.ecs.system
 
+import com.badlogic.ashley.core.Engine
 import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.core.Family
 import com.badlogic.ashley.systems.IteratingSystem
+import com.badlogic.ashley.utils.ImmutableArray
 import com.badlogic.gdx.utils.Array
 import com.symbol.ecs.Mapper
+import com.symbol.ecs.component.enemy.EnemyComponent
 import com.symbol.ecs.component.projectile.ProjectileComponent
 import com.symbol.map.MapObject
 
@@ -13,6 +16,13 @@ class ProjectileCollisionSystem : IteratingSystem(Family.all(ProjectileComponent
     private var mapObjects: Array<MapObject> = Array()
     private var mapWidth: Int = 0
     private var mapHeight: Int = 0
+
+    private lateinit var enemies: ImmutableArray<Entity>
+
+    override fun addedToEngine(engine: Engine?) {
+        super.addedToEngine(engine)
+        enemies = engine!!.getEntitiesFor(Family.all(EnemyComponent::class.java).get())
+    }
 
     override fun processEntity(entity: Entity?, deltaTime: Float) {
         val pj = Mapper.PROJ_MAPPER.get(entity)
@@ -30,6 +40,17 @@ class ProjectileCollisionSystem : IteratingSystem(Family.all(ProjectileComponent
         else if (!pj.unstoppable) {
             for (mapObject in mapObjects) {
                 if (bb.rect.overlaps(mapObject.bounds)) {
+                    remove.shouldRemove = true
+                    break
+                }
+            }
+        }
+
+        if (!pj.enemy) {
+            for (enemy in enemies) {
+                val ebb = Mapper.BOUNDING_BOX_MAPPER.get(enemy)
+                if (bb.rect.overlaps(ebb.rect)) {
+                    engine.removeEntity(enemy)
                     remove.shouldRemove = true
                     break
                 }

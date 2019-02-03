@@ -27,7 +27,7 @@ object EntityFactory {
         return player
     }
 
-    fun createProjectile(engine: PooledEngine, unstoppable: Boolean,
+    fun createProjectile(engine: PooledEngine, unstoppable: Boolean, enemy: Boolean,
                          x: Float, y: Float, dx: Float, dy: Float, bw: Float, bh: Float,
                          texture: TextureRegion) : Entity {
         val projectileComponent = engine.createComponent(ProjectileComponent::class.java)

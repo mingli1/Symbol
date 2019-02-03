@@ -6,8 +6,10 @@ import com.badlogic.gdx.utils.Pool
 class ProjectileComponent : Component, Pool.Poolable {
 
     var unstoppable: Boolean = false
+    var enemy: Boolean = false
 
     override fun reset() {
         unstoppable = false
+        enemy = false
     }
 }
