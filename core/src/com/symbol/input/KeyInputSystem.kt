@@ -21,8 +21,7 @@ class KeyInputSystem(private val res: Resources) : EntitySystem(), KeyInputHandl
     }
 
     override fun move(right: Boolean) {
-        val speed = Mapper.SPEED_MAPPER.get(player)
-        vel.move(right, speed.speed)
+        vel.move(right)
     }
 
     override fun stop(right: Boolean) {

@@ -18,11 +18,11 @@ object EntityFactory {
 
         val bounds = Mapper.BOUNDING_BOX_MAPPER.get(player)
         val texture = Mapper.TEXTURE_MAPPER.get(player)
-        val speed = Mapper.SPEED_MAPPER.get(player)
+        val velocity = Mapper.VEL_MAPPER.get(player)
 
         bounds.rect.setSize(PLAYER_BOUNDS_WIDTH, PLAYER_BOUNDS_HEIGHT)
         texture.texture = res.getSingleTexture("player")
-        speed.speed = PLAYER_SPEED
+        velocity.speed = PLAYER_SPEED
 
         return player
     }
@@ -72,7 +72,6 @@ object EntityFactory {
         val boundingBoxComponent = engine.createComponent(BoundingBoxComponent::class.java)
         val textureComponent = engine.createComponent(TextureComponent::class.java)
         val velocityComponent = engine.createComponent(VelocityComponent::class.java)
-        val speedComponent = engine.createComponent(SpeedComponent::class.java)
         val gravityComponent = engine.createComponent(GravityComponent::class.java)
         val directionComponent = engine.createComponent(DirectionComponent::class.java)
         val removeComponent = engine.createComponent(RemoveComponent::class.java)
@@ -82,7 +81,7 @@ object EntityFactory {
         positionComponent.set(rect.x, rect.y)
         boundingBoxComponent.rect.setSize(rect.width, rect.height)
         textureComponent.texture = texture
-        speedComponent.speed = speed
+        velocityComponent.speed = speed
         directionComponent.facingRight = facingRight
 
         val enemy = engine.createEntity()
@@ -91,7 +90,6 @@ object EntityFactory {
         enemy.add(boundingBoxComponent)
         enemy.add(textureComponent)
         enemy.add(velocityComponent)
-        enemy.add(speedComponent)
         enemy.add(gravityComponent)
         enemy.add(directionComponent)
         enemy.add(removeComponent)

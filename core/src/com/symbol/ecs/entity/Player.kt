@@ -26,7 +26,6 @@ class Player : Entity() {
         add(BoundingBoxComponent())
         add(TextureComponent())
         add(VelocityComponent())
-        add(SpeedComponent())
         add(DirectionComponent())
     }
 

@@ -16,8 +16,6 @@ object Mapper {
 
     val BOUNDING_BOX_MAPPER: ComponentMapper<BoundingBoxComponent> = ComponentMapper.getFor(BoundingBoxComponent::class.java)
 
-    val SPEED_MAPPER: ComponentMapper<SpeedComponent> = ComponentMapper.getFor(SpeedComponent::class.java)
-
     val GRAVITY_MAPPER: ComponentMapper<GravityComponent> = ComponentMapper.getFor(GravityComponent::class.java)
 
     val DIR_MAPPER: ComponentMapper<DirectionComponent> = ComponentMapper.getFor(DirectionComponent::class.java)

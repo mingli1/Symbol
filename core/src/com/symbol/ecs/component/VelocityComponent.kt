@@ -8,6 +8,8 @@ class VelocityComponent : Component, Pool.Poolable {
     var dx: Float = 0f
     var dy: Float = 0f
 
+    var speed: Float = 0f
+
     fun set(dx: Float, dy: Float) {
         this.dx = dx
         this.dy = dy
@@ -16,8 +18,9 @@ class VelocityComponent : Component, Pool.Poolable {
     override fun reset() {
         dx = 0f
         dy = 0f
+        speed = 0f
     }
 
-    fun move(right: Boolean, speed: Float) = if (right) dx = speed else dx = -speed
+    fun move(right: Boolean) = if (right) dx = speed else dx = -speed
 
 }

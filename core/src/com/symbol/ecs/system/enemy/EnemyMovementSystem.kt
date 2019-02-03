@@ -14,7 +14,6 @@ class EnemyMovementSystem : IteratingSystem(Family.all(EnemyComponent::class.jav
         val dirComponent = Mapper.DIR_MAPPER.get(entity)
         val position = Mapper.POS_MAPPER.get(entity)
         val velocity = Mapper.VEL_MAPPER.get(entity)
-        val speed = Mapper.SPEED_MAPPER.get(entity)
 
         when (enemyComponent.movementType) {
             EnemyMovementType.BackAndForth -> {
@@ -22,14 +21,14 @@ class EnemyMovementSystem : IteratingSystem(Family.all(EnemyComponent::class.jav
                 val bounds = Mapper.BOUNDING_BOX_MAPPER.get(entity)
 
                 if (gravity.onGround) {
-                    if (velocity.dx == 0f) velocity.dx = if (dirComponent.facingRight) speed.speed else -speed.speed
+                    if (velocity.dx == 0f) velocity.dx = if (dirComponent.facingRight) velocity.speed else -velocity.speed
                     if (position.x < gravity.platform.x) {
                         position.x = gravity.platform.x
-                        velocity.dx = speed.speed
+                        velocity.dx = velocity.speed
                     }
                     else if (position.x > gravity.platform.x + gravity.platform.width - bounds.rect.width) {
                         position.x = gravity.platform.x + gravity.platform.width - bounds.rect.width
-                        velocity.dx = -speed.speed
+                        velocity.dx = -velocity.speed
                     }
                 }
             }
