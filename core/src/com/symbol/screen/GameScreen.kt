@@ -36,6 +36,7 @@ class GameScreen(game: Symbol) : AbstractScreen(game) {
     private fun initSystems() {
         engine.addSystem(MovementSystem())
         engine.addSystem(MapCollisionSystem())
+        engine.addSystem(ProjectileCollisionSystem())
         engine.addSystem(DirectionSystem())
         engine.addSystem(GravitySystem())
         engine.addSystem(RenderSystem(game.batch))
@@ -50,6 +51,8 @@ class GameScreen(game: Symbol) : AbstractScreen(game) {
         playerPosition.set(tmm.playerSpawnPosition.x, tmm.playerSpawnPosition.y)
 
         engine.getSystem(MapCollisionSystem::class.java).setMapData(tmm.mapObjects)
+        engine.getSystem(ProjectileCollisionSystem::class.java).setMapData(tmm.mapObjects,
+                tmm.mapWidth * tmm.tileSize, tmm.mapHeight * tmm.tileSize)
     }
 
     private fun update(dt: Float) {

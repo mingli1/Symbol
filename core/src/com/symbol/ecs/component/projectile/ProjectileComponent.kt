@@ -4,5 +4,10 @@ import com.badlogic.ashley.core.Component
 import com.badlogic.gdx.utils.Pool
 
 class ProjectileComponent : Component, Pool.Poolable {
-    override fun reset() {}
+
+    var unstoppable: Boolean = false
+
+    override fun reset() {
+        unstoppable = false
+    }
 }
