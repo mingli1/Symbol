@@ -8,6 +8,11 @@ class PositionComponent : Component, Pool.Poolable {
     var x: Float = 0f
     var y: Float = 0f
 
+    fun set(x: Float, y: Float) {
+        this.x = x
+        this.y = y
+    }
+
     override fun reset() {
         x = 0f
         y = 0f

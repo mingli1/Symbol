@@ -47,8 +47,7 @@ class GameScreen(game: Symbol) : AbstractScreen(game) {
         tmm.load("test_map")
 
         val playerPosition = Mapper.POS_MAPPER.get(player)
-        playerPosition.x = tmm.playerSpawnPosition.x
-        playerPosition.y = tmm.playerSpawnPosition.y
+        playerPosition.set(tmm.playerSpawnPosition.x, tmm.playerSpawnPosition.y)
 
         engine.getSystem(MapCollisionSystem::class.java).setMapData(tmm.mapObjects)
     }

@@ -28,18 +28,19 @@ object EntityFactory {
         return player
     }
 
-    fun createProjectile(engine: PooledEngine, bw: Float, bh: Float, speed: Float, texture: TextureRegion) : Entity {
+    fun createProjectile(engine: PooledEngine, x: Float, y: Float, dx: Float, dy: Float,
+                         bw: Float, bh: Float, texture: TextureRegion) : Entity {
         val projectileComponent = engine.createComponent(ProjectileComponent::class.java)
         val positionComponent = engine.createComponent(PositionComponent::class.java)
         val boundingBoxComponent = engine.createComponent(BoundingBoxComponent::class.java)
         val textureComponent = engine.createComponent(TextureComponent::class.java)
         val velocityComponent = engine.createComponent(VelocityComponent::class.java)
-        val speedComponent = engine.createComponent(SpeedComponent::class.java)
         val directionComponent = engine.createComponent(DirectionComponent::class.java)
         val removeComponent = engine.createComponent(RemoveComponent::class.java)
 
+        positionComponent.set(x, y)
+        velocityComponent.set(dx, dy)
         boundingBoxComponent.rect.setSize(bw, bh)
-        speedComponent.speed = speed
         textureComponent.texture = texture
 
         val projectile = engine.createEntity()
@@ -48,7 +49,6 @@ object EntityFactory {
         projectile.add(boundingBoxComponent)
         projectile.add(textureComponent)
         projectile.add(velocityComponent)
-        projectile.add(speedComponent)
         projectile.add(directionComponent)
         projectile.add(removeComponent)
 

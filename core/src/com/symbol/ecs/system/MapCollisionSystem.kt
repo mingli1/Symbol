@@ -66,13 +66,11 @@ class MapCollisionSystem : IteratingSystem(
     }
 
     private fun savePreviousPosition(position: PositionComponent, prevPosition: PreviousPositionComponent) {
-        prevPosition.x = position.x
-        prevPosition.y = position.y
+        prevPosition.set(position.x, position.y)
     }
 
     private fun revertCurrentPosition(position: PositionComponent, prevPosition: PreviousPositionComponent) {
-        position.x = prevPosition.x
-        position.y = prevPosition.y
+        position.set(prevPosition.x, prevPosition.y)
     }
 
 }

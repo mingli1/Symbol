@@ -5,7 +5,7 @@ import com.symbol.ecs.EntityFactory
 import com.symbol.ecs.Mapper
 import com.symbol.ecs.component.VelocityComponent
 import com.symbol.ecs.component.player.PlayerComponent
-import com.symbol.ecs.entity.PLAYER_JUMP_IMPULSE
+import com.symbol.ecs.entity.*
 import com.symbol.util.Resources
 
 class KeyInputSystem(private val res: Resources) : EntitySystem(), KeyInputHandler {
@@ -47,17 +47,15 @@ class KeyInputSystem(private val res: Resources) : EntitySystem(), KeyInputHandl
 
     override fun shoot(keyDown: Boolean) {
         if (keyDown && playerComp.canShoot) {
-            val bullet = EntityFactory.createProjectile(engine as PooledEngine, 4f, 4f, 50f, res.getSingleTexture("p_dot")!!)
-
-            val bulletPos = Mapper.POS_MAPPER.get(bullet)
             val playerPos = Mapper.POS_MAPPER.get(player)
-            val vel = Mapper.VEL_MAPPER.get(bullet)
-            val speed = Mapper.SPEED_MAPPER.get(bullet)
             val dir = Mapper.DIR_MAPPER.get(player)
 
-            bulletPos.x = playerPos.x + 8
-            bulletPos.y = playerPos.y + 4
-            vel.dx = if (dir.facingRight) speed.speed else -speed.speed
+            EntityFactory.createProjectile(engine as PooledEngine,
+                    if (dir.facingRight) playerPos.x + PLAYER_WIDTH else playerPos.x - PLAYER_PROJECTILE_BOUNDS_WIDTH,
+                    playerPos.y + (PLAYER_HEIGHT / 2) - (PLAYER_PROJECTILE_BOUNDS_HEIGHT / 2),
+                    if (dir.facingRight) PLAYER_PROJECTILE_SPEED else -PLAYER_PROJECTILE_SPEED, 0f,
+                    PLAYER_PROJECTILE_BOUNDS_WIDTH, PLAYER_PROJECTILE_BOUNDS_HEIGHT,
+                    res.getSingleTexture(PLAYER_PROJECTILE_RES_KEY)!!)
 
             playerComp.canShoot = false
         }
