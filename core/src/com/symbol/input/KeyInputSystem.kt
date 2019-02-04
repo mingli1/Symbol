@@ -44,8 +44,8 @@ class KeyInputSystem(private val res: Resources) : EntitySystem(), KeyInputHandl
         }
     }
 
-    override fun shoot(keyDown: Boolean) {
-        if (keyDown && playerComp.canShoot) {
+    override fun shoot() {
+        if (playerComp.canShoot) {
             val playerPos = Mapper.POS_MAPPER.get(player)
             val dir = Mapper.DIR_MAPPER.get(player)
 
@@ -57,9 +57,6 @@ class KeyInputSystem(private val res: Resources) : EntitySystem(), KeyInputHandl
                     res.getSingleTexture(PLAYER_PROJECTILE_RES_KEY)!!)
 
             playerComp.canShoot = false
-        }
-        else if (!keyDown) {
-            playerComp.canShoot = true
         }
     }
 

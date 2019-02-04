@@ -8,6 +8,6 @@ interface KeyInputHandler {
 
     fun jump()
 
-    fun shoot(keyDown: Boolean)
+    fun shoot()
 
 }

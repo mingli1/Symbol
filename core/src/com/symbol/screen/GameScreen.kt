@@ -1,11 +1,11 @@
 package com.symbol.screen
 
-import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.core.PooledEngine
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.GL20
 import com.symbol.ecs.EntityFactory
 import com.symbol.ecs.Mapper
+import com.symbol.ecs.entity.Player
 import com.symbol.ecs.system.*
 import com.symbol.ecs.system.enemy.EnemyMovementSystem
 import com.symbol.game.Symbol
@@ -22,7 +22,7 @@ class GameScreen(game: Symbol) : AbstractScreen(game) {
     private val input: KeyInput
     private val mm: MapManager = MapManager(game.batch, cam, engine, game.res)
 
-    private var player: Entity
+    private var player: Player
 
     init {
         initSystems()
@@ -32,6 +32,7 @@ class GameScreen(game: Symbol) : AbstractScreen(game) {
         val keyInputSystem = KeyInputSystem(game.res)
         input = KeyInput(keyInputSystem)
         engine.addSystem(keyInputSystem)
+        engine.addSystem(PlayerSystem(player))
     }
 
     private fun initSystems() {
