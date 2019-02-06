@@ -9,6 +9,7 @@ import com.badlogic.gdx.utils.Array
 import com.symbol.ecs.Mapper
 import com.symbol.ecs.component.enemy.EnemyComponent
 import com.symbol.ecs.component.projectile.ProjectileComponent
+import com.symbol.ecs.entity.PLAYER_DAMAGE
 import com.symbol.map.MapObject
 
 class ProjectileCollisionSystem : IteratingSystem(Family.all(ProjectileComponent::class.java).get()) {
@@ -49,8 +50,9 @@ class ProjectileCollisionSystem : IteratingSystem(Family.all(ProjectileComponent
         if (!pj.enemy) {
             for (enemy in enemies) {
                 val ebb = Mapper.BOUNDING_BOX_MAPPER.get(enemy)
+                val health = Mapper.HEALTH_MAPPER.get(enemy)
                 if (bb.rect.overlaps(ebb.rect)) {
-                    engine.removeEntity(enemy)
+                    health.hp -= PLAYER_DAMAGE
                     remove.shouldRemove = true
                     break
                 }

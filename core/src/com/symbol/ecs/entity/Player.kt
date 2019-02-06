@@ -18,6 +18,9 @@ const val PLAYER_PROJECTILE_BOUNDS_WIDTH = 4f
 const val PLAYER_PROJECTILE_BOUNDS_HEIGHT = 4f
 const val PLAYER_PROJECTILE_RES_KEY = "p_dot"
 
+const val PLAYER_HP = 8
+const val PLAYER_DAMAGE = 1
+
 class Player : Entity() {
 
     init {
@@ -28,6 +31,7 @@ class Player : Entity() {
         add(TextureComponent())
         add(VelocityComponent())
         add(DirectionComponent())
+        add(HealthComponent())
     }
 
 }
