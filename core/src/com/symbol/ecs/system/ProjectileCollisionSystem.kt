@@ -87,7 +87,7 @@ class ProjectileCollisionSystem : IteratingSystem(Family.all(ProjectileComponent
                     remove.shouldRemove = true
                     break
                 }
-                else if (!pj.enemy || e is Player) {
+                else if ((!pj.enemy || e is Player) && (pj.enemy || e !is Player)) {
                     hit(e, pj.damage)
                     remove.shouldRemove = true
                     break
