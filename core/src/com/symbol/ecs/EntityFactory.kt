@@ -30,9 +30,9 @@ object EntityFactory {
         return player
     }
 
-    fun createProjectile(engine: PooledEngine, unstoppable: Boolean, enemy: Boolean,
+    fun createProjectile(engine: PooledEngine, unstoppable: Boolean, enemy: Boolean, damage: Int,
                          x: Float, y: Float, dx: Float, dy: Float, bw: Float, bh: Float,
-                         texture: TextureRegion) : Entity {
+                         texture: TextureRegion, knockback: Float) : Entity {
         val projectileComponent = engine.createComponent(ProjectileComponent::class.java)
         val positionComponent = engine.createComponent(PositionComponent::class.java)
         val boundingBoxComponent = engine.createComponent(BoundingBoxComponent::class.java)
@@ -43,6 +43,8 @@ object EntityFactory {
 
         projectileComponent.unstoppable = unstoppable
         projectileComponent.enemy = enemy
+        projectileComponent.damage = damage
+        projectileComponent.knockback = knockback
         positionComponent.set(x, y)
         velocityComponent.set(dx, dy)
         boundingBoxComponent.rect.setSize(bw, bh)
@@ -80,6 +82,7 @@ object EntityFactory {
         val directionComponent = engine.createComponent(DirectionComponent::class.java)
         val healthComponent = engine.createComponent(HealthComponent::class.java)
         val removeComponent = engine.createComponent(RemoveComponent::class.java)
+        val knockbackComponent = engine.createComponent(KnockbackComponent::class.java)
 
         enemyComponent.type = type
         enemyComponent.movementType = movementType
@@ -101,6 +104,7 @@ object EntityFactory {
         enemy.add(directionComponent)
         enemy.add(healthComponent)
         enemy.add(removeComponent)
+        enemy.add(knockbackComponent)
 
         engine.addEntity(enemy)
         return enemy

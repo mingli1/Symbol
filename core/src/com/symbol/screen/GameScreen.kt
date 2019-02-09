@@ -25,9 +25,8 @@ class GameScreen(game: Symbol) : AbstractScreen(game) {
     private var player: Player
 
     init {
-        initSystems()
-
         player = EntityFactory.createPlayer(engine, game.res)
+        initSystems()
 
         val keyInputSystem = KeyInputSystem(game.res)
         input = KeyInput(keyInputSystem)

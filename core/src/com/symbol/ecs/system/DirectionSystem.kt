@@ -12,8 +12,11 @@ class DirectionSystem : IteratingSystem(Family.all(DirectionComponent::class.jav
         val vel = Mapper.VEL_MAPPER.get(entity)
         val dir = Mapper.DIR_MAPPER.get(entity)
 
-        if (vel.dx > 0) dir.facingRight = true
-        else if (vel.dx < 0) dir.facingRight = false
+        val knockback = Mapper.KNOCKBACK_MAPPER.get(entity)
+        val knockingBack = knockback?.knockingBack ?: false
+
+        if (vel.dx > 0 && !knockingBack) dir.facingRight = true
+        else if (vel.dx < 0 && !knockingBack) dir.facingRight = false
     }
 
 }

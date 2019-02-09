@@ -49,12 +49,12 @@ class KeyInputSystem(private val res: Resources) : EntitySystem(), KeyInputHandl
             val playerPos = Mapper.POS_MAPPER.get(player)
             val dir = Mapper.DIR_MAPPER.get(player)
 
-            EntityFactory.createProjectile(engine as PooledEngine, false, false,
+            EntityFactory.createProjectile(engine as PooledEngine, false, false, PLAYER_DAMAGE,
                     if (dir.facingRight) playerPos.x + PLAYER_WIDTH else playerPos.x - PLAYER_PROJECTILE_BOUNDS_WIDTH,
                     playerPos.y + (PLAYER_HEIGHT / 2) - (PLAYER_PROJECTILE_BOUNDS_HEIGHT / 2),
                     if (dir.facingRight) PLAYER_PROJECTILE_SPEED else -PLAYER_PROJECTILE_SPEED, 0f,
                     PLAYER_PROJECTILE_BOUNDS_WIDTH, PLAYER_PROJECTILE_BOUNDS_HEIGHT,
-                    res.getSingleTexture(PLAYER_PROJECTILE_RES_KEY)!!)
+                    res.getSingleTexture(PLAYER_PROJECTILE_RES_KEY)!!, 75f)
 
             playerComp.canShoot = false
         }
