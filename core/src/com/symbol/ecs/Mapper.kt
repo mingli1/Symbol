@@ -2,9 +2,9 @@ package com.symbol.ecs
 
 import com.badlogic.ashley.core.ComponentMapper
 import com.symbol.ecs.component.*
-import com.symbol.ecs.component.enemy.EnemyComponent
-import com.symbol.ecs.component.player.PlayerComponent
-import com.symbol.ecs.component.projectile.ProjectileComponent
+import com.symbol.ecs.component.EnemyComponent
+import com.symbol.ecs.component.PlayerComponent
+import com.symbol.ecs.component.ProjectileComponent
 
 object Mapper {
 

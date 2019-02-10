@@ -1,9 +1,8 @@
 package com.symbol.ecs.entity
 
 import com.badlogic.ashley.core.Entity
-import com.symbol.ecs.Mapper
 import com.symbol.ecs.component.*
-import com.symbol.ecs.component.player.PlayerComponent
+import com.symbol.ecs.component.PlayerComponent
 import com.symbol.util.Resources
 
 const val PLAYER_WIDTH = 8f

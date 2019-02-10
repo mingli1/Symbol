@@ -8,7 +8,7 @@ import com.badlogic.ashley.utils.ImmutableArray
 import com.badlogic.gdx.utils.Array
 import com.symbol.ecs.Mapper
 import com.symbol.ecs.component.HealthComponent
-import com.symbol.ecs.component.projectile.ProjectileComponent
+import com.symbol.ecs.component.ProjectileComponent
 import com.symbol.ecs.entity.Player
 import com.symbol.map.MapObject
 

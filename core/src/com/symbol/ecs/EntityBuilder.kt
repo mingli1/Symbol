@@ -4,9 +4,9 @@ import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.core.PooledEngine
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.symbol.ecs.component.*
-import com.symbol.ecs.component.enemy.EnemyComponent
-import com.symbol.ecs.component.player.PlayerComponent
-import com.symbol.ecs.component.projectile.ProjectileComponent
+import com.symbol.ecs.component.EnemyComponent
+import com.symbol.ecs.component.PlayerComponent
+import com.symbol.ecs.component.ProjectileComponent
 import com.symbol.ecs.entity.EnemyMovementType
 import com.symbol.ecs.entity.EnemyType
 

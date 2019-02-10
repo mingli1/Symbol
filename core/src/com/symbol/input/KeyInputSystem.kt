@@ -4,7 +4,7 @@ import com.badlogic.ashley.core.*
 import com.symbol.ecs.EntityBuilder
 import com.symbol.ecs.Mapper
 import com.symbol.ecs.component.VelocityComponent
-import com.symbol.ecs.component.player.PlayerComponent
+import com.symbol.ecs.component.PlayerComponent
 import com.symbol.ecs.entity.*
 import com.symbol.util.Resources
 

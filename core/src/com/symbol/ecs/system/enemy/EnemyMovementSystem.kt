@@ -4,7 +4,7 @@ import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.core.Family
 import com.badlogic.ashley.systems.IteratingSystem
 import com.symbol.ecs.Mapper
-import com.symbol.ecs.component.enemy.EnemyComponent
+import com.symbol.ecs.component.EnemyComponent
 import com.symbol.ecs.entity.EnemyMovementType
 
 class EnemyMovementSystem : IteratingSystem(Family.all(EnemyComponent::class.java).get()) {
