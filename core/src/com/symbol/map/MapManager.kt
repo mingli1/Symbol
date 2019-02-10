@@ -12,7 +12,7 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.utils.Array
 import com.badlogic.gdx.utils.Disposable
-import com.symbol.ecs.EntityFactory
+import com.symbol.ecs.entity.EnemyFactory
 import com.symbol.ecs.entity.EnemyType
 import com.symbol.util.Resources
 
@@ -99,7 +99,7 @@ class MapManager(batch: Batch, private val cam: OrthographicCamera,
             val enemyObjectType = if (typeProp == null) EnemyType.None else EnemyType.getType(typeProp.toString())!!
             val facingRight = if (facingRightProp == null) true else facingRightProp as Boolean
 
-            EntityFactory.createEnemy(engine, res, enemyObjectType, enemyObjectRect, facingRight)
+            EnemyFactory.createEnemy(engine, res, enemyObjectType, enemyObjectRect, facingRight)
         }
     }
 

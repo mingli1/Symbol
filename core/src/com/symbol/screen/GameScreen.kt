@@ -3,7 +3,6 @@ package com.symbol.screen
 import com.badlogic.ashley.core.PooledEngine
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.GL20
-import com.symbol.ecs.EntityFactory
 import com.symbol.ecs.Mapper
 import com.symbol.ecs.entity.Player
 import com.symbol.ecs.system.*
@@ -22,10 +21,10 @@ class GameScreen(game: Symbol) : AbstractScreen(game) {
     private val input: KeyInput
     private val mm: MapManager = MapManager(game.batch, cam, engine, game.res)
 
-    private var player: Player
+    private var player: Player = Player(game.res)
 
     init {
-        player = EntityFactory.createPlayer(engine, game.res)
+        engine.addEntity(player)
         initSystems()
 
         val keyInputSystem = KeyInputSystem(game.res)
@@ -37,7 +36,7 @@ class GameScreen(game: Symbol) : AbstractScreen(game) {
     private fun initSystems() {
         engine.addSystem(MovementSystem())
         engine.addSystem(MapCollisionSystem())
-        engine.addSystem(ProjectileCollisionSystem())
+        engine.addSystem(ProjectileSystem())
         engine.addSystem(EnemyMovementSystem())
         engine.addSystem(DirectionSystem())
         engine.addSystem(GravitySystem())
@@ -54,7 +53,7 @@ class GameScreen(game: Symbol) : AbstractScreen(game) {
         playerPosition.set(mm.playerSpawnPosition.x, mm.playerSpawnPosition.y)
 
         engine.getSystem(MapCollisionSystem::class.java).setMapData(mm.mapObjects)
-        engine.getSystem(ProjectileCollisionSystem::class.java).setMapData(mm.mapObjects,
+        engine.getSystem(ProjectileSystem::class.java).setMapData(mm.mapObjects,
                 mm.mapWidth * mm.tileSize, mm.mapHeight * mm.tileSize)
     }
 

@@ -14,7 +14,7 @@ import com.symbol.map.MapObject
 
 private const val KNOCKBACK_TIME = 0.1f
 
-class ProjectileCollisionSystem : IteratingSystem(Family.all(ProjectileComponent::class.java).get()) {
+class ProjectileSystem : IteratingSystem(Family.all(ProjectileComponent::class.java).get()) {
 
     private var mapObjects: Array<MapObject> = Array()
     private var mapWidth: Int = 0

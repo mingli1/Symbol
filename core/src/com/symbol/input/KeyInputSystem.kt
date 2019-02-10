@@ -1,7 +1,7 @@
 package com.symbol.input
 
 import com.badlogic.ashley.core.*
-import com.symbol.ecs.EntityFactory
+import com.symbol.ecs.EntityBuilder
 import com.symbol.ecs.Mapper
 import com.symbol.ecs.component.VelocityComponent
 import com.symbol.ecs.component.player.PlayerComponent
@@ -49,12 +49,14 @@ class KeyInputSystem(private val res: Resources) : EntitySystem(), KeyInputHandl
             val playerPos = Mapper.POS_MAPPER.get(player)
             val dir = Mapper.DIR_MAPPER.get(player)
 
-            EntityFactory.createProjectile(engine as PooledEngine, false, false, PLAYER_DAMAGE,
-                    playerPos.x + (PLAYER_WIDTH / 2) - (PLAYER_PROJECTILE_BOUNDS_WIDTH / 2),
-                    playerPos.y + (PLAYER_HEIGHT / 2) - (PLAYER_PROJECTILE_BOUNDS_HEIGHT / 2),
-                    if (dir.facingRight) PLAYER_PROJECTILE_SPEED else -PLAYER_PROJECTILE_SPEED, 0f,
-                    PLAYER_PROJECTILE_BOUNDS_WIDTH, PLAYER_PROJECTILE_BOUNDS_HEIGHT,
-                    res.getSingleTexture(PLAYER_PROJECTILE_RES_KEY)!!, 75f)
+            EntityBuilder.instance(engine as PooledEngine)
+                    .projectile(damage = PLAYER_DAMAGE, knockback = PLAYER_PROJECTILE_KNOCKBACK)
+                    .position(playerPos.x + (PLAYER_WIDTH / 2) - (PLAYER_PROJECTILE_BOUNDS_WIDTH / 2),
+                            playerPos.y + (PLAYER_HEIGHT / 2) - (PLAYER_PROJECTILE_BOUNDS_HEIGHT / 2))
+                    .velocity(dx = if (dir.facingRight) PLAYER_PROJECTILE_SPEED else -PLAYER_PROJECTILE_SPEED)
+                    .boundingBox(PLAYER_PROJECTILE_BOUNDS_WIDTH, PLAYER_PROJECTILE_BOUNDS_HEIGHT)
+                    .texture(res.getSingleTexture(PLAYER_PROJECTILE_RES_KEY)!!)
+                    .direction().remove().build()
 
             playerComp.canShoot = false
         }
