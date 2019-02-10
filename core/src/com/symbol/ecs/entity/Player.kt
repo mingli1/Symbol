@@ -45,7 +45,6 @@ class Player(res: Resources) : Entity() {
         add(texture)
         add(velocity)
         add(health)
-
     }
 
 }

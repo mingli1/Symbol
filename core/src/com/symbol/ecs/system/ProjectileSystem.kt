@@ -17,8 +17,6 @@ private const val KNOCKBACK_TIME = 0.1f
 class ProjectileSystem : IteratingSystem(Family.all(ProjectileComponent::class.java).get()) {
 
     private var mapObjects: Array<MapObject> = Array()
-    private var mapWidth: Int = 0
-    private var mapHeight: Int = 0
 
     private lateinit var allEntities: ImmutableArray<Entity>
 
@@ -58,11 +56,7 @@ class ProjectileSystem : IteratingSystem(Family.all(ProjectileComponent::class.j
         val remove = Mapper.REMOVE_MAPPER.get(entity)
         bb.rect.setPosition(position.x + (width - bb.rect.width) / 2, position.y + (height - bb.rect.height) / 2)
 
-        if (position.x < -mapWidth - width || position.x > mapWidth * 2 ||
-                position.y < -mapHeight - height || position.y > mapHeight * 2) {
-            remove.shouldRemove = true
-        }
-        else if (!pj.unstoppable) {
+        if (!pj.unstoppable) {
             for (mapObject in mapObjects) {
                 if (bb.rect.overlaps(mapObject.bounds)) {
                     remove.shouldRemove = true
@@ -96,11 +90,9 @@ class ProjectileSystem : IteratingSystem(Family.all(ProjectileComponent::class.j
         }
     }
 
-    fun setMapData(mapObjects: Array<MapObject>, mapWidth: Int, mapHeight: Int) {
+    fun setMapData(mapObjects: Array<MapObject>) {
         this.mapObjects.clear()
         this.mapObjects.addAll(mapObjects)
-        this.mapWidth = mapWidth
-        this.mapHeight = mapHeight
 
         knockbackTimes.clear()
         prevVelocities.clear()
