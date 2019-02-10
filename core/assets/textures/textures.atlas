@@ -1,33 +1,40 @@
 
 textures.png
-size: 64,16
+size: 32,32
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
 e_e
   rotate: false
-  xy: 16, 3
+  xy: 2, 2
   size: 8, 8
   orig: 8, 8
   offset: 0, 0
   index: -1
+e_exists
+  rotate: false
+  xy: 2, 12
+  size: 9, 13
+  orig: 9, 13
+  offset: 0, 0
+  index: -1
 e_sqrt
   rotate: false
-  xy: 2, 2
+  xy: 13, 16
   size: 12, 9
   orig: 12, 9
   offset: 0, 0
   index: -1
 p_dot
   rotate: false
-  xy: 36, 7
+  xy: 23, 10
   size: 4, 4
   orig: 4, 4
   offset: 0, 0
   index: -1
 player
   rotate: false
-  xy: 26, 3
+  xy: 13, 6
   size: 8, 8
   orig: 8, 8
   offset: 0, 0

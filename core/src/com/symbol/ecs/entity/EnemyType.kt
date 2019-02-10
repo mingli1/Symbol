@@ -4,7 +4,8 @@ enum class EnemyType(val typeStr: String) {
 
     None(""),
     EConstant("e"),
-    SquareRoot("sqrt");
+    SquareRoot("sqrt"),
+    Exists("exists");
 
     companion object {
         fun getType(typeStr: String) : EnemyType? {

@@ -15,7 +15,7 @@ object EnemyFactory {
                 EntityBuilder.instance(engine)
                         .enemy(type = type, movementType = EnemyMovementType.BackAndForth, damage = 2)
                         .health(2)
-                        .boundingBox(rect.width, rect.height)
+                        .boundingBox(7f, 7f)
                         .position(rect.x, rect.y)
                         .velocity(speed = 25f)
                         .direction(facingRight = facingRight)
@@ -25,11 +25,23 @@ object EnemyFactory {
             EnemyType.SquareRoot -> {
                 EntityBuilder.instance(engine)
                         .enemy(type = type, movementType = EnemyMovementType.Charge,
-                                damage = PLAYER_HP, activationRange = 75f)
+                                damage = 3, activationRange = 75f)
                         .health(3)
-                        .boundingBox(rect.width, rect.height)
+                        .boundingBox(10f, 8f)
                         .position(rect.x, rect.y)
                         .velocity(speed = 60f)
+                        .direction(facingRight = facingRight)
+                        .texture(texture)
+                        .gravity().remove().build()
+            }
+            EnemyType.Exists -> {
+                EntityBuilder.instance(engine)
+                        .enemy(type = type, movementType = EnemyMovementType.Charge,
+                                damage = PLAYER_HP, activationRange = 90f)
+                        .health(2)
+                        .boundingBox(9f, 13f)
+                        .position(rect.x, rect.y)
+                        .velocity(speed = 75f)
                         .direction(facingRight = facingRight)
                         .texture(texture)
                         .gravity().remove().build()

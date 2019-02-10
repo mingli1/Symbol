@@ -23,6 +23,7 @@ class Resources : Disposable {
         textures["p_dot"] = atlas.findRegion("p_dot")
         textures["e_e"] = atlas.findRegion("e_e")
         textures["e_sqrt"] = atlas.findRegion("e_sqrt")
+        textures["e_exists"] = atlas.findRegion("e_exists")
     }
 
     fun getTexture(key: String): TextureRegion? {
