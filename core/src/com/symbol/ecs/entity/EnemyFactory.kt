@@ -13,7 +13,7 @@ object EnemyFactory {
         return when (type) {
             EnemyType.EConstant -> {
                 EntityBuilder.instance(engine)
-                        .enemy(type = type, movementType = EnemyMovementType.BackAndForth)
+                        .enemy(type = type, movementType = EnemyMovementType.BackAndForth, damage = 2)
                         .health(2)
                         .boundingBox(rect.width, rect.height)
                         .position(rect.x, rect.y)

@@ -37,10 +37,13 @@ class EntityBuilder(private val engine: PooledEngine) {
         return this
     }
 
-    fun enemy(type: EnemyType, movementType: EnemyMovementType = EnemyMovementType.None) : EntityBuilder {
+    fun enemy(type: EnemyType, movementType: EnemyMovementType = EnemyMovementType.None,
+              damage: Int = 0, activationRange: Float = -1f) : EntityBuilder {
         enemyComponent = engine.createComponent(EnemyComponent::class.java)
         enemyComponent?.type = type
         enemyComponent?.movementType = movementType
+        enemyComponent?.damage = damage
+        enemyComponent?.activationRange = activationRange
         return this
     }
 
