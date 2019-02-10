@@ -32,7 +32,7 @@ class Player(res: Resources) : Entity() {
         val health = HealthComponent()
 
         bounds.rect.setSize(PLAYER_BOUNDS_WIDTH, PLAYER_BOUNDS_HEIGHT)
-        texture.texture = res.getSingleTexture("player")
+        texture.texture = res.getTexture("player")
         velocity.speed = PLAYER_SPEED
         health.hp = PLAYER_HP
         health.maxHp = PLAYER_HP

@@ -55,7 +55,7 @@ class KeyInputSystem(private val res: Resources) : EntitySystem(), KeyInputHandl
                             playerPos.y + (PLAYER_HEIGHT / 2) - (PLAYER_PROJECTILE_BOUNDS_HEIGHT / 2))
                     .velocity(dx = if (dir.facingRight) PLAYER_PROJECTILE_SPEED else -PLAYER_PROJECTILE_SPEED)
                     .boundingBox(PLAYER_PROJECTILE_BOUNDS_WIDTH, PLAYER_PROJECTILE_BOUNDS_HEIGHT)
-                    .texture(res.getSingleTexture(PLAYER_PROJECTILE_RES_KEY)!!)
+                    .texture(res.getTexture(PLAYER_PROJECTILE_RES_KEY)!!)
                     .direction().remove().build()
 
             playerComp.canShoot = false

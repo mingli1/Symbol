@@ -3,7 +3,8 @@ package com.symbol.ecs.entity
 enum class EnemyType(val typeStr: String) {
 
     None(""),
-    EConstant("e");
+    EConstant("e"),
+    SquareRoot("sqrt");
 
     companion object {
         fun getType(typeStr: String) : EnemyType? {

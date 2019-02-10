@@ -8,38 +8,25 @@ import com.badlogic.gdx.utils.Disposable
 class Resources : Disposable {
 
     private val assetManager: AssetManager = AssetManager()
-
     private val atlas: TextureAtlas
-
-    private val single: Map<String, TextureRegion>
-    private val multiple: Map<String, Array<TextureRegion>>
-    private val sheet: Map<String, Array<Array<TextureRegion>>>
+    private val textures: Map<String, TextureRegion>
 
     init {
-        single = HashMap()
-        multiple = HashMap()
-        sheet = HashMap()
+        textures = HashMap()
 
         assetManager.load("textures/textures.atlas", TextureAtlas::class.java)
         assetManager.finishLoading()
 
         atlas = assetManager.get("textures/textures.atlas", TextureAtlas::class.java)
 
-        single["player"] = atlas.findRegion("player")
-        single["p_dot"] = atlas.findRegion("p_dot")
-        single["e_e"] = atlas.findRegion("e_e")
+        textures["player"] = atlas.findRegion("player")
+        textures["p_dot"] = atlas.findRegion("p_dot")
+        textures["e_e"] = atlas.findRegion("e_e")
+        textures["e_sqrt"] = atlas.findRegion("e_sqrt")
     }
 
-    fun getSingleTexture(key: String): TextureRegion? {
-        return single[key]
-    }
-
-    fun getMultipleTextures(key: String): Array<TextureRegion>? {
-        return multiple[key]
-    }
-
-    fun getTextureSheet(key: String): Array<Array<TextureRegion>>? {
-        return sheet[key]
+    fun getTexture(key: String): TextureRegion? {
+        return textures[key]
     }
 
     override fun dispose() {

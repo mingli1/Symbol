@@ -9,7 +9,7 @@ import com.symbol.util.Resources
 object EnemyFactory {
 
     fun createEnemy(engine: PooledEngine, res: Resources, type: EnemyType, rect: Rectangle, facingRight: Boolean) : Entity? {
-        val texture = res.getSingleTexture("e_${type.typeStr}")!!
+        val texture = res.getTexture("e_${type.typeStr}")!!
         return when (type) {
             EnemyType.EConstant -> {
                 EntityBuilder.instance(engine)
