@@ -21,7 +21,9 @@ class EnemyMovementSystem(private val player: Player) : IteratingSystem(Family.a
 
         if (enemyComponent.active) {
             when (enemyComponent.movementType) {
+                EnemyMovementType.None -> return
                 EnemyMovementType.BackAndForth -> backAndForth(entity, position, velocity, dirComponent)
+                EnemyMovementType.Charge -> charge(position, velocity)
             }
         }
     }
@@ -41,6 +43,11 @@ class EnemyMovementSystem(private val player: Player) : IteratingSystem(Family.a
                 v.dx = -v.speed
             }
         }
+    }
+
+    private fun charge(p: PositionComponent, v: VelocityComponent) {
+        val playerPosition = Mapper.POS_MAPPER.get(player)
+        if (v.dx == 0f) v.dx = if (p.x < playerPosition.x) v.speed else -v.speed
     }
 
 }

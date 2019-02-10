@@ -62,6 +62,7 @@ class GameScreen(game: Symbol) : AbstractScreen(game) {
     private fun update(dt: Float) {
         updateCamera(dt)
         mm.update()
+        println(engine.entities.size())
     }
 
     private fun updateCamera(dt: Float) {

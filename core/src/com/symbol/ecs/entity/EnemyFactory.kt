@@ -22,6 +22,18 @@ object EnemyFactory {
                         .texture(texture)
                         .knockback().gravity().remove().build()
             }
+            EnemyType.SquareRoot -> {
+                EntityBuilder.instance(engine)
+                        .enemy(type = type, movementType = EnemyMovementType.Charge,
+                                damage = PLAYER_HP, activationRange = 75f)
+                        .health(3)
+                        .boundingBox(rect.width, rect.height)
+                        .position(rect.x, rect.y)
+                        .velocity(speed = 60f)
+                        .direction(facingRight = facingRight)
+                        .texture(texture)
+                        .gravity().remove().build()
+            }
             else -> null
         }
     }

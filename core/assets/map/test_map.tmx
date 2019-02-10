@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.0.1" orientation="orthogonal" renderorder="right-down" width="20" height="10" tilewidth="8" tileheight="8" nextobjectid="20">
+<map version="1.0" tiledversion="1.0.1" orientation="orthogonal" renderorder="right-down" width="30" height="10" tilewidth="8" tileheight="8" nextobjectid="23">
  <tileset firstgid="1" name="set" tilewidth="8" tileheight="8" tilecount="6" columns="3">
   <image source="tileset.png" width="24" height="16"/>
  </tileset>
- <layer name="tile" width="20" height="10">
+ <layer name="tile" width="30" height="10">
   <data encoding="csv">
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,4,0,0,0,0,0,4,0,0,0,0,0,0,0,0,
-0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,4,0,0,0,0,0,
-4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4,0,0,0,
-0,1,2,2,2,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,1,2,2,2,2,2,3,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,4,0,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+4,0,0,0,0,0,0,0,0,0,0,0,0,0,1,2,2,2,2,2,3,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,1,2,2,2,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,1,2,2,2,2,2,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
  <objectgroup name="collision">
@@ -25,14 +25,18 @@
   <object id="5" x="8" y="56" width="40" height="8"/>
   <object id="6" x="64" y="64" width="56" height="8"/>
   <object id="16" x="88" y="16" width="8" height="8"/>
-  <object id="17" x="112" y="32" width="8" height="8"/>
-  <object id="18" x="128" y="48" width="8" height="8"/>
-  <object id="19" x="152" y="24" width="8" height="8"/>
+  <object id="21" x="112" y="40" width="56" height="8"/>
  </objectgroup>
  <objectgroup name="enemy">
   <object id="13" x="72.9091" y="52.1818" width="7" height="7">
    <properties>
     <property name="type" value="e"/>
+   </properties>
+  </object>
+  <object id="22" x="148" y="26.7273" width="10" height="8">
+   <properties>
+    <property name="facingRight" type="bool" value="false"/>
+    <property name="type" value="sqrt"/>
    </properties>
   </object>
  </objectgroup>
