@@ -31,6 +31,8 @@ class Resources : Disposable {
         textures["p_angle_bracket"] = atlas.findRegion("p_angle_bracket")
         textures["p_angle_bracket_tr"] = atlas.findRegion("p_angle_bracket_tr")
         textures["p_angle_bracket_br"] = atlas.findRegion("p_angle_bracket_br")
+
+        textures["background"] = atlas.findRegion("background")
     }
 
     fun getTexture(key: String): TextureRegion? {

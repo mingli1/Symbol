@@ -3,6 +3,7 @@ package com.symbol.screen
 import com.badlogic.ashley.core.PooledEngine
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.GL20
+import com.badlogic.gdx.math.Vector2
 import com.symbol.ecs.Mapper
 import com.symbol.ecs.entity.Player
 import com.symbol.ecs.system.*
@@ -12,9 +13,11 @@ import com.symbol.ecs.system.enemy.EnemyMovementSystem
 import com.symbol.game.Symbol
 import com.symbol.input.KeyInput
 import com.symbol.input.KeyInputSystem
+import com.symbol.map.Background
 import com.symbol.map.MapManager
 
 private const val CAMERA_LERP = 2.5f
+private const val PARALLAX_SCALING = 0.2f
 
 class GameScreen(game: Symbol) : AbstractScreen(game) {
 
@@ -24,6 +27,8 @@ class GameScreen(game: Symbol) : AbstractScreen(game) {
     private val mm: MapManager = MapManager(game.batch, cam, engine, game.res)
 
     private var player: Player = Player(game.res)
+    private val background: Background = Background(game.res.getTexture("background")!!,
+            cam, Vector2(PARALLAX_SCALING, PARALLAX_SCALING))
 
     init {
         engine.addEntity(player)
@@ -64,6 +69,7 @@ class GameScreen(game: Symbol) : AbstractScreen(game) {
 
     private fun update(dt: Float) {
         updateCamera(dt)
+        background.update(dt)
         mm.update()
     }
 
@@ -85,6 +91,7 @@ class GameScreen(game: Symbol) : AbstractScreen(game) {
         game.batch.projectionMatrix = cam.combined
         game.batch.begin()
 
+        background.render(game.batch)
         mm.render()
         engine.update(dt)
 

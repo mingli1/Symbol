@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.0.1" orientation="orthogonal" renderorder="right-down" width="30" height="10" tilewidth="8" tileheight="8" nextobjectid="26">
+<map version="1.0" tiledversion="1.0.1" orientation="orthogonal" renderorder="right-down" width="30" height="10" tilewidth="8" tileheight="8" nextobjectid="32">
  <tileset firstgid="1" name="set" tilewidth="8" tileheight="8" tilecount="6" columns="3">
   <image source="tileset.png" width="24" height="16"/>
  </tileset>
@@ -13,7 +13,7 @@
 4,0,0,0,0,0,0,0,0,0,0,0,0,0,1,2,2,2,2,2,3,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,1,2,2,2,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,1,2,2,2,2,2,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
@@ -23,7 +23,7 @@
   <object id="3" x="40" y="16" width="8" height="8"/>
   <object id="4" x="64" y="8" width="8" height="8"/>
   <object id="5" x="8" y="56" width="40" height="8"/>
-  <object id="6" x="64" y="64" width="56" height="8"/>
+  <object id="6" x="64" y="64" width="167.636" height="8"/>
   <object id="16" x="88" y="16" width="8" height="8"/>
   <object id="21" x="112" y="40" width="56" height="8"/>
  </objectgroup>
