@@ -13,6 +13,8 @@ import com.symbol.ecs.entity.EnemyAttackType
 import com.symbol.ecs.entity.Player
 import com.symbol.util.Resources
 
+private const val DIAGONAL_PROJECTILE_SCALING = 0.75f
+
 class EnemyAttackSystem(private val player: Player, private val res: Resources) :
         IteratingSystem(Family.all(EnemyComponent::class.java).get()) {
 
@@ -87,10 +89,14 @@ class EnemyAttackSystem(private val player: Player, private val res: Resources) 
     private fun shootFourDiagonal(enemyComp: EnemyComponent, bounds: Rectangle) {
         val trTexture = res.getTexture(enemyComp.attackTexture + "_tr") ?: res.getTexture(enemyComp.attackTexture!!)!!
         val brTexture = res.getTexture(enemyComp.attackTexture + "_br") ?: res.getTexture(enemyComp.attackTexture!!)!!
-        createProjectile(enemyComp, bounds, -enemyComp.projectileSpeed, enemyComp.projectileSpeed, trTexture)
-        createProjectile(enemyComp, bounds, enemyComp.projectileSpeed, enemyComp.projectileSpeed, trTexture)
-        createProjectile(enemyComp, bounds, -enemyComp.projectileSpeed, -enemyComp.projectileSpeed, brTexture)
-        createProjectile(enemyComp, bounds, enemyComp.projectileSpeed, -enemyComp.projectileSpeed, brTexture)
+        createProjectile(enemyComp, bounds, -enemyComp.projectileSpeed * DIAGONAL_PROJECTILE_SCALING,
+                enemyComp.projectileSpeed * DIAGONAL_PROJECTILE_SCALING, trTexture)
+        createProjectile(enemyComp, bounds, enemyComp.projectileSpeed * DIAGONAL_PROJECTILE_SCALING,
+                enemyComp.projectileSpeed * DIAGONAL_PROJECTILE_SCALING, trTexture)
+        createProjectile(enemyComp, bounds, -enemyComp.projectileSpeed * DIAGONAL_PROJECTILE_SCALING,
+                -enemyComp.projectileSpeed * DIAGONAL_PROJECTILE_SCALING, brTexture)
+        createProjectile(enemyComp, bounds, enemyComp.projectileSpeed * DIAGONAL_PROJECTILE_SCALING,
+                -enemyComp.projectileSpeed * DIAGONAL_PROJECTILE_SCALING, brTexture)
     }
 
     private fun shootEight(enemyComp: EnemyComponent, bounds: Rectangle) {
