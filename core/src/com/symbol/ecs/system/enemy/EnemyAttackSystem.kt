@@ -45,6 +45,9 @@ class EnemyAttackSystem(private val player: Player, private val res: Resources) 
                 EnemyAttackType.ShootOne -> shootOne(enemyComponent, bounds, facingRight)
                 EnemyAttackType.ShootTwoHorizontal -> shootTwoHorizontal(enemyComponent, bounds)
                 EnemyAttackType.ShootTwoVertical -> shootTwoVertical(enemyComponent, bounds)
+                EnemyAttackType.ShootFour -> shootFour(enemyComponent, bounds)
+                EnemyAttackType.ShootFourDiagonal -> shootFourDiagonal(enemyComponent, bounds)
+                EnemyAttackType.ShootEight -> shootEight(enemyComponent, bounds)
             }
             enemyComponent.canAttack = false
         }
@@ -70,10 +73,29 @@ class EnemyAttackSystem(private val player: Player, private val res: Resources) 
     }
 
     private fun shootTwoVertical(enemyComp: EnemyComponent, bounds: Rectangle) {
-        val topTexture = res.getTexture(enemyComp.attackTexture + "_t")!!
-        val botTexture = res.getTexture(enemyComp.attackTexture + "_b")!!
+        val topTexture = res.getTexture(enemyComp.attackTexture + "_t") ?: res.getTexture(enemyComp.attackTexture!!)!!
+        val botTexture = res.getTexture(enemyComp.attackTexture + "_b") ?: res.getTexture(enemyComp.attackTexture!!)!!
         createProjectile(enemyComp, bounds, 0f, enemyComp.projectileSpeed, topTexture)
         createProjectile(enemyComp, bounds, 0f, -enemyComp.projectileSpeed, botTexture)
+    }
+
+    private fun shootFour(enemyComp: EnemyComponent, bounds: Rectangle) {
+        shootTwoHorizontal(enemyComp, bounds)
+        shootTwoVertical(enemyComp, bounds)
+    }
+
+    private fun shootFourDiagonal(enemyComp: EnemyComponent, bounds: Rectangle) {
+        val trTexture = res.getTexture(enemyComp.attackTexture + "_tr") ?: res.getTexture(enemyComp.attackTexture!!)!!
+        val brTexture = res.getTexture(enemyComp.attackTexture + "_br") ?: res.getTexture(enemyComp.attackTexture!!)!!
+        createProjectile(enemyComp, bounds, -enemyComp.projectileSpeed, enemyComp.projectileSpeed, trTexture)
+        createProjectile(enemyComp, bounds, enemyComp.projectileSpeed, enemyComp.projectileSpeed, trTexture)
+        createProjectile(enemyComp, bounds, -enemyComp.projectileSpeed, -enemyComp.projectileSpeed, brTexture)
+        createProjectile(enemyComp, bounds, enemyComp.projectileSpeed, -enemyComp.projectileSpeed, brTexture)
+    }
+
+    private fun shootEight(enemyComp: EnemyComponent, bounds: Rectangle) {
+        shootFour(enemyComp, bounds)
+        shootFourDiagonal(enemyComp, bounds)
     }
 
     private fun createProjectile(enemyComp: EnemyComponent, bounds: Rectangle,

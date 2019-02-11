@@ -48,7 +48,7 @@ object EnemyFactory {
             }
             EnemyType.Summation -> {
                 EntityBuilder.instance(engine)
-                        .enemy(type = type, damage = 2, activationRange = 120f, attackType = EnemyAttackType.ShootTwoVertical,
+                        .enemy(type = type, damage = 2, activationRange = 120f, attackType = EnemyAttackType.ShootEight,
                                 attackTexture = "p_angle_bracket", attackRate = 0.8f, projectileSpeed = 45f)
                         .health(2)
                         .boundingBox(10f, 13f)
