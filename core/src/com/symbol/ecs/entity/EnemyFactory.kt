@@ -46,6 +46,18 @@ object EnemyFactory {
                         .texture(texture)
                         .gravity().remove().build()
             }
+            EnemyType.Summation -> {
+                EntityBuilder.instance(engine)
+                        .enemy(type = type, damage = 2, activationRange = 120f, attackType = EnemyAttackType.ShootOne,
+                                attackTexture = "p_angle_bracket", attackRate = 0.8f, projectileSpeed = 45f)
+                        .health(2)
+                        .boundingBox(10f, 13f)
+                        .position(rect.x, rect.y)
+                        .velocity()
+                        .direction(facingRight = facingRight)
+                        .texture(texture)
+                        .gravity().remove().build()
+            }
             else -> null
         }
     }

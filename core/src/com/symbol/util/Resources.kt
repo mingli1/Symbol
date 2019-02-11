@@ -20,10 +20,17 @@ class Resources : Disposable {
         atlas = assetManager.get("textures/textures.atlas", TextureAtlas::class.java)
 
         textures["player"] = atlas.findRegion("player")
-        textures["p_dot"] = atlas.findRegion("p_dot")
         textures["e_e"] = atlas.findRegion("e_e")
         textures["e_sqrt"] = atlas.findRegion("e_sqrt")
         textures["e_exists"] = atlas.findRegion("e_exists")
+        textures["e_sum"] = atlas.findRegion("e_sum")
+
+        textures["p_dot"] = atlas.findRegion("p_dot")
+        textures["p_angle_bracket_t"] = atlas.findRegion("p_angle_bracket_t")
+        textures["p_angle_bracket_b"] = atlas.findRegion("p_angle_bracket_b")
+        textures["p_angle_bracket"] = atlas.findRegion("p_angle_bracket")
+        textures["p_angle_bracket_tr"] = atlas.findRegion("p_angle_bracket_tr")
+        textures["p_angle_bracket_br"] = atlas.findRegion("p_angle_bracket_br")
     }
 
     fun getTexture(key: String): TextureRegion? {

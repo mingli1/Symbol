@@ -7,6 +7,7 @@ import com.symbol.ecs.component.*
 import com.symbol.ecs.component.EnemyComponent
 import com.symbol.ecs.component.PlayerComponent
 import com.symbol.ecs.component.ProjectileComponent
+import com.symbol.ecs.entity.EnemyAttackType
 import com.symbol.ecs.entity.EnemyMovementType
 import com.symbol.ecs.entity.EnemyType
 import com.symbol.ecs.system.GRAVITY
@@ -40,12 +41,18 @@ class EntityBuilder(private val engine: PooledEngine) {
     }
 
     fun enemy(type: EnemyType, movementType: EnemyMovementType = EnemyMovementType.None,
-              damage: Int = 0, activationRange: Float = -1f) : EntityBuilder {
+              attackType: EnemyAttackType = EnemyAttackType.None, damage: Int = 0,
+              activationRange: Float = -1f, attackRate: Float = 0f,
+              attackTexture: String? = null, projectileSpeed: Float = 0f) : EntityBuilder {
         enemyComponent = engine.createComponent(EnemyComponent::class.java)
         enemyComponent?.type = type
         enemyComponent?.movementType = movementType
+        enemyComponent?.attackType = attackType
         enemyComponent?.damage = damage
         enemyComponent?.activationRange = activationRange
+        enemyComponent?.attackRate = attackRate
+        enemyComponent?.attackTexture = attackTexture
+        enemyComponent?.projectileSpeed = projectileSpeed
         return this
     }
 

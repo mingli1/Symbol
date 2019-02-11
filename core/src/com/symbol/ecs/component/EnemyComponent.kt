@@ -2,6 +2,7 @@ package com.symbol.ecs.component
 
 import com.badlogic.ashley.core.Component
 import com.badlogic.gdx.utils.Pool
+import com.symbol.ecs.entity.EnemyAttackType
 import com.symbol.ecs.entity.EnemyMovementType
 import com.symbol.ecs.entity.EnemyType
 
@@ -9,16 +10,29 @@ class EnemyComponent : Component, Pool.Poolable {
 
     var type: EnemyType = EnemyType.None
     var movementType: EnemyMovementType = EnemyMovementType.None
-    var damage: Int = 0
+    var attackType: EnemyAttackType = EnemyAttackType.None
+
     var activationRange = -1f
     var active: Boolean = false
+
+    var damage: Int = 0
+    var attackRate: Float = 0f
+    var canAttack: Boolean = true
+    var attackTexture: String? = null
+    var projectileSpeed: Float = 0f
 
     override fun reset() {
         type = EnemyType.None
         movementType = EnemyMovementType.None
+        attackType = EnemyAttackType.None
+
         damage = 0
         activationRange = -1f
         active = false
+        attackRate = 0f
+        canAttack = true
+        attackTexture = null
+        projectileSpeed = 0f
     }
 
 }
