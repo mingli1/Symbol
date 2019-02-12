@@ -32,16 +32,12 @@ class EnemyMovementSystem(private val player: Player) : IteratingSystem(Family.a
     private fun backAndForth(entity: Entity?, p: PositionComponent, v: VelocityComponent, dir: DirectionComponent, g: GravityComponent) {
         val bounds = Mapper.BOUNDING_BOX_MAPPER.get(entity)
 
-        if (g.onGround) {
-            if (v.dx == 0f) v.dx = if (dir.facingRight) v.speed else -v.speed
-            if (p.x < g.platform.x) {
-                p.x = g.platform.x
-                v.dx = v.speed
-            }
-            else if (p.x > g.platform.x + g.platform.width - bounds.rect.width) {
-                p.x = g.platform.x + g.platform.width - bounds.rect.width
-                v.dx = -v.speed
-            }
+        if (v.dx == 0f) v.dx = if (dir.facingRight) v.speed else -v.speed
+        if (p.x < g.platform.x) {
+            v.dx = v.speed
+        }
+        else if (p.x > g.platform.x + g.platform.width - bounds.rect.width) {
+            v.dx = -v.speed
         }
     }
 
