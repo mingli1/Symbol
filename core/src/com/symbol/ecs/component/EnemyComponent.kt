@@ -12,6 +12,8 @@ class EnemyComponent : Component, Pool.Poolable {
     var movementType: EnemyMovementType = EnemyMovementType.None
     var attackType: EnemyAttackType = EnemyAttackType.None
 
+    var jumpImpulse: Float = 0f
+
     var activationRange = -1f
     var active: Boolean = false
 
@@ -25,6 +27,8 @@ class EnemyComponent : Component, Pool.Poolable {
         type = EnemyType.None
         movementType = EnemyMovementType.None
         attackType = EnemyAttackType.None
+
+        jumpImpulse = 0f
 
         damage = 0
         activationRange = -1f

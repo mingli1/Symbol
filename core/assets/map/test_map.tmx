@@ -28,7 +28,7 @@
   <object id="21" x="112" y="40" width="56" height="8"/>
  </objectgroup>
  <objectgroup name="enemy">
-  <object id="25" x="106" y="56.3636" width="6.72727" height="6">
+  <object id="25" x="92.75" y="55.6136" width="6.72727" height="6">
    <properties>
     <property name="facingRight" type="bool" value="false"/>
     <property name="type" value="sum"/>
