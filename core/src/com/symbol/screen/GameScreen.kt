@@ -13,8 +13,9 @@ import com.symbol.ecs.system.enemy.EnemyMovementSystem
 import com.symbol.game.Symbol
 import com.symbol.input.KeyInput
 import com.symbol.input.KeyInputSystem
-import com.symbol.map.Background
+import com.symbol.map.camera.Background
 import com.symbol.map.MapManager
+import com.symbol.map.camera.CameraShake
 
 private const val CAMERA_LERP = 2.5f
 private const val PARALLAX_SCALING = 0.2f
@@ -78,6 +79,11 @@ class GameScreen(game: Symbol) : AbstractScreen(game) {
 
         cam.position.x += (playerPos.x + (mm.tileSize / 2) - cam.position.x) * CAMERA_LERP * dt
         cam.position.y += (playerPos.y + (mm.tileSize / 2) - cam.position.y) * CAMERA_LERP * dt
+
+        if (CameraShake.time > 0) {
+            CameraShake.update(dt)
+            cam.translate(CameraShake.position)
+        }
 
         cam.update()
     }

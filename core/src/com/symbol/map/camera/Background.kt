@@ -1,4 +1,4 @@
-package com.symbol.map
+package com.symbol.map.camera
 
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.Batch
