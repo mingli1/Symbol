@@ -28,6 +28,12 @@
   <object id="21" x="112" y="40" width="56" height="8"/>
  </objectgroup>
  <objectgroup name="enemy">
+  <object id="25" x="92.75" y="55.6136" width="6.72727" height="6">
+   <properties>
+    <property name="facingRight" type="bool" value="false"/>
+    <property name="type" value="sum"/>
+   </properties>
+  </object>
   <object id="32" x="138.25" y="29.25" width="7.5" height="6.5">
    <properties>
     <property name="type" value="e"/>
@@ -35,6 +41,6 @@
   </object>
  </objectgroup>
  <objectgroup name="player">
-  <object id="10" x="140.296" y="54.5682" width="8" height="7.09091"/>
+  <object id="10" x="22.7955" y="46.3182" width="8" height="7.09091"/>
  </objectgroup>
 </map>

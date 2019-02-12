@@ -71,17 +71,15 @@ class ProjectileSystem : IteratingSystem(Family.all(ProjectileComponent::class.j
 
             if (bb.rect.overlaps(ebb.rect)) {
                 val knockback = Mapper.KNOCKBACK_MAPPER.get(e)
-                if (knockback != null) {
-                    prevVelocities[e] = ev.dx
-                    ev.dx = if (bb.rect.x < ebb.rect.x + ebb.rect.width / 2) pj.knockback else -pj.knockback
-                    startKnockback[e] = true
-                    knockback.knockingBack = true
+                val player = Mapper.PLAYER_MAPPER.get(e)
 
-                    hit(e, pj.damage)
-                    remove.shouldRemove = true
-                    break
-                }
-                else if ((!pj.enemy || e is Player) && (pj.enemy || e !is Player)) {
+                if ((pj.enemy && player != null) || (!pj.enemy && player == null)) {
+                    if (knockback != null) {
+                        prevVelocities[e] = ev.dx
+                        ev.dx = if (bb.rect.x < ebb.rect.x + ebb.rect.width / 2) pj.knockback else -pj.knockback
+                        startKnockback[e] = true
+                        knockback.knockingBack = true
+                    }
                     hit(e, pj.damage)
                     remove.shouldRemove = true
                     break
