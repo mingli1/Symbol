@@ -80,7 +80,7 @@ class GameScreen(game: Symbol) : AbstractScreen(game) {
         cam.position.x += (playerPos.x + (mm.tileSize / 2) - cam.position.x) * CAMERA_LERP * dt
         cam.position.y += (playerPos.y + (mm.tileSize / 2) - cam.position.y) * CAMERA_LERP * dt
 
-        if (CameraShake.time > 0) {
+        if (CameraShake.time > 0 || CameraShake.toggle) {
             CameraShake.update(dt)
             cam.translate(CameraShake.position)
         }
