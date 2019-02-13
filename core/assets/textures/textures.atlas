@@ -13,7 +13,7 @@ background
   index: -1
 e_e
   rotate: false
-  xy: 204, 84
+  xy: 204, 34
   size: 8, 8
   orig: 8, 8
   offset: 0, 0
@@ -41,49 +41,91 @@ e_sum
   index: -1
 p_angle_bracket
   rotate: false
-  xy: 204, 67
+  xy: 211, 63
   size: 4, 7
   orig: 4, 7
   offset: 0, 0
   index: -1
 p_angle_bracket_b
   rotate: false
-  xy: 216, 107
+  xy: 204, 2
   size: 7, 4
   orig: 7, 4
   offset: 0, 0
   index: -1
 p_angle_bracket_br
   rotate: false
-  xy: 204, 76
+  xy: 204, 16
   size: 6, 6
   orig: 6, 6
   offset: 0, 0
   index: -1
 p_angle_bracket_t
   rotate: false
-  xy: 215, 101
+  xy: 241, 111
   size: 7, 4
   orig: 7, 4
   offset: 0, 0
   index: -1
 p_angle_bracket_tr
   rotate: false
-  xy: 240, 116
+  xy: 204, 8
   size: 6, 6
   orig: 6, 6
   offset: 0, 0
   index: -1
+p_arrow
+  rotate: false
+  xy: 241, 117
+  size: 12, 5
+  orig: 12, 5
+  offset: 0, 0
+  index: -1
+p_arrow_b
+  rotate: false
+  xy: 204, 58
+  size: 5, 12
+  orig: 5, 12
+  offset: 0, 0
+  index: -1
+p_arrow_br
+  rotate: false
+  xy: 204, 72
+  size: 9, 9
+  orig: 9, 9
+  offset: 0, 0
+  index: -1
+p_arrow_t
+  rotate: false
+  xy: 204, 44
+  size: 5, 12
+  orig: 5, 12
+  offset: 0, 0
+  index: -1
+p_arrow_tr
+  rotate: false
+  xy: 230, 113
+  size: 9, 9
+  orig: 9, 9
+  offset: 0, 0
+  index: -1
 p_dot
   rotate: false
-  xy: 248, 118
+  xy: 250, 111
   size: 4, 4
   orig: 4, 4
   offset: 0, 0
   index: -1
+p_xor
+  rotate: false
+  xy: 204, 83
+  size: 9, 9
+  orig: 9, 9
+  offset: 0, 0
+  index: -1
 player
   rotate: false
-  xy: 230, 114
+  xy: 204, 24
   size: 8, 8
   orig: 8, 8
   offset: 0, 0

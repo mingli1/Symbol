@@ -31,6 +31,12 @@ class Resources : Disposable {
         textures["p_angle_bracket"] = atlas.findRegion("p_angle_bracket")
         textures["p_angle_bracket_tr"] = atlas.findRegion("p_angle_bracket_tr")
         textures["p_angle_bracket_br"] = atlas.findRegion("p_angle_bracket_br")
+        textures["p_xor"] = atlas.findRegion("p_xor")
+        textures["p_arrow_t"] = atlas.findRegion("p_arrow_t")
+        textures["p_arrow_b"] = atlas.findRegion("p_arrow_b")
+        textures["p_arrow"] = atlas.findRegion("p_arrow")
+        textures["p_arrow_tr"] = atlas.findRegion("p_arrow_tr")
+        textures["p_arrow_br"] = atlas.findRegion("p_arrow_br")
 
         textures["background"] = atlas.findRegion("background")
     }

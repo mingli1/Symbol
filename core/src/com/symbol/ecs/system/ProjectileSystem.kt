@@ -9,7 +9,6 @@ import com.badlogic.gdx.utils.Array
 import com.symbol.ecs.Mapper
 import com.symbol.ecs.component.HealthComponent
 import com.symbol.ecs.component.ProjectileComponent
-import com.symbol.ecs.entity.Player
 import com.symbol.map.MapObject
 
 private const val KNOCKBACK_TIME = 0.1f
