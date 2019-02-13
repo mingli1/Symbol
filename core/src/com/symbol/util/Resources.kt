@@ -5,19 +5,24 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.utils.Disposable
 
+private const val TOP = "_t"
+private const val BOTTOM = "_b"
+private const val TOP_RIGHT ="_tr"
+private const val BOTTOM_RIGHT = "_br"
+
 class Resources : Disposable {
 
     private val assetManager: AssetManager = AssetManager()
     private val atlas: TextureAtlas
-    private val textures: Map<String, TextureRegion>
+    private val textures: MutableMap<String, TextureRegion> = HashMap()
 
     init {
-        textures = HashMap()
-
         assetManager.load("textures/textures.atlas", TextureAtlas::class.java)
         assetManager.finishLoading()
 
         atlas = assetManager.get("textures/textures.atlas", TextureAtlas::class.java)
+
+        textures["background"] = atlas.findRegion("background")
 
         textures["player"] = atlas.findRegion("player")
         textures["e_e"] = atlas.findRegion("e_e")
@@ -25,24 +30,29 @@ class Resources : Disposable {
         textures["e_exists"] = atlas.findRegion("e_exists")
         textures["e_sum"] = atlas.findRegion("e_sum")
 
-        textures["p_dot"] = atlas.findRegion("p_dot")
-        textures["p_angle_bracket_t"] = atlas.findRegion("p_angle_bracket_t")
-        textures["p_angle_bracket_b"] = atlas.findRegion("p_angle_bracket_b")
-        textures["p_angle_bracket"] = atlas.findRegion("p_angle_bracket")
-        textures["p_angle_bracket_tr"] = atlas.findRegion("p_angle_bracket_tr")
-        textures["p_angle_bracket_br"] = atlas.findRegion("p_angle_bracket_br")
-        textures["p_xor"] = atlas.findRegion("p_xor")
-        textures["p_arrow_t"] = atlas.findRegion("p_arrow_t")
-        textures["p_arrow_b"] = atlas.findRegion("p_arrow_b")
-        textures["p_arrow"] = atlas.findRegion("p_arrow")
-        textures["p_arrow_tr"] = atlas.findRegion("p_arrow_tr")
-        textures["p_arrow_br"] = atlas.findRegion("p_arrow_br")
-
-        textures["background"] = atlas.findRegion("background")
+        loadProjectile("p_dot")
+        loadProjectile("p_angle_bracket")
+        loadProjectile("p_xor")
+        loadProjectile("p_arrow")
+        loadProjectile("p_cup")
     }
 
     fun getTexture(key: String): TextureRegion? {
         return textures[key]
+    }
+
+    private fun loadProjectile(key: String) {
+        textures[key] = atlas.findRegion(key)
+
+        val top = atlas.findRegion(key + TOP)
+        val bot = atlas.findRegion(key + BOTTOM)
+        val topRight = atlas.findRegion(key + TOP_RIGHT)
+        val botRight = atlas.findRegion(key + BOTTOM_RIGHT)
+
+        if (top != null) textures[key + TOP] = top
+        if (bot != null) textures[key + BOTTOM] = bot
+        if (topRight != null) textures[key + TOP_RIGHT] = topRight
+        if (botRight != null) textures[key + BOTTOM_RIGHT] = botRight
     }
 
     override fun dispose() {

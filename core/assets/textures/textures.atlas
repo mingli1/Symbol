@@ -13,7 +13,7 @@ background
   index: -1
 e_e
   rotate: false
-  xy: 204, 34
+  xy: 215, 96
   size: 8, 8
   orig: 8, 8
   offset: 0, 0
@@ -41,68 +41,103 @@ e_sum
   index: -1
 p_angle_bracket
   rotate: false
-  xy: 211, 63
+  xy: 204, 24
   size: 4, 7
   orig: 4, 7
   offset: 0, 0
   index: -1
 p_angle_bracket_b
   rotate: false
-  xy: 204, 2
+  xy: 215, 60
   size: 7, 4
   orig: 7, 4
   offset: 0, 0
   index: -1
 p_angle_bracket_br
   rotate: false
-  xy: 204, 16
+  xy: 240, 105
   size: 6, 6
   orig: 6, 6
   offset: 0, 0
   index: -1
 p_angle_bracket_t
   rotate: false
-  xy: 241, 111
+  xy: 204, 18
   size: 7, 4
   orig: 7, 4
   offset: 0, 0
   index: -1
 p_angle_bracket_tr
   rotate: false
-  xy: 204, 8
+  xy: 248, 105
   size: 6, 6
   orig: 6, 6
   offset: 0, 0
   index: -1
 p_arrow
   rotate: false
-  xy: 241, 117
+  xy: 216, 106
   size: 12, 5
   orig: 12, 5
   offset: 0, 0
   index: -1
 p_arrow_b
   rotate: false
-  xy: 204, 58
+  xy: 204, 47
   size: 5, 12
   orig: 5, 12
   offset: 0, 0
   index: -1
 p_arrow_br
   rotate: false
-  xy: 204, 72
+  xy: 204, 61
   size: 9, 9
   orig: 9, 9
   offset: 0, 0
   index: -1
 p_arrow_t
   rotate: false
-  xy: 204, 44
+  xy: 204, 33
   size: 5, 12
   orig: 5, 12
   offset: 0, 0
   index: -1
 p_arrow_tr
+  rotate: false
+  xy: 241, 113
+  size: 9, 9
+  orig: 9, 9
+  offset: 0, 0
+  index: -1
+p_cup
+  rotate: false
+  xy: 230, 104
+  size: 8, 7
+  orig: 8, 7
+  offset: 0, 0
+  index: -1
+p_cup_b
+  rotate: false
+  xy: 215, 76
+  size: 7, 8
+  orig: 7, 8
+  offset: 0, 0
+  index: -1
+p_cup_br
+  rotate: false
+  xy: 204, 72
+  size: 9, 9
+  orig: 9, 9
+  offset: 0, 0
+  index: -1
+p_cup_t
+  rotate: false
+  xy: 215, 66
+  size: 7, 8
+  orig: 7, 8
+  offset: 0, 0
+  index: -1
+p_cup_tr
   rotate: false
   xy: 230, 113
   size: 9, 9
@@ -111,7 +146,7 @@ p_arrow_tr
   index: -1
 p_dot
   rotate: false
-  xy: 250, 111
+  xy: 204, 12
   size: 4, 4
   orig: 4, 4
   offset: 0, 0
@@ -125,7 +160,7 @@ p_xor
   index: -1
 player
   rotate: false
-  xy: 204, 24
+  xy: 215, 86
   size: 8, 8
   orig: 8, 8
   offset: 0, 0
