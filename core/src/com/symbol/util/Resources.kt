@@ -9,6 +9,7 @@ private const val TOP = "_t"
 private const val BOTTOM = "_b"
 private const val TOP_RIGHT ="_tr"
 private const val BOTTOM_RIGHT = "_br"
+private const val VERTICAL = "_v"
 
 class Resources : Disposable {
 
@@ -35,6 +36,8 @@ class Resources : Disposable {
         loadProjectile("p_xor")
         loadProjectile("p_arrow")
         loadProjectile("p_cup")
+        loadProjectile("p_implies")
+        loadProjectile("p_ldots")
     }
 
     fun getTexture(key: String): TextureRegion? {
@@ -44,13 +47,21 @@ class Resources : Disposable {
     private fun loadProjectile(key: String) {
         textures[key] = atlas.findRegion(key)
 
-        val top = atlas.findRegion(key + TOP)
-        val bot = atlas.findRegion(key + BOTTOM)
+        val vertical = atlas.findRegion(key + VERTICAL)
         val topRight = atlas.findRegion(key + TOP_RIGHT)
         val botRight = atlas.findRegion(key + BOTTOM_RIGHT)
 
-        if (top != null) textures[key + TOP] = top
-        if (bot != null) textures[key + BOTTOM] = bot
+        if (vertical != null) {
+            textures[key + TOP] = vertical
+            textures[key + BOTTOM] = vertical
+        }
+        else {
+            val top = atlas.findRegion(key + TOP)
+            val bot = atlas.findRegion(key + BOTTOM)
+
+            if (top != null) textures[key + TOP] = top
+            if (bot != null) textures[key + BOTTOM] = bot
+        }
         if (topRight != null) textures[key + TOP_RIGHT] = topRight
         if (botRight != null) textures[key + BOTTOM_RIGHT] = botRight
     }

@@ -49,7 +49,7 @@ object EnemyFactory {
             EnemyType.Summation -> {
                 EntityBuilder.instance(engine)
                         .enemy(type = type, damage = 2, activationRange = 120f, attackType = EnemyAttackType.ShootEight,
-                                attackTexture = "p_cup", attackRate = 0.8f, projectileSpeed = 45f)
+                                attackTexture = "p_ldots", attackRate = 0.8f, projectileSpeed = 45f)
                         .health(2)
                         .boundingBox(10f, 13f)
                         .position(rect.x, rect.y)
