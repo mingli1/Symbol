@@ -5,11 +5,11 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.utils.Disposable
 
-private const val TOP = "_t"
-private const val BOTTOM = "_b"
-private const val TOP_RIGHT ="_tr"
-private const val BOTTOM_RIGHT = "_br"
-private const val VERTICAL = "_v"
+const val TOP = "_t"
+const val BOTTOM = "_b"
+const val TOP_RIGHT ="_tr"
+const val BOTTOM_RIGHT = "_br"
+const val VERTICAL = "_v"
 
 class Resources : Disposable {
 
@@ -30,6 +30,7 @@ class Resources : Disposable {
         textures["e_sqrt"] = atlas.findRegion("e_sqrt")
         textures["e_exists"] = atlas.findRegion("e_exists")
         textures["e_sum"] = atlas.findRegion("e_sum")
+        textures["e_big_pi"] = atlas.findRegion("e_big_pi")
 
         loadProjectile("p_dot")
         loadProjectile("p_angle_bracket")
@@ -38,6 +39,7 @@ class Resources : Disposable {
         loadProjectile("p_cup")
         loadProjectile("p_implies")
         loadProjectile("p_ldots")
+        loadProjectile("p_large_triangle")
     }
 
     fun getTexture(key: String): TextureRegion? {

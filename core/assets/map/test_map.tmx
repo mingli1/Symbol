@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.0.1" orientation="orthogonal" renderorder="right-down" width="30" height="10" tilewidth="8" tileheight="8" nextobjectid="33">
+<map version="1.0" tiledversion="1.0.1" orientation="orthogonal" renderorder="right-down" width="30" height="10" tilewidth="8" tileheight="8" nextobjectid="34">
  <tileset firstgid="1" name="set" tilewidth="8" tileheight="8" tilecount="6" columns="3">
   <image source="tileset.png" width="24" height="16"/>
  </tileset>
@@ -28,7 +28,7 @@
   <object id="21" x="112" y="40" width="56" height="8"/>
  </objectgroup>
  <objectgroup name="enemy">
-  <object id="25" x="92.75" y="55.6136" width="6.72727" height="6">
+  <object id="25" x="88.3864" y="8.34087" width="6.72727" height="6">
    <properties>
     <property name="facingRight" type="bool" value="false"/>
     <property name="type" value="sum"/>
@@ -37,6 +37,11 @@
   <object id="32" x="138.25" y="29.25" width="7.5" height="6.5">
    <properties>
     <property name="type" value="e"/>
+   </properties>
+  </object>
+  <object id="33" x="84.7273" y="53.6364" width="7.45455" height="6.18182">
+   <properties>
+    <property name="type" value="big_pi"/>
    </properties>
   </object>
  </objectgroup>

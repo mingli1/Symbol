@@ -8,6 +8,7 @@ enum class EnemyAttackType {
     ShootTwoVertical,
     ShootFour,
     ShootFourDiagonal,
-    ShootEight
+    ShootEight,
+    ShootAtPlayer
 
 }

@@ -8,10 +8,11 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.math.Rectangle
 import com.symbol.ecs.EntityBuilder
 import com.symbol.ecs.Mapper
+import com.symbol.ecs.component.DirectionComponent
 import com.symbol.ecs.component.EnemyComponent
 import com.symbol.ecs.entity.EnemyAttackType
 import com.symbol.ecs.entity.Player
-import com.symbol.util.Resources
+import com.symbol.util.*
 
 private const val DIAGONAL_PROJECTILE_SCALING = 0.75f
 
@@ -32,7 +33,7 @@ class EnemyAttackSystem(private val player: Player, private val res: Resources) 
         val remove = Mapper.REMOVE_MAPPER.get(entity)
         val bounds = Mapper.BOUNDING_BOX_MAPPER.get(entity).rect
         val playerBounds = Mapper.BOUNDING_BOX_MAPPER.get(player).rect
-        val facingRight = Mapper.DIR_MAPPER.get(entity).facingRight
+        val dir = Mapper.DIR_MAPPER.get(entity)
 
         if (bounds.overlaps(playerBounds)) {
             val playerHealth = Mapper.HEALTH_MAPPER.get(player)
@@ -44,12 +45,13 @@ class EnemyAttackSystem(private val player: Player, private val res: Resources) 
         if (enemyComponent.active && enemyComponent.canAttack) {
             when (enemyComponent.attackType) {
                 EnemyAttackType.None -> return
-                EnemyAttackType.ShootOne -> shootOne(enemyComponent, bounds, facingRight)
+                EnemyAttackType.ShootOne -> shootOne(enemyComponent, bounds, dir.facingRight)
                 EnemyAttackType.ShootTwoHorizontal -> shootTwoHorizontal(enemyComponent, bounds)
                 EnemyAttackType.ShootTwoVertical -> shootTwoVertical(enemyComponent, bounds)
                 EnemyAttackType.ShootFour -> shootFour(enemyComponent, bounds)
                 EnemyAttackType.ShootFourDiagonal -> shootFourDiagonal(enemyComponent, bounds)
                 EnemyAttackType.ShootEight -> shootEight(enemyComponent, bounds)
+                EnemyAttackType.ShootAtPlayer -> shootAtPlayer(enemyComponent, bounds, playerBounds, dir)
             }
             enemyComponent.canAttack = false
         }
@@ -75,8 +77,8 @@ class EnemyAttackSystem(private val player: Player, private val res: Resources) 
     }
 
     private fun shootTwoVertical(enemyComp: EnemyComponent, bounds: Rectangle) {
-        val topTexture = res.getTexture(enemyComp.attackTexture + "_t") ?: res.getTexture(enemyComp.attackTexture!!)!!
-        val botTexture = res.getTexture(enemyComp.attackTexture + "_b") ?: res.getTexture(enemyComp.attackTexture!!)!!
+        val topTexture = res.getTexture(enemyComp.attackTexture + TOP) ?: res.getTexture(enemyComp.attackTexture!!)!!
+        val botTexture = res.getTexture(enemyComp.attackTexture + BOTTOM) ?: res.getTexture(enemyComp.attackTexture!!)!!
         createProjectile(enemyComp, bounds, 0f, enemyComp.projectileSpeed, topTexture)
         createProjectile(enemyComp, bounds, 0f, -enemyComp.projectileSpeed, botTexture)
     }
@@ -87,8 +89,8 @@ class EnemyAttackSystem(private val player: Player, private val res: Resources) 
     }
 
     private fun shootFourDiagonal(enemyComp: EnemyComponent, bounds: Rectangle) {
-        val trTexture = res.getTexture(enemyComp.attackTexture + "_tr") ?: res.getTexture(enemyComp.attackTexture!!)!!
-        val brTexture = res.getTexture(enemyComp.attackTexture + "_br") ?: res.getTexture(enemyComp.attackTexture!!)!!
+        val trTexture = res.getTexture(enemyComp.attackTexture + TOP_RIGHT) ?: res.getTexture(enemyComp.attackTexture!!)!!
+        val brTexture = res.getTexture(enemyComp.attackTexture + BOTTOM_RIGHT) ?: res.getTexture(enemyComp.attackTexture!!)!!
         createProjectile(enemyComp, bounds, -enemyComp.projectileSpeed * DIAGONAL_PROJECTILE_SCALING,
                 enemyComp.projectileSpeed * DIAGONAL_PROJECTILE_SCALING, trTexture)
         createProjectile(enemyComp, bounds, enemyComp.projectileSpeed * DIAGONAL_PROJECTILE_SCALING,
@@ -102,6 +104,23 @@ class EnemyAttackSystem(private val player: Player, private val res: Resources) 
     private fun shootEight(enemyComp: EnemyComponent, bounds: Rectangle) {
         shootFour(enemyComp, bounds)
         shootFourDiagonal(enemyComp, bounds)
+    }
+
+    private fun shootAtPlayer(enemyComp: EnemyComponent, bounds: Rectangle, playerBounds: Rectangle, dir: DirectionComponent) {
+        val topTexture = res.getTexture(enemyComp.attackTexture + TOP) ?: res.getTexture(enemyComp.attackTexture!!)!!
+        val botTexture = res.getTexture(enemyComp.attackTexture + BOTTOM) ?: res.getTexture(enemyComp.attackTexture!!)!!
+        val texture = res.getTexture(enemyComp.attackTexture!!)!!
+
+        val xBiased = Math.abs(bounds.x - playerBounds.x) > Math.abs(bounds.y - playerBounds.y)
+        val xCenter = playerBounds.x + playerBounds.width / 2
+        val yCenter = playerBounds.y + playerBounds.height / 2
+
+        dir.facingRight = bounds.x < xCenter
+
+        if (bounds.x < xCenter && xBiased) createProjectile(enemyComp, bounds, enemyComp.projectileSpeed, 0f, texture)
+        if (bounds.x >= xCenter && xBiased) createProjectile(enemyComp, bounds, -enemyComp.projectileSpeed, 0f, texture)
+        if (bounds.y < yCenter && !xBiased) createProjectile(enemyComp, bounds, 0f, enemyComp.projectileSpeed, topTexture)
+        if (bounds.y >= yCenter && !xBiased) createProjectile(enemyComp, bounds, 0f, -enemyComp.projectileSpeed, botTexture)
     }
 
     private fun createProjectile(enemyComp: EnemyComponent, bounds: Rectangle,
