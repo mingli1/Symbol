@@ -55,6 +55,14 @@ class GameScreen(game: Symbol) : AbstractScreen(game) {
         engine.addSystem(RemoveSystem())
     }
 
+    private fun resetSystems() {
+        engine.getSystem(MapCollisionSystem::class.java).setMapData(mm.mapObjects,
+                mm.mapWidth * mm.tileSize, mm.mapHeight * mm.tileSize)
+        engine.getSystem(ProjectileSystem::class.java).setMapData(mm.mapObjects)
+        engine.getSystem(EnemyAttackSystem::class.java).reset()
+        engine.getSystem(EnemyMovementSystem::class.java).reset()
+    }
+
     override fun show() {
         Gdx.input.inputProcessor = input
         mm.load("test_map")
@@ -62,10 +70,7 @@ class GameScreen(game: Symbol) : AbstractScreen(game) {
         val playerPosition = Mapper.POS_MAPPER.get(player)
         playerPosition.set(mm.playerSpawnPosition.x, mm.playerSpawnPosition.y)
 
-        engine.getSystem(MapCollisionSystem::class.java).setMapData(mm.mapObjects,
-                mm.mapWidth * mm.tileSize, mm.mapHeight * mm.tileSize)
-        engine.getSystem(ProjectileSystem::class.java).setMapData(mm.mapObjects)
-        engine.getSystem(EnemyAttackSystem::class.java).reset()
+        resetSystems()
     }
 
     private fun update(dt: Float) {

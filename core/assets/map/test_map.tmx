@@ -28,14 +28,9 @@
   <object id="21" x="112" y="40" width="56" height="8"/>
  </objectgroup>
  <objectgroup name="enemy">
-  <object id="32" x="94.25" y="53.6136" width="7.5" height="6.5">
-   <properties>
-    <property name="type" value="big_phi"/>
-   </properties>
-  </object>
   <object id="35" x="136.364" y="31.2727" width="7.81818" height="6.54545">
    <properties>
-    <property name="type" value="big_omega"/>
+    <property name="type" value="e"/>
    </properties>
   </object>
  </objectgroup>
