@@ -92,11 +92,13 @@ class EntityBuilder(private val engine: PooledEngine) {
         return this
     }
 
-    fun gravity(onGround: Boolean = false, gravity: Float = GRAVITY, terminalVelocity: Float = TERMINAL_VELOCITY) : EntityBuilder {
+    fun gravity(onGround: Boolean = false, gravity: Float = GRAVITY,
+                terminalVelocity: Float = TERMINAL_VELOCITY, collidable: Boolean = true) : EntityBuilder {
         gravityComponent = engine.createComponent(GravityComponent::class.java)
         gravityComponent?.onGround = onGround
         gravityComponent?.gravity = gravity
         gravityComponent?.terminalVelocity = terminalVelocity
+        gravityComponent?.collidable = collidable
         return this
     }
 

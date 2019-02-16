@@ -33,6 +33,7 @@ class Resources : Disposable {
         textures["e_big_pi"] = atlas.findRegion("e_big_pi")
         textures["e_in"] = atlas.findRegion("e_in")
         textures["e_theta"] = atlas.findRegion("e_theta")
+        textures["e_big_omega"] = atlas.findRegion("e_big_omega")
 
         loadProjectile("p_dot")
         loadProjectile("p_dot_xor")

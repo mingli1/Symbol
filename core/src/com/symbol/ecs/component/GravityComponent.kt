@@ -10,12 +10,14 @@ class GravityComponent : Component, Pool.Poolable {
 
     var onGround: Boolean = false
     var platform: Rectangle = Rectangle()
+    var collidable: Boolean = true
 
     var gravity: Float = GRAVITY
     var terminalVelocity: Float = TERMINAL_VELOCITY
 
     override fun reset() {
         onGround = false
+        collidable = true
         platform.set(0f, 0f, 0f, 0f)
         gravity = GRAVITY
         terminalVelocity = TERMINAL_VELOCITY

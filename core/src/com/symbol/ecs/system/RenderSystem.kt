@@ -18,7 +18,7 @@ class RenderSystem(private val batch: Batch) : IteratingSystem(
 
         val width = texture.texture!!.regionWidth.toFloat()
 
-        if (dir.facingRight) {
+        if (dir == null || dir.facingRight) {
             batch.draw(texture.texture, position.x, position.y)
         } else {
             batch.draw(texture.texture, position.x + width, position.y, -width, texture.texture!!.regionHeight.toFloat())

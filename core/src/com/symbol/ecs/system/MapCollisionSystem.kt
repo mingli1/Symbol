@@ -61,9 +61,12 @@ class MapCollisionSystem : IteratingSystem(
             savePreviousPosition(position)
             position.x += stepX
             bb.rect.setPosition(position.x + (width - bb.rect.width) / 2, position.y + (height - bb.rect.height) / 2)
-            for (mapObject in mapObjects) {
-                if (mapObject.type == MapObjectType.Ground && bb.rect.overlaps(mapObject.bounds)) {
-                    revertCurrentPosition(position)
+
+            if (gravity.collidable) {
+                for (mapObject in mapObjects) {
+                    if (mapObject.type == MapObjectType.Ground && bb.rect.overlaps(mapObject.bounds)) {
+                        revertCurrentPosition(position)
+                    }
                 }
             }
         }
@@ -73,14 +76,17 @@ class MapCollisionSystem : IteratingSystem(
             savePreviousPosition(position)
             position.y += stepY
             bb.rect.setPosition(position.x + (width - bb.rect.width) / 2, position.y + (height - bb.rect.height) / 2)
-            for (mapObject in mapObjects) {
-                if (mapObject.type == MapObjectType.Ground && bb.rect.overlaps(mapObject.bounds)) {
-                    revertCurrentPosition(position)
-                    if (velocity.dy < 0) {
-                        gravity.onGround = true
-                        gravity.platform.set(mapObject.bounds)
+
+            if (gravity.collidable) {
+                for (mapObject in mapObjects) {
+                    if (mapObject.type == MapObjectType.Ground && bb.rect.overlaps(mapObject.bounds)) {
+                        revertCurrentPosition(position)
+                        if (velocity.dy < 0) {
+                            gravity.onGround = true
+                            gravity.platform.set(mapObject.bounds)
+                        }
+                        velocity.dy = 0f
                     }
-                    velocity.dy = 0f
                 }
             }
         }

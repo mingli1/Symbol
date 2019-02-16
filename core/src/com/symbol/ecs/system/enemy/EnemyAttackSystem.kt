@@ -51,6 +51,7 @@ class EnemyAttackSystem(private val player: Player, private val res: Resources) 
                 EnemyAttackType.ShootFourDiagonal -> shootFourDiagonal(enemyComponent, bounds)
                 EnemyAttackType.ShootEight -> shootEight(enemyComponent, bounds)
                 EnemyAttackType.ShootAtPlayer -> shootAtPlayer(enemyComponent, bounds, playerBounds, dir)
+                EnemyAttackType.SprayThree -> sprayThree(enemyComponent, bounds)
             }
             enemyComponent.canAttack = false
         }
@@ -131,8 +132,16 @@ class EnemyAttackSystem(private val player: Player, private val res: Resources) 
             createProjectile(enemyComp, bounds, 0f, -enemyComp.projectileSpeed, botTexture, enemyComp.attackDetonateTime)
     }
 
-    private fun createProjectile(enemyComp: EnemyComponent, bounds: Rectangle,
-                                 dx: Float = 0f, dy: Float = 0f, texture: TextureRegion, detonateTime: Float = 0f) {
+    private fun sprayThree(enemyComp: EnemyComponent, bounds: Rectangle) {
+        val topTexture = res.getTexture(enemyComp.attackTexture + TOP) ?: res.getTexture(enemyComp.attackTexture!!)!!
+        val side = res.getTexture(enemyComp.attackTexture + TOP_RIGHT) ?: res.getTexture(enemyComp.attackTexture!!)!!
+        createGravityProjectile(enemyComp, bounds, 0f, enemyComp.projectileSpeed, topTexture)
+        createGravityProjectile(enemyComp, bounds, -enemyComp.projectileSpeed / 4, enemyComp.projectileSpeed, side)
+        createGravityProjectile(enemyComp, bounds, enemyComp.projectileSpeed / 4, enemyComp.projectileSpeed, side)
+    }
+
+    private fun createProjectile(enemyComp: EnemyComponent, bounds: Rectangle, dx: Float = 0f, dy: Float = 0f,
+                                 texture: TextureRegion, detonateTime: Float = 0f) {
         val bw = texture.regionWidth - 1
         val bh = texture.regionHeight - 1
         EntityBuilder.instance(engine as PooledEngine)
@@ -143,6 +152,18 @@ class EnemyAttackSystem(private val player: Player, private val res: Resources) 
                 .boundingBox(bw.toFloat(), bh.toFloat())
                 .texture(texture)
                 .direction().remove().build()
+    }
+
+    private fun createGravityProjectile(enemyComp: EnemyComponent, bounds: Rectangle, dx: Float, dy: Float, texture: TextureRegion) {
+        val bw = texture.regionWidth - 1
+        val bh = texture.regionHeight - 1
+        EntityBuilder.instance(engine as PooledEngine)
+                .projectile(unstoppable = true, textureStr = enemyComp.attackTexture, enemy = true, damage = enemyComp.damage)
+                .position(bounds.x + (bounds.width / 2) - (bw / 2), bounds.y + (bounds.height / 2) - (bh / 2))
+                .velocity(dx = dx, dy = dy)
+                .boundingBox(bw.toFloat(), bh.toFloat())
+                .texture(texture)
+                .direction().gravity(collidable = false).remove().build()
     }
 
 }

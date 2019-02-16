@@ -60,7 +60,7 @@ object EnemyFactory {
             }
             EnemyType.BigPi -> {
                 EntityBuilder.instance(engine)
-                        .enemy(type = type, damage = 4, activationRange = 120f, attackType = EnemyAttackType.ShootTwoHorizontal,
+                        .enemy(type = type, damage = 4, activationRange = 120f, attackType = EnemyAttackType.ShootOne,
                                 attackTexture = "p_big_ll", attackRate = 1.4f, projectileSpeed = 45f)
                         .health(4)
                         .boundingBox(11f, 13f)
@@ -79,6 +79,17 @@ object EnemyFactory {
                         .position(rect.x, rect.y)
                         .velocity()
                         .direction(facingRight = facingRight)
+                        .texture(texture)
+                        .gravity().remove().build()
+            }
+            EnemyType.BigOmega -> {
+                EntityBuilder.instance(engine)
+                        .enemy(type = type, damage = 2, activationRange = 150f, attackType = EnemyAttackType.SprayThree,
+                                attackTexture = "p_cup", attackRate = 2.5f, projectileSpeed = 200f)
+                        .health(3)
+                        .boundingBox(12f, 13f)
+                        .position(rect.x, rect.y)
+                        .velocity()
                         .texture(texture)
                         .gravity().remove().build()
             }

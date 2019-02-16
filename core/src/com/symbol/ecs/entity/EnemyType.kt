@@ -9,7 +9,8 @@ enum class EnemyType(val typeStr: String) {
     Summation("sum"),
     BigPi("big_pi"),
     In("in"),
-    Theta("theta");
+    Theta("theta"),
+    BigOmega("big_omega");
 
     companion object {
         fun getType(typeStr: String) : EnemyType? {
