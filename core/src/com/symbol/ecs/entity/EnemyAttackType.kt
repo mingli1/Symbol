@@ -11,7 +11,6 @@ enum class EnemyAttackType {
     ShootEight,
     ShootAtPlayer,
     SprayThree,
-    ExplodeOnDeath,
     ShootAndQuake
 
 }

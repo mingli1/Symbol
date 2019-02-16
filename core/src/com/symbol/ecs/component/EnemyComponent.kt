@@ -23,6 +23,7 @@ class EnemyComponent : Component, Pool.Poolable {
     var attackTexture: String? = null
     var projectileSpeed: Float = 0f
     var attackDetonateTime: Float = 0f
+    var explodeOnDeath: Boolean = false
 
     override fun reset() {
         type = EnemyType.None
@@ -39,6 +40,7 @@ class EnemyComponent : Component, Pool.Poolable {
         attackTexture = null
         projectileSpeed = 0f
         attackDetonateTime = 0f
+        explodeOnDeath = false
     }
 
 }

@@ -49,7 +49,8 @@ class EntityBuilder(private val engine: PooledEngine) {
               attackRate: Float = 0f,
               attackTexture: String? = null,
               projectileSpeed: Float = 0f,
-              attackDetonateTime: Float = 0f) : EntityBuilder {
+              attackDetonateTime: Float = 0f,
+              explodeOnDeath: Boolean = false) : EntityBuilder {
         enemyComponent = engine.createComponent(EnemyComponent::class.java)
         enemyComponent?.type = type
         enemyComponent?.movementType = movementType
@@ -61,6 +62,7 @@ class EntityBuilder(private val engine: PooledEngine) {
         enemyComponent?.attackTexture = attackTexture
         enemyComponent?.projectileSpeed = projectileSpeed
         enemyComponent?.attackDetonateTime = attackDetonateTime
+        enemyComponent?.explodeOnDeath = explodeOnDeath
         return this
     }
 

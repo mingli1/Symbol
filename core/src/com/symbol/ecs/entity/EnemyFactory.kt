@@ -95,7 +95,7 @@ object EnemyFactory {
             }
             EnemyType.NaturalJoin -> {
                 EntityBuilder.instance(engine)
-                        .enemy(type = type, damage = 2, activationRange = 100f, attackType = EnemyAttackType.ExplodeOnDeath,
+                        .enemy(type = type, damage = 2, activationRange = 100f, explodeOnDeath = true,
                                 attackTexture = "p_ltimes", projectileSpeed = 45f, movementType = EnemyMovementType.BackAndForth)
                         .health(4)
                         .boundingBox(9f, 7f)
@@ -108,7 +108,7 @@ object EnemyFactory {
             EnemyType.BigPhi -> {
                 EntityBuilder.instance(engine)
                         .enemy(type = type, damage = 4, activationRange = 200f, attackType = EnemyAttackType.ShootAndQuake,
-                                attackTexture = "p_alpha", attackRate = 1.5f, jumpImpulse = 150f, projectileSpeed = 60f)
+                                attackTexture = "p_alpha", attackRate = 1.5f, jumpImpulse = 150f, projectileSpeed = 60f, explodeOnDeath = true)
                         .health(10)
                         .boundingBox(14f, 16f)
                         .position(rect.x, rect.y)

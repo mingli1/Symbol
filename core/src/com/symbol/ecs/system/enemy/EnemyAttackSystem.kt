@@ -16,6 +16,9 @@ import com.symbol.ecs.system.DIAGONAL_PROJECTILE_SCALING
 import com.symbol.map.camera.CameraShake
 import com.symbol.util.*
 
+private const val CAMERA_SHAKE_POWER = 3f
+private const val CAMERA_SHAKE_DURATION = 0.7f
+
 class EnemyAttackSystem(private val player: Player, private val res: Resources) :
         IteratingSystem(Family.all(EnemyComponent::class.java).get()) {
 
@@ -46,7 +49,7 @@ class EnemyAttackSystem(private val player: Player, private val res: Resources) 
             if (enemyComponent.attackType == EnemyAttackType.ShootAndQuake) {
                 val gravity = Mapper.GRAVITY_MAPPER.get(entity)
                 if (gravity.onGround) {
-                    CameraShake.shakeFor(3f, 0.7f)
+                    CameraShake.shakeFor(CAMERA_SHAKE_POWER, CAMERA_SHAKE_DURATION)
                 }
             }
             if (enemyComponent.canAttack) {
@@ -60,11 +63,14 @@ class EnemyAttackSystem(private val player: Player, private val res: Resources) 
                     EnemyAttackType.ShootEight -> shootEight(enemyComponent, bounds)
                     EnemyAttackType.ShootAtPlayer -> shootAtPlayer(enemyComponent, bounds, playerBounds, dir)
                     EnemyAttackType.SprayThree -> sprayThree(enemyComponent, bounds)
-                    EnemyAttackType.ExplodeOnDeath -> explodeOnDeath(entity, enemyComponent, bounds)
                     EnemyAttackType.ShootAndQuake -> shootAtPlayer(enemyComponent, bounds, playerBounds, dir)
                 }
                 enemyComponent.canAttack = false
             }
+        }
+
+        if (enemyComponent.explodeOnDeath) {
+            explodeOnDeath(entity, enemyComponent, bounds)
         }
 
         if (!enemyComponent.canAttack) {
