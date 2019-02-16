@@ -31,6 +31,8 @@ class Resources : Disposable {
         textures["e_exists"] = atlas.findRegion("e_exists")
         textures["e_sum"] = atlas.findRegion("e_sum")
         textures["e_big_pi"] = atlas.findRegion("e_big_pi")
+        textures["e_in"] = atlas.findRegion("e_in")
+        textures["e_theta"] = atlas.findRegion("e_theta")
 
         loadProjectile("p_dot")
         loadProjectile("p_angle_bracket")
@@ -40,6 +42,7 @@ class Resources : Disposable {
         loadProjectile("p_implies")
         loadProjectile("p_ldots")
         loadProjectile("p_large_triangle")
+        loadProjectile("p_big_ll")
     }
 
     fun getTexture(key: String): TextureRegion? {

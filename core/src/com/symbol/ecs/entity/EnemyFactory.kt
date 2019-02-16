@@ -49,7 +49,7 @@ object EnemyFactory {
             EnemyType.Summation -> {
                 EntityBuilder.instance(engine)
                         .enemy(type = type, damage = 2, activationRange = 120f, attackType = EnemyAttackType.ShootOne,
-                                attackTexture = "p_large_triangle", attackRate = 0.8f, projectileSpeed = 45f)
+                                attackTexture = "p_large_triangle", attackRate = 1.4f, projectileSpeed = 45f)
                         .health(2)
                         .boundingBox(10f, 13f)
                         .position(rect.x, rect.y)
@@ -60,10 +60,22 @@ object EnemyFactory {
             }
             EnemyType.BigPi -> {
                 EntityBuilder.instance(engine)
-                        .enemy(type = type, damage = 4, activationRange = 120f, attackType = EnemyAttackType.ShootAtPlayer,
-                                attackTexture = "p_cup", attackRate = 1.4f, projectileSpeed = 45f)
+                        .enemy(type = type, damage = 4, activationRange = 120f, attackType = EnemyAttackType.ShootTwoHorizontal,
+                                attackTexture = "p_big_ll", attackRate = 1.4f, projectileSpeed = 45f)
                         .health(4)
                         .boundingBox(11f, 13f)
+                        .position(rect.x, rect.y)
+                        .velocity()
+                        .direction(facingRight = facingRight)
+                        .texture(texture)
+                        .gravity().remove().build()
+            }
+            EnemyType.In -> {
+                EntityBuilder.instance(engine)
+                        .enemy(type = type, damage = 1, activationRange = 100f, attackType = EnemyAttackType.ShootAtPlayer,
+                                attackTexture = "p_xor", attackRate = 2f, projectileSpeed = 35f, attackDetonateTime = 2f)
+                        .health(3)
+                        .boundingBox(11f, 11f)
                         .position(rect.x, rect.y)
                         .velocity()
                         .direction(facingRight = facingRight)

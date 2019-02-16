@@ -40,10 +40,16 @@ class EntityBuilder(private val engine: PooledEngine) {
         return this
     }
 
-    fun enemy(type: EnemyType, movementType: EnemyMovementType = EnemyMovementType.None,
-              attackType: EnemyAttackType = EnemyAttackType.None, damage: Int = 0, jumpImpulse: Float = 0f,
-              activationRange: Float = -1f, attackRate: Float = 0f,
-              attackTexture: String? = null, projectileSpeed: Float = 0f) : EntityBuilder {
+    fun enemy(type: EnemyType,
+              movementType: EnemyMovementType = EnemyMovementType.None,
+              attackType: EnemyAttackType = EnemyAttackType.None,
+              damage: Int = 0,
+              jumpImpulse: Float = 0f,
+              activationRange: Float = -1f,
+              attackRate: Float = 0f,
+              attackTexture: String? = null,
+              projectileSpeed: Float = 0f,
+              attackDetonateTime: Float = 0f) : EntityBuilder {
         enemyComponent = engine.createComponent(EnemyComponent::class.java)
         enemyComponent?.type = type
         enemyComponent?.movementType = movementType
@@ -54,16 +60,21 @@ class EntityBuilder(private val engine: PooledEngine) {
         enemyComponent?.attackRate = attackRate
         enemyComponent?.attackTexture = attackTexture
         enemyComponent?.projectileSpeed = projectileSpeed
+        enemyComponent?.attackDetonateTime = attackDetonateTime
         return this
     }
 
-    fun projectile(unstoppable: Boolean = false, enemy: Boolean = false,
-                   damage: Int = 0, knockback: Float = 0f) : EntityBuilder {
+    fun projectile(unstoppable: Boolean = false,
+                   enemy: Boolean = false,
+                   damage: Int = 0,
+                   knockback: Float = 0f,
+                   detonateTime: Float = 0f) : EntityBuilder {
         projectileComponent = engine.createComponent(ProjectileComponent::class.java)
         projectileComponent?.unstoppable = unstoppable
         projectileComponent?.enemy = enemy
         projectileComponent?.damage = damage
         projectileComponent?.knockback = knockback
+        projectileComponent?.detonateTime = detonateTime
         return this
     }
 
