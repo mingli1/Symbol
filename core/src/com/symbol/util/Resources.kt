@@ -35,6 +35,7 @@ class Resources : Disposable {
         textures["e_theta"] = atlas.findRegion("e_theta")
 
         loadProjectile("p_dot")
+        loadProjectile("p_dot_xor")
         loadProjectile("p_angle_bracket")
         loadProjectile("p_xor")
         loadProjectile("p_arrow")
@@ -47,6 +48,11 @@ class Resources : Disposable {
 
     fun getTexture(key: String): TextureRegion? {
         return textures[key]
+    }
+
+    fun getSubProjectileTextureFor(key: String) : TextureRegion? {
+        if (key == "p_xor") return getTexture("p_dot_xor")
+        return null
     }
 
     private fun loadProjectile(key: String) {

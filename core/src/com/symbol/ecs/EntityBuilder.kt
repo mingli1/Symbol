@@ -65,12 +65,14 @@ class EntityBuilder(private val engine: PooledEngine) {
     }
 
     fun projectile(unstoppable: Boolean = false,
+                   textureStr: String? = null,
                    enemy: Boolean = false,
                    damage: Int = 0,
                    knockback: Float = 0f,
                    detonateTime: Float = 0f) : EntityBuilder {
         projectileComponent = engine.createComponent(ProjectileComponent::class.java)
         projectileComponent?.unstoppable = unstoppable
+        projectileComponent?.textureStr = textureStr
         projectileComponent?.enemy = enemy
         projectileComponent?.damage = damage
         projectileComponent?.knockback = knockback

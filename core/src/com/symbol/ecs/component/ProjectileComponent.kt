@@ -7,6 +7,7 @@ class ProjectileComponent : Component, Pool.Poolable {
 
     var lifeTime: Float = 0f
 
+    var textureStr: String? = null
     var unstoppable: Boolean = false
     var enemy: Boolean = false
     var damage: Int = 0
@@ -16,6 +17,7 @@ class ProjectileComponent : Component, Pool.Poolable {
 
     override fun reset() {
         lifeTime = 0f
+        textureStr = null
         unstoppable = false
         enemy = false
         damage = 0

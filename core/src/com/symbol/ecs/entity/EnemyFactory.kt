@@ -72,8 +72,8 @@ object EnemyFactory {
             }
             EnemyType.In -> {
                 EntityBuilder.instance(engine)
-                        .enemy(type = type, damage = 1, activationRange = 100f, attackType = EnemyAttackType.ShootAtPlayer,
-                                attackTexture = "p_xor", attackRate = 2f, projectileSpeed = 35f, attackDetonateTime = 2f)
+                        .enemy(type = type, damage = 1, activationRange = 100f, attackType = EnemyAttackType.ShootOne,
+                                attackTexture = "p_xor", attackRate = 2f, projectileSpeed = 45f, attackDetonateTime = 2f)
                         .health(3)
                         .boundingBox(11f, 11f)
                         .position(rect.x, rect.y)

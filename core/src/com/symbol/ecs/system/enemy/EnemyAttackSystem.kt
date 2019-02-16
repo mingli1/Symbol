@@ -12,9 +12,8 @@ import com.symbol.ecs.component.DirectionComponent
 import com.symbol.ecs.component.EnemyComponent
 import com.symbol.ecs.entity.EnemyAttackType
 import com.symbol.ecs.entity.Player
+import com.symbol.ecs.system.DIAGONAL_PROJECTILE_SCALING
 import com.symbol.util.*
-
-private const val DIAGONAL_PROJECTILE_SCALING = 0.75f
 
 class EnemyAttackSystem(private val player: Player, private val res: Resources) :
         IteratingSystem(Family.all(EnemyComponent::class.java).get()) {
@@ -137,7 +136,8 @@ class EnemyAttackSystem(private val player: Player, private val res: Resources) 
         val bw = texture.regionWidth - 1
         val bh = texture.regionHeight - 1
         EntityBuilder.instance(engine as PooledEngine)
-                .projectile(unstoppable = true, enemy = true, damage = enemyComp.damage, detonateTime = detonateTime)
+                .projectile(unstoppable = true, textureStr = enemyComp.attackTexture, enemy = true,
+                        damage = enemyComp.damage, detonateTime = detonateTime)
                 .position(bounds.x + (bounds.width / 2) - (bw / 2), bounds.y + (bounds.height / 2) - (bh / 2))
                 .velocity(dx = dx, dy = dy)
                 .boundingBox(bw.toFloat(), bh.toFloat())

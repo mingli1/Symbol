@@ -3,17 +3,24 @@ package com.symbol.ecs.system
 import com.badlogic.ashley.core.Engine
 import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.core.Family
+import com.badlogic.ashley.core.PooledEngine
 import com.badlogic.ashley.systems.IteratingSystem
 import com.badlogic.ashley.utils.ImmutableArray
+import com.badlogic.gdx.graphics.g2d.TextureRegion
+import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.utils.Array
+import com.symbol.ecs.EntityBuilder
 import com.symbol.ecs.Mapper
 import com.symbol.ecs.component.HealthComponent
 import com.symbol.ecs.component.ProjectileComponent
+import com.symbol.ecs.component.RemoveComponent
 import com.symbol.map.MapObject
+import com.symbol.util.Resources
 
+const val DIAGONAL_PROJECTILE_SCALING = 0.75f
 private const val KNOCKBACK_TIME = 0.1f
 
-class ProjectileSystem : IteratingSystem(Family.all(ProjectileComponent::class.java).get()) {
+class ProjectileSystem(private val res: Resources) : IteratingSystem(Family.all(ProjectileComponent::class.java).get()) {
 
     private var mapObjects: Array<MapObject> = Array()
 
@@ -87,6 +94,8 @@ class ProjectileSystem : IteratingSystem(Family.all(ProjectileComponent::class.j
                 }
             }
         }
+
+        handleDetonation(entity, pj, bb.rect, remove)
     }
 
     fun setMapData(mapObjects: Array<MapObject>) {
@@ -101,6 +110,40 @@ class ProjectileSystem : IteratingSystem(Family.all(ProjectileComponent::class.j
             prevVelocities[entity] = 0f
             startKnockback[entity] = false
         }
+    }
+
+    private fun handleDetonation(entity: Entity?, pj: ProjectileComponent, bounds: Rectangle, remove: RemoveComponent) {
+        if (pj.enemy && pj.unstoppable && pj.detonateTime != 0f) {
+            if (pj.lifeTime >= pj.detonateTime) {
+                val vel = Mapper.VEL_MAPPER.get(entity)
+                val speed = if (vel.dx != 0f) Math.abs(vel.dx) else Math.abs(vel.dy)
+                val texture = res.getSubProjectileTextureFor(pj.textureStr!!)!!
+
+                createSubProjectile(pj, bounds, speed, 0f, texture)
+                createSubProjectile(pj, bounds, speed * DIAGONAL_PROJECTILE_SCALING, -speed * DIAGONAL_PROJECTILE_SCALING, texture)
+                createSubProjectile(pj, bounds, 0f, -speed, texture)
+                createSubProjectile(pj, bounds, -speed * DIAGONAL_PROJECTILE_SCALING, -speed * DIAGONAL_PROJECTILE_SCALING, texture)
+                createSubProjectile(pj, bounds, -speed, 0f, texture)
+                createSubProjectile(pj, bounds, -speed * DIAGONAL_PROJECTILE_SCALING, speed * DIAGONAL_PROJECTILE_SCALING, texture)
+                createSubProjectile(pj, bounds, 0f, speed, texture)
+                createSubProjectile(pj, bounds, speed * DIAGONAL_PROJECTILE_SCALING, speed * DIAGONAL_PROJECTILE_SCALING, texture)
+
+                remove.shouldRemove = true
+            }
+        }
+    }
+
+    private fun createSubProjectile(pj: ProjectileComponent, bounds: Rectangle,
+                                 dx: Float = 0f, dy: Float = 0f, texture: TextureRegion) {
+        val bw = texture.regionWidth - 1
+        val bh = texture.regionHeight - 1
+        EntityBuilder.instance(engine as PooledEngine)
+                .projectile(unstoppable = true, enemy = true, damage = pj.damage)
+                .position(bounds.x + (bounds.width / 2) - (bw / 2), bounds.y + (bounds.height / 2) - (bh / 2))
+                .velocity(dx = dx, dy = dy)
+                .boundingBox(bw.toFloat(), bh.toFloat())
+                .texture(texture)
+                .direction().remove().build()
     }
 
     private fun hit(entity: Entity, damage: Int) {
