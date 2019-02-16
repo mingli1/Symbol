@@ -55,6 +55,8 @@ class ProjectileSystem : IteratingSystem(Family.all(ProjectileComponent::class.j
         val remove = Mapper.REMOVE_MAPPER.get(entity)
         bb.rect.setPosition(position.x + (width - bb.rect.width) / 2, position.y + (height - bb.rect.height) / 2)
 
+        pj.lifeTime += dt
+
         if (!pj.unstoppable) {
             for (mapObject in mapObjects) {
                 if (bb.rect.overlaps(mapObject.bounds)) {

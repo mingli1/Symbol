@@ -5,6 +5,8 @@ import com.badlogic.gdx.utils.Pool
 
 class ProjectileComponent : Component, Pool.Poolable {
 
+    var lifeTime: Float = 0f
+
     var unstoppable: Boolean = false
     var enemy: Boolean = false
     var damage: Int = 0
@@ -13,6 +15,7 @@ class ProjectileComponent : Component, Pool.Poolable {
     var detonateTime: Float = 0f
 
     override fun reset() {
+        lifeTime = 0f
         unstoppable = false
         enemy = false
         damage = 0
