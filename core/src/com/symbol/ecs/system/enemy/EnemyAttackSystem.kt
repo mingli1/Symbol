@@ -79,9 +79,8 @@ class EnemyAttackSystem(private val player: Player, private val res: Resources) 
 
     private fun shootTwoVertical(enemyComp: EnemyComponent, bounds: Rectangle) {
         val topTexture = res.getTexture(enemyComp.attackTexture + TOP) ?: res.getTexture(enemyComp.attackTexture!!)!!
-        val botTexture = res.getTexture(enemyComp.attackTexture + BOTTOM) ?: res.getTexture(enemyComp.attackTexture!!)!!
         createProjectile(enemyComp, bounds, 0f, enemyComp.projectileSpeed, topTexture, enemyComp.attackDetonateTime)
-        createProjectile(enemyComp, bounds, 0f, -enemyComp.projectileSpeed, botTexture, enemyComp.attackDetonateTime)
+        createProjectile(enemyComp, bounds, 0f, -enemyComp.projectileSpeed, topTexture, enemyComp.attackDetonateTime)
     }
 
     private fun shootFour(enemyComp: EnemyComponent, bounds: Rectangle) {
@@ -91,7 +90,6 @@ class EnemyAttackSystem(private val player: Player, private val res: Resources) 
 
     private fun shootFourDiagonal(enemyComp: EnemyComponent, bounds: Rectangle) {
         val trTexture = res.getTexture(enemyComp.attackTexture + TOP_RIGHT) ?: res.getTexture(enemyComp.attackTexture!!)!!
-        val brTexture = res.getTexture(enemyComp.attackTexture + BOTTOM_RIGHT) ?: res.getTexture(enemyComp.attackTexture!!)!!
         createProjectile(enemyComp, bounds, -enemyComp.projectileSpeed * DIAGONAL_PROJECTILE_SCALING,
                 enemyComp.projectileSpeed * DIAGONAL_PROJECTILE_SCALING, trTexture,
                 enemyComp.attackDetonateTime)
@@ -99,10 +97,10 @@ class EnemyAttackSystem(private val player: Player, private val res: Resources) 
                 enemyComp.projectileSpeed * DIAGONAL_PROJECTILE_SCALING, trTexture,
                 enemyComp.attackDetonateTime)
         createProjectile(enemyComp, bounds, -enemyComp.projectileSpeed * DIAGONAL_PROJECTILE_SCALING,
-                -enemyComp.projectileSpeed * DIAGONAL_PROJECTILE_SCALING, brTexture,
+                -enemyComp.projectileSpeed * DIAGONAL_PROJECTILE_SCALING, trTexture,
                 enemyComp.attackDetonateTime)
         createProjectile(enemyComp, bounds, enemyComp.projectileSpeed * DIAGONAL_PROJECTILE_SCALING,
-                -enemyComp.projectileSpeed * DIAGONAL_PROJECTILE_SCALING, brTexture,
+                -enemyComp.projectileSpeed * DIAGONAL_PROJECTILE_SCALING, trTexture,
                 enemyComp.attackDetonateTime)
     }
 
@@ -113,7 +111,6 @@ class EnemyAttackSystem(private val player: Player, private val res: Resources) 
 
     private fun shootAtPlayer(enemyComp: EnemyComponent, bounds: Rectangle, playerBounds: Rectangle, dir: DirectionComponent) {
         val topTexture = res.getTexture(enemyComp.attackTexture + TOP) ?: res.getTexture(enemyComp.attackTexture!!)!!
-        val botTexture = res.getTexture(enemyComp.attackTexture + BOTTOM) ?: res.getTexture(enemyComp.attackTexture!!)!!
         val texture = res.getTexture(enemyComp.attackTexture!!)!!
 
         val xBiased = Math.abs(bounds.x - playerBounds.x) > Math.abs(bounds.y - playerBounds.y)
@@ -129,7 +126,7 @@ class EnemyAttackSystem(private val player: Player, private val res: Resources) 
         if (bounds.y < yCenter && !xBiased)
             createProjectile(enemyComp, bounds, 0f, enemyComp.projectileSpeed, topTexture, enemyComp.attackDetonateTime)
         if (bounds.y >= yCenter && !xBiased)
-            createProjectile(enemyComp, bounds, 0f, -enemyComp.projectileSpeed, botTexture, enemyComp.attackDetonateTime)
+            createProjectile(enemyComp, bounds, 0f, -enemyComp.projectileSpeed, topTexture, enemyComp.attackDetonateTime)
     }
 
     private fun sprayThree(enemyComp: EnemyComponent, bounds: Rectangle) {
@@ -151,7 +148,7 @@ class EnemyAttackSystem(private val player: Player, private val res: Resources) 
                 .velocity(dx = dx, dy = dy)
                 .boundingBox(bw.toFloat(), bh.toFloat())
                 .texture(texture)
-                .direction().remove().build()
+                .direction(yFlip = true).remove().build()
     }
 
     private fun createGravityProjectile(enemyComp: EnemyComponent, bounds: Rectangle, dx: Float, dy: Float, texture: TextureRegion) {

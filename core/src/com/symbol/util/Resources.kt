@@ -6,10 +6,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.utils.Disposable
 
 const val TOP = "_t"
-const val BOTTOM = "_b"
 const val TOP_RIGHT ="_tr"
-const val BOTTOM_RIGHT = "_br"
-const val VERTICAL = "_v"
 
 class Resources : Disposable {
 
@@ -59,23 +56,11 @@ class Resources : Disposable {
     private fun loadProjectile(key: String) {
         textures[key] = atlas.findRegion(key)
 
-        val vertical = atlas.findRegion(key + VERTICAL)
+        val top = atlas.findRegion(key + TOP)
         val topRight = atlas.findRegion(key + TOP_RIGHT)
-        val botRight = atlas.findRegion(key + BOTTOM_RIGHT)
 
-        if (vertical != null) {
-            textures[key + TOP] = vertical
-            textures[key + BOTTOM] = vertical
-        }
-        else {
-            val top = atlas.findRegion(key + TOP)
-            val bot = atlas.findRegion(key + BOTTOM)
-
-            if (top != null) textures[key + TOP] = top
-            if (bot != null) textures[key + BOTTOM] = bot
-        }
+        if (top != null) textures[key + TOP] = top
         if (topRight != null) textures[key + TOP_RIGHT] = topRight
-        if (botRight != null) textures[key + BOTTOM_RIGHT] = botRight
     }
 
     override fun dispose() {
