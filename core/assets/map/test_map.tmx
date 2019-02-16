@@ -30,12 +30,7 @@
  <objectgroup name="enemy">
   <object id="32" x="138.25" y="29.25" width="7.5" height="6.5">
    <properties>
-    <property name="type" value="e"/>
-   </properties>
-  </object>
-  <object id="34" x="101.636" y="55.0909" width="6.54545" height="6.90909">
-   <properties>
-    <property name="type" value="big_omega"/>
+    <property name="type" value="njoin"/>
    </properties>
   </object>
  </objectgroup>

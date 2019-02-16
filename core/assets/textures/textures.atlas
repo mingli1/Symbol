@@ -27,7 +27,7 @@ e_big_pi
   index: -1
 e_e
   rotate: false
-  xy: 229, 66
+  xy: 240, 66
   size: 8, 8
   orig: 8, 8
   offset: 0, 0
@@ -44,6 +44,13 @@ e_in
   xy: 216, 63
   size: 11, 11
   orig: 11, 11
+  offset: 0, 0
+  index: -1
+e_njoin
+  rotate: false
+  xy: 229, 67
+  size: 9, 7
+  orig: 9, 7
   offset: 0, 0
   index: -1
 e_sqrt
@@ -69,21 +76,21 @@ e_theta
   index: -1
 p_angle_bracket
   rotate: false
-  xy: 249, 68
+  xy: 250, 68
   size: 4, 7
   orig: 4, 7
   offset: 0, 0
   index: -1
 p_angle_bracket_t
   rotate: false
-  xy: 247, 60
+  xy: 216, 57
   size: 7, 4
   orig: 7, 4
   offset: 0, 0
   index: -1
 p_angle_bracket_tr
   rotate: false
-  xy: 239, 58
+  xy: 215, 49
   size: 6, 6
   orig: 6, 6
   offset: 0, 0
@@ -118,7 +125,7 @@ p_big_ll
   index: -1
 p_cup
   rotate: false
-  xy: 229, 57
+  xy: 239, 57
   size: 8, 7
   orig: 8, 7
   offset: 0, 0
@@ -200,6 +207,27 @@ p_ldots_tr
   orig: 12, 12
   offset: 0, 0
   index: -1
+p_ltimes
+  rotate: false
+  xy: 215, 34
+  size: 6, 5
+  orig: 6, 5
+  offset: 0, 0
+  index: -1
+p_ltimes_t
+  rotate: false
+  xy: 249, 58
+  size: 5, 6
+  orig: 5, 6
+  offset: 0, 0
+  index: -1
+p_ltimes_tr
+  rotate: false
+  xy: 215, 41
+  size: 6, 6
+  orig: 6, 6
+  offset: 0, 0
+  index: -1
 p_xor
   rotate: false
   xy: 245, 98
@@ -209,7 +237,7 @@ p_xor
   index: -1
 player
   rotate: false
-  xy: 239, 66
+  xy: 229, 57
   size: 8, 8
   orig: 8, 8
   offset: 0, 0

@@ -10,6 +10,7 @@ enum class EnemyAttackType {
     ShootFourDiagonal,
     ShootEight,
     ShootAtPlayer,
-    SprayThree
+    SprayThree,
+    ExplodeOnDeath
 
 }

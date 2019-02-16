@@ -52,6 +52,7 @@ class EnemyAttackSystem(private val player: Player, private val res: Resources) 
                 EnemyAttackType.ShootEight -> shootEight(enemyComponent, bounds)
                 EnemyAttackType.ShootAtPlayer -> shootAtPlayer(enemyComponent, bounds, playerBounds, dir)
                 EnemyAttackType.SprayThree -> sprayThree(enemyComponent, bounds)
+                EnemyAttackType.ExplodeOnDeath -> explodeOnDeath(entity, enemyComponent, bounds)
             }
             enemyComponent.canAttack = false
         }
@@ -135,6 +136,13 @@ class EnemyAttackSystem(private val player: Player, private val res: Resources) 
         createGravityProjectile(enemyComp, bounds, 0f, enemyComp.projectileSpeed, topTexture)
         createGravityProjectile(enemyComp, bounds, -enemyComp.projectileSpeed / 4, enemyComp.projectileSpeed, side)
         createGravityProjectile(enemyComp, bounds, enemyComp.projectileSpeed / 4, enemyComp.projectileSpeed, side)
+    }
+
+    private fun explodeOnDeath(entity: Entity?, enemyComp: EnemyComponent, bounds: Rectangle) {
+        val remove = Mapper.REMOVE_MAPPER.get(entity)
+        if (remove.shouldRemove) {
+            shootEight(enemyComp, bounds)
+        }
     }
 
     private fun createProjectile(enemyComp: EnemyComponent, bounds: Rectangle, dx: Float = 0f, dy: Float = 0f,

@@ -93,6 +93,18 @@ object EnemyFactory {
                         .texture(texture)
                         .gravity().remove().build()
             }
+            EnemyType.NaturalJoin -> {
+                EntityBuilder.instance(engine)
+                        .enemy(type = type, damage = 2, activationRange = 100f, attackType = EnemyAttackType.ExplodeOnDeath,
+                                attackTexture = "p_ltimes", projectileSpeed = 45f, movementType = EnemyMovementType.BackAndForth)
+                        .health(4)
+                        .boundingBox(9f, 7f)
+                        .position(rect.x, rect.y)
+                        .velocity(speed = 30f)
+                        .texture(texture)
+                        .direction(facingRight = facingRight)
+                        .knockback().gravity().remove().build()
+            }
             else -> null
         }
     }
