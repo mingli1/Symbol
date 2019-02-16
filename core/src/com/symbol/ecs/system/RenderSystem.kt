@@ -17,12 +17,25 @@ class RenderSystem(private val batch: Batch) : IteratingSystem(
         val dir = Mapper.DIR_MAPPER.get(entity)
 
         val width = texture.texture!!.regionWidth.toFloat()
+        val height = texture.texture!!.regionHeight.toFloat()
 
-        if (dir == null || dir.facingRight) {
-            batch.draw(texture.texture, position.x, position.y)
-        } else {
-            batch.draw(texture.texture, position.x + width, position.y, -width, texture.texture!!.regionHeight.toFloat())
+        var xOffset = 0f
+        var yOffset = 0f
+        var fWidth = width
+        var fHeight = height
+
+        if (dir != null) {
+            if (!dir.facingRight) {
+                xOffset = width
+                fWidth = -width
+            }
+            if (dir.yFlip && !dir.facingUp) {
+                yOffset = height
+                fHeight = -height
+            }
         }
+
+        batch.draw(texture.texture, position.x + xOffset, position.y + yOffset, fWidth, fHeight)
     }
 
 }

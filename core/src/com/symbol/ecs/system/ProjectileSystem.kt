@@ -143,7 +143,7 @@ class ProjectileSystem(private val res: Resources) : IteratingSystem(Family.all(
                 .velocity(dx = dx, dy = dy)
                 .boundingBox(bw.toFloat(), bh.toFloat())
                 .texture(texture)
-                .direction().remove().build()
+                .direction(yFlip = true).remove().build()
     }
 
     private fun hit(entity: Entity, damage: Int) {

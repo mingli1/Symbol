@@ -163,7 +163,7 @@ class EnemyAttackSystem(private val player: Player, private val res: Resources) 
                 .velocity(dx = dx, dy = dy)
                 .boundingBox(bw.toFloat(), bh.toFloat())
                 .texture(texture)
-                .direction().gravity(collidable = false).remove().build()
+                .direction(yFlip = true).gravity(collidable = false).remove().build()
     }
 
 }

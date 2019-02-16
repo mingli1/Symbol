@@ -86,9 +86,10 @@ class EntityBuilder(private val engine: PooledEngine) {
         return this
     }
 
-    fun direction(facingRight: Boolean = true) : EntityBuilder {
+    fun direction(facingRight: Boolean = true, yFlip: Boolean = false) : EntityBuilder {
         directionComponent = engine.createComponent(DirectionComponent::class.java)
         directionComponent?.facingRight = facingRight
+        directionComponent?.yFlip = yFlip
         return this
     }
 

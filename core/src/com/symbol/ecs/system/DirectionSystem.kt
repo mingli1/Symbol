@@ -17,6 +17,9 @@ class DirectionSystem : IteratingSystem(Family.all(DirectionComponent::class.jav
 
         if (vel.dx > 0 && !knockingBack) dir.facingRight = true
         else if (vel.dx < 0 && !knockingBack) dir.facingRight = false
+
+        if (vel.dy > 0) dir.facingUp = true
+        else if (vel.dy < 0) dir.facingUp = false
     }
 
 }
