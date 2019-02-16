@@ -13,6 +13,7 @@ import com.symbol.ecs.component.EnemyComponent
 import com.symbol.ecs.entity.EnemyAttackType
 import com.symbol.ecs.entity.Player
 import com.symbol.ecs.system.DIAGONAL_PROJECTILE_SCALING
+import com.symbol.map.camera.CameraShake
 import com.symbol.util.*
 
 class EnemyAttackSystem(private val player: Player, private val res: Resources) :
@@ -41,20 +42,29 @@ class EnemyAttackSystem(private val player: Player, private val res: Resources) 
             return
         }
 
-        if (enemyComponent.active && enemyComponent.canAttack) {
-            when (enemyComponent.attackType) {
-                EnemyAttackType.None -> return
-                EnemyAttackType.ShootOne -> shootOne(enemyComponent, bounds, dir.facingRight)
-                EnemyAttackType.ShootTwoHorizontal -> shootTwoHorizontal(enemyComponent, bounds)
-                EnemyAttackType.ShootTwoVertical -> shootTwoVertical(enemyComponent, bounds)
-                EnemyAttackType.ShootFour -> shootFour(enemyComponent, bounds)
-                EnemyAttackType.ShootFourDiagonal -> shootFourDiagonal(enemyComponent, bounds)
-                EnemyAttackType.ShootEight -> shootEight(enemyComponent, bounds)
-                EnemyAttackType.ShootAtPlayer -> shootAtPlayer(enemyComponent, bounds, playerBounds, dir)
-                EnemyAttackType.SprayThree -> sprayThree(enemyComponent, bounds)
-                EnemyAttackType.ExplodeOnDeath -> explodeOnDeath(entity, enemyComponent, bounds)
+        if (enemyComponent.active) {
+            if (enemyComponent.attackType == EnemyAttackType.ShootAndQuake) {
+                val gravity = Mapper.GRAVITY_MAPPER.get(entity)
+                if (gravity.onGround) {
+                    CameraShake.shakeFor(3f, 0.7f)
+                }
             }
-            enemyComponent.canAttack = false
+            if (enemyComponent.canAttack) {
+                when (enemyComponent.attackType) {
+                    EnemyAttackType.None -> return
+                    EnemyAttackType.ShootOne -> shootOne(enemyComponent, bounds, dir.facingRight)
+                    EnemyAttackType.ShootTwoHorizontal -> shootTwoHorizontal(enemyComponent, bounds)
+                    EnemyAttackType.ShootTwoVertical -> shootTwoVertical(enemyComponent, bounds)
+                    EnemyAttackType.ShootFour -> shootFour(enemyComponent, bounds)
+                    EnemyAttackType.ShootFourDiagonal -> shootFourDiagonal(enemyComponent, bounds)
+                    EnemyAttackType.ShootEight -> shootEight(enemyComponent, bounds)
+                    EnemyAttackType.ShootAtPlayer -> shootAtPlayer(enemyComponent, bounds, playerBounds, dir)
+                    EnemyAttackType.SprayThree -> sprayThree(enemyComponent, bounds)
+                    EnemyAttackType.ExplodeOnDeath -> explodeOnDeath(entity, enemyComponent, bounds)
+                    EnemyAttackType.ShootAndQuake -> shootAtPlayer(enemyComponent, bounds, playerBounds, dir)
+                }
+                enemyComponent.canAttack = false
+            }
         }
 
         if (!enemyComponent.canAttack) {

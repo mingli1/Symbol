@@ -105,6 +105,18 @@ object EnemyFactory {
                         .direction(facingRight = facingRight)
                         .knockback().gravity().remove().build()
             }
+            EnemyType.BigPhi -> {
+                EntityBuilder.instance(engine)
+                        .enemy(type = type, damage = 4, activationRange = 200f, attackType = EnemyAttackType.ShootAndQuake,
+                                attackTexture = "p_alpha", attackRate = 1.5f, jumpImpulse = 150f, projectileSpeed = 60f)
+                        .health(10)
+                        .boundingBox(14f, 16f)
+                        .position(rect.x, rect.y)
+                        .velocity()
+                        .texture(texture)
+                        .direction(facingRight = facingRight)
+                        .gravity(gravity = -7.8f, terminalVelocity = -50f).remove().build()
+            }
             else -> null
         }
     }
