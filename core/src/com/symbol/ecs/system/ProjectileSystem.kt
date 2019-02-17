@@ -59,12 +59,18 @@ class ProjectileSystem(private val res: Resources) : IteratingSystem(Family.all(
         val pj = Mapper.PROJ_MAPPER.get(entity)
         val bb = Mapper.BOUNDING_BOX_MAPPER.get(entity)
         val position = Mapper.POS_MAPPER.get(entity)
+        val velocity = Mapper.VEL_MAPPER.get(entity)
         val width = Mapper.TEXTURE_MAPPER.get(entity).texture!!.regionWidth
         val height = Mapper.TEXTURE_MAPPER.get(entity).texture!!.regionHeight
         val remove = Mapper.REMOVE_MAPPER.get(entity)
         bb.rect.setPosition(position.x + (width - bb.rect.width) / 2, position.y + (height - bb.rect.height) / 2)
 
         pj.lifeTime += dt
+
+        if (pj.acceleration != 0f) {
+            if (velocity.dx != 0f) velocity.dx += if (velocity.dx > 0f) pj.acceleration else -pj.acceleration
+            if (velocity.dy != 0f) velocity.dy += if (velocity.dy > 0f) pj.acceleration else -pj.acceleration
+        }
 
         if (!pj.unstoppable) {
             for (mapObject in mapObjects) {

@@ -14,6 +14,7 @@ class ProjectileComponent : Component, Pool.Poolable {
     var knockback: Float = 0f
 
     var detonateTime: Float = 0f
+    var acceleration: Float = 0f
 
     override fun reset() {
         lifeTime = 0f
@@ -23,5 +24,6 @@ class ProjectileComponent : Component, Pool.Poolable {
         damage = 0
         knockback = 0f
         detonateTime = 0f
+        acceleration = 0f
     }
 }

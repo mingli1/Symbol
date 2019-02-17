@@ -85,19 +85,23 @@ class EnemyAttackSystem(private val player: Player, private val res: Resources) 
     private fun shootOne(enemyComp: EnemyComponent, bounds: Rectangle, facingRight: Boolean) {
         val texture = res.getTexture(enemyComp.attackTexture!!)!!
         createProjectile(enemyComp, bounds, if (facingRight) enemyComp.projectileSpeed else -enemyComp.projectileSpeed,
-                0f, texture, enemyComp.attackDetonateTime)
+                0f, texture, enemyComp.attackDetonateTime, enemyComp.projectileAcceleration)
     }
 
     private fun shootTwoHorizontal(enemyComp: EnemyComponent, bounds: Rectangle) {
         val texture = res.getTexture(enemyComp.attackTexture!!)!!
-        createProjectile(enemyComp, bounds, enemyComp.projectileSpeed, 0f, texture, enemyComp.attackDetonateTime)
-        createProjectile(enemyComp, bounds, -enemyComp.projectileSpeed, 0f, texture, enemyComp.attackDetonateTime)
+        createProjectile(enemyComp, bounds, enemyComp.projectileSpeed, 0f, texture,
+                enemyComp.attackDetonateTime, enemyComp.projectileAcceleration)
+        createProjectile(enemyComp, bounds, -enemyComp.projectileSpeed, 0f, texture,
+                enemyComp.attackDetonateTime, enemyComp.projectileAcceleration)
     }
 
     private fun shootTwoVertical(enemyComp: EnemyComponent, bounds: Rectangle) {
         val topTexture = res.getTexture(enemyComp.attackTexture + TOP) ?: res.getTexture(enemyComp.attackTexture!!)!!
-        createProjectile(enemyComp, bounds, 0f, enemyComp.projectileSpeed, topTexture, enemyComp.attackDetonateTime)
-        createProjectile(enemyComp, bounds, 0f, -enemyComp.projectileSpeed, topTexture, enemyComp.attackDetonateTime)
+        createProjectile(enemyComp, bounds, 0f, enemyComp.projectileSpeed, topTexture,
+                enemyComp.attackDetonateTime, enemyComp.projectileAcceleration)
+        createProjectile(enemyComp, bounds, 0f, -enemyComp.projectileSpeed, topTexture,
+                enemyComp.attackDetonateTime, enemyComp.projectileAcceleration)
     }
 
     private fun shootFour(enemyComp: EnemyComponent, bounds: Rectangle) {
@@ -109,16 +113,16 @@ class EnemyAttackSystem(private val player: Player, private val res: Resources) 
         val trTexture = res.getTexture(enemyComp.attackTexture + TOP_RIGHT) ?: res.getTexture(enemyComp.attackTexture!!)!!
         createProjectile(enemyComp, bounds, -enemyComp.projectileSpeed * DIAGONAL_PROJECTILE_SCALING,
                 enemyComp.projectileSpeed * DIAGONAL_PROJECTILE_SCALING, trTexture,
-                enemyComp.attackDetonateTime)
+                enemyComp.attackDetonateTime, enemyComp.projectileAcceleration)
         createProjectile(enemyComp, bounds, enemyComp.projectileSpeed * DIAGONAL_PROJECTILE_SCALING,
                 enemyComp.projectileSpeed * DIAGONAL_PROJECTILE_SCALING, trTexture,
-                enemyComp.attackDetonateTime)
+                enemyComp.attackDetonateTime, enemyComp.projectileAcceleration)
         createProjectile(enemyComp, bounds, -enemyComp.projectileSpeed * DIAGONAL_PROJECTILE_SCALING,
                 -enemyComp.projectileSpeed * DIAGONAL_PROJECTILE_SCALING, trTexture,
-                enemyComp.attackDetonateTime)
+                enemyComp.attackDetonateTime, enemyComp.projectileAcceleration)
         createProjectile(enemyComp, bounds, enemyComp.projectileSpeed * DIAGONAL_PROJECTILE_SCALING,
                 -enemyComp.projectileSpeed * DIAGONAL_PROJECTILE_SCALING, trTexture,
-                enemyComp.attackDetonateTime)
+                enemyComp.attackDetonateTime, enemyComp.projectileAcceleration)
     }
 
     private fun shootEight(enemyComp: EnemyComponent, bounds: Rectangle) {
@@ -137,13 +141,17 @@ class EnemyAttackSystem(private val player: Player, private val res: Resources) 
         dir.facingRight = bounds.x < xCenter
 
         if (bounds.x < xCenter && xBiased)
-            createProjectile(enemyComp, bounds, enemyComp.projectileSpeed, 0f, texture, enemyComp.attackDetonateTime)
+            createProjectile(enemyComp, bounds, enemyComp.projectileSpeed, 0f, texture,
+                    enemyComp.attackDetonateTime, enemyComp.projectileAcceleration)
         if (bounds.x >= xCenter && xBiased)
-            createProjectile(enemyComp, bounds, -enemyComp.projectileSpeed, 0f, texture, enemyComp.attackDetonateTime)
+            createProjectile(enemyComp, bounds, -enemyComp.projectileSpeed, 0f, texture,
+                    enemyComp.attackDetonateTime, enemyComp.projectileAcceleration)
         if (bounds.y < yCenter && !xBiased)
-            createProjectile(enemyComp, bounds, 0f, enemyComp.projectileSpeed, topTexture, enemyComp.attackDetonateTime)
+            createProjectile(enemyComp, bounds, 0f, enemyComp.projectileSpeed, topTexture,
+                    enemyComp.attackDetonateTime, enemyComp.projectileAcceleration)
         if (bounds.y >= yCenter && !xBiased)
-            createProjectile(enemyComp, bounds, 0f, -enemyComp.projectileSpeed, topTexture, enemyComp.attackDetonateTime)
+            createProjectile(enemyComp, bounds, 0f, -enemyComp.projectileSpeed, topTexture,
+                    enemyComp.attackDetonateTime, enemyComp.projectileAcceleration)
     }
 
     private fun sprayThree(enemyComp: EnemyComponent, bounds: Rectangle) {
@@ -162,12 +170,12 @@ class EnemyAttackSystem(private val player: Player, private val res: Resources) 
     }
 
     private fun createProjectile(enemyComp: EnemyComponent, bounds: Rectangle, dx: Float = 0f, dy: Float = 0f,
-                                 texture: TextureRegion, detonateTime: Float = 0f) {
+                                 texture: TextureRegion, detonateTime: Float = 0f, acceleration: Float = 0f) {
         val bw = texture.regionWidth - 1
         val bh = texture.regionHeight - 1
         EntityBuilder.instance(engine as PooledEngine)
                 .projectile(unstoppable = true, textureStr = enemyComp.attackTexture, enemy = true,
-                        damage = enemyComp.damage, detonateTime = detonateTime)
+                        damage = enemyComp.damage, detonateTime = detonateTime, acceleration = acceleration)
                 .position(bounds.x + (bounds.width / 2) - (bw / 2), bounds.y + (bounds.height / 2) - (bh / 2))
                 .velocity(dx = dx, dy = dy)
                 .boundingBox(bw.toFloat(), bh.toFloat())

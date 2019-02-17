@@ -22,6 +22,7 @@ class EnemyComponent : Component, Pool.Poolable {
     var canAttack: Boolean = true
     var attackTexture: String? = null
     var projectileSpeed: Float = 0f
+    var projectileAcceleration: Float = 0f
 
     var attackDetonateTime: Float = 0f
     var explodeOnDeath: Boolean = false
@@ -42,6 +43,7 @@ class EnemyComponent : Component, Pool.Poolable {
         canAttack = true
         attackTexture = null
         projectileSpeed = 0f
+        projectileAcceleration = 0f
 
         attackDetonateTime = 0f
         explodeOnDeath = false
