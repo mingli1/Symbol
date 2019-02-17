@@ -28,6 +28,7 @@ class EntityBuilder(private val engine: PooledEngine) {
     private var removeComponent: RemoveComponent? = null
     private var textureComponent: TextureComponent? = null
     private var velocityComponent: VelocityComponent? = null
+    private var orbitComponent: OrbitComponent? = null
 
     companion object {
         fun instance(engine: PooledEngine) : EntityBuilder = EntityBuilder(engine)
@@ -151,6 +152,18 @@ class EntityBuilder(private val engine: PooledEngine) {
         return this
     }
 
+    fun orbit(clockwise: Boolean = true, originX: Float = 0f, originY: Float = 0f,
+              angle: Float = 0f, speed: Float = 0f, radius: Float = 0f) : EntityBuilder {
+        orbitComponent = engine.createComponent(OrbitComponent::class.java)
+        orbitComponent?.clockwise = clockwise
+        orbitComponent?.originX = originX
+        orbitComponent?.originY = originY
+        orbitComponent?.angle = angle
+        orbitComponent?.speed = speed
+        orbitComponent?.radius = radius
+        return this
+    }
+
     fun build() : Entity {
         val entity = engine.createEntity()
 
@@ -166,6 +179,7 @@ class EntityBuilder(private val engine: PooledEngine) {
         if (removeComponent != null) entity.add(removeComponent)
         if (textureComponent != null) entity.add(textureComponent)
         if (velocityComponent != null) entity.add(velocityComponent)
+        if (orbitComponent != null) entity.add(orbitComponent)
 
         engine.addEntity(entity)
         return entity

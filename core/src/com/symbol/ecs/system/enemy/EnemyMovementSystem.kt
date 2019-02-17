@@ -83,12 +83,8 @@ class EnemyMovementSystem(private val player: Player) : IteratingSystem(Family.a
         }
     }
 
-    var angle = 0f
-
     private fun orbit(dt: Float, p: PositionComponent) {
-        angle += dt
-        p.x = 90 + MathUtils.cos(angle) * 45
-        p.y = 30 + MathUtils.sin(angle) * 45
+
     }
 
 }

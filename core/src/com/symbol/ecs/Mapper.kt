@@ -32,4 +32,6 @@ object Mapper {
 
     val KNOCKBACK_MAPPER: ComponentMapper<KnockbackComponent> = ComponentMapper.getFor(KnockbackComponent::class.java)
 
+    val ORBIT_MAPPER: ComponentMapper<OrbitComponent> = ComponentMapper.getFor(OrbitComponent::class.java)
+
 }
