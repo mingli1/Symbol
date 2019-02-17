@@ -5,6 +5,7 @@ enum class EnemyMovementType {
     None,
     BackAndForth,
     Charge,
-    Random
+    Random,
+    Orbit
 
 }

@@ -38,6 +38,7 @@ class EnemyMovementSystem(private val player: Player) : IteratingSystem(Family.a
                 EnemyMovementType.BackAndForth -> backAndForth(entity, position, velocity, dirComponent, gravity)
                 EnemyMovementType.Charge -> charge(position, velocity)
                 EnemyMovementType.Random -> random(entity, dt, position, velocity, gravity)
+                EnemyMovementType.Orbit -> orbit(dt, position)
             }
         }
     }
@@ -80,6 +81,14 @@ class EnemyMovementSystem(private val player: Player) : IteratingSystem(Family.a
             }
             movementTimers[entity] = 0f
         }
+    }
+
+    var angle = 0f
+
+    private fun orbit(dt: Float, p: PositionComponent) {
+        angle += dt
+        p.x = 90 + MathUtils.cos(angle) * 45
+        p.y = 30 + MathUtils.sin(angle) * 45
     }
 
 }
