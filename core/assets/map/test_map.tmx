@@ -30,7 +30,7 @@
  <objectgroup name="enemy">
   <object id="35" x="136.364" y="31.2727" width="7.81818" height="6.54545">
    <properties>
-    <property name="type" value="e"/>
+    <property name="type" value="percent"/>
    </properties>
   </object>
  </objectgroup>

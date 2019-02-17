@@ -54,7 +54,8 @@ class EntityBuilder(private val engine: PooledEngine) {
               attackDetonateTime: Float = 0f,
               explodeOnDeath: Boolean = false,
               teleportOnHit: Boolean = false,
-              lastStand: Boolean = false) : EntityBuilder {
+              lastStand: Boolean = false,
+              parent: Entity? = null) : EntityBuilder {
         enemyComponent = engine.createComponent(EnemyComponent::class.java)
         enemyComponent?.type = type
         enemyComponent?.movementType = movementType
@@ -70,6 +71,7 @@ class EntityBuilder(private val engine: PooledEngine) {
         enemyComponent?.explodeOnDeath = explodeOnDeath
         enemyComponent?.teleportOnHit = teleportOnHit
         enemyComponent?.lastStand = lastStand
+        enemyComponent?.parent = parent
         return this
     }
 

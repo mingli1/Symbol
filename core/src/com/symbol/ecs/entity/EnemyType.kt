@@ -12,7 +12,9 @@ enum class EnemyType(val typeStr: String) {
     Theta("theta"),
     BigOmega("big_omega"),
     NaturalJoin("njoin"),
-    BigPhi("big_phi");
+    BigPhi("big_phi"),
+    Percent("percent"),
+    PercentOrbit("percent_orbit");
 
     companion object {
         fun getType(typeStr: String) : EnemyType? {

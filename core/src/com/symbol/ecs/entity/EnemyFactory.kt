@@ -2,8 +2,10 @@ package com.symbol.ecs.entity
 
 import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.core.PooledEngine
+import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Rectangle
 import com.symbol.ecs.EntityBuilder
+import com.symbol.util.ORBIT
 import com.symbol.util.Resources
 
 object EnemyFactory {
@@ -13,7 +15,7 @@ object EnemyFactory {
         return when (type) {
             EnemyType.EConstant -> {
                 EntityBuilder.instance(engine)
-                        .enemy(type = type, movementType = EnemyMovementType.BackAndForth, damage = 2)
+                        .enemy(type = type, movementType = EnemyMovementType.BackAndForth, damage = 2, activationRange = 150f)
                         .health(2)
                         .boundingBox(7f, 7f)
                         .position(rect.x, rect.y)
@@ -116,6 +118,27 @@ object EnemyFactory {
                         .texture(texture)
                         .direction(facingRight = facingRight)
                         .gravity(gravity = -7.8f, terminalVelocity = -50f).remove().build()
+            }
+            EnemyType.Percent -> {
+                val parent = EntityBuilder.instance(engine)
+                        .enemy(type = type, damage = 1, activationRange = 120f)
+                        .health(2)
+                        .boundingBox(10f, 10f)
+                        .position(rect.x, rect.y)
+                        .velocity(speed = 25f)
+                        .texture(texture)
+                        .direction(facingRight = facingRight)
+                        .gravity().knockback().build()
+                EntityBuilder.instance(engine)
+                        .enemy(type = type, damage = 1, movementType = EnemyMovementType.Orbit, parent = parent)
+                        .health(1)
+                        .boundingBox(6f, 6f)
+                        .position(rect.x, rect.y)
+                        .velocity()
+                        .texture(res.getTexture("e_${type.typeStr}$ORBIT")!!)
+                        .orbit(angle = MathUtils.PI, speed = 2f, radius = 15f)
+                        .remove().build()
+                return parent
             }
             else -> null
         }

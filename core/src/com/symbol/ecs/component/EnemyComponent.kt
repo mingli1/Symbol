@@ -1,6 +1,7 @@
 package com.symbol.ecs.component
 
 import com.badlogic.ashley.core.Component
+import com.badlogic.ashley.core.Entity
 import com.badlogic.gdx.utils.Pool
 import com.symbol.ecs.entity.EnemyAttackType
 import com.symbol.ecs.entity.EnemyMovementType
@@ -29,6 +30,8 @@ class EnemyComponent : Component, Pool.Poolable {
     var teleportOnHit: Boolean = false
     var lastStand: Boolean = false
 
+    var parent: Entity? = null
+
     override fun reset() {
         type = EnemyType.None
         movementType = EnemyMovementType.None
@@ -49,6 +52,8 @@ class EnemyComponent : Component, Pool.Poolable {
         explodeOnDeath = false
         teleportOnHit = false
         lastStand = false
+
+        parent = null
     }
 
 }

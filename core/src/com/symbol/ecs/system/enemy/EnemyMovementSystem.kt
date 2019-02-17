@@ -30,15 +30,17 @@ class EnemyMovementSystem(private val player: Player) : IteratingSystem(Family.a
         val gravity = Mapper.GRAVITY_MAPPER.get(entity)
 
         if (enemyComponent.active) {
-            if (gravity.onGround && enemyComponent.jumpImpulse != 0f) {
-                velocity.dy = enemyComponent.jumpImpulse
+            if (gravity != null) {
+                if (gravity.onGround && enemyComponent.jumpImpulse != 0f) {
+                    velocity.dy = enemyComponent.jumpImpulse
+                }
             }
             when (enemyComponent.movementType) {
                 EnemyMovementType.None -> return
                 EnemyMovementType.BackAndForth -> backAndForth(entity, position, velocity, dirComponent, gravity)
                 EnemyMovementType.Charge -> charge(position, velocity)
                 EnemyMovementType.Random -> random(entity, dt, position, velocity, gravity)
-                EnemyMovementType.Orbit -> orbit(dt, position)
+                EnemyMovementType.Orbit -> orbit(entity, enemyComponent)
             }
         }
     }
@@ -83,8 +85,13 @@ class EnemyMovementSystem(private val player: Player) : IteratingSystem(Family.a
         }
     }
 
-    private fun orbit(dt: Float, p: PositionComponent) {
+    private fun orbit(entity: Entity?, enemyComponent: EnemyComponent) {
+        val orbit = Mapper.ORBIT_MAPPER.get(entity)
+        val bounds = Mapper.BOUNDING_BOX_MAPPER.get(enemyComponent.parent)
+        val originX = bounds.rect.x + bounds.rect.width / 2
+        val originY = bounds.rect.y + bounds.rect.height / 2
 
+        orbit?.setOrigin(originX, originY)
     }
 
 }

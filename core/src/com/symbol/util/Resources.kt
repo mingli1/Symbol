@@ -7,6 +7,7 @@ import com.badlogic.gdx.utils.Disposable
 
 const val TOP = "_t"
 const val TOP_RIGHT ="_tr"
+const val ORBIT = "_orbit"
 
 class Resources : Disposable {
 
@@ -33,6 +34,8 @@ class Resources : Disposable {
         textures["e_big_omega"] = atlas.findRegion("e_big_omega")
         textures["e_njoin"] = atlas.findRegion("e_njoin")
         textures["e_big_phi"] = atlas.findRegion("e_big_phi")
+        textures["e_percent"] = atlas.findRegion("e_percent")
+        textures["e_percent_orbit"] = atlas.findRegion("e_percent_orbit")
 
         loadProjectile("p_dot")
         loadProjectile("p_dot_xor")
