@@ -7,10 +7,12 @@ import com.badlogic.ashley.core.PooledEngine
 import com.badlogic.ashley.systems.IteratingSystem
 import com.badlogic.ashley.utils.ImmutableArray
 import com.badlogic.gdx.graphics.g2d.TextureRegion
+import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.utils.Array
 import com.symbol.ecs.EntityBuilder
 import com.symbol.ecs.Mapper
+import com.symbol.ecs.component.EnemyComponent
 import com.symbol.ecs.component.HealthComponent
 import com.symbol.ecs.component.ProjectileComponent
 import com.symbol.ecs.component.RemoveComponent
@@ -112,6 +114,13 @@ class ProjectileSystem(private val res: Resources) : IteratingSystem(Family.all(
         }
     }
 
+    private fun hit(entity: Entity, damage: Int) {
+        val health = Mapper.HEALTH_MAPPER.get(entity)
+        health.hp -= damage
+
+        handleTeleportation(entity)
+    }
+
     private fun handleDetonation(entity: Entity?, pj: ProjectileComponent, bounds: Rectangle, remove: RemoveComponent) {
         if (pj.enemy && pj.unstoppable && pj.detonateTime != 0f) {
             if (pj.lifeTime >= pj.detonateTime) {
@@ -146,9 +155,21 @@ class ProjectileSystem(private val res: Resources) : IteratingSystem(Family.all(
                 .direction(yFlip = true).remove().build()
     }
 
-    private fun hit(entity: Entity, damage: Int) {
-        val health = Mapper.HEALTH_MAPPER.get(entity)
-        health.hp -= damage
+    private fun handleTeleportation(entity: Entity?) {
+        val enemyComp = Mapper.ENEMY_MAPPER.get(entity)
+        if (enemyComp != null) {
+            val bounds = Mapper.BOUNDING_BOX_MAPPER.get(entity)
+            val position = Mapper.POS_MAPPER.get(entity)
+            val velocity = Mapper.VEL_MAPPER.get(entity)
+            if (enemyComp.teleportOnHit) {
+                val platform = mapObjects.random().bounds
+                val randX = MathUtils.random(platform.x, platform.x + platform.width - bounds.rect.width)
+                val newY = platform.y + platform.height + bounds.rect.height / 2
+
+                position.set(randX, newY)
+                velocity.dx = 0f
+            }
+        }
     }
 
 }
