@@ -26,6 +26,7 @@ class EnemyComponent : Component, Pool.Poolable {
     var attackDetonateTime: Float = 0f
     var explodeOnDeath: Boolean = false
     var teleportOnHit: Boolean = false
+    var lastStand: Boolean = false
 
     override fun reset() {
         type = EnemyType.None
@@ -45,6 +46,7 @@ class EnemyComponent : Component, Pool.Poolable {
         attackDetonateTime = 0f
         explodeOnDeath = false
         teleportOnHit = false
+        lastStand = false
     }
 
 }

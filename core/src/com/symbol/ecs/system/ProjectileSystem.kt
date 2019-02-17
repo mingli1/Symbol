@@ -119,6 +119,7 @@ class ProjectileSystem(private val res: Resources) : IteratingSystem(Family.all(
         health.hp -= damage
 
         handleTeleportation(entity)
+        handleLastStand(entity)
     }
 
     private fun handleDetonation(entity: Entity?, pj: ProjectileComponent, bounds: Rectangle, remove: RemoveComponent) {
@@ -158,16 +159,28 @@ class ProjectileSystem(private val res: Resources) : IteratingSystem(Family.all(
     private fun handleTeleportation(entity: Entity?) {
         val enemyComp = Mapper.ENEMY_MAPPER.get(entity)
         if (enemyComp != null) {
-            val bounds = Mapper.BOUNDING_BOX_MAPPER.get(entity)
-            val position = Mapper.POS_MAPPER.get(entity)
-            val velocity = Mapper.VEL_MAPPER.get(entity)
             if (enemyComp.teleportOnHit) {
+                val bounds = Mapper.BOUNDING_BOX_MAPPER.get(entity)
+                val position = Mapper.POS_MAPPER.get(entity)
+                val velocity = Mapper.VEL_MAPPER.get(entity)
+
                 val platform = mapObjects.random().bounds
                 val randX = MathUtils.random(platform.x, platform.x + platform.width - bounds.rect.width)
                 val newY = platform.y + platform.height + bounds.rect.height / 2
 
                 position.set(randX, newY)
                 velocity.dx = 0f
+            }
+        }
+    }
+
+    private fun handleLastStand(entity: Entity?) {
+        val enemyComp = Mapper.ENEMY_MAPPER.get(entity)
+        if (enemyComp != null) {
+            if (enemyComp.lastStand) {
+                val health = Mapper.HEALTH_MAPPER.get(entity)
+                val scale = 1f / health.maxHp
+                enemyComp.attackRate -= enemyComp.attackRate * scale
             }
         }
     }
