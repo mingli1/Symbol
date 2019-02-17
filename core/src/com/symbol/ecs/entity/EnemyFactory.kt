@@ -129,15 +129,19 @@ object EnemyFactory {
                         .texture(texture)
                         .direction(facingRight = facingRight)
                         .gravity().knockback().remove().build()
-                EntityBuilder.instance(engine)
-                        .enemy(type = type, damage = 1, activationRange = 150f, movementType = EnemyMovementType.Orbit, parent = parent)
-                        .health(1)
-                        .boundingBox(6f, 6f)
-                        .position(rect.x, rect.y)
-                        .velocity()
-                        .texture(res.getTexture("e_${type.typeStr}$ORBIT")!!)
-                        .orbit(angle = MathUtils.PI, speed = 2f, radius = 15f)
-                        .remove().build()
+
+                val angles = listOf(MathUtils.PI2 / 3f, MathUtils.PI2 * 2f / 3f, 0f)
+                for (angle in angles) {
+                    EntityBuilder.instance(engine)
+                            .enemy(type = type, damage = 1, activationRange = 150f, movementType = EnemyMovementType.Orbit, parent = parent)
+                            .health(1)
+                            .boundingBox(6f, 6f)
+                            .position(rect.x, rect.y)
+                            .velocity()
+                            .texture(res.getTexture("e_${type.typeStr}$ORBIT")!!)
+                            .orbit(angle = angle, speed = 2f, radius = 15f)
+                            .remove().build()
+                }
                 return parent
             }
             else -> null

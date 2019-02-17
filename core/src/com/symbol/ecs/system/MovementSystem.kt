@@ -17,9 +17,13 @@ class MovementSystem : IteratingSystem(
         val position = Mapper.POS_MAPPER.get(entity)
         val velocity = Mapper.VEL_MAPPER.get(entity)
         val orbit = Mapper.ORBIT_MAPPER.get(entity)
+        val bounds = Mapper.BOUNDING_BOX_MAPPER.get(entity)
+        val width = Mapper.TEXTURE_MAPPER.get(entity).texture!!.regionWidth
+        val height = Mapper.TEXTURE_MAPPER.get(entity).texture!!.regionHeight
+
+        bounds.rect.setPosition(position.x + (width - bounds.rect.width) / 2, position.y + (height - bounds.rect.height) / 2)
 
         if (orbit != null) {
-            val bounds = Mapper.BOUNDING_BOX_MAPPER.get(entity)
             orbit.angle += if (!orbit.clockwise) orbit.speed * dt else -orbit.speed * dt
             if (orbit.angle >= MathUtils.PI2) orbit.angle -= MathUtils.PI2
 
