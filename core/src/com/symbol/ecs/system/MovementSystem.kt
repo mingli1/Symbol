@@ -19,11 +19,12 @@ class MovementSystem : IteratingSystem(
         val orbit = Mapper.ORBIT_MAPPER.get(entity)
 
         if (orbit != null) {
+            val bounds = Mapper.BOUNDING_BOX_MAPPER.get(entity)
             orbit.angle += if (!orbit.clockwise) orbit.speed * dt else -orbit.speed * dt
             if (orbit.angle >= MathUtils.PI2) orbit.angle -= MathUtils.PI2
 
-            position.x = orbit.originX + MathUtils.cos(orbit.angle) * orbit.radius
-            position.y = orbit.originY + MathUtils.sin(orbit.angle) * orbit.radius
+            position.x = orbit.originX + MathUtils.cos(orbit.angle) * orbit.radius - bounds.rect.width / 2
+            position.y = orbit.originY + MathUtils.sin(orbit.angle) * orbit.radius - bounds.rect.height / 2
         }
         else {
             position.x += velocity.dx * dt

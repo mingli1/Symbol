@@ -87,11 +87,19 @@ class EnemyMovementSystem(private val player: Player) : IteratingSystem(Family.a
 
     private fun orbit(entity: Entity?, enemyComponent: EnemyComponent) {
         val orbit = Mapper.ORBIT_MAPPER.get(entity)
-        val bounds = Mapper.BOUNDING_BOX_MAPPER.get(enemyComponent.parent)
-        val originX = bounds.rect.x + bounds.rect.width / 2
-        val originY = bounds.rect.y + bounds.rect.height / 2
+        val remove = Mapper.REMOVE_MAPPER.get(entity)
+        val parentRemove = Mapper.REMOVE_MAPPER.get(enemyComponent.parent)
 
-        orbit?.setOrigin(originX, originY)
+        if (!parentRemove.shouldRemove) {
+            val bounds = Mapper.BOUNDING_BOX_MAPPER.get(enemyComponent.parent)
+            val originX = bounds.rect.x + bounds.rect.width / 2
+            val originY = bounds.rect.y + bounds.rect.height / 2
+
+            orbit?.setOrigin(originX, originY)
+        }
+        else {
+            remove.shouldRemove = true
+        }
     }
 
 }
