@@ -24,6 +24,7 @@ private const val COLLISION_LAYER = "collision"
 private const val ENEMY_LAYER = "enemy"
 
 private const val MAP_OBJECT_TYPE = "type"
+private const val MAP_OBJECT_DAMAGE = "damage"
 
 private const val ENEMY_TYPE = "type"
 private const val ENEMY_FACING_RIGHT = "facingRight"
@@ -82,10 +83,12 @@ class MapManager(batch: Batch, private val cam: OrthographicCamera,
         for (rectangleMapObject in objects.getByType(RectangleMapObject::class.java)) {
             val mapObjectRect = rectangleMapObject.rectangle
             val typeProp = rectangleMapObject.properties[MAP_OBJECT_TYPE]
+            val damageProp = rectangleMapObject.properties[MAP_OBJECT_DAMAGE]
 
             val mapObjectType = if (typeProp == null) MapObjectType.Ground else MapObjectType.getType(typeProp.toString())!!
+            val mapObjectDamage = if (damageProp == null) 0 else damageProp as Int
 
-            mapObjects.add(MapObject(mapObjectRect, mapObjectType))
+            mapObjects.add(MapObject(mapObjectRect, mapObjectType, mapObjectDamage))
         }
     }
 

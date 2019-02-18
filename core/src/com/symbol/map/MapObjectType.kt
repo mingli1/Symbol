@@ -3,7 +3,8 @@ package com.symbol.map
 enum class MapObjectType(val typeStr: String) {
 
     Ground("ground"),
-    Lethal("lethal");
+    Lethal("lethal"),
+    KnockbackDamage("kbd");
 
     companion object {
         fun getType(typeStr: String) : MapObjectType? {
