@@ -91,6 +91,15 @@ class MapCollisionSystem : IteratingSystem(
             }
         }
         if (velocity.dy != 0f) gravity.onGround = false
+
+        for (mapObject in mapObjects) {
+            if (bb.rect.overlaps(mapObject.bounds)) {
+                when (mapObject.type) {
+                    MapObjectType.Ground -> return
+                    MapObjectType.Lethal -> handleLethalMapObject(entity)
+                }
+            }
+        }
     }
 
     fun setMapData(mapObjects: Array<MapObject>, mapWidth: Int, mapHeight: Int) {
@@ -98,6 +107,11 @@ class MapCollisionSystem : IteratingSystem(
         this.mapObjects.addAll(mapObjects)
         this.mapWidth = mapWidth
         this.mapHeight = mapHeight
+    }
+
+    private fun handleLethalMapObject(entity: Entity?) {
+        val health = Mapper.HEALTH_MAPPER.get(entity)
+        health?.hp = 0
     }
 
     private fun savePreviousPosition(position: PositionComponent) {
