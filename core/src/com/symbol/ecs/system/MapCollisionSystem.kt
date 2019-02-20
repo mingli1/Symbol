@@ -15,9 +15,7 @@ import com.symbol.map.MapObject
 import com.symbol.map.MapObjectType
 
 private const val NUM_SUB_STEPS = 30
-
-private const val KNOCKBACK_TIME = 0.1f
-private const val KNOCKBACK_POWER = 50f
+private const val MAP_OBJECT_DAMAGE_RATE = 1f
 
 class MapCollisionSystem : IteratingSystem(
         Family.all(BoundingBoxComponent::class.java, GravityComponent::class.java).get()
@@ -32,8 +30,8 @@ class MapCollisionSystem : IteratingSystem(
 
     private lateinit var removableEntities: ImmutableArray<Entity>
 
-    private var knockbackTimes: MutableMap<Entity, Float> = HashMap()
-    private var startKnockback: MutableMap<Entity, Boolean> = HashMap()
+    private var damageTimes: MutableMap<Entity, Float> = HashMap()
+    private var startDamage: MutableMap<Entity, Boolean> = HashMap()
 
     override fun addedToEngine(engine: Engine?) {
         super.addedToEngine(engine)
@@ -97,23 +95,21 @@ class MapCollisionSystem : IteratingSystem(
             }
         }
         if (velocity.dy != 0f) gravity.onGround = false
-
         for (mapObject in mapObjects) {
             if (bb.rect.overlaps(mapObject.bounds)) {
                 when (mapObject.type) {
-                    MapObjectType.Ground -> return
                     MapObjectType.Lethal -> handleLethalMapObject(entity)
-                    MapObjectType.KnockbackDamage -> handleKnockbackAndDamage(mapObject, entity)
+                    MapObjectType.Damage -> handleDamageMapObject(mapObject, entity)
+                    MapObjectType.Ground -> {}
                 }
             }
         }
 
-        if (startKnockback[entity]!!) {
-            knockbackTimes[entity!!] = knockbackTimes[entity]?.plus(dt)!!
-            if (knockbackTimes[entity]!! > KNOCKBACK_TIME) {
-                velocity.dx = 0f
-                knockbackTimes[entity] = 0f
-                startKnockback[entity] = false
+        if (startDamage[entity]!!) {
+            damageTimes[entity!!] = damageTimes[entity]?.plus(dt)!!
+            if (damageTimes[entity]!! >= MAP_OBJECT_DAMAGE_RATE) {
+                damageTimes[entity] = 0f
+                startDamage[entity] = false
             }
         }
     }
@@ -124,11 +120,11 @@ class MapCollisionSystem : IteratingSystem(
         this.mapWidth = mapWidth
         this.mapHeight = mapHeight
 
-        knockbackTimes.clear()
-        startKnockback.clear()
+        damageTimes.clear()
+        startDamage.clear()
         for (entity in entities) {
-            knockbackTimes[entity] = 0f
-            startKnockback[entity] = false
+            damageTimes[entity] = 0f
+            startDamage[entity] = false
         }
     }
 
@@ -137,18 +133,11 @@ class MapCollisionSystem : IteratingSystem(
         health?.hp = 0
     }
 
-    private fun handleKnockbackAndDamage(mapObject: MapObject, entity: Entity?) {
-        val health = Mapper.HEALTH_MAPPER.get(entity)
-        if (health != null) health.hp -= mapObject.damage
-
-        val velocity = Mapper.VEL_MAPPER.get(entity)
-        if (velocity.dx != 0f) {
-            velocity.dx = if (velocity.dx > 0) -KNOCKBACK_POWER else KNOCKBACK_POWER
-            startKnockback[entity!!] = true
-        }
-        if (velocity.dy != 0f) {
-            velocity.dy = if (velocity.dy > 0) -KNOCKBACK_POWER else KNOCKBACK_POWER
-            startKnockback[entity!!] = true
+    private fun handleDamageMapObject(mapObject: MapObject, entity: Entity?) {
+        if (damageTimes[entity] == 0f) {
+            val health = Mapper.HEALTH_MAPPER.get(entity)
+            if (health != null) health.hp -= mapObject.damage
+            startDamage[entity!!] = true
         }
     }
 

@@ -4,7 +4,7 @@ enum class MapObjectType(val typeStr: String) {
 
     Ground("ground"),
     Lethal("lethal"),
-    KnockbackDamage("kbd");
+    Damage("damage");
 
     companion object {
         fun getType(typeStr: String) : MapObjectType? {

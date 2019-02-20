@@ -34,7 +34,7 @@
   <object id="38" x="89.1875" y="57.0625" width="5.75" height="6.6875">
    <properties>
     <property name="damage" type="int" value="1"/>
-    <property name="type" value="kbd"/>
+    <property name="type" value="damage"/>
    </properties>
   </object>
  </objectgroup>
