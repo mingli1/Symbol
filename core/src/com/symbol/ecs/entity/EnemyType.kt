@@ -26,3 +26,28 @@ enum class EnemyType(val typeStr: String) {
     }
 
 }
+
+enum class EnemyAttackType {
+
+    None,
+    ShootOne,
+    ShootTwoHorizontal,
+    ShootTwoVertical,
+    ShootFour,
+    ShootFourDiagonal,
+    ShootEight,
+    ShootAtPlayer,
+    SprayThree,
+    ShootAndQuake
+
+}
+
+enum class EnemyMovementType {
+
+    None,
+    BackAndForth,
+    Charge,
+    Random,
+    Orbit
+
+}

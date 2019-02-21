@@ -8,14 +8,14 @@ import com.symbol.ecs.EntityBuilder
 import com.symbol.util.ORBIT
 import com.symbol.util.Resources
 
-object EnemyFactory {
+object EntityFactory {
 
     fun createEnemy(engine: PooledEngine, res: Resources, type: EnemyType, rect: Rectangle, facingRight: Boolean) : Entity? {
         val texture = res.getTexture("e_${type.typeStr}")!!
         return when (type) {
             EnemyType.EConstant -> {
                 EntityBuilder.instance(engine)
-                        .enemy(type = type, movementType = EnemyMovementType.BackAndForth, damage = 2, activationRange = 150f)
+                        .enemy(movementType = EnemyMovementType.BackAndForth, damage = 2, activationRange = 150f)
                         .health(2)
                         .boundingBox(7f, 7f)
                         .position(rect.x, rect.y)
@@ -26,7 +26,7 @@ object EnemyFactory {
             }
             EnemyType.SquareRoot -> {
                 EntityBuilder.instance(engine)
-                        .enemy(type = type, movementType = EnemyMovementType.Charge,
+                        .enemy(movementType = EnemyMovementType.Charge,
                                 damage = 3, activationRange = 75f)
                         .health(3)
                         .boundingBox(10f, 8f)
@@ -38,7 +38,7 @@ object EnemyFactory {
             }
             EnemyType.Exists -> {
                 EntityBuilder.instance(engine)
-                        .enemy(type = type, movementType = EnemyMovementType.Charge,
+                        .enemy(movementType = EnemyMovementType.Charge,
                                 damage = PLAYER_HP, activationRange = 90f)
                         .health(2)
                         .boundingBox(9f, 13f)
@@ -50,7 +50,7 @@ object EnemyFactory {
             }
             EnemyType.Summation -> {
                 EntityBuilder.instance(engine)
-                        .enemy(type = type, damage = 2, activationRange = 120f, attackType = EnemyAttackType.ShootOne,
+                        .enemy(damage = 2, activationRange = 120f, attackType = EnemyAttackType.ShootOne,
                                 attackTexture = "p_large_triangle", attackRate = 1.4f, projectileSpeed = 45f)
                         .health(2)
                         .boundingBox(10f, 13f)
@@ -62,7 +62,7 @@ object EnemyFactory {
             }
             EnemyType.BigPi -> {
                 EntityBuilder.instance(engine)
-                        .enemy(type = type, damage = 4, activationRange = 120f, attackType = EnemyAttackType.ShootOne,
+                        .enemy(damage = 4, activationRange = 120f, attackType = EnemyAttackType.ShootOne,
                                 attackTexture = "p_big_ll", attackRate = 1.4f, projectileSpeed = 45f)
                         .health(4)
                         .boundingBox(11f, 13f)
@@ -74,7 +74,7 @@ object EnemyFactory {
             }
             EnemyType.In -> {
                 EntityBuilder.instance(engine)
-                        .enemy(type = type, damage = 1, activationRange = 100f, attackType = EnemyAttackType.ShootOne,
+                        .enemy(damage = 1, activationRange = 100f, attackType = EnemyAttackType.ShootOne,
                                 attackTexture = "p_xor", attackRate = 2f, projectileSpeed = 45f, attackDetonateTime = 2f)
                         .health(3)
                         .boundingBox(11f, 11f)
@@ -86,7 +86,7 @@ object EnemyFactory {
             }
             EnemyType.BigOmega -> {
                 EntityBuilder.instance(engine)
-                        .enemy(type = type, damage = 2, activationRange = 150f, attackType = EnemyAttackType.SprayThree,
+                        .enemy(damage = 2, activationRange = 150f, attackType = EnemyAttackType.SprayThree,
                                 attackTexture = "p_cup", attackRate = 2.5f, projectileSpeed = 200f)
                         .health(3)
                         .boundingBox(12f, 13f)
@@ -97,7 +97,7 @@ object EnemyFactory {
             }
             EnemyType.NaturalJoin -> {
                 EntityBuilder.instance(engine)
-                        .enemy(type = type, damage = 2, activationRange = 100f, explodeOnDeath = true,
+                        .enemy(damage = 2, activationRange = 100f, explodeOnDeath = true,
                                 attackTexture = "p_ltimes", projectileSpeed = 45f, movementType = EnemyMovementType.BackAndForth)
                         .health(4)
                         .boundingBox(9f, 7f)
@@ -109,7 +109,7 @@ object EnemyFactory {
             }
             EnemyType.BigPhi -> {
                 EntityBuilder.instance(engine)
-                        .enemy(type = type, damage = 4, activationRange = 200f, attackType = EnemyAttackType.ShootAndQuake,
+                        .enemy(damage = 4, activationRange = 200f, attackType = EnemyAttackType.ShootAndQuake,
                                 attackTexture = "p_alpha", attackRate = 1.5f, jumpImpulse = 150f, projectileSpeed = 60f, explodeOnDeath = true)
                         .health(10)
                         .boundingBox(14f, 16f)
@@ -121,7 +121,7 @@ object EnemyFactory {
             }
             EnemyType.Percent -> {
                 val parent = EntityBuilder.instance(engine)
-                        .enemy(type = type, damage = 1, activationRange = 120f, movementType = EnemyMovementType.BackAndForth)
+                        .enemy(damage = 1, activationRange = 120f, movementType = EnemyMovementType.BackAndForth)
                         .health(2)
                         .boundingBox(10f, 10f)
                         .position(rect.x, rect.y)
@@ -133,7 +133,7 @@ object EnemyFactory {
                 val angles = listOf(MathUtils.PI2 / 3f, MathUtils.PI2 * 2f / 3f, 0f)
                 for (angle in angles) {
                     EntityBuilder.instance(engine)
-                            .enemy(type = type, damage = 1, activationRange = 150f, movementType = EnemyMovementType.Orbit, parent = parent)
+                            .enemy(damage = 1, activationRange = 150f, movementType = EnemyMovementType.Orbit, parent = parent)
                             .health(1)
                             .boundingBox(6f, 6f)
                             .position(rect.x, rect.y)

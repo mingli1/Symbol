@@ -5,11 +5,9 @@ import com.badlogic.ashley.core.Entity
 import com.badlogic.gdx.utils.Pool
 import com.symbol.ecs.entity.EnemyAttackType
 import com.symbol.ecs.entity.EnemyMovementType
-import com.symbol.ecs.entity.EnemyType
 
 class EnemyComponent : Component, Pool.Poolable {
 
-    var type: EnemyType = EnemyType.None
     var movementType: EnemyMovementType = EnemyMovementType.None
     var attackType: EnemyAttackType = EnemyAttackType.None
 
@@ -33,7 +31,6 @@ class EnemyComponent : Component, Pool.Poolable {
     var parent: Entity? = null
 
     override fun reset() {
-        type = EnemyType.None
         movementType = EnemyMovementType.None
         attackType = EnemyAttackType.None
 

@@ -7,9 +7,9 @@ import com.symbol.ecs.component.*
 import com.symbol.ecs.component.EnemyComponent
 import com.symbol.ecs.component.PlayerComponent
 import com.symbol.ecs.component.ProjectileComponent
+import com.symbol.ecs.component.map.MovingPlatformComponent
 import com.symbol.ecs.entity.EnemyAttackType
 import com.symbol.ecs.entity.EnemyMovementType
-import com.symbol.ecs.entity.EnemyType
 import com.symbol.ecs.system.GRAVITY
 import com.symbol.ecs.system.TERMINAL_VELOCITY
 
@@ -18,6 +18,7 @@ class EntityBuilder(private val engine: PooledEngine) {
     private var playerComponent: PlayerComponent? = null
     private var enemyComponent: EnemyComponent? = null
     private var projectileComponent: ProjectileComponent? = null
+    private var movingPlatformComponent: MovingPlatformComponent? = null
 
     private var boundingBoxComponent: BoundingBoxComponent? = null
     private var directionComponent: DirectionComponent? = null
@@ -41,8 +42,7 @@ class EntityBuilder(private val engine: PooledEngine) {
         return this
     }
 
-    fun enemy(type: EnemyType,
-              movementType: EnemyMovementType = EnemyMovementType.None,
+    fun enemy(movementType: EnemyMovementType = EnemyMovementType.None,
               attackType: EnemyAttackType = EnemyAttackType.None,
               damage: Int = 0,
               jumpImpulse: Float = 0f,
@@ -57,7 +57,6 @@ class EntityBuilder(private val engine: PooledEngine) {
               lastStand: Boolean = false,
               parent: Entity? = null) : EntityBuilder {
         enemyComponent = engine.createComponent(EnemyComponent::class.java)
-        enemyComponent?.type = type
         enemyComponent?.movementType = movementType
         enemyComponent?.attackType = attackType
         enemyComponent?.jumpImpulse = jumpImpulse
@@ -90,6 +89,12 @@ class EntityBuilder(private val engine: PooledEngine) {
         projectileComponent?.knockback = knockback
         projectileComponent?.detonateTime = detonateTime
         projectileComponent?.acceleration = acceleration
+        return this
+    }
+
+    fun movingPlatform(distance: Float = 0f) : EntityBuilder {
+        movingPlatformComponent = engine.createComponent(MovingPlatformComponent::class.java)
+        movingPlatformComponent?.distance = distance
         return this
     }
 

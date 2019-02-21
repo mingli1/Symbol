@@ -12,7 +12,7 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.utils.Array
 import com.badlogic.gdx.utils.Disposable
-import com.symbol.ecs.entity.EnemyFactory
+import com.symbol.ecs.entity.EntityFactory
 import com.symbol.ecs.entity.EnemyType
 import com.symbol.util.Resources
 
@@ -22,6 +22,7 @@ private const val PLAYER_SPAWN_LAYER = "player"
 private const val TILE_LAYER = "tile"
 private const val COLLISION_LAYER = "collision"
 private const val ENEMY_LAYER = "enemy"
+private const val MAP_ENTITY_LAYER = "map"
 
 private const val MAP_OBJECT_TYPE = "type"
 private const val MAP_OBJECT_DAMAGE = "damage"
@@ -40,6 +41,7 @@ class MapManager(batch: Batch, private val cam: OrthographicCamera,
     private lateinit var collisionLayer: MapLayer
     private lateinit var playerSpawnLayer: MapLayer
     private var enemyLayer: MapLayer? = null
+    private var mapEntityLayer: MapLayer? = null
 
     var tileSize: Int = 0
         private set
@@ -60,6 +62,7 @@ class MapManager(batch: Batch, private val cam: OrthographicCamera,
         collisionLayer = tiledMap.layers.get(COLLISION_LAYER)
         playerSpawnLayer = tiledMap.layers.get(PLAYER_SPAWN_LAYER)
         enemyLayer = tiledMap.layers.get(ENEMY_LAYER)
+        mapEntityLayer = tiledMap.layers.get(MAP_ENTITY_LAYER)
 
         tileSize = tileLayer.tileWidth.toInt()
         mapWidth = tileLayer.width
@@ -70,9 +73,8 @@ class MapManager(batch: Batch, private val cam: OrthographicCamera,
 
         loadMapObjects()
 
-        if (enemyLayer != null) {
-            loadEnemies()
-        }
+        if (enemyLayer != null) loadEnemies()
+        if (mapEntityLayer != null) loadMapEntities()
 
         renderer.map = tiledMap
     }
@@ -102,8 +104,12 @@ class MapManager(batch: Batch, private val cam: OrthographicCamera,
             val enemyObjectType = if (typeProp == null) EnemyType.None else EnemyType.getType(typeProp.toString())!!
             val facingRight = if (facingRightProp == null) true else facingRightProp as Boolean
 
-            EnemyFactory.createEnemy(engine, res, enemyObjectType, enemyObjectRect, facingRight)
+            EntityFactory.createEnemy(engine, res, enemyObjectType, enemyObjectRect, facingRight)
         }
+    }
+
+    private fun loadMapEntities() {
+
     }
 
     fun update() {
