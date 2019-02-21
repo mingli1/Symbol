@@ -27,7 +27,7 @@ private const val MAP_ENTITY_LAYER = "map"
 private const val MAP_OBJECT_TYPE = "type"
 private const val MAP_OBJECT_DAMAGE = "damage"
 
-private const val ENEMY_TYPE = "type"
+private const val TYPE = "type"
 private const val ENEMY_FACING_RIGHT = "facingRight"
 
 class MapManager(batch: Batch, private val cam: OrthographicCamera,
@@ -95,10 +95,10 @@ class MapManager(batch: Batch, private val cam: OrthographicCamera,
     }
 
     private fun loadEnemies() {
-        val enemyObjects = enemyLayer?.objects
-        for (enemyMapObject in enemyObjects!!.getByType(RectangleMapObject::class.java)) {
+        val enemyObjects = enemyLayer!!.objects
+        for (enemyMapObject in enemyObjects.getByType(RectangleMapObject::class.java)) {
             val enemyObjectRect = enemyMapObject.rectangle
-            val typeProp = enemyMapObject.properties[ENEMY_TYPE]
+            val typeProp = enemyMapObject.properties[TYPE]
             val facingRightProp = enemyMapObject.properties[ENEMY_FACING_RIGHT]
 
             val enemyObjectType = if (typeProp == null) EnemyType.None else EnemyType.getType(typeProp.toString())!!
@@ -109,7 +109,13 @@ class MapManager(batch: Batch, private val cam: OrthographicCamera,
     }
 
     private fun loadMapEntities() {
+        val mapEntityObjects = mapEntityLayer!!.objects
+        for (mapEntityObject in mapEntityObjects.getByType(RectangleMapObject::class.java)) {
+            val mapEntityRect = mapEntityObject.rectangle
+            val typeProp = mapEntityObject.properties[TYPE]
 
+
+        }
     }
 
     fun update() {

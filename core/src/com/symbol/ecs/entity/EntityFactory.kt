@@ -1,6 +1,5 @@
 package com.symbol.ecs.entity
 
-import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.core.PooledEngine
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Rectangle
@@ -10,9 +9,9 @@ import com.symbol.util.Resources
 
 object EntityFactory {
 
-    fun createEnemy(engine: PooledEngine, res: Resources, type: EnemyType, rect: Rectangle, facingRight: Boolean) : Entity? {
+    fun createEnemy(engine: PooledEngine, res: Resources, type: EnemyType, rect: Rectangle, facingRight: Boolean) {
         val texture = res.getTexture("e_${type.typeStr}")!!
-        return when (type) {
+        when (type) {
             EnemyType.EConstant -> {
                 EntityBuilder.instance(engine)
                         .enemy(movementType = EnemyMovementType.BackAndForth, damage = 2, activationRange = 150f)
@@ -142,9 +141,7 @@ object EntityFactory {
                             .orbit(angle = angle, speed = 2f, radius = 15f)
                             .remove().build()
                 }
-                return parent
             }
-            else -> null
         }
     }
 
