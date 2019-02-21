@@ -149,12 +149,23 @@ object EntityFactory {
     private const val DIST = "dist"
     private const val VEL_X = "dx"
     private const val VEL_Y = "dy"
-    private const val TEXTURE = "res"
 
     fun createMapEntity(engine: PooledEngine, res: Resources, props: MapProperties, type: MapEntityType, rect: Rectangle) {
         when (type) {
             MapEntityType.MovingPlatform -> {
+                val dist = (props[DIST] ?: 0f) as Float
+                val dx = (props[VEL_X] ?: 0f) as Float
+                val dy = (props[VEL_Y] ?: 0f) as Float
+                val texture = res.getTexture("${type.typeStr}${MathUtils.ceil(rect.width / 8)}")!!
 
+                EntityBuilder.instance(engine)
+                        .mapEntity(type = type)
+                        .movingPlatform(distance = dist, originX = rect.x, originY = rect.y, positive = dx > 0 || dy > 0)
+                        .boundingBox(texture.regionWidth.toFloat(), texture.regionHeight.toFloat())
+                        .position(rect.x, rect.y)
+                        .velocity(dx = dx, dy = dy)
+                        .texture(texture)
+                        .build()
             }
         }
     }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.0.1" orientation="orthogonal" renderorder="right-down" width="30" height="10" tilewidth="8" tileheight="8" nextobjectid="39">
+<map version="1.0" tiledversion="1.0.1" orientation="orthogonal" renderorder="right-down" width="30" height="10" tilewidth="8" tileheight="8" nextobjectid="40">
  <tileset firstgid="1" name="set" tilewidth="8" tileheight="8" tilecount="6" columns="3">
   <image source="tileset.png" width="24" height="16"/>
  </tileset>
@@ -36,6 +36,15 @@
   <object id="35" x="136.364" y="31.2727" width="7.81818" height="6.54545">
    <properties>
     <property name="type" value="percent"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup name="map">
+  <object id="39" x="39.8182" y="38.9091" width="24" height="4.72727">
+   <properties>
+    <property name="dist" type="float" value="64"/>
+    <property name="dy" type="float" value="-12"/>
+    <property name="type" value="mplatform"/>
    </properties>
   </object>
  </objectgroup>

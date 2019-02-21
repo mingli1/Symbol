@@ -37,6 +37,8 @@ class Resources : Disposable {
         textures["e_percent"] = atlas.findRegion("e_percent")
         textures["e_percent_orbit"] = atlas.findRegion("e_percent_orbit")
 
+        for (i in 1..3) textures["mplatform$i"] = atlas.findRegion("mplatform$i")
+
         loadProjectile("p_dot")
         loadProjectile("p_dot_xor")
         loadProjectile("p_angle_bracket")

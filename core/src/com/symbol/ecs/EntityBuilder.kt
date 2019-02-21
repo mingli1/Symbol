@@ -7,9 +7,11 @@ import com.symbol.ecs.component.*
 import com.symbol.ecs.component.EnemyComponent
 import com.symbol.ecs.component.PlayerComponent
 import com.symbol.ecs.component.ProjectileComponent
+import com.symbol.ecs.component.map.MapEntityComponent
 import com.symbol.ecs.component.map.MovingPlatformComponent
 import com.symbol.ecs.entity.EnemyAttackType
 import com.symbol.ecs.entity.EnemyMovementType
+import com.symbol.ecs.entity.MapEntityType
 import com.symbol.ecs.system.GRAVITY
 import com.symbol.ecs.system.TERMINAL_VELOCITY
 
@@ -18,6 +20,7 @@ class EntityBuilder(private val engine: PooledEngine) {
     private var playerComponent: PlayerComponent? = null
     private var enemyComponent: EnemyComponent? = null
     private var projectileComponent: ProjectileComponent? = null
+    private var mapEntityComponent: MapEntityComponent? = null
     private var movingPlatformComponent: MovingPlatformComponent? = null
 
     private var boundingBoxComponent: BoundingBoxComponent? = null
@@ -92,9 +95,18 @@ class EntityBuilder(private val engine: PooledEngine) {
         return this
     }
 
-    fun movingPlatform(distance: Float = 0f) : EntityBuilder {
+    fun mapEntity(type: MapEntityType = MapEntityType.None) : EntityBuilder {
+        mapEntityComponent = engine.createComponent(MapEntityComponent::class.java)
+        mapEntityComponent?.mapEntityType = type
+        return this
+    }
+
+    fun movingPlatform(distance: Float = 0f, originX: Float = 0f, originY: Float = 0f, positive: Boolean = true) : EntityBuilder {
         movingPlatformComponent = engine.createComponent(MovingPlatformComponent::class.java)
         movingPlatformComponent?.distance = distance
+        movingPlatformComponent?.originX = originX
+        movingPlatformComponent?.originY = originY
+        movingPlatformComponent?.positive = positive
         return this
     }
 
@@ -187,6 +199,8 @@ class EntityBuilder(private val engine: PooledEngine) {
         if (textureComponent != null) entity.add(textureComponent)
         if (velocityComponent != null) entity.add(velocityComponent)
         if (orbitComponent != null) entity.add(orbitComponent)
+        if (mapEntityComponent != null) entity.add(mapEntityComponent)
+        if (movingPlatformComponent != null) entity.add(movingPlatformComponent)
 
         engine.addEntity(entity)
         return entity
