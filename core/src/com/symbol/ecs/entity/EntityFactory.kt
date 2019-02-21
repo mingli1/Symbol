@@ -1,6 +1,7 @@
 package com.symbol.ecs.entity
 
 import com.badlogic.ashley.core.PooledEngine
+import com.badlogic.gdx.maps.MapProperties
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Rectangle
 import com.symbol.ecs.EntityBuilder
@@ -141,6 +142,19 @@ object EntityFactory {
                             .orbit(angle = angle, speed = 2f, radius = 15f)
                             .remove().build()
                 }
+            }
+        }
+    }
+
+    private const val DIST = "dist"
+    private const val VEL_X = "dx"
+    private const val VEL_Y = "dy"
+    private const val TEXTURE = "res"
+
+    fun createMapEntity(engine: PooledEngine, res: Resources, props: MapProperties, type: MapEntityType, rect: Rectangle) {
+        when (type) {
+            MapEntityType.MovingPlatform -> {
+
             }
         }
     }

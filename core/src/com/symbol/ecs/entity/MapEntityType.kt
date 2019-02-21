@@ -2,6 +2,7 @@ package com.symbol.ecs.entity
 
 enum class MapEntityType(val typeStr: String) {
 
+    None("none"),
     MovingPlatform("mplatform");
 
     companion object {

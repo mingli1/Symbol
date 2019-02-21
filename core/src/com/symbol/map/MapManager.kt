@@ -14,6 +14,7 @@ import com.badlogic.gdx.utils.Array
 import com.badlogic.gdx.utils.Disposable
 import com.symbol.ecs.entity.EntityFactory
 import com.symbol.ecs.entity.EnemyType
+import com.symbol.ecs.entity.MapEntityType
 import com.symbol.util.Resources
 
 private const val DIR = "map/"
@@ -113,8 +114,9 @@ class MapManager(batch: Batch, private val cam: OrthographicCamera,
         for (mapEntityObject in mapEntityObjects.getByType(RectangleMapObject::class.java)) {
             val mapEntityRect = mapEntityObject.rectangle
             val typeProp = mapEntityObject.properties[TYPE]
+            val mapEntityType = if (typeProp == null) MapEntityType.None else MapEntityType.getType(typeProp.toString())!!
 
-
+            EntityFactory.createMapEntity(engine, res, mapEntityObject.properties, mapEntityType, mapEntityRect)
         }
     }
 

@@ -6,287 +6,287 @@ filter: Nearest,Nearest
 repeat: none
 background
   rotate: false
-  xy: 2, 2
+  xy: 2, 3
   size: 200, 120
   orig: 200, 120
   offset: 0, 0
   index: -1
 e_big_omega
   rotate: false
-  xy: 229, 109
+  xy: 229, 110
   size: 12, 13
   orig: 12, 13
   offset: 0, 0
   index: -1
 e_big_phi
   rotate: false
-  xy: 204, 72
+  xy: 204, 73
   size: 14, 16
   orig: 14, 16
   offset: 0, 0
   index: -1
 e_big_pi
   rotate: false
-  xy: 243, 109
+  xy: 243, 110
   size: 11, 13
   orig: 11, 13
   offset: 0, 0
   index: -1
 e_cintegral
   rotate: false
-  xy: 250, 69
+  xy: 250, 70
   size: 4, 14
   orig: 4, 14
   offset: 0, 0
   index: -1
 e_e
   rotate: false
-  xy: 215, 15
+  xy: 231, 30
   size: 8, 8
   orig: 8, 8
   offset: 0, 0
   index: -1
 e_exists
   rotate: false
-  xy: 204, 13
+  xy: 204, 14
   size: 9, 13
   orig: 9, 13
   offset: 0, 0
   index: -1
 e_in
   rotate: false
-  xy: 223, 45
+  xy: 223, 46
   size: 11, 11
   orig: 11, 11
   offset: 0, 0
   index: -1
 e_njoin
   rotate: false
-  xy: 223, 36
+  xy: 245, 32
   size: 9, 7
   orig: 9, 7
   offset: 0, 0
   index: -1
 e_percent
   rotate: false
-  xy: 236, 84
+  xy: 236, 85
   size: 10, 10
   orig: 10, 10
   offset: 0, 0
   index: -1
 e_percent_orbit
   rotate: false
-  xy: 248, 93
+  xy: 248, 94
   size: 6, 6
   orig: 6, 6
   offset: 0, 0
   index: -1
 e_sqrt
   rotate: false
-  xy: 236, 66
+  xy: 236, 67
   size: 12, 9
   orig: 12, 9
   offset: 0, 0
   index: -1
 e_sum
   rotate: false
-  xy: 204, 43
+  xy: 204, 44
   size: 10, 13
   orig: 10, 13
   offset: 0, 0
   index: -1
 e_theta
   rotate: false
-  xy: 204, 28
+  xy: 204, 29
   size: 9, 13
   orig: 9, 13
   offset: 0, 0
   index: -1
 p_alpha
   rotate: false
-  xy: 236, 44
+  xy: 236, 57
   size: 11, 8
   orig: 11, 8
   offset: 0, 0
   index: -1
 p_alpha_t
   rotate: false
-  xy: 226, 78
+  xy: 226, 79
   size: 8, 11
   orig: 8, 11
   offset: 0, 0
   index: -1
 p_alpha_tr
   rotate: false
-  xy: 236, 54
+  xy: 204, 2
   size: 10, 10
   orig: 10, 10
   offset: 0, 0
   index: -1
 p_angle_bracket
   rotate: false
-  xy: 250, 60
+  xy: 250, 61
   size: 4, 7
   orig: 4, 7
   offset: 0, 0
   index: -1
 p_angle_bracket_t
   rotate: false
-  xy: 242, 29
+  xy: 247, 41
   size: 7, 4
   orig: 7, 4
   offset: 0, 0
   index: -1
 p_angle_bracket_tr
   rotate: false
-  xy: 248, 101
+  xy: 248, 102
   size: 6, 6
   orig: 6, 6
   offset: 0, 0
   index: -1
 p_arrow
   rotate: false
-  xy: 236, 77
+  xy: 236, 78
   size: 12, 5
   orig: 12, 5
   offset: 0, 0
   index: -1
 p_arrow_t
   rotate: false
-  xy: 216, 44
+  xy: 216, 45
   size: 5, 12
   orig: 5, 12
   offset: 0, 0
   index: -1
 p_arrow_tr
   rotate: false
-  xy: 215, 25
+  xy: 215, 20
   size: 9, 9
   orig: 9, 9
   offset: 0, 0
   index: -1
 p_big_ll
   rotate: false
-  xy: 204, 90
+  xy: 204, 91
   size: 20, 15
   orig: 20, 15
   offset: 0, 0
   index: -1
 p_cup
   rotate: false
-  xy: 226, 69
+  xy: 226, 70
   size: 8, 7
   orig: 8, 7
   offset: 0, 0
   index: -1
 p_cup_t
   rotate: false
-  xy: 226, 19
+  xy: 247, 47
   size: 7, 8
   orig: 7, 8
   offset: 0, 0
   index: -1
 p_cup_tr
   rotate: false
-  xy: 218, 58
+  xy: 236, 46
   size: 9, 9
   orig: 9, 9
   offset: 0, 0
   index: -1
 p_dot
   rotate: false
-  xy: 250, 54
+  xy: 239, 40
   size: 4, 4
   orig: 4, 4
   offset: 0, 0
   index: -1
 p_dot_xor
   rotate: false
-  xy: 235, 23
+  xy: 215, 14
   size: 4, 4
   orig: 4, 4
   offset: 0, 0
   index: -1
 p_implies
   rotate: false
-  xy: 234, 35
+  xy: 215, 31
   size: 14, 7
   orig: 14, 7
   offset: 0, 0
   index: -1
 p_implies_t
   rotate: false
-  xy: 226, 91
+  xy: 226, 92
   size: 7, 14
   orig: 7, 14
   offset: 0, 0
   index: -1
 p_implies_tr
   rotate: false
-  xy: 235, 96
+  xy: 235, 97
   size: 11, 11
   orig: 11, 11
   offset: 0, 0
   index: -1
 p_large_triangle
   rotate: false
-  xy: 204, 107
+  xy: 204, 108
   size: 23, 15
   orig: 23, 15
   offset: 0, 0
   index: -1
 p_ldots
   rotate: false
-  xy: 226, 29
+  xy: 223, 40
   size: 14, 4
   orig: 14, 4
   offset: 0, 0
   index: -1
 p_ldots_t
   rotate: false
-  xy: 220, 74
+  xy: 220, 75
   size: 4, 14
   orig: 4, 14
   offset: 0, 0
   index: -1
 p_ldots_tr
   rotate: false
-  xy: 204, 58
+  xy: 204, 59
   size: 12, 12
   orig: 12, 12
   offset: 0, 0
   index: -1
 p_ltimes
   rotate: false
-  xy: 215, 36
+  xy: 221, 13
   size: 6, 5
   orig: 6, 5
   offset: 0, 0
   index: -1
 p_ltimes_t
   rotate: false
-  xy: 229, 61
+  xy: 229, 62
   size: 5, 6
   orig: 5, 6
   offset: 0, 0
   index: -1
 p_ltimes_tr
   rotate: false
-  xy: 248, 85
+  xy: 248, 86
   size: 6, 6
   orig: 6, 6
   offset: 0, 0
   index: -1
 p_xor
   rotate: false
-  xy: 204, 2
+  xy: 218, 59
   size: 9, 9
   orig: 9, 9
   offset: 0, 0
   index: -1
 player
   rotate: false
-  xy: 215, 5
+  xy: 226, 20
   size: 8, 8
   orig: 8, 8
   offset: 0, 0
