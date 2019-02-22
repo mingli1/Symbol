@@ -11,6 +11,7 @@ import com.symbol.ecs.component.BoundingBoxComponent
 import com.symbol.ecs.component.GravityComponent
 import com.symbol.ecs.component.PositionComponent
 import com.symbol.ecs.component.RemoveComponent
+import com.symbol.ecs.component.map.MovingPlatformComponent
 import com.symbol.map.MapObject
 import com.symbol.map.MapObjectType
 
@@ -29,6 +30,7 @@ class MapCollisionSystem : IteratingSystem(
     private var stepY: Float = 0f
 
     private lateinit var removableEntities: ImmutableArray<Entity>
+    private lateinit var movingPlatforms: ImmutableArray<Entity>
 
     private var damageTimes: MutableMap<Entity, Float> = HashMap()
     private var startDamage: MutableMap<Entity, Boolean> = HashMap()
@@ -36,6 +38,7 @@ class MapCollisionSystem : IteratingSystem(
     override fun addedToEngine(engine: Engine?) {
         super.addedToEngine(engine)
         removableEntities = engine!!.getEntitiesFor(Family.all(RemoveComponent::class.java).get())
+        movingPlatforms = engine.getEntitiesFor(Family.all(MovingPlatformComponent::class.java).get())
     }
 
     override fun update(dt: Float) {
@@ -72,6 +75,19 @@ class MapCollisionSystem : IteratingSystem(
                         revertCurrentPosition(position)
                     }
                 }
+                for (mplatform in movingPlatforms) {
+                    val bounds = Mapper.BOUNDING_BOX_MAPPER.get(mplatform)
+                    val vel = Mapper.VEL_MAPPER.get(mplatform)
+                    if (bb.rect.overlaps(bounds.rect)) {
+                        val collisionLeft = (velocity.dx >= 0 && vel.dx < 0) || (velocity.dx > 0 && vel.dx > 0)
+                        val collisionRight = (velocity.dx <= 0 && vel.dx > 0) || (velocity.dx < 0 && vel.dx < 0)
+
+                        if (bb.rect.x < bounds.rect.x && collisionLeft)
+                            position.x = bounds.rect.x - bb.rect.width - 1
+                        else if (bb.rect.x + bb.rect.width > bounds.rect.x + bounds.rect.width && collisionRight)
+                            position.x = bounds.rect.x + bounds.rect.width + 1
+                    }
+                }
             }
         }
 
@@ -92,9 +108,26 @@ class MapCollisionSystem : IteratingSystem(
                         velocity.dy = 0f
                     }
                 }
+                for (mplatform in movingPlatforms) {
+                    val bounds = Mapper.BOUNDING_BOX_MAPPER.get(mplatform)
+                    if (bb.rect.overlaps(bounds.rect)) {
+                        revertCurrentPosition(position)
+                        if (velocity.dy < 0 &&
+                                bb.rect.x + bb.rect.width > bounds.rect.x &&
+                                bb.rect.x < bounds.rect.x + bounds.rect.width) {
+                            gravity.onGround = true
+                            gravity.onMovingPlatform = true
+                            gravity.platform.set(bounds.rect)
+                        }
+                        velocity.dy = 0f
+                    }
+                }
             }
         }
-        if (velocity.dy != 0f) gravity.onGround = false
+        if (velocity.dy != 0f) {
+            gravity.onGround = false
+            gravity.onMovingPlatform = false
+        }
         for (mapObject in mapObjects) {
             if (bb.rect.overlaps(mapObject.bounds)) {
                 when (mapObject.type) {

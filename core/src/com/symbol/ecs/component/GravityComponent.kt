@@ -9,6 +9,7 @@ import com.symbol.ecs.system.TERMINAL_VELOCITY
 class GravityComponent : Component, Pool.Poolable {
 
     var onGround: Boolean = false
+    var onMovingPlatform: Boolean = false
     var platform: Rectangle = Rectangle()
     var collidable: Boolean = true
 
@@ -17,6 +18,7 @@ class GravityComponent : Component, Pool.Poolable {
 
     override fun reset() {
         onGround = false
+        onMovingPlatform = false
         collidable = true
         platform.set(0f, 0f, 0f, 0f)
         gravity = GRAVITY
