@@ -38,21 +38,6 @@ class MapEntitySystem : IteratingSystem(Family.all(MapEntityComponent::class.jav
                 }
             }
         }
-        else if (velocity.dy != 0f) {
-            if (mp.positive) {
-                val trueY = position.y + bounds.rect.height
-                if ((velocity.dy > 0 && trueY - mp.originY >= mp.distance) ||
-                        (velocity.dy < 0 && position.y <= mp.originY)) {
-                    velocity.dy = -velocity.dy
-                }
-            }
-            else {
-                if ((velocity.dy < 0 && mp.originY - position.y >= mp.distance) ||
-                        (velocity.dy > 0 && position.y >= mp.originY)) {
-                    velocity.dy = -velocity.dy
-                }
-            }
-        }
     }
 
 }

@@ -63,7 +63,7 @@ class MapCollisionSystem : IteratingSystem(
         val height = Mapper.TEXTURE_MAPPER.get(entity).texture!!.regionHeight
         val gravity = Mapper.GRAVITY_MAPPER.get(entity)
 
-        stepX = velocity.dx * dt / NUM_SUB_STEPS
+        stepX = (if (gravity.onMovingPlatform) velocity.platformDx else velocity.dx) * dt / NUM_SUB_STEPS
         for (i in 0 until NUM_SUB_STEPS) {
             savePreviousPosition(position)
             position.x += stepX
@@ -120,6 +120,11 @@ class MapCollisionSystem : IteratingSystem(
                             gravity.platform.set(bounds.rect)
                         }
                         velocity.dy = 0f
+
+                        val vel = Mapper.VEL_MAPPER.get(mplatform)
+                        if (gravity.onMovingPlatform) {
+                            velocity.platformDx = vel.dx + velocity.dx
+                        }
                     }
                 }
             }
@@ -127,6 +132,7 @@ class MapCollisionSystem : IteratingSystem(
         if (velocity.dy != 0f) {
             gravity.onGround = false
             gravity.onMovingPlatform = false
+            velocity.platformDx = 0f
         }
         for (mapObject in mapObjects) {
             if (bb.rect.overlaps(mapObject.bounds)) {

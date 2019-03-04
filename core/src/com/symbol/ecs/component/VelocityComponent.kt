@@ -10,6 +10,8 @@ class VelocityComponent : Component, Pool.Poolable {
 
     var speed: Float = 0f
 
+    var platformDx: Float = 0f
+
     fun set(dx: Float, dy: Float) {
         this.dx = dx
         this.dy = dy
@@ -19,6 +21,7 @@ class VelocityComponent : Component, Pool.Poolable {
         dx = 0f
         dy = 0f
         speed = 0f
+        platformDx = 0f
     }
 
     fun move(right: Boolean) = if (right) dx = speed else dx = -speed
