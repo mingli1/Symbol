@@ -16,6 +16,7 @@ import com.symbol.ecs.component.EnemyComponent
 import com.symbol.ecs.component.HealthComponent
 import com.symbol.ecs.component.ProjectileComponent
 import com.symbol.ecs.component.RemoveComponent
+import com.symbol.ecs.component.map.MovingPlatformComponent
 import com.symbol.map.MapObject
 import com.symbol.util.Resources
 
@@ -27,6 +28,7 @@ class ProjectileSystem(private val res: Resources) : IteratingSystem(Family.all(
     private var mapObjects: Array<MapObject> = Array()
 
     private lateinit var allEntities: ImmutableArray<Entity>
+    private lateinit var movingPlatforms: ImmutableArray<Entity>
 
     private var knockbackTimes: MutableMap<Entity, Float> = HashMap()
     private var prevVelocities: MutableMap<Entity, Float> = HashMap()
@@ -35,6 +37,7 @@ class ProjectileSystem(private val res: Resources) : IteratingSystem(Family.all(
     override fun addedToEngine(engine: Engine?) {
         super.addedToEngine(engine)
         allEntities = engine!!.getEntitiesFor(Family.all(HealthComponent::class.java).get())
+        movingPlatforms = engine.getEntitiesFor(Family.all(MovingPlatformComponent::class.java).get())
     }
 
     override fun update(dt: Float) {
@@ -75,6 +78,13 @@ class ProjectileSystem(private val res: Resources) : IteratingSystem(Family.all(
         if (!pj.unstoppable) {
             for (mapObject in mapObjects) {
                 if (bb.rect.overlaps(mapObject.bounds)) {
+                    remove.shouldRemove = true
+                    break
+                }
+            }
+            for (mplatform in movingPlatforms) {
+                val bounds = Mapper.BOUNDING_BOX_MAPPER.get(mplatform)
+                if (bb.rect.overlaps(bounds.rect)) {
                     remove.shouldRemove = true
                     break
                 }
