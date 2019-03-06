@@ -71,7 +71,7 @@ class MapCollisionSystem : IteratingSystem(
 
             if (gravity.collidable) {
                 for (mapObject in mapObjects) {
-                    if (mapObject.type == MapObjectType.Ground && bb.rect.overlaps(mapObject.bounds)) {
+                    if (mapObject.type.solid && bb.rect.overlaps(mapObject.bounds)) {
                         revertCurrentPosition(position)
                     }
                 }
@@ -99,7 +99,7 @@ class MapCollisionSystem : IteratingSystem(
 
             if (gravity.collidable) {
                 for (mapObject in mapObjects) {
-                    if (mapObject.type == MapObjectType.Ground && bb.rect.overlaps(mapObject.bounds)) {
+                    if (mapObject.type.solid && bb.rect.overlaps(mapObject.bounds)) {
                         revertCurrentPosition(position)
                         if (velocity.dy < 0) {
                             gravity.onGround = true

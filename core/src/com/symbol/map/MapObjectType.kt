@@ -1,10 +1,10 @@
 package com.symbol.map
 
-enum class MapObjectType(val typeStr: String) {
+enum class MapObjectType(val typeStr: String, val solid: Boolean) {
 
-    Ground("ground"),
-    Lethal("lethal"),
-    Damage("damage");
+    Ground("ground", true),
+    Lethal("lethal", false),
+    Damage("damage", false);
 
     companion object {
         fun getType(typeStr: String) : MapObjectType? {
