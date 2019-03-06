@@ -4,6 +4,13 @@ size: 256,128
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
+approx
+  rotate: false
+  xy: 216, 17
+  size: 7, 7
+  orig: 7, 7
+  offset: 0, 0
+  index: -1
 background
   rotate: false
   xy: 2, 6
@@ -76,7 +83,7 @@ e_percent
   index: -1
 e_percent_orbit
   rotate: false
-  xy: 226, 10
+  xy: 226, 2
   size: 6, 6
   orig: 6, 6
   offset: 0, 0
@@ -146,7 +153,7 @@ p_alpha_tr
   index: -1
 p_angle_bracket
   rotate: false
-  xy: 216, 17
+  xy: 235, 24
   size: 4, 7
   orig: 4, 7
   offset: 0, 0
@@ -160,7 +167,7 @@ p_angle_bracket_t
   index: -1
 p_angle_bracket_tr
   rotate: false
-  xy: 222, 18
+  xy: 225, 18
   size: 6, 6
   orig: 6, 6
   offset: 0, 0
@@ -216,14 +223,14 @@ p_cup_tr
   index: -1
 p_dot
   rotate: false
-  xy: 235, 27
+  xy: 233, 10
   size: 4, 4
   orig: 4, 4
   offset: 0, 0
   index: -1
 p_dot_xor
   rotate: false
-  xy: 234, 12
+  xy: 234, 4
   size: 4, 4
   orig: 4, 4
   offset: 0, 0
@@ -286,14 +293,14 @@ p_ltimes
   index: -1
 p_ltimes_t
   rotate: false
-  xy: 230, 18
+  xy: 226, 10
   size: 5, 6
   orig: 5, 6
   offset: 0, 0
   index: -1
 p_ltimes_tr
   rotate: false
-  xy: 226, 2
+  xy: 233, 16
   size: 6, 6
   orig: 6, 6
   offset: 0, 0

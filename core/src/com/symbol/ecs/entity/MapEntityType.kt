@@ -3,7 +3,8 @@ package com.symbol.ecs.entity
 enum class MapEntityType(val typeStr: String) {
 
     None("none"),
-    MovingPlatform("mplatform");
+    MovingPlatform("mplatform"),
+    TemporaryPlatform("tplatform");
 
     companion object {
         fun getType(typeStr: String) : MapEntityType? {

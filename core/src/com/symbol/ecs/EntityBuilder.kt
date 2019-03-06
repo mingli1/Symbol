@@ -110,9 +110,9 @@ class EntityBuilder(private val engine: PooledEngine) {
         return this
     }
 
-    fun boundingBox(bx: Float, by: Float) : EntityBuilder {
+    fun boundingBox(bx: Float, by: Float, x: Float = 0f, y: Float = 0f) : EntityBuilder {
         boundingBoxComponent = engine.createComponent(BoundingBoxComponent::class.java)
-        boundingBoxComponent?.rect?.setSize(bx, by)
+        boundingBoxComponent?.rect?.set(x, y, bx, by)
         return this
     }
 

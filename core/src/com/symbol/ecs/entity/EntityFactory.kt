@@ -165,6 +165,15 @@ object EntityFactory {
                         .texture(texture)
                         .build()
             }
+            MapEntityType.TemporaryPlatform -> {
+                val texture = res.getTexture("approx")!!
+                EntityBuilder.instance(engine)
+                        .mapEntity(type = type)
+                        .boundingBox(texture.regionWidth.toFloat(), texture.regionHeight.toFloat(), x = rect.x, y = rect.y)
+                        .position(rect.x, rect.y)
+                        .texture(texture)
+                        .remove().build()
+            }
         }
     }
 
