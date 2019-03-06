@@ -43,7 +43,7 @@
   <object id="39" x="39.8182" y="38.9091" width="24" height="4.72727">
    <properties>
     <property name="dist" type="float" value="64"/>
-    <property name="dx" type="float" value="25"/>
+    <property name="dx" type="float" value="12"/>
     <property name="type" value="mplatform"/>
    </properties>
   </object>

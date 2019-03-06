@@ -123,7 +123,10 @@ class MapCollisionSystem : IteratingSystem(
 
                         val vel = Mapper.VEL_MAPPER.get(mplatform)
                         if (gravity.onMovingPlatform) {
-                            velocity.platformDx = vel.dx + velocity.dx
+                            if ((velocity.dx < 0 && vel.dx > 0) || (velocity.dx > 0 && vel.dx < 0))
+                                velocity.platformDx = velocity.dx / 2 - vel.dx
+                            else
+                                velocity.platformDx = if (velocity.dx != 0f) vel.dx + velocity.dx / 2 else vel.dx + velocity.dx
                         }
                     }
                 }
