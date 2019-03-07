@@ -34,8 +34,9 @@ class KeyInputSystem(private val res: Resources) : EntitySystem(), KeyInputHandl
     override fun jump() {
         val gravity = Mapper.GRAVITY_MAPPER.get(player)
 
-        if (gravity.onGround) {
+        if (gravity.onGround && playerComp.canJump) {
             vel.dy = PLAYER_JUMP_IMPULSE
+            playerComp.canJump = false
             playerComp.canDoubleJump = true
         }
         else if (playerComp.canDoubleJump) {

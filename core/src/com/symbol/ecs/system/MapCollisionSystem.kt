@@ -62,6 +62,7 @@ class MapCollisionSystem : IteratingSystem(
         val width = Mapper.TEXTURE_MAPPER.get(entity).texture!!.regionWidth
         val height = Mapper.TEXTURE_MAPPER.get(entity).texture!!.regionHeight
         val gravity = Mapper.GRAVITY_MAPPER.get(entity)
+        val player = Mapper.PLAYER_MAPPER.get(entity)
 
         stepX = (if (gravity.onMovingPlatform) velocity.platformDx else velocity.dx) * dt / NUM_SUB_STEPS
         for (i in 0 until NUM_SUB_STEPS) {
@@ -104,6 +105,10 @@ class MapCollisionSystem : IteratingSystem(
                         if (velocity.dy < 0) {
                             gravity.onGround = true
                             gravity.platform.set(mapObject.bounds)
+
+                            val grounded = mapObject.type == MapObjectType.Grounded
+                            player?.canJump = !grounded
+                            if (grounded) player?.canDoubleJump = false
                         }
                         velocity.dy = 0f
                     }
@@ -118,6 +123,7 @@ class MapCollisionSystem : IteratingSystem(
                             gravity.onGround = true
                             gravity.onMovingPlatform = true
                             gravity.platform.set(bounds.rect)
+                            player?.canJump = true
                         }
                         velocity.dy = 0f
 

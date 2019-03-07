@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.0.1" orientation="orthogonal" renderorder="right-down" width="30" height="10" tilewidth="8" tileheight="8" nextobjectid="50">
- <tileset firstgid="1" name="set" tilewidth="8" tileheight="8" tilecount="6" columns="3">
-  <image source="tileset.png" width="24" height="16"/>
+<map version="1.0" tiledversion="1.0.1" orientation="orthogonal" renderorder="right-down" width="30" height="10" tilewidth="8" tileheight="8" nextobjectid="54">
+ <tileset firstgid="1" name="set" tilewidth="8" tileheight="8" tilecount="16" columns="4">
+  <image source="tileset.png" width="32" height="32"/>
  </tileset>
  <layer name="tile" width="30" height="10">
   <data encoding="csv">
@@ -10,9 +10,9 @@
 0,0,0,0,0,4,0,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-4,0,0,0,0,0,0,0,0,0,0,0,0,0,1,2,2,2,2,2,3,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,1,2,2,2,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,5,5,5,0,0,0,0,0,0,
+4,0,0,0,0,0,0,0,0,10,11,12,4,0,1,2,2,2,2,2,3,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,9,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,1,2,2,2,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6,6,6,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
@@ -31,6 +31,17 @@
     <property name="type" value="lethal"/>
    </properties>
   </object>
+  <object id="51" x="48" y="48" width="8" height="8">
+   <properties>
+    <property name="type" value="grounded"/>
+   </properties>
+  </object>
+  <object id="52" x="72" y="40" width="24" height="8">
+   <properties>
+    <property name="type" value="grounded"/>
+   </properties>
+  </object>
+  <object id="53" x="96" y="40" width="8" height="8"/>
  </objectgroup>
  <objectgroup name="enemy">
   <object id="35" x="136.364" y="31.2727" width="7.81818" height="6.54545">
