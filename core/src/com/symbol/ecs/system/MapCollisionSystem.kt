@@ -15,6 +15,7 @@ import com.symbol.map.MapObjectType
 private const val NUM_SUB_STEPS = 30
 private const val MAP_OBJECT_DAMAGE_RATE = 1f
 private const val MAP_OBJECT_SLOW_PERCENTAGE = 0.4f
+private const val MAP_OBJECT_PUSH = 45f
 
 class MapCollisionSystem : IteratingSystem(
         Family.all(BoundingBoxComponent::class.java, GravityComponent::class.java).get()
@@ -106,6 +107,8 @@ class MapCollisionSystem : IteratingSystem(
 
                             handleGroundedMapObject(mapObject, player)
                             handleSlowMapObject(mapObject, velocity)
+                            handlePushRightMapObject(mapObject, velocity)
+                            handlePushLeftMapObject(mapObject, velocity)
                         }
                         velocity.dy = 0f
                     }
@@ -198,11 +201,25 @@ class MapCollisionSystem : IteratingSystem(
             else if (velocity.dx < 0) velocity.dx = -velocity.speed * MAP_OBJECT_SLOW_PERCENTAGE
         }
         else {
-            if (velocity.dx != 0f && Math.abs(velocity.dx) < velocity.speed) {
+            if (velocity.dx != 0f && Math.abs(velocity.dx) == velocity.speed * MAP_OBJECT_SLOW_PERCENTAGE) {
                 if (velocity.dx > 0) velocity.dx = velocity.speed
                 else if (velocity.dx < 0) velocity.dx = -velocity.speed
             }
         }
+    }
+
+    private fun handlePushRightMapObject(mapObject: MapObject, velocity: VelocityComponent) {
+        if (mapObject.type == MapObjectType.PushRight) {
+            if (velocity.dx > 0 && velocity.dx == velocity.speed) velocity.dx += MAP_OBJECT_PUSH
+        }
+        else if (velocity.dx > 0 && velocity.dx == velocity.speed + MAP_OBJECT_PUSH) velocity.dx = velocity.speed
+    }
+
+    private fun handlePushLeftMapObject(mapObject: MapObject, velocity: VelocityComponent) {
+        if (mapObject.type == MapObjectType.PushLeft) {
+            if (velocity.dx < 0 && velocity.dx == -velocity.speed) velocity.dx -= MAP_OBJECT_PUSH
+        }
+        else if (velocity.dx < 0 && velocity.dx == -velocity.speed - MAP_OBJECT_PUSH) velocity.dx = -velocity.speed
     }
 
     private fun savePreviousPosition(position: PositionComponent) {

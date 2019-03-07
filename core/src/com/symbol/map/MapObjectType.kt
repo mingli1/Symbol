@@ -6,7 +6,9 @@ enum class MapObjectType(val typeStr: String, val solid: Boolean) {
     Lethal("lethal", false),
     Damage("damage", false),
     Grounded("grounded", true),
-    Slow("slow", true);
+    Slow("slow", true),
+    PushRight("push_right", true),
+    PushLeft("push_left", true);
 
     companion object {
         fun getType(typeStr: String) : MapObjectType? {
