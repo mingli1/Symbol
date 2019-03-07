@@ -13,13 +13,13 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,2,2,2,2,2,3,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,17,0,0,0,0,0,25,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,1,2,2,2,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,10,10,10,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,34,35,35,36,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,0,
+0,0,0,0,0,0,0,0,50,51,52,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
  <objectgroup name="collision">
   <object id="5" x="8" y="56" width="40" height="8"/>
-  <object id="6" x="96" y="64" width="135.272" height="8"/>
+  <object id="6" x="88" y="64" width="144" height="8"/>
   <object id="21" x="112" y="40" width="56" height="8"/>
   <object id="36" x="168.688" y="57.25" width="21.625" height="6.5625">
    <properties>
@@ -31,9 +31,9 @@
     <property name="type" value="grounded"/>
    </properties>
   </object>
-  <object id="54" x="64" y="64" width="32" height="8">
+  <object id="54" x="64" y="64" width="24" height="8">
    <properties>
-    <property name="type" value="push_right"/>
+    <property name="type" value="jump_boost"/>
    </properties>
   </object>
   <object id="55" x="96" y="48" width="8" height="8">

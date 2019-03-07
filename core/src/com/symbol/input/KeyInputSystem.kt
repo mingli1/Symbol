@@ -6,6 +6,7 @@ import com.symbol.ecs.Mapper
 import com.symbol.ecs.component.VelocityComponent
 import com.symbol.ecs.component.PlayerComponent
 import com.symbol.ecs.entity.*
+import com.symbol.ecs.system.MAP_OBJECT_JUMP_BOOST_PERCENTAGE
 import com.symbol.util.Resources
 
 class KeyInputSystem(private val res: Resources) : EntitySystem(), KeyInputHandler {
@@ -35,7 +36,7 @@ class KeyInputSystem(private val res: Resources) : EntitySystem(), KeyInputHandl
         val gravity = Mapper.GRAVITY_MAPPER.get(player)
 
         if (gravity.onGround && playerComp.canJump) {
-            vel.dy = PLAYER_JUMP_IMPULSE
+            vel.dy = if (playerComp.hasJumpBoost) PLAYER_JUMP_IMPULSE * MAP_OBJECT_JUMP_BOOST_PERCENTAGE else PLAYER_JUMP_IMPULSE
             playerComp.canJump = false
             playerComp.canDoubleJump = true
         }

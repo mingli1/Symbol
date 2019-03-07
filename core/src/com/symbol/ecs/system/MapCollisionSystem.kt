@@ -16,6 +16,7 @@ private const val NUM_SUB_STEPS = 30
 private const val MAP_OBJECT_DAMAGE_RATE = 1f
 private const val MAP_OBJECT_SLOW_PERCENTAGE = 0.4f
 private const val MAP_OBJECT_PUSH = 45f
+const val MAP_OBJECT_JUMP_BOOST_PERCENTAGE = 1.5f
 
 class MapCollisionSystem : IteratingSystem(
         Family.all(BoundingBoxComponent::class.java, GravityComponent::class.java).get()
@@ -109,6 +110,7 @@ class MapCollisionSystem : IteratingSystem(
                             handleSlowMapObject(mapObject, velocity)
                             handlePushRightMapObject(mapObject, velocity)
                             handlePushLeftMapObject(mapObject, velocity)
+                            handleJumpBoostMapObject(mapObject, player)
                         }
                         velocity.dy = 0f
                     }
@@ -148,7 +150,7 @@ class MapCollisionSystem : IteratingSystem(
                 when (mapObject.type) {
                     MapObjectType.Lethal -> handleLethalMapObject(entity)
                     MapObjectType.Damage -> handleDamageMapObject(mapObject, entity)
-                    MapObjectType.Ground -> {}
+                    else -> {}
                 }
             }
         }
@@ -220,6 +222,10 @@ class MapCollisionSystem : IteratingSystem(
             if (velocity.dx < 0 && velocity.dx == -velocity.speed) velocity.dx -= MAP_OBJECT_PUSH
         }
         else if (velocity.dx < 0 && velocity.dx == -velocity.speed - MAP_OBJECT_PUSH) velocity.dx = -velocity.speed
+    }
+
+    private fun handleJumpBoostMapObject(mapObject: MapObject, player: PlayerComponent?) {
+        player?.hasJumpBoost = mapObject.type == MapObjectType.JumpBoost
     }
 
     private fun savePreviousPosition(position: PositionComponent) {

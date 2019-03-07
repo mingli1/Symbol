@@ -8,7 +8,8 @@ enum class MapObjectType(val typeStr: String, val solid: Boolean) {
     Grounded("grounded", true),
     Slow("slow", true),
     PushRight("push_right", true),
-    PushLeft("push_left", true);
+    PushLeft("push_left", true),
+    JumpBoost("jump_boost", true);
 
     companion object {
         fun getType(typeStr: String) : MapObjectType? {
