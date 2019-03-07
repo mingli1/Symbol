@@ -7,16 +7,14 @@ import com.badlogic.ashley.systems.IteratingSystem
 import com.badlogic.ashley.utils.ImmutableArray
 import com.badlogic.gdx.utils.Array
 import com.symbol.ecs.Mapper
-import com.symbol.ecs.component.BoundingBoxComponent
-import com.symbol.ecs.component.GravityComponent
-import com.symbol.ecs.component.PositionComponent
-import com.symbol.ecs.component.RemoveComponent
+import com.symbol.ecs.component.*
 import com.symbol.ecs.component.map.MovingPlatformComponent
 import com.symbol.map.MapObject
 import com.symbol.map.MapObjectType
 
 private const val NUM_SUB_STEPS = 30
 private const val MAP_OBJECT_DAMAGE_RATE = 1f
+private const val MAP_OBJECT_SLOW_PERCENTAGE = 0.4f
 
 class MapCollisionSystem : IteratingSystem(
         Family.all(BoundingBoxComponent::class.java, GravityComponent::class.java).get()
@@ -106,9 +104,8 @@ class MapCollisionSystem : IteratingSystem(
                             gravity.onGround = true
                             gravity.platform.set(mapObject.bounds)
 
-                            val grounded = mapObject.type == MapObjectType.Grounded
-                            player?.canJump = !grounded
-                            if (grounded) player?.canDoubleJump = false
+                            handleGroundedMapObject(mapObject, player)
+                            handleSlowMapObject(mapObject, velocity)
                         }
                         velocity.dy = 0f
                     }
@@ -186,6 +183,25 @@ class MapCollisionSystem : IteratingSystem(
             val health = Mapper.HEALTH_MAPPER.get(entity)
             if (health != null) health.hp -= mapObject.damage
             startDamage[entity!!] = true
+        }
+    }
+
+    private fun handleGroundedMapObject(mapObject: MapObject, player: PlayerComponent?) {
+        val grounded = mapObject.type == MapObjectType.Grounded
+        player?.canJump = !grounded
+        if (grounded) player?.canDoubleJump = false
+    }
+
+    private fun handleSlowMapObject(mapObject: MapObject, velocity: VelocityComponent) {
+        if (mapObject.type == MapObjectType.Slow) {
+            if (velocity.dx > 0) velocity.dx = velocity.speed * MAP_OBJECT_SLOW_PERCENTAGE
+            else if (velocity.dx < 0) velocity.dx = -velocity.speed * MAP_OBJECT_SLOW_PERCENTAGE
+        }
+        else {
+            if (velocity.dx != 0f && Math.abs(velocity.dx) < velocity.speed) {
+                if (velocity.dx > 0) velocity.dx = velocity.speed
+                else if (velocity.dx < 0) velocity.dx = -velocity.speed
+            }
         }
     }
 
