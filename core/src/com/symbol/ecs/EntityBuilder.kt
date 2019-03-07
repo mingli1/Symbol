@@ -95,9 +95,10 @@ class EntityBuilder(private val engine: PooledEngine) {
         return this
     }
 
-    fun mapEntity(type: MapEntityType = MapEntityType.None) : EntityBuilder {
+    fun mapEntity(type: MapEntityType = MapEntityType.None, projectileCollidable: Boolean = false) : EntityBuilder {
         mapEntityComponent = engine.createComponent(MapEntityComponent::class.java)
         mapEntityComponent?.mapEntityType = type
+        mapEntityComponent?.projectileCollidable = projectileCollidable
         return this
     }
 

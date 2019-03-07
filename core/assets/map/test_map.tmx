@@ -77,6 +77,6 @@
   </object>
  </objectgroup>
  <objectgroup name="player">
-  <object id="10" x="22.7955" y="46.3182" width="8" height="7.09091"/>
+  <object id="10" x="123.296" y="30.9432" width="8" height="7.09091"/>
  </objectgroup>
 </map>

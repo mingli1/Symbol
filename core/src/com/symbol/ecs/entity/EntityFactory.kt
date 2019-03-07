@@ -157,7 +157,7 @@ object EntityFactory {
                 val texture = res.getTexture("${type.typeStr}${MathUtils.ceil(rect.width / 8)}")!!
 
                 EntityBuilder.instance(engine)
-                        .mapEntity(type = type)
+                        .mapEntity(type = type, projectileCollidable = true)
                         .movingPlatform(distance = dist, originX = rect.x, originY = rect.y, positive = dx > 0)
                         .boundingBox(texture.regionWidth.toFloat(), texture.regionHeight.toFloat())
                         .position(rect.x, rect.y)
