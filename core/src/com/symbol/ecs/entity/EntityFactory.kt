@@ -117,20 +117,20 @@ object EntityFactory {
                         .velocity()
                         .texture(texture)
                         .direction(facingRight = facingRight)
-                        .gravity(gravity = -7.8f, terminalVelocity = -50f).remove().build()
+                        .gravity().remove().build()
             }
             EnemyType.Percent -> {
                 val parent = EntityBuilder.instance(engine)
-                        .enemy(damage = 1, activationRange = 120f, movementType = EnemyMovementType.BackAndForth)
+                        .enemy(damage = 1, activationRange = 120f, movementType = EnemyMovementType.BackAndForth, jumpImpulse = 120f)
                         .health(2)
                         .boundingBox(10f, 10f)
                         .position(rect.x, rect.y)
                         .velocity(speed = 20f)
                         .texture(texture)
                         .direction(facingRight = facingRight)
-                        .gravity().knockback().remove().build()
+                        .gravity(gravity = -480f, terminalVelocity = -240f).knockback().remove().build()
 
-                val angles = listOf(MathUtils.PI2 / 3f, MathUtils.PI2 * 2f / 3f, 0f)
+                val angles = listOf(MathUtils.PI2 / 5f, MathUtils.PI2 * 2f / 5f, MathUtils.PI2 * 3 / 5f, MathUtils.PI2 * 4 / 5f, 0f)
                 for (angle in angles) {
                     EntityBuilder.instance(engine)
                             .enemy(damage = 1, activationRange = 150f, movementType = EnemyMovementType.Orbit, parent = parent)

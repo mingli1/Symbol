@@ -9,6 +9,7 @@ import com.symbol.ecs.entity.Player
 import com.symbol.ecs.system.*
 import com.symbol.ecs.system.enemy.EnemyActivationSystem
 import com.symbol.ecs.system.enemy.EnemyAttackSystem
+import com.symbol.ecs.system.enemy.EnemyHealthBarRenderSystem
 import com.symbol.ecs.system.enemy.EnemyMovementSystem
 import com.symbol.game.Symbol
 import com.symbol.input.KeyInput
@@ -53,6 +54,7 @@ class GameScreen(game: Symbol) : AbstractScreen(game) {
         engine.addSystem(DirectionSystem())
         engine.addSystem(GravitySystem())
         engine.addSystem(RenderSystem(game.batch))
+        engine.addSystem(EnemyHealthBarRenderSystem(game.batch, game.res))
         engine.addSystem(RemoveSystem())
     }
 
@@ -62,6 +64,7 @@ class GameScreen(game: Symbol) : AbstractScreen(game) {
         engine.getSystem(ProjectileSystem::class.java).setMapData(mm.mapObjects)
         engine.getSystem(EnemyAttackSystem::class.java).reset()
         engine.getSystem(EnemyMovementSystem::class.java).reset()
+        engine.getSystem(EnemyHealthBarRenderSystem::class.java).reset()
     }
 
     override fun show() {

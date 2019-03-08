@@ -54,7 +54,7 @@ class EnemyAttackSystem(private val player: Player, private val res: Resources) 
             }
             if (enemyComponent.canAttack) {
                 when (enemyComponent.attackType) {
-                    EnemyAttackType.None -> return
+                    EnemyAttackType.None -> {}
                     EnemyAttackType.ShootOne -> shootOne(enemyComponent, bounds, dir.facingRight)
                     EnemyAttackType.ShootTwoHorizontal -> shootTwoHorizontal(enemyComponent, bounds)
                     EnemyAttackType.ShootTwoVertical -> shootTwoVertical(enemyComponent, bounds)

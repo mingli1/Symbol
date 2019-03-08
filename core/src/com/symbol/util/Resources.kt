@@ -53,6 +53,10 @@ class Resources : Disposable {
         loadProjectile("p_big_ll")
         loadProjectile("p_ltimes")
         loadProjectile("p_alpha")
+
+        textures["black"] = atlas.findRegion("black")
+        textures["hp_bar_color"] = atlas.findRegion("hp_bar_color")
+        textures["hp_bar_bg_color"] = atlas.findRegion("hp_bar_bg_color")
     }
 
     fun getTexture(key: String): TextureRegion? {

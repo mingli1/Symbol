@@ -186,7 +186,10 @@ class MapCollisionSystem : IteratingSystem(
     private fun handleDamageMapObject(mapObject: MapObject, entity: Entity?) {
         if (damageTimes[entity] == 0f) {
             val health = Mapper.HEALTH_MAPPER.get(entity)
-            if (health != null) health.hp -= mapObject.damage
+            if (health != null) {
+                health.hp -= mapObject.damage
+                if (health.hp != 0) health.hpChange = true
+            }
             startDamage[entity!!] = true
         }
     }

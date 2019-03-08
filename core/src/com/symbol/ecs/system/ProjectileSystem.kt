@@ -135,6 +135,7 @@ class ProjectileSystem(private val res: Resources) : IteratingSystem(Family.all(
     private fun hit(entity: Entity, damage: Int) {
         val health = Mapper.HEALTH_MAPPER.get(entity)
         health.hp -= damage
+        if (health.hp != 0) health.hpChange = true
 
         handleTeleportation(entity)
         handleLastStand(entity)
