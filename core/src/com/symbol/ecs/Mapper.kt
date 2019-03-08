@@ -7,6 +7,7 @@ import com.symbol.ecs.component.PlayerComponent
 import com.symbol.ecs.component.ProjectileComponent
 import com.symbol.ecs.component.map.MapEntityComponent
 import com.symbol.ecs.component.map.MovingPlatformComponent
+import com.symbol.ecs.component.map.PortalComponent
 
 object Mapper {
 
@@ -39,5 +40,7 @@ object Mapper {
     val MOVING_PLATFORM_MAPPER: ComponentMapper<MovingPlatformComponent> = ComponentMapper.getFor(MovingPlatformComponent::class.java)
 
     val MAP_ENTITY_MAPPER: ComponentMapper<MapEntityComponent> = ComponentMapper.getFor(MapEntityComponent::class.java)
+
+    val PORTAL_MAPPER: ComponentMapper<PortalComponent> = ComponentMapper.getFor(PortalComponent::class.java)
 
 }

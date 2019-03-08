@@ -6,7 +6,7 @@ filter: Nearest,Nearest
 repeat: none
 approx
   rotate: false
-  xy: 216, 17
+  xy: 240, 36
   size: 7, 7
   orig: 7, 7
   offset: 0, 0
@@ -18,9 +18,16 @@ background
   orig: 200, 120
   offset: 0, 0
   index: -1
-e_big_omega
+curly_brace_portal
   rotate: false
   xy: 204, 61
+  size: 13, 13
+  orig: 13, 13
+  offset: 0, 0
+  index: -1
+e_big_omega
+  rotate: false
+  xy: 204, 46
   size: 12, 13
   orig: 12, 13
   offset: 0, 0
@@ -34,7 +41,7 @@ e_big_phi
   index: -1
 e_big_pi
   rotate: false
-  xy: 204, 32
+  xy: 204, 17
   size: 11, 13
   orig: 11, 13
   offset: 0, 0
@@ -48,14 +55,14 @@ e_cintegral
   index: -1
 e_e
   rotate: false
-  xy: 242, 52
+  xy: 245, 64
   size: 8, 8
   orig: 8, 8
   offset: 0, 0
   index: -1
 e_exists
   rotate: false
-  xy: 215, 2
+  xy: 217, 17
   size: 9, 13
   orig: 9, 13
   offset: 0, 0
@@ -69,56 +76,56 @@ e_in
   index: -1
 e_njoin
   rotate: false
-  xy: 227, 60
+  xy: 245, 80
   size: 9, 7
   orig: 9, 7
   offset: 0, 0
   index: -1
 e_percent
   rotate: false
-  xy: 227, 69
+  xy: 228, 34
   size: 10, 10
   orig: 10, 10
   offset: 0, 0
   index: -1
 e_percent_orbit
   rotate: false
-  xy: 226, 2
+  xy: 244, 13
   size: 6, 6
   orig: 6, 6
   offset: 0, 0
   index: -1
 e_sqrt
   rotate: false
-  xy: 228, 49
+  xy: 219, 63
   size: 12, 9
   orig: 12, 9
   offset: 0, 0
   index: -1
 e_sum
   rotate: false
-  xy: 204, 17
+  xy: 204, 2
   size: 10, 13
   orig: 10, 13
   offset: 0, 0
   index: -1
 e_theta
   rotate: false
-  xy: 204, 2
+  xy: 216, 2
   size: 9, 13
   orig: 9, 13
   offset: 0, 0
   index: -1
 mplatform1
   rotate: false
-  xy: 229, 33
+  xy: 240, 74
   size: 8, 4
   orig: 8, 4
   offset: 0, 0
   index: -1
 mplatform2
   rotate: false
-  xy: 238, 62
+  xy: 227, 56
   size: 16, 4
   orig: 16, 4
   offset: 0, 0
@@ -132,56 +139,56 @@ mplatform3
   index: -1
 p_alpha
   rotate: false
-  xy: 229, 39
+  xy: 227, 46
   size: 11, 8
   orig: 11, 8
   offset: 0, 0
   index: -1
 p_alpha_t
   rotate: false
-  xy: 218, 47
+  xy: 218, 32
   size: 8, 11
   orig: 8, 11
   offset: 0, 0
   index: -1
 p_alpha_tr
   rotate: false
-  xy: 217, 35
+  xy: 233, 62
   size: 10, 10
   orig: 10, 10
   offset: 0, 0
   index: -1
 p_angle_bracket
   rotate: false
-  xy: 235, 24
+  xy: 239, 82
   size: 4, 7
   orig: 4, 7
   offset: 0, 0
   index: -1
 p_angle_bracket_t
   rotate: false
-  xy: 242, 36
+  xy: 235, 18
   size: 7, 4
   orig: 7, 4
   offset: 0, 0
   index: -1
 p_angle_bracket_tr
   rotate: false
-  xy: 225, 18
+  xy: 245, 28
   size: 6, 6
   orig: 6, 6
   offset: 0, 0
   index: -1
 p_arrow
   rotate: false
-  xy: 242, 82
+  xy: 226, 74
   size: 12, 5
   orig: 12, 5
   offset: 0, 0
   index: -1
 p_arrow_t
   rotate: false
-  xy: 249, 68
+  xy: 228, 20
   size: 5, 12
   orig: 5, 12
   offset: 0, 0
@@ -202,14 +209,14 @@ p_big_ll
   index: -1
 p_cup
   rotate: false
-  xy: 217, 26
+  xy: 245, 55
   size: 8, 7
   orig: 8, 7
   offset: 0, 0
   index: -1
 p_cup_t
   rotate: false
-  xy: 242, 42
+  xy: 240, 45
   size: 7, 8
   orig: 7, 8
   offset: 0, 0
@@ -223,14 +230,14 @@ p_cup_tr
   index: -1
 p_dot
   rotate: false
-  xy: 233, 10
+  xy: 250, 74
   size: 4, 4
   orig: 4, 4
   offset: 0, 0
   index: -1
 p_dot_xor
   rotate: false
-  xy: 234, 4
+  xy: 249, 41
   size: 4, 4
   orig: 4, 4
   offset: 0, 0
@@ -244,7 +251,7 @@ p_implies
   index: -1
 p_implies_t
   rotate: false
-  xy: 218, 60
+  xy: 218, 45
   size: 7, 14
   orig: 7, 14
   offset: 0, 0
@@ -279,28 +286,28 @@ p_ldots_t
   index: -1
 p_ldots_tr
   rotate: false
-  xy: 204, 47
+  xy: 204, 32
   size: 12, 12
   orig: 12, 12
   offset: 0, 0
   index: -1
 p_ltimes
   rotate: false
-  xy: 227, 26
+  xy: 245, 21
   size: 6, 5
   orig: 6, 5
   offset: 0, 0
   index: -1
 p_ltimes_t
   rotate: false
-  xy: 226, 10
+  xy: 249, 47
   size: 5, 6
   orig: 5, 6
   offset: 0, 0
   index: -1
 p_ltimes_tr
   rotate: false
-  xy: 233, 16
+  xy: 227, 9
   size: 6, 6
   orig: 6, 6
   offset: 0, 0
@@ -314,7 +321,7 @@ p_xor
   index: -1
 player
   rotate: false
-  xy: 239, 72
+  xy: 235, 24
   size: 8, 8
   orig: 8, 8
   offset: 0, 0

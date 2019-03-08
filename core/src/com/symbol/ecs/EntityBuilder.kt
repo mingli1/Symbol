@@ -9,6 +9,7 @@ import com.symbol.ecs.component.PlayerComponent
 import com.symbol.ecs.component.ProjectileComponent
 import com.symbol.ecs.component.map.MapEntityComponent
 import com.symbol.ecs.component.map.MovingPlatformComponent
+import com.symbol.ecs.component.map.PortalComponent
 import com.symbol.ecs.entity.EnemyAttackType
 import com.symbol.ecs.entity.EnemyMovementType
 import com.symbol.ecs.entity.MapEntityType
@@ -20,8 +21,10 @@ class EntityBuilder(private val engine: PooledEngine) {
     private var playerComponent: PlayerComponent? = null
     private var enemyComponent: EnemyComponent? = null
     private var projectileComponent: ProjectileComponent? = null
+
     private var mapEntityComponent: MapEntityComponent? = null
     private var movingPlatformComponent: MovingPlatformComponent? = null
+    private var portalComponent: PortalComponent? = null
 
     private var boundingBoxComponent: BoundingBoxComponent? = null
     private var directionComponent: DirectionComponent? = null
@@ -108,6 +111,13 @@ class EntityBuilder(private val engine: PooledEngine) {
         movingPlatformComponent?.originX = originX
         movingPlatformComponent?.originY = originY
         movingPlatformComponent?.positive = positive
+        return this
+    }
+
+    fun portal(id: Int, target: Int) : EntityBuilder {
+        portalComponent = engine.createComponent(PortalComponent::class.java)
+        portalComponent?.id = id
+        portalComponent?.target = target
         return this
     }
 
@@ -202,6 +212,7 @@ class EntityBuilder(private val engine: PooledEngine) {
         if (orbitComponent != null) entity.add(orbitComponent)
         if (mapEntityComponent != null) entity.add(mapEntityComponent)
         if (movingPlatformComponent != null) entity.add(movingPlatformComponent)
+        if (portalComponent != null) entity.add(portalComponent)
 
         engine.addEntity(entity)
         return entity

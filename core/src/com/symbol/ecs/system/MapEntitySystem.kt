@@ -1,14 +1,24 @@
 package com.symbol.ecs.system
 
+import com.badlogic.ashley.core.Engine
 import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.core.Family
 import com.badlogic.ashley.systems.IteratingSystem
+import com.badlogic.ashley.utils.ImmutableArray
 import com.symbol.ecs.Mapper
 import com.symbol.ecs.component.map.MapEntityComponent
+import com.symbol.ecs.component.map.PortalComponent
 import com.symbol.ecs.entity.MapEntityType
 import com.symbol.ecs.entity.Player
 
 class MapEntitySystem(private val player: Player) : IteratingSystem(Family.all(MapEntityComponent::class.java).get()) {
+
+    private lateinit var portals: ImmutableArray<Entity>
+
+    override fun addedToEngine(engine: Engine?) {
+        super.addedToEngine(engine)
+        portals = engine!!.getEntitiesFor(Family.all(PortalComponent::class.java).get())
+    }
 
     override fun processEntity(entity: Entity?, dt: Float) {
         val mapEntityComponent = Mapper.MAP_ENTITY_MAPPER.get(entity)
@@ -16,6 +26,7 @@ class MapEntitySystem(private val player: Player) : IteratingSystem(Family.all(M
             MapEntityType.None -> return
             MapEntityType.MovingPlatform -> handleMovingPlatform(entity)
             MapEntityType.TemporaryPlatform -> handleTempPlatform(entity)
+            MapEntityType.Portal -> handlePortal(entity)
         }
     }
 
@@ -53,6 +64,36 @@ class MapEntitySystem(private val player: Player) : IteratingSystem(Family.all(M
             remove.shouldRemove = true
             playerComp.canDoubleJump = true
             playerVel.dy = 0f
+        }
+    }
+
+    private fun handlePortal(entity: Entity?) {
+        val bounds = Mapper.BOUNDING_BOX_MAPPER.get(entity)
+        val playerBounds = Mapper.BOUNDING_BOX_MAPPER.get(player)
+        val portalSource = Mapper.PORTAL_MAPPER.get(entity)
+        val width = Mapper.TEXTURE_MAPPER.get(player).texture!!.regionWidth
+        val height = Mapper.TEXTURE_MAPPER.get(player).texture!!.regionHeight
+
+        if (portalSource.teleported && !playerBounds.rect.overlaps(bounds.rect)) {
+            portalSource.teleported = false
+        }
+
+        if (playerBounds.rect.overlaps(bounds.rect)) {
+            if (!portalSource.teleported) {
+                for (portal in portals) {
+                    val portalTarget = Mapper.PORTAL_MAPPER.get(portal)
+                    if (portalTarget.id == portalSource.target) {
+                        val targetPos = Mapper.BOUNDING_BOX_MAPPER.get(portal)
+                        val playerPos = Mapper.POS_MAPPER.get(player)
+
+                        playerPos.set(targetPos.rect.x, targetPos.rect.y)
+                        playerBounds.rect.setPosition(playerPos.x + (width - playerBounds.rect.width) / 2,
+                                playerPos.y + (height - playerBounds.rect.height) / 2)
+                        portalTarget.teleported = true
+                        break
+                    }
+                }
+            }
         }
     }
 

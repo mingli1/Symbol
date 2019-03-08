@@ -4,7 +4,8 @@ enum class MapEntityType(val typeStr: String) {
 
     None("none"),
     MovingPlatform("mplatform"),
-    TemporaryPlatform("tplatform");
+    TemporaryPlatform("tplatform"),
+    Portal("portal");
 
     companion object {
         fun getType(typeStr: String) : MapEntityType? {

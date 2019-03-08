@@ -148,6 +148,8 @@ object EntityFactory {
 
     private const val DIST = "dist"
     private const val VEL_X = "dx"
+    private const val PORTAL_ID = "id"
+    private const val PORTAL_TARGET = "target"
 
     fun createMapEntity(engine: PooledEngine, res: Resources, props: MapProperties, type: MapEntityType, rect: Rectangle) {
         when (type) {
@@ -173,6 +175,22 @@ object EntityFactory {
                         .position(rect.x, rect.y)
                         .texture(texture)
                         .remove().build()
+            }
+            MapEntityType.Portal -> {
+                val texture = res.getTexture("curly_brace_portal")!!
+                val bw = texture.regionWidth.toFloat() - 4f
+                val bh = texture.regionHeight.toFloat() - 4f
+                val id = props[PORTAL_ID]!! as Int
+                val target = props[PORTAL_TARGET]!! as Int
+
+                EntityBuilder.instance(engine)
+                        .mapEntity(type = type)
+                        .portal(id, target)
+                        .boundingBox(bw, bh)
+                        .position(rect.x, rect.y)
+                        .velocity()
+                        .texture(texture)
+                        .build()
             }
         }
     }
