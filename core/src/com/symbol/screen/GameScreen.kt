@@ -17,6 +17,7 @@ import com.symbol.input.KeyInputSystem
 import com.symbol.map.camera.Background
 import com.symbol.map.MapManager
 import com.symbol.map.camera.CameraShake
+import com.symbol.scene.Hud
 
 private const val CAMERA_LERP = 2.5f
 private const val PARALLAX_SCALING = 0.2f
@@ -31,6 +32,8 @@ class GameScreen(game: Symbol) : AbstractScreen(game) {
     private var player: Player = Player(game.res)
     private val background: Background = Background(game.res.getTexture("background")!!,
             cam, Vector2(PARALLAX_SCALING, PARALLAX_SCALING))
+
+    private val hud: Hud = Hud(game, player)
 
     init {
         engine.addEntity(player)
@@ -81,6 +84,7 @@ class GameScreen(game: Symbol) : AbstractScreen(game) {
         updateCamera(dt)
         background.update(dt)
         mm.update()
+        hud.update(dt)
     }
 
     private fun updateCamera(dt: Float) {
@@ -111,11 +115,15 @@ class GameScreen(game: Symbol) : AbstractScreen(game) {
         engine.update(dt)
 
         game.batch.end()
+
+        hud.render(dt)
     }
 
     override fun dispose() {
         super.dispose()
         mm.dispose()
+
+        hud.dispose()
     }
 
 }

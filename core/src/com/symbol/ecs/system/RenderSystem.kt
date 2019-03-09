@@ -7,11 +7,9 @@ import com.badlogic.gdx.graphics.g2d.Batch
 import com.symbol.ecs.Mapper
 import com.symbol.ecs.component.TextureComponent
 
-class RenderSystem(private val batch: Batch) : IteratingSystem(
-    Family.all(TextureComponent::class.java).get()
-) {
+class RenderSystem(private val batch: Batch) : IteratingSystem(Family.all(TextureComponent::class.java).get()) {
 
-    override fun processEntity(entity: Entity?, deltaTime: Float) {
+    override fun processEntity(entity: Entity?, dt: Float) {
         val texture = Mapper.TEXTURE_MAPPER.get(entity)
         val position = Mapper.POS_MAPPER.get(entity)
         val dir = Mapper.DIR_MAPPER.get(entity)

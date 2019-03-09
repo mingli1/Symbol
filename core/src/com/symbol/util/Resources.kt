@@ -1,6 +1,8 @@
 package com.symbol.util
 
+import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.assets.AssetManager
+import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.utils.Disposable
@@ -15,11 +17,16 @@ class Resources : Disposable {
     private val atlas: TextureAtlas
     private val textures: MutableMap<String, TextureRegion> = HashMap()
 
+    val font: BitmapFont
+
     init {
         assetManager.load("textures/textures.atlas", TextureAtlas::class.java)
         assetManager.finishLoading()
 
         atlas = assetManager.get("textures/textures.atlas", TextureAtlas::class.java)
+
+        font = BitmapFont(Gdx.files.internal("font/font.fnt"), atlas.findRegion("font"), false)
+        font.setUseIntegerPositions(false)
 
         textures["background"] = atlas.findRegion("background")
 
@@ -57,6 +64,7 @@ class Resources : Disposable {
         textures["black"] = atlas.findRegion("black")
         textures["hp_bar_color"] = atlas.findRegion("hp_bar_color")
         textures["hp_bar_bg_color"] = atlas.findRegion("hp_bar_bg_color")
+        textures["hp_bar_green"] = atlas.findRegion("hp_bar_green")
     }
 
     fun getTexture(key: String): TextureRegion? {
