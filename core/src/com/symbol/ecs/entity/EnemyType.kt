@@ -14,7 +14,8 @@ enum class EnemyType(val typeStr: String) {
     NaturalJoin("njoin"),
     BigPhi("big_phi"),
     Percent("percent"),
-    PercentOrbit("percent_orbit");
+    PercentOrbit("percent_orbit"),
+    Nabla("nabla");
 
     companion object {
         fun getType(typeStr: String) : EnemyType? {

@@ -52,6 +52,7 @@ class Resources : Disposable {
         textures["e_big_phi"] = atlas.findRegion("e_big_phi")
         textures["e_percent"] = atlas.findRegion("e_percent")
         textures["e_percent_orbit"] = atlas.findRegion("e_percent_orbit")
+        textures["e_nabla"] = atlas.findRegion("e_nabla")
 
         for (i in 1..3) textures["mplatform$i"] = atlas.findRegion("mplatform$i")
         textures["approx"] = atlas.findRegion("approx")

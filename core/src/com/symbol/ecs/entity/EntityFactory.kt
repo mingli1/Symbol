@@ -145,6 +145,17 @@ object EntityFactory {
                             .remove().build()
                 }
             }
+            EnemyType.Nabla -> {
+                EntityBuilder.instance(engine)
+                        .enemy(damage = 4, activationRange = 140f)
+                        .health(1)
+                        .gravity(gravity = -1200f, terminalVelocity = -160f, collidable = false)
+                        .boundingBox(texture.regionWidth.toFloat() - 4, texture.regionHeight.toFloat())
+                        .position(rect.x, rect.y)
+                        .velocity()
+                        .texture(texture)
+                        .remove().build()
+            }
             else -> {}
         }
     }
