@@ -2,6 +2,8 @@ package com.symbol.game
 
 object Config {
 
+    const val DEBUG = true
+
     const val V_WIDTH = 200
     const val V_HEIGHT = V_WIDTH * 3 / 5
     const val SCALE = 6

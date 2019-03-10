@@ -1,12 +1,14 @@
 package com.symbol.scene;
 
 import com.badlogic.ashley.core.Entity;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.symbol.ecs.Mapper;
 import com.symbol.ecs.component.HealthComponent;
+import com.symbol.game.Config;
 import com.symbol.game.Symbol;
 
 public class Hud extends Scene {
@@ -28,12 +30,20 @@ public class Hud extends Scene {
     private float decayingHpBarWidth;
     private boolean startHpBarDecay = false;
 
+    private Label fps;
+
     public Hud(final Symbol game, Entity player) {
         super(game);
         this.player = player;
 
         createHealthBar();
         createSettingsButton();
+
+        if (Config.DEBUG) {
+            fps = new Label("", new Label.LabelStyle(game.getRes().getFont(), Color.BLACK));
+            fps.setPosition(5, 5);
+            stage.addActor(fps);
+        }
     }
 
     private void createHealthBar() {
@@ -54,6 +64,8 @@ public class Hud extends Scene {
 
     @Override
     public void update(float dt) {
+        if (Config.DEBUG) fps.setText(Gdx.graphics.getFramesPerSecond() + " FPS");
+
         HealthComponent health = Mapper.INSTANCE.getHEALTH_MAPPER().get(player);
         hpBarWidth = HP_BAR_WIDTH * ((float) health.getHp() / health.getMaxHp());
         if (health.getHpChange()) {
