@@ -9,6 +9,7 @@ import com.symbol.ecs.Mapper
 import com.symbol.ecs.component.map.MapEntityComponent
 import com.symbol.ecs.component.map.PortalComponent
 import com.symbol.ecs.entity.MapEntityType
+import com.symbol.ecs.entity.PLAYER_HP
 import com.symbol.ecs.entity.Player
 
 class MapEntitySystem(private val player: Player) : IteratingSystem(Family.all(MapEntityComponent::class.java).get()) {
@@ -103,6 +104,7 @@ class MapEntitySystem(private val player: Player) : IteratingSystem(Family.all(M
         val pos = Mapper.POS_MAPPER.get(entity)
         val bounds = Mapper.BOUNDING_BOX_MAPPER.get(entity)
         val vel = Mapper.VEL_MAPPER.get(entity)
+        val playerBounds = Mapper.BOUNDING_BOX_MAPPER.get(player)
 
         if (!clamp.right) {
             if (clamp.clamping) {
@@ -123,6 +125,11 @@ class MapEntitySystem(private val player: Player) : IteratingSystem(Family.all(M
                     clamp.clamping = false
                 }
             } else if (pos.x >= clamp.rect.x + clamp.rect.width - bounds.rect.width) clamp.clamping = true
+        }
+
+        if (playerBounds.rect.overlaps(bounds.rect)) {
+            val playerHealth = Mapper.HEALTH_MAPPER.get(player)
+            playerHealth.hp = 0
         }
     }
 
