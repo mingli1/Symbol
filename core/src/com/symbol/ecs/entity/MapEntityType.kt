@@ -7,7 +7,8 @@ enum class MapEntityType(val typeStr: String) {
     TemporaryPlatform("tplatform"),
     Portal("portal"),
     Clamp("clamp"),
-    HealthPack("hp_pack");
+    HealthPack("hp_pack"),
+    Mirror("mirror");
 
     companion object {
         fun getType(typeStr: String) : MapEntityType? {

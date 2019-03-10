@@ -16,6 +16,7 @@ import com.symbol.ecs.component.HealthComponent
 import com.symbol.ecs.component.ProjectileComponent
 import com.symbol.ecs.component.RemoveComponent
 import com.symbol.ecs.component.map.MapEntityComponent
+import com.symbol.ecs.entity.MapEntityType
 import com.symbol.map.MapObject
 import com.symbol.util.Resources
 
@@ -83,10 +84,17 @@ class ProjectileSystem(private val res: Resources) : IteratingSystem(Family.all(
             }
             for (mapEntity in mapEntities) {
                 val me = Mapper.MAP_ENTITY_MAPPER.get(mapEntity)
+                val bounds = Mapper.BOUNDING_BOX_MAPPER.get(mapEntity)
                 if (me.projectileCollidable) {
-                    val bounds = Mapper.BOUNDING_BOX_MAPPER.get(mapEntity)
                     if (bb.rect.overlaps(bounds.rect)) {
                         remove.shouldRemove = true
+                        break
+                    }
+                }
+                if (me.mapEntityType == MapEntityType.Mirror && !pj.enemy) {
+                    if (bb.rect.overlaps(bounds.rect)) {
+                        pj.enemy = true
+                        velocity.dx = -velocity.dx
                         break
                     }
                 }

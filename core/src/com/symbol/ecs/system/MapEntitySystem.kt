@@ -23,12 +23,12 @@ class MapEntitySystem(private val player: Player) : IteratingSystem(Family.all(M
     override fun processEntity(entity: Entity?, dt: Float) {
         val mapEntityComponent = Mapper.MAP_ENTITY_MAPPER.get(entity)
         when (mapEntityComponent.mapEntityType) {
-            MapEntityType.None -> return
             MapEntityType.MovingPlatform -> handleMovingPlatform(entity)
             MapEntityType.TemporaryPlatform -> handleTempPlatform(entity)
             MapEntityType.Portal -> handlePortal(entity)
             MapEntityType.Clamp -> handleClamp(entity)
             MapEntityType.HealthPack -> handleHealthPack(entity)
+            else -> {}
         }
     }
 

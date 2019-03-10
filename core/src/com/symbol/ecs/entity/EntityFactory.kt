@@ -193,7 +193,7 @@ object EntityFactory {
                 val target = props["target"]!! as Int
 
                 EntityBuilder.instance(engine)
-                        .mapEntity(type = type)
+                        .mapEntity(type = type, projectileCollidable = true)
                         .portal(id, target)
                         .boundingBox(bw, bh)
                         .position(rect.x, rect.y)
@@ -209,7 +209,7 @@ object EntityFactory {
                 val textureRight = res.getTexture(textureKey + BRACKET_RIGHT)!!
 
                 EntityBuilder.instance(engine)
-                        .mapEntity(type = type)
+                        .mapEntity(type = type, projectileCollidable = true)
                         .clamp(false, rect, acceleration, backVelocity)
                         .boundingBox(textureLeft.regionWidth.toFloat(), textureLeft.regionHeight.toFloat())
                         .position(rect.x, rect.y)
@@ -218,7 +218,7 @@ object EntityFactory {
                         .build()
 
                 EntityBuilder.instance(engine)
-                        .mapEntity(type = type)
+                        .mapEntity(type = type, projectileCollidable = true)
                         .clamp(true, rect, acceleration, backVelocity)
                         .boundingBox(textureRight.regionWidth.toFloat(), textureRight.regionHeight.toFloat())
                         .position(rect.x + rect.width - textureRight.regionWidth, rect.y)
@@ -238,6 +238,17 @@ object EntityFactory {
                         .velocity()
                         .texture(texture)
                         .remove().build()
+            }
+            MapEntityType.Mirror -> {
+                val texture = res.getTexture("between")!!
+
+                EntityBuilder.instance(engine)
+                        .mapEntity(type = type)
+                        .boundingBox(texture.regionWidth.toFloat(), texture.regionHeight.toFloat())
+                        .position(rect.x, rect.y)
+                        .velocity()
+                        .texture(texture)
+                        .build()
             }
             else -> {}
         }

@@ -58,6 +58,7 @@ class Resources : Disposable {
         textures["approx"] = atlas.findRegion("approx")
         textures["curly_brace_portal"] = atlas.findRegion("curly_brace_portal")
         textures["health_pack"] = atlas.findRegion("health_pack")
+        textures["between"] = atlas.findRegion("between")
 
         loadProjectile("p_dot")
         loadProjectile("p_dot_xor")
