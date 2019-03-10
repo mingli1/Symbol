@@ -18,7 +18,7 @@ public class Hud extends Scene {
     private static final float HP_BAR_WIDTH = 44f;
     private static final float HP_BAR_HEIGHT = 4;
 
-    private static final Vector2 SETTINGS_BUTTON_POSITION = new Vector2(180, 105);
+    private static final Vector2 SETTINGS_BUTTON_POSITION = new Vector2(183, 105);
 
     private Entity player;
     private float hpBarWidth;
@@ -43,7 +43,6 @@ public class Hud extends Scene {
         ImageButton.ImageButtonStyle style = game.getRes().getButtonStyle("settings");
         ImageButton settingsButton = new ImageButton(style);
         settingsButton.setPosition(SETTINGS_BUTTON_POSITION.x, SETTINGS_BUTTON_POSITION.y);
-        settingsButton.setSize(12, 12);
 
         stage.addActor(settingsButton);
     }

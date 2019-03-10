@@ -25,6 +25,10 @@ public abstract class Scene implements Disposable {
 
     public abstract void render(float dt);
 
+    public Stage getStage() {
+        return stage;
+    }
+
     @Override
     public void dispose() {
         stage.dispose();

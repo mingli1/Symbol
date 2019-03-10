@@ -2,6 +2,7 @@ package com.symbol.screen
 
 import com.badlogic.ashley.core.PooledEngine
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.InputMultiplexer
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.math.Vector2
 import com.symbol.ecs.Mapper
@@ -26,6 +27,7 @@ class GameScreen(game: Symbol) : AbstractScreen(game) {
 
     private val engine = PooledEngine()
 
+    private val multiplexer: InputMultiplexer = InputMultiplexer()
     private val input: KeyInput
     private val mm: MapManager = MapManager(game.batch, cam, engine, game.res)
 
@@ -43,6 +45,9 @@ class GameScreen(game: Symbol) : AbstractScreen(game) {
         input = KeyInput(keyInputSystem)
         engine.addSystem(keyInputSystem)
         engine.addSystem(PlayerSystem(player))
+
+        multiplexer.addProcessor(input)
+        multiplexer.addProcessor(hud.stage)
     }
 
     private fun initSystems() {
@@ -71,7 +76,7 @@ class GameScreen(game: Symbol) : AbstractScreen(game) {
     }
 
     override fun show() {
-        Gdx.input.inputProcessor = input
+        Gdx.input.inputProcessor = multiplexer
         mm.load("test_map")
 
         val playerPosition = Mapper.POS_MAPPER.get(player)
