@@ -3,6 +3,7 @@ package com.symbol.scene;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.symbol.ecs.Mapper;
 import com.symbol.ecs.component.HealthComponent;
@@ -17,8 +18,9 @@ public class Hud extends Scene {
     private static final float HP_BAR_WIDTH = 44f;
     private static final float HP_BAR_HEIGHT = 4;
 
-    private Entity player;
+    private static final Vector2 SETTINGS_BUTTON_POSITION = new Vector2(180, 105);
 
+    private Entity player;
     private float hpBarWidth;
 
     public Hud(final Symbol game, Entity player) {
@@ -26,6 +28,7 @@ public class Hud extends Scene {
         this.player = player;
 
         createHealthBar();
+        createSettingsButton();
     }
 
     private void createHealthBar() {
@@ -34,6 +37,15 @@ public class Hud extends Scene {
         hpPromptLabel.setPosition(HP_PROMPT_POSITION.x, HP_PROMPT_POSITION.y);
 
         stage.addActor(hpPromptLabel);
+    }
+
+    private void createSettingsButton() {
+        ImageButton.ImageButtonStyle style = game.getRes().getButtonStyle("settings");
+        ImageButton settingsButton = new ImageButton(style);
+        settingsButton.setPosition(SETTINGS_BUTTON_POSITION.x, SETTINGS_BUTTON_POSITION.y);
+        settingsButton.setSize(12, 12);
+
+        stage.addActor(settingsButton);
     }
 
     @Override

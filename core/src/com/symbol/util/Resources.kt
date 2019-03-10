@@ -5,11 +5,17 @@ import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.graphics.g2d.TextureRegion
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import com.badlogic.gdx.utils.Disposable
 
 const val TOP = "_t"
 const val TOP_RIGHT ="_tr"
 const val ORBIT = "_orbit"
+
+private const val BUTTON = "button_"
+private const val BUTTON_UP = "_up"
+private const val BUTTON_DOWN = "_down"
 
 class Resources : Disposable {
 
@@ -65,6 +71,8 @@ class Resources : Disposable {
         textures["hp_bar_color"] = atlas.findRegion("hp_bar_color")
         textures["hp_bar_bg_color"] = atlas.findRegion("hp_bar_bg_color")
         textures["hp_bar_green"] = atlas.findRegion("hp_bar_green")
+
+        loadButton("settings")
     }
 
     fun getTexture(key: String): TextureRegion? {
@@ -84,6 +92,18 @@ class Resources : Disposable {
 
         if (top != null) textures[key + TOP] = top
         if (topRight != null) textures[key + TOP_RIGHT] = topRight
+    }
+
+    private fun loadButton(key: String) {
+        textures[BUTTON + key + BUTTON_UP] = atlas.findRegion(BUTTON + key + BUTTON_UP)
+        textures[BUTTON + key + BUTTON_DOWN] = atlas.findRegion(BUTTON + key + BUTTON_DOWN)
+    }
+
+    fun getButtonStyle(key: String) : ImageButton.ImageButtonStyle {
+        val style = ImageButton.ImageButtonStyle()
+        style.imageUp = TextureRegionDrawable(getTexture(BUTTON + key + BUTTON_UP))
+        style.imageDown = TextureRegionDrawable(getTexture(BUTTON + key + BUTTON_DOWN))
+        return style
     }
 
     override fun dispose() {
