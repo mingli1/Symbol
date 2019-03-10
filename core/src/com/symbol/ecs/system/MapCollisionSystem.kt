@@ -186,11 +186,7 @@ class MapCollisionSystem : IteratingSystem(
     private fun handleDamageMapObject(mapObject: MapObject, entity: Entity?) {
         if (damageTimes[entity] == 0f) {
             val health = Mapper.HEALTH_MAPPER.get(entity)
-            if (health != null) {
-                health.hp -= mapObject.damage
-                health.hpDelta = if (mapObject.damage > health.maxHp) health.maxHp else mapObject.damage
-                health.hpChange = true
-            }
+            health?.hit(mapObject.damage)
             startDamage[entity!!] = true
         }
     }

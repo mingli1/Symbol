@@ -40,7 +40,7 @@ class EnemyAttackSystem(private val player: Player, private val res: Resources) 
 
         if (bounds.overlaps(playerBounds)) {
             val playerHealth = Mapper.HEALTH_MAPPER.get(player)
-            playerHealth.hp -= enemyComponent.damage
+            playerHealth.hit(enemyComponent.damage)
             remove.shouldRemove = true
             return
         }

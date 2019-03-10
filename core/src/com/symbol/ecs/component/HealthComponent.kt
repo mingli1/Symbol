@@ -10,6 +10,12 @@ class HealthComponent : Component, Pool.Poolable {
     var hpDelta: Int = 0
     var hpChange: Boolean = false
 
+    fun hit(damage: Int) {
+        hp -= damage
+        hpDelta = if (damage > maxHp) maxHp else damage
+        hpChange = true
+    }
+
     override fun reset() {
         hp = 0
         maxHp = 0
