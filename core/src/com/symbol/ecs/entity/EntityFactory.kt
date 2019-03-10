@@ -5,6 +5,8 @@ import com.badlogic.gdx.maps.MapProperties
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Rectangle
 import com.symbol.ecs.EntityBuilder
+import com.symbol.util.BRACKET_LEFT
+import com.symbol.util.BRACKET_RIGHT
 import com.symbol.util.ORBIT
 import com.symbol.util.Resources
 
@@ -143,19 +145,15 @@ object EntityFactory {
                             .remove().build()
                 }
             }
+            else -> {}
         }
     }
-
-    private const val DIST = "dist"
-    private const val VEL_X = "dx"
-    private const val PORTAL_ID = "id"
-    private const val PORTAL_TARGET = "target"
 
     fun createMapEntity(engine: PooledEngine, res: Resources, props: MapProperties, type: MapEntityType, rect: Rectangle) {
         when (type) {
             MapEntityType.MovingPlatform -> {
-                val dist = (props[DIST] ?: 0f) as Float
-                val dx = (props[VEL_X] ?: 0f) as Float
+                val dist = (props["dist"] ?: 0f) as Float
+                val dx = (props["dx"] ?: 0f) as Float
                 val texture = res.getTexture("${type.typeStr}${MathUtils.ceil(rect.width / 8)}")!!
 
                 EntityBuilder.instance(engine)
@@ -180,8 +178,8 @@ object EntityFactory {
                 val texture = res.getTexture("curly_brace_portal")!!
                 val bw = texture.regionWidth.toFloat() - 4f
                 val bh = texture.regionHeight.toFloat() - 4f
-                val id = props[PORTAL_ID]!! as Int
-                val target = props[PORTAL_TARGET]!! as Int
+                val id = props["id"]!! as Int
+                val target = props["target"]!! as Int
 
                 EntityBuilder.instance(engine)
                         .mapEntity(type = type)
@@ -192,6 +190,32 @@ object EntityFactory {
                         .texture(texture)
                         .build()
             }
+            MapEntityType.Clamp -> {
+                val textureKey = (props["texture"] ?: "square_bracket") as String
+                val acceleration = (props["accel"] ?: 2.3f) as Float
+                val backVelocity = (props["backVel"] ?: 10f) as Float
+                val textureLeft = res.getTexture(textureKey + BRACKET_LEFT)!!
+                val textureRight = res.getTexture(textureKey + BRACKET_RIGHT)!!
+
+                EntityBuilder.instance(engine)
+                        .mapEntity(type = type)
+                        .clamp(false, rect, acceleration, backVelocity)
+                        .boundingBox(textureLeft.regionWidth.toFloat(), textureLeft.regionHeight.toFloat())
+                        .position(rect.x, rect.y)
+                        .velocity()
+                        .texture(textureLeft)
+                        .build()
+
+                EntityBuilder.instance(engine)
+                        .mapEntity(type = type)
+                        .clamp(true, rect, acceleration, backVelocity)
+                        .boundingBox(textureRight.regionWidth.toFloat(), textureRight.regionHeight.toFloat())
+                        .position(rect.x + rect.width - textureRight.regionWidth, rect.y)
+                        .velocity()
+                        .texture(textureRight)
+                        .build()
+            }
+            else -> {}
         }
     }
 

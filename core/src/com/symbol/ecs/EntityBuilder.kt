@@ -3,10 +3,12 @@ package com.symbol.ecs
 import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.core.PooledEngine
 import com.badlogic.gdx.graphics.g2d.TextureRegion
+import com.badlogic.gdx.math.Rectangle
 import com.symbol.ecs.component.*
 import com.symbol.ecs.component.EnemyComponent
 import com.symbol.ecs.component.PlayerComponent
 import com.symbol.ecs.component.ProjectileComponent
+import com.symbol.ecs.component.map.ClampComponent
 import com.symbol.ecs.component.map.MapEntityComponent
 import com.symbol.ecs.component.map.MovingPlatformComponent
 import com.symbol.ecs.component.map.PortalComponent
@@ -25,6 +27,7 @@ class EntityBuilder(private val engine: PooledEngine) {
     private var mapEntityComponent: MapEntityComponent? = null
     private var movingPlatformComponent: MovingPlatformComponent? = null
     private var portalComponent: PortalComponent? = null
+    private var clampComponent: ClampComponent? = null
 
     private var boundingBoxComponent: BoundingBoxComponent? = null
     private var directionComponent: DirectionComponent? = null
@@ -121,6 +124,15 @@ class EntityBuilder(private val engine: PooledEngine) {
         return this
     }
 
+    fun clamp(right: Boolean, rect: Rectangle, acceleration: Float = 0f, backVelocity: Float = 0f) : EntityBuilder {
+        clampComponent = engine.createComponent(ClampComponent::class.java)
+        clampComponent?.right = right
+        clampComponent?.rect = rect
+        clampComponent?.acceleration = acceleration
+        clampComponent?.backVelocity = backVelocity
+        return this
+    }
+
     fun boundingBox(bx: Float, by: Float, x: Float = 0f, y: Float = 0f) : EntityBuilder {
         boundingBoxComponent = engine.createComponent(BoundingBoxComponent::class.java)
         boundingBoxComponent?.rect?.set(x, y, bx, by)
@@ -213,6 +225,7 @@ class EntityBuilder(private val engine: PooledEngine) {
         if (mapEntityComponent != null) entity.add(mapEntityComponent)
         if (movingPlatformComponent != null) entity.add(movingPlatformComponent)
         if (portalComponent != null) entity.add(portalComponent)
+        if (clampComponent != null) entity.add(clampComponent)
 
         engine.addEntity(entity)
         return entity

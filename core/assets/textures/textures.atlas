@@ -83,7 +83,7 @@ e_e
   index: -1
 e_exists
   rotate: false
-  xy: 229, 112
+  xy: 218, 30
   size: 9, 13
   orig: 9, 13
   offset: 0, 0
@@ -111,7 +111,7 @@ e_percent
   index: -1
 e_percent_orbit
   rotate: false
-  xy: 260, 109
+  xy: 240, 50
   size: 6, 6
   orig: 6, 6
   offset: 0, 0
@@ -132,7 +132,7 @@ e_sum
   index: -1
 e_theta
   rotate: false
-  xy: 218, 30
+  xy: 229, 112
   size: 9, 13
   orig: 9, 13
   offset: 0, 0
@@ -202,7 +202,7 @@ p_alpha_tr
   index: -1
 p_angle_bracket
   rotate: false
-  xy: 248, 51
+  xy: 244, 26
   size: 4, 7
   orig: 4, 7
   offset: 0, 0
@@ -216,7 +216,7 @@ p_angle_bracket_t
   index: -1
 p_angle_bracket_tr
   rotate: false
-  xy: 240, 50
+  xy: 242, 60
   size: 6, 6
   orig: 6, 6
   offset: 0, 0
@@ -335,7 +335,7 @@ p_ldots_tr
   index: -1
 p_ltimes
   rotate: false
-  xy: 243, 43
+  xy: 248, 53
   size: 6, 5
   orig: 6, 5
   offset: 0, 0
@@ -349,7 +349,7 @@ p_ltimes_t
   index: -1
 p_ltimes_tr
   rotate: false
-  xy: 242, 60
+  xy: 260, 109
   size: 6, 6
   orig: 6, 6
   offset: 0, 0
@@ -366,6 +366,20 @@ player
   xy: 251, 117
   size: 8, 8
   orig: 8, 8
+  offset: 0, 0
+  index: -1
+square_bracket_left
+  rotate: false
+  xy: 243, 35
+  size: 4, 13
+  orig: 4, 13
+  offset: 0, 0
+  index: -1
+square_bracket_right
+  rotate: false
+  xy: 249, 38
+  size: 4, 13
+  orig: 4, 13
   offset: 0, 0
   index: -1
 

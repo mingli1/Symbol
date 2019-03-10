@@ -13,6 +13,9 @@ const val TOP = "_t"
 const val TOP_RIGHT ="_tr"
 const val ORBIT = "_orbit"
 
+const val BRACKET_LEFT = "_left"
+const val BRACKET_RIGHT = "_right"
+
 private const val BUTTON = "button_"
 private const val BUTTON_UP = "_up"
 private const val BUTTON_DOWN = "_down"
@@ -67,6 +70,8 @@ class Resources : Disposable {
         loadProjectile("p_ltimes")
         loadProjectile("p_alpha")
 
+        loadBracket("square_bracket")
+
         textures["black"] = atlas.findRegion("black")
         textures["hp_bar_color"] = atlas.findRegion("hp_bar_color")
         textures["hp_bar_bg_color"] = atlas.findRegion("hp_bar_bg_color")
@@ -84,6 +89,13 @@ class Resources : Disposable {
         return null
     }
 
+    fun getButtonStyle(key: String) : ImageButton.ImageButtonStyle {
+        val style = ImageButton.ImageButtonStyle()
+        style.imageUp = TextureRegionDrawable(getTexture(BUTTON + key + BUTTON_UP))
+        style.imageDown = TextureRegionDrawable(getTexture(BUTTON + key + BUTTON_DOWN))
+        return style
+    }
+
     private fun loadProjectile(key: String) {
         textures[key] = atlas.findRegion(key)
 
@@ -99,11 +111,9 @@ class Resources : Disposable {
         textures[BUTTON + key + BUTTON_DOWN] = atlas.findRegion(BUTTON + key + BUTTON_DOWN)
     }
 
-    fun getButtonStyle(key: String) : ImageButton.ImageButtonStyle {
-        val style = ImageButton.ImageButtonStyle()
-        style.imageUp = TextureRegionDrawable(getTexture(BUTTON + key + BUTTON_UP))
-        style.imageDown = TextureRegionDrawable(getTexture(BUTTON + key + BUTTON_DOWN))
-        return style
+    private fun loadBracket(key: String) {
+        textures[key + BRACKET_LEFT] = atlas.findRegion(key + BRACKET_LEFT)
+        textures[key + BRACKET_RIGHT] = atlas.findRegion(key + BRACKET_RIGHT)
     }
 
     override fun dispose() {

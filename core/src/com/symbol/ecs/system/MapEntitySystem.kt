@@ -27,6 +27,7 @@ class MapEntitySystem(private val player: Player) : IteratingSystem(Family.all(M
             MapEntityType.MovingPlatform -> handleMovingPlatform(entity)
             MapEntityType.TemporaryPlatform -> handleTempPlatform(entity)
             MapEntityType.Portal -> handlePortal(entity)
+            MapEntityType.Clamp -> handleClamp(entity)
         }
     }
 
@@ -94,6 +95,34 @@ class MapEntitySystem(private val player: Player) : IteratingSystem(Family.all(M
                     }
                 }
             }
+        }
+    }
+
+    private fun handleClamp(entity: Entity?) {
+        val clamp = Mapper.CLAMP_MAPPER.get(entity)
+        val pos = Mapper.POS_MAPPER.get(entity)
+        val bounds = Mapper.BOUNDING_BOX_MAPPER.get(entity)
+        val vel = Mapper.VEL_MAPPER.get(entity)
+
+        if (!clamp.right) {
+            if (clamp.clamping) {
+                if (pos.x < clamp.rect.x + (clamp.rect.width / 2) - bounds.rect.width) {
+                    vel.dx += clamp.acceleration
+                } else {
+                    vel.dx = -clamp.backVelocity
+                    clamp.clamping = false
+                }
+            } else if (pos.x <= clamp.rect.x) clamp.clamping = true
+        }
+        else {
+            if (clamp.clamping) {
+                if (pos.x > clamp.rect.x + clamp.rect.width / 2) {
+                    vel.dx -= clamp.acceleration
+                } else {
+                    vel.dx = clamp.backVelocity
+                    clamp.clamping = false
+                }
+            } else if (pos.x >= clamp.rect.x + clamp.rect.width - bounds.rect.width) clamp.clamping = true
         }
     }
 
