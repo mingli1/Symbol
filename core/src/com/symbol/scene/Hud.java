@@ -20,8 +20,13 @@ public class Hud extends Scene {
 
     private static final Vector2 SETTINGS_BUTTON_POSITION = new Vector2(183, 105);
 
+    private static final float HP_BAR_DECAY_RATE = 18.f;
+
     private Entity player;
+
     private float hpBarWidth;
+    private float decayingHpBarWidth;
+    private boolean startHpBarDecay = false;
 
     public Hud(final Symbol game, Entity player) {
         super(game);
@@ -51,6 +56,18 @@ public class Hud extends Scene {
     public void update(float dt) {
         HealthComponent health = Mapper.INSTANCE.getHEALTH_MAPPER().get(player);
         hpBarWidth = HP_BAR_WIDTH * ((float) health.getHp() / health.getMaxHp());
+        if (health.getHpChange()) {
+            decayingHpBarWidth = HP_BAR_WIDTH * ((float) health.getHpDelta() / health.getMaxHp());
+            startHpBarDecay = true;
+            health.setHpChange(false);
+        }
+        if (startHpBarDecay) {
+            decayingHpBarWidth -= HP_BAR_DECAY_RATE * dt;
+            if (decayingHpBarWidth <= 0) {
+                decayingHpBarWidth = 0;
+                startHpBarDecay = false;
+            }
+        }
     }
 
     @Override
@@ -64,6 +81,12 @@ public class Hud extends Scene {
                 HP_BAR_WIDTH, HP_BAR_HEIGHT);
         game.getBatch().draw(game.getRes().getTexture("hp_bar_green"), HP_BAR_POSITION.x + 1, HP_BAR_POSITION.y + 1,
                 hpBarWidth, HP_BAR_HEIGHT);
+
+        if (startHpBarDecay) {
+            game.getBatch().draw(game.getRes().getTexture("hp_bar_color"),
+                    HP_BAR_POSITION.x + 1 + hpBarWidth, HP_BAR_POSITION.y + 1,
+                    decayingHpBarWidth, HP_BAR_HEIGHT);
+        }
 
         game.getBatch().end();
 

@@ -53,7 +53,7 @@ public class EnemyHealthBarRenderSystem extends IteratingSystem {
         float height = texture.getTexture().getRegionHeight();
 
         HealthComponent health = Mapper.INSTANCE.getHEALTH_MAPPER().get(entity);
-        if (health.getHpChange()) {
+        if (health.getHpChange() && health.getHp() != 0) {
             startHealthBars.put(entity, true);
             timers.put(entity, 0f);
             health.setHpChange(false);
