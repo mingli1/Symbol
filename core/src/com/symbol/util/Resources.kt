@@ -56,6 +56,7 @@ class Resources : Disposable {
         for (i in 1..3) textures["mplatform$i"] = atlas.findRegion("mplatform$i")
         textures["approx"] = atlas.findRegion("approx")
         textures["curly_brace_portal"] = atlas.findRegion("curly_brace_portal")
+        textures["health_pack"] = atlas.findRegion("health_pack")
 
         loadProjectile("p_dot")
         loadProjectile("p_dot_xor")

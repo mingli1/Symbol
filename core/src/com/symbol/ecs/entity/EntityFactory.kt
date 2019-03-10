@@ -215,6 +215,19 @@ object EntityFactory {
                         .texture(textureRight)
                         .build()
             }
+            MapEntityType.HealthPack -> {
+                val texture = res.getTexture("health_pack")!!
+                val regen = (props["regen"] ?: 0) as Int
+
+                EntityBuilder.instance(engine)
+                        .mapEntity(type = type)
+                        .healthPack(regen)
+                        .boundingBox(texture.regionWidth.toFloat(), texture.regionHeight.toFloat())
+                        .position(rect.x, rect.y)
+                        .velocity()
+                        .texture(texture)
+                        .remove().build()
+            }
             else -> {}
         }
     }

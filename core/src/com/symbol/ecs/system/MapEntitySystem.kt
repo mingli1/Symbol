@@ -9,7 +9,6 @@ import com.symbol.ecs.Mapper
 import com.symbol.ecs.component.map.MapEntityComponent
 import com.symbol.ecs.component.map.PortalComponent
 import com.symbol.ecs.entity.MapEntityType
-import com.symbol.ecs.entity.PLAYER_HP
 import com.symbol.ecs.entity.Player
 
 class MapEntitySystem(private val player: Player) : IteratingSystem(Family.all(MapEntityComponent::class.java).get()) {
@@ -29,6 +28,7 @@ class MapEntitySystem(private val player: Player) : IteratingSystem(Family.all(M
             MapEntityType.TemporaryPlatform -> handleTempPlatform(entity)
             MapEntityType.Portal -> handlePortal(entity)
             MapEntityType.Clamp -> handleClamp(entity)
+            MapEntityType.HealthPack -> handleHealthPack(entity)
         }
     }
 
@@ -130,6 +130,19 @@ class MapEntitySystem(private val player: Player) : IteratingSystem(Family.all(M
         if (playerBounds.rect.overlaps(bounds.rect)) {
             val playerHealth = Mapper.HEALTH_MAPPER.get(player)
             playerHealth.hp = 0
+        }
+    }
+
+    private fun handleHealthPack(entity: Entity?) {
+        val healthPack = Mapper.HEALTH_PACK_MAPPER.get(entity)
+        val bounds = Mapper.BOUNDING_BOX_MAPPER.get(entity)
+        val playerBounds = Mapper.BOUNDING_BOX_MAPPER.get(player)
+        val remove = Mapper.REMOVE_MAPPER.get(entity)
+
+        if (playerBounds.rect.overlaps(bounds.rect)) {
+            val playerHealth = Mapper.HEALTH_MAPPER.get(player)
+            playerHealth.hp += healthPack.regen
+            remove.shouldRemove = true
         }
     }
 

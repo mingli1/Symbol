@@ -8,10 +8,7 @@ import com.symbol.ecs.component.*
 import com.symbol.ecs.component.EnemyComponent
 import com.symbol.ecs.component.PlayerComponent
 import com.symbol.ecs.component.ProjectileComponent
-import com.symbol.ecs.component.map.ClampComponent
-import com.symbol.ecs.component.map.MapEntityComponent
-import com.symbol.ecs.component.map.MovingPlatformComponent
-import com.symbol.ecs.component.map.PortalComponent
+import com.symbol.ecs.component.map.*
 import com.symbol.ecs.entity.EnemyAttackType
 import com.symbol.ecs.entity.EnemyMovementType
 import com.symbol.ecs.entity.MapEntityType
@@ -28,6 +25,7 @@ class EntityBuilder(private val engine: PooledEngine) {
     private var movingPlatformComponent: MovingPlatformComponent? = null
     private var portalComponent: PortalComponent? = null
     private var clampComponent: ClampComponent? = null
+    private var healthPackComponent: HealthPackComponent? = null
 
     private var boundingBoxComponent: BoundingBoxComponent? = null
     private var directionComponent: DirectionComponent? = null
@@ -133,6 +131,12 @@ class EntityBuilder(private val engine: PooledEngine) {
         return this
     }
 
+    fun healthPack(regen: Int = 0) : EntityBuilder {
+        healthPackComponent = engine.createComponent(HealthPackComponent::class.java)
+        healthPackComponent?.regen = regen
+        return this
+    }
+
     fun boundingBox(bx: Float, by: Float, x: Float = 0f, y: Float = 0f) : EntityBuilder {
         boundingBoxComponent = engine.createComponent(BoundingBoxComponent::class.java)
         boundingBoxComponent?.rect?.set(x, y, bx, by)
@@ -226,6 +230,7 @@ class EntityBuilder(private val engine: PooledEngine) {
         if (movingPlatformComponent != null) entity.add(movingPlatformComponent)
         if (portalComponent != null) entity.add(portalComponent)
         if (clampComponent != null) entity.add(clampComponent)
+        if (healthPackComponent != null) entity.add(healthPackComponent)
 
         engine.addEntity(entity)
         return entity

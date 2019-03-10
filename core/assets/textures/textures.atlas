@@ -6,7 +6,7 @@ filter: Nearest,Nearest
 repeat: none
 approx
   rotate: false
-  xy: 231, 49
+  xy: 250, 38
   size: 7, 7
   orig: 7, 7
   offset: 0, 0
@@ -69,21 +69,21 @@ e_big_pi
   index: -1
 e_cintegral
   rotate: false
-  xy: 264, 93
+  xy: 243, 86
   size: 4, 14
   orig: 4, 14
   offset: 0, 0
   index: -1
 e_e
   rotate: false
-  xy: 250, 106
+  xy: 231, 47
   size: 8, 8
   orig: 8, 8
   offset: 0, 0
   index: -1
 e_exists
   rotate: false
-  xy: 218, 30
+  xy: 229, 112
   size: 9, 13
   orig: 9, 13
   offset: 0, 0
@@ -97,21 +97,21 @@ e_in
   index: -1
 e_njoin
   rotate: false
-  xy: 231, 58
+  xy: 242, 59
   size: 9, 7
   orig: 9, 7
   offset: 0, 0
   index: -1
 e_percent
   rotate: false
-  xy: 227, 12
+  xy: 239, 12
   size: 10, 10
   orig: 10, 10
   offset: 0, 0
   index: -1
 e_percent_orbit
   rotate: false
-  xy: 240, 50
+  xy: 258, 30
   size: 6, 6
   orig: 6, 6
   offset: 0, 0
@@ -132,9 +132,16 @@ e_sum
   index: -1
 e_theta
   rotate: false
-  xy: 229, 112
+  xy: 218, 30
   size: 9, 13
   orig: 9, 13
+  offset: 0, 0
+  index: -1
+health_pack
+  rotate: false
+  xy: 227, 12
+  size: 10, 10
+  orig: 10, 10
   offset: 0, 0
   index: -1
 hp_bar_bg_color
@@ -160,7 +167,7 @@ hp_bar_green
   index: -1
 mplatform1
   rotate: false
-  xy: 241, 68
+  xy: 251, 53
   size: 8, 4
   orig: 8, 4
   offset: 0, 0
@@ -181,63 +188,63 @@ mplatform3
   index: -1
 p_alpha
   rotate: false
-  xy: 233, 87
+  xy: 239, 102
   size: 11, 8
   orig: 11, 8
   offset: 0, 0
   index: -1
 p_alpha_t
   rotate: false
-  xy: 231, 67
+  xy: 233, 84
   size: 8, 11
   orig: 8, 11
   offset: 0, 0
   index: -1
 p_alpha_tr
   rotate: false
-  xy: 239, 12
+  xy: 231, 68
   size: 10, 10
   orig: 10, 10
   offset: 0, 0
   index: -1
 p_angle_bracket
   rotate: false
-  xy: 244, 26
+  xy: 253, 63
   size: 4, 7
   orig: 4, 7
   offset: 0, 0
   index: -1
 p_angle_bracket_t
   rotate: false
-  xy: 250, 62
+  xy: 251, 47
   size: 7, 4
   orig: 7, 4
   offset: 0, 0
   index: -1
 p_angle_bracket_tr
   rotate: false
-  xy: 242, 60
+  xy: 251, 12
   size: 6, 6
   orig: 6, 6
   offset: 0, 0
   index: -1
 p_arrow
   rotate: false
-  xy: 233, 80
+  xy: 244, 26
   size: 12, 5
   orig: 12, 5
   offset: 0, 0
   index: -1
 p_arrow_t
   rotate: false
-  xy: 257, 92
+  xy: 243, 33
   size: 5, 12
   orig: 5, 12
   offset: 0, 0
   index: -1
 p_arrow_tr
   rotate: false
-  xy: 240, 116
+  xy: 231, 57
   size: 9, 9
   orig: 9, 9
   offset: 0, 0
@@ -251,35 +258,35 @@ p_big_ll
   index: -1
 p_cup
   rotate: false
-  xy: 256, 81
+  xy: 261, 3
   size: 8, 7
   orig: 8, 7
   offset: 0, 0
   index: -1
 p_cup_t
   rotate: false
-  xy: 247, 80
+  xy: 252, 2
   size: 7, 8
   orig: 7, 8
   offset: 0, 0
   index: -1
 p_cup_tr
   rotate: false
-  xy: 246, 90
+  xy: 251, 116
   size: 9, 9
   orig: 9, 9
   offset: 0, 0
   index: -1
 p_dot
   rotate: false
-  xy: 257, 75
+  xy: 252, 103
   size: 4, 4
   orig: 4, 4
   offset: 0, 0
   index: -1
 p_dot_xor
   rotate: false
-  xy: 251, 68
+  xy: 260, 47
   size: 4, 4
   orig: 4, 4
   offset: 0, 0
@@ -314,14 +321,14 @@ p_large_triangle
   index: -1
 p_ldots
   rotate: false
-  xy: 241, 74
+  xy: 251, 20
   size: 14, 4
   orig: 14, 4
   offset: 0, 0
   index: -1
 p_ldots_t
   rotate: false
-  xy: 268, 111
+  xy: 243, 70
   size: 4, 14
   orig: 4, 14
   offset: 0, 0
@@ -335,49 +342,49 @@ p_ldots_tr
   index: -1
 p_ltimes
   rotate: false
-  xy: 248, 53
+  xy: 252, 109
   size: 6, 5
   orig: 6, 5
   offset: 0, 0
   index: -1
 p_ltimes_t
   rotate: false
-  xy: 261, 119
+  xy: 259, 39
   size: 5, 6
   orig: 5, 6
   offset: 0, 0
   index: -1
 p_ltimes_tr
   rotate: false
-  xy: 260, 109
+  xy: 259, 12
   size: 6, 6
   orig: 6, 6
   offset: 0, 0
   index: -1
 p_xor
   rotate: false
-  xy: 239, 101
+  xy: 240, 116
   size: 9, 9
   orig: 9, 9
   offset: 0, 0
   index: -1
 player
   rotate: false
-  xy: 251, 117
+  xy: 241, 47
   size: 8, 8
   orig: 8, 8
   offset: 0, 0
   index: -1
 square_bracket_left
   rotate: false
-  xy: 243, 35
+  xy: 249, 87
   size: 4, 13
   orig: 4, 13
   offset: 0, 0
   index: -1
 square_bracket_right
   rotate: false
-  xy: 249, 38
+  xy: 249, 72
   size: 4, 13
   orig: 4, 13
   offset: 0, 0

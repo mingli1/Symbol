@@ -13,6 +13,8 @@ class HealthSystem : IteratingSystem(Family.all(HealthComponent::class.java).get
         val health = Mapper.HEALTH_MAPPER.get(entity)
         val remove = Mapper.REMOVE_MAPPER.get(entity)
 
+        if (health.hp > health.maxHp) health.hp = health.maxHp
+
         if (health.hp <= 0) {
             if (entity !is Player) remove?.shouldRemove = true
             else health.hp = 0
