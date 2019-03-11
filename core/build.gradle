@@ -12,6 +12,7 @@ sourceSets.main.java.srcDirs = [ "src/" ]
 eclipse.project {
     name = appName + "-core"
 }
+
 repositories {
     mavenCentral()
 }
