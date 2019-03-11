@@ -4,16 +4,18 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.symbol.game.Symbol;
 import com.symbol.scene.Scene;
 
 public class AndroidInput extends Scene {
 
-    private static final Vector2 LEFT_BUTTON_POSITION = new Vector2(10, 20);
-    private static final Vector2 RIGHT_BUTTON_POSITION = new Vector2(40, 20);
-    private static final Vector2 JUMP_BUTTON_POSITION = new Vector2(144, 8);
-    private static final Vector2 SHOOT_BUTTON_POSITION = new Vector2(174, 30);
+    private static final float DIRECTIONAL_BUTTON_SIZE = 30f;
+    private static final float ACTION_BUTTON_SIZE = 30f;
+
+    private static final Vector2 LEFT_BUTTON_POSITION = new Vector2(5, 10);
+    private static final Vector2 RIGHT_BUTTON_POSITION = new Vector2(35, 10);
+    private static final Vector2 JUMP_BUTTON_POSITION = new Vector2(134, 3);
+    private static final Vector2 SHOOT_BUTTON_POSITION = new Vector2(164, 25);
 
     private KeyInputHandler keyInputHandler;
 
@@ -22,12 +24,13 @@ public class AndroidInput extends Scene {
         this.keyInputHandler = keyInputHandler;
 
         createDirectionalButtons();
-        createJumpAndShootButtons();
+        createActionButtons();
     }
 
     private void createDirectionalButtons() {
         ImageButton leftButton = new ImageButton(game.getRes().getButtonStyle("left"));
         leftButton.setPosition(LEFT_BUTTON_POSITION.x, LEFT_BUTTON_POSITION.y);
+        leftButton.setSize(DIRECTIONAL_BUTTON_SIZE, DIRECTIONAL_BUTTON_SIZE);
 
         leftButton.addListener(new InputListener() {
             @Override
@@ -44,16 +47,17 @@ public class AndroidInput extends Scene {
 
         ImageButton rightButton = new ImageButton(game.getRes().getButtonStyle("right"));
         rightButton.setPosition(RIGHT_BUTTON_POSITION.x, RIGHT_BUTTON_POSITION.y);
+        rightButton.setSize(DIRECTIONAL_BUTTON_SIZE, DIRECTIONAL_BUTTON_SIZE);
 
         rightButton.addListener(new InputListener() {
             @Override
-            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 keyInputHandler.move(true);
                 return true;
             }
 
             @Override
-            public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 keyInputHandler.stop(true);
             }
         });
@@ -62,24 +66,28 @@ public class AndroidInput extends Scene {
         stage.addActor(rightButton);
     }
 
-    private void createJumpAndShootButtons() {
+    private void createActionButtons() {
         ImageButton jumpButton = new ImageButton(game.getRes().getButtonStyle("jump"));
         jumpButton.setPosition(JUMP_BUTTON_POSITION.x, JUMP_BUTTON_POSITION.y);
+        jumpButton.setSize(ACTION_BUTTON_SIZE, ACTION_BUTTON_SIZE);
 
-        jumpButton.addListener(new ClickListener() {
+        jumpButton.addListener(new InputListener() {
             @Override
-            public void clicked (InputEvent event, float x, float y) {
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 keyInputHandler.jump();
+                return true;
             }
         });
 
         ImageButton shootButton = new ImageButton(game.getRes().getButtonStyle("shoot"));
         shootButton.setPosition(SHOOT_BUTTON_POSITION.x, SHOOT_BUTTON_POSITION.y);
+        shootButton.setSize(ACTION_BUTTON_SIZE, ACTION_BUTTON_SIZE);
 
-        shootButton.addListener(new ClickListener() {
+        shootButton.addListener(new InputListener() {
             @Override
-            public void clicked (InputEvent event, float x, float y) {
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 keyInputHandler.shoot();
+                return true;
             }
         });
 
