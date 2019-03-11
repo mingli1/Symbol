@@ -81,6 +81,10 @@ class Resources : Disposable {
         textures["hp_bar_green"] = atlas.findRegion("hp_bar_green")
 
         loadButton("settings")
+        loadButton("left")
+        loadButton("right")
+        loadButton("jump")
+        loadButton("shoot")
     }
 
     fun getTexture(key: String): TextureRegion? {

@@ -12,7 +12,9 @@ import com.symbol.ecs.system.enemy.EnemyActivationSystem
 import com.symbol.ecs.system.enemy.EnemyAttackSystem
 import com.symbol.ecs.system.enemy.EnemyHealthBarRenderSystem
 import com.symbol.ecs.system.enemy.EnemyMovementSystem
+import com.symbol.game.Config
 import com.symbol.game.Symbol
+import com.symbol.input.AndroidInput
 import com.symbol.input.KeyInput
 import com.symbol.input.KeyInputSystem
 import com.symbol.map.camera.Background
@@ -29,6 +31,8 @@ class GameScreen(game: Symbol) : AbstractScreen(game) {
 
     private val multiplexer: InputMultiplexer = InputMultiplexer()
     private val input: KeyInput
+    private val androidInput: AndroidInput
+
     private val mm: MapManager = MapManager(game.batch, cam, engine, game.res)
 
     private var player: Player = Player(game.res)
@@ -43,11 +47,14 @@ class GameScreen(game: Symbol) : AbstractScreen(game) {
 
         val keyInputSystem = KeyInputSystem(game.res)
         input = KeyInput(keyInputSystem)
+        androidInput = AndroidInput(game, keyInputSystem)
+
         engine.addSystem(keyInputSystem)
         engine.addSystem(PlayerSystem(player))
 
         multiplexer.addProcessor(input)
         multiplexer.addProcessor(hud.stage)
+        if (Config.onAndroid()) multiplexer.addProcessor(androidInput.stage)
     }
 
     private fun initSystems() {
@@ -89,7 +96,9 @@ class GameScreen(game: Symbol) : AbstractScreen(game) {
         updateCamera(dt)
         background.update(dt)
         mm.update()
+
         hud.update(dt)
+        if (Config.onAndroid()) androidInput.update(dt)
     }
 
     private fun updateCamera(dt: Float) {
@@ -122,6 +131,7 @@ class GameScreen(game: Symbol) : AbstractScreen(game) {
         game.batch.end()
 
         hud.render(dt)
+        if (Config.onAndroid()) androidInput.render(dt)
     }
 
     override fun dispose() {

@@ -1,5 +1,8 @@
 package com.symbol.game
 
+import com.badlogic.gdx.Application
+import com.badlogic.gdx.Gdx
+
 object Config {
 
     const val DEBUG = true
@@ -19,5 +22,7 @@ object Config {
     const val V_SYNC = false
 
     const val RESIZABLE = false
+
+    fun onAndroid() : Boolean = Gdx.app.type == Application.ApplicationType.Android
 
 }
