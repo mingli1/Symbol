@@ -37,6 +37,7 @@ class EntityBuilder(private val engine: PooledEngine) {
     private var textureComponent: TextureComponent? = null
     private var velocityComponent: VelocityComponent? = null
     private var orbitComponent: OrbitComponent? = null
+    private var colorComponent: ColorComponent? = null
 
     companion object {
         fun instance(engine: PooledEngine) : EntityBuilder = EntityBuilder(engine)
@@ -137,6 +138,12 @@ class EntityBuilder(private val engine: PooledEngine) {
         return this
     }
 
+    fun color(hex: String) : EntityBuilder {
+        colorComponent = engine.createComponent(ColorComponent::class.java)
+        colorComponent?.hex = hex
+        return this
+    }
+
     fun boundingBox(bx: Float, by: Float, x: Float = 0f, y: Float = 0f) : EntityBuilder {
         boundingBoxComponent = engine.createComponent(BoundingBoxComponent::class.java)
         boundingBoxComponent?.rect?.set(x, y, bx, by)
@@ -216,6 +223,7 @@ class EntityBuilder(private val engine: PooledEngine) {
         if (enemyComponent != null) entity.add(enemyComponent)
         if (playerComponent != null) entity.add(playerComponent)
         if (projectileComponent != null) entity.add(projectileComponent)
+        if (colorComponent != null) entity.add(colorComponent)
         if (boundingBoxComponent != null) entity.add(boundingBoxComponent)
         if (directionComponent != null) entity.add(directionComponent)
         if (gravityComponent != null) entity.add(gravityComponent)

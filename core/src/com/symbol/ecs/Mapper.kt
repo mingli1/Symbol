@@ -45,4 +45,6 @@ object Mapper {
 
     val HEALTH_PACK_MAPPER: ComponentMapper<HealthPackComponent> = ComponentMapper.getFor(HealthPackComponent::class.java)
 
+    val COLOR_MAPPER: ComponentMapper<ColorComponent> = ComponentMapper.getFor(ColorComponent::class.java)
+
 }
