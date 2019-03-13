@@ -32,4 +32,21 @@ object EntityColor {
     const val BIG_PHI_COLOR = "aa0fffff"
     const val DOT_COLOR = "ff8795ff"
 
+    fun getProjectileColor(key: String?) : String? {
+        return when (key) {
+            "p_dot_xor" -> DOT_XOR_COLOR
+            "p_angle_bracket" -> ANGLE_BRACKET_COLOR
+            "p_xor" -> XOR_COLOR
+            "p_arrow" -> ARROW_COLOR
+            "p_cup" -> CUP_COLOR
+            "p_implies" -> IMPLIES_COLOR
+            "p_ldots" -> LDOTS_COLOR
+            "p_large_triangle" -> LARGE_TRIANGLE_COLOR
+            "p_big_ll" -> BIG_LL_COLOR
+            "p_ltimes" -> LTIMES_COLOR
+            "p_alpha" -> ALPHA_COLOR
+            else -> null
+        }
+    }
+
 }

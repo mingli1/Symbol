@@ -53,6 +53,7 @@ class KeyInputSystem(private val res: Resources) : EntitySystem(), KeyInputHandl
 
             EntityBuilder.instance(engine as PooledEngine)
                     .projectile(damage = PLAYER_DAMAGE, knockback = PLAYER_PROJECTILE_KNOCKBACK)
+                    .color(EntityColor.DOT_COLOR)
                     .position(playerPos.x + (PLAYER_WIDTH / 2) - (PLAYER_PROJECTILE_BOUNDS_WIDTH / 2),
                             playerPos.y + (PLAYER_HEIGHT / 2) - (PLAYER_PROJECTILE_BOUNDS_HEIGHT / 2))
                     .velocity(dx = if (dir.facingRight) PLAYER_PROJECTILE_SPEED else -PLAYER_PROJECTILE_SPEED)

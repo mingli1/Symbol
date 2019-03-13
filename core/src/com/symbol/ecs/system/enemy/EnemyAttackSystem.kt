@@ -11,6 +11,7 @@ import com.symbol.ecs.Mapper
 import com.symbol.ecs.component.DirectionComponent
 import com.symbol.ecs.component.EnemyComponent
 import com.symbol.ecs.entity.EnemyAttackType
+import com.symbol.ecs.entity.EntityColor
 import com.symbol.ecs.entity.Player
 import com.symbol.ecs.system.DIAGONAL_PROJECTILE_SCALING
 import com.symbol.map.camera.CameraShake
@@ -176,6 +177,7 @@ class EnemyAttackSystem(private val player: Player, private val res: Resources) 
         EntityBuilder.instance(engine as PooledEngine)
                 .projectile(unstoppable = true, textureStr = enemyComp.attackTexture, enemy = true,
                         damage = enemyComp.damage, detonateTime = detonateTime, acceleration = acceleration)
+                .color(EntityColor.getProjectileColor(enemyComp.attackTexture)!!)
                 .position(bounds.x + (bounds.width / 2) - (bw / 2), bounds.y + (bounds.height / 2) - (bh / 2))
                 .velocity(dx = dx, dy = dy)
                 .boundingBox(bw.toFloat(), bh.toFloat())
@@ -188,6 +190,7 @@ class EnemyAttackSystem(private val player: Player, private val res: Resources) 
         val bh = texture.regionHeight - 1
         EntityBuilder.instance(engine as PooledEngine)
                 .projectile(unstoppable = true, textureStr = enemyComp.attackTexture, enemy = true, damage = enemyComp.damage)
+                .color(EntityColor.getProjectileColor(enemyComp.attackTexture)!!)
                 .position(bounds.x + (bounds.width / 2) - (bw / 2), bounds.y + (bounds.height / 2) - (bh / 2))
                 .velocity(dx = dx, dy = dy)
                 .boundingBox(bw.toFloat(), bh.toFloat())
