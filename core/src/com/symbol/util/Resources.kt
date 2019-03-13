@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import com.badlogic.gdx.utils.Disposable
+import com.symbol.ecs.entity.EntityColor
 
 const val TOP = "_t"
 const val TOP_RIGHT ="_tr"
@@ -37,7 +38,7 @@ class Resources : Disposable {
         font = BitmapFont(Gdx.files.internal("font/font.fnt"), atlas.findRegion("font"), false)
         font.setUseIntegerPositions(false)
 
-        textures["background"] = atlas.findRegion("background")
+        load("background")
 
         loadPlayerAndEnemies()
         loadMapEntities()
@@ -48,28 +49,28 @@ class Resources : Disposable {
     }
 
     private fun loadPlayerAndEnemies() {
-        textures["player"] = atlas.findRegion("player")
-        textures["e_e"] = atlas.findRegion("e_e")
-        textures["e_sqrt"] = atlas.findRegion("e_sqrt")
-        textures["e_exists"] = atlas.findRegion("e_exists")
-        textures["e_sum"] = atlas.findRegion("e_sum")
-        textures["e_big_pi"] = atlas.findRegion("e_big_pi")
-        textures["e_in"] = atlas.findRegion("e_in")
-        textures["e_theta"] = atlas.findRegion("e_theta")
-        textures["e_big_omega"] = atlas.findRegion("e_big_omega")
-        textures["e_njoin"] = atlas.findRegion("e_njoin")
-        textures["e_big_phi"] = atlas.findRegion("e_big_phi")
-        textures["e_percent"] = atlas.findRegion("e_percent")
-        textures["e_percent_orbit"] = atlas.findRegion("e_percent_orbit")
-        textures["e_nabla"] = atlas.findRegion("e_nabla")
+        load("player")
+        load("e_e")
+        load("e_sqrt")
+        load("e_exists")
+        load("e_sum")
+        load("e_big_pi")
+        load("e_in")
+        load("e_theta")
+        load("e_big_omega")
+        load("e_njoin")
+        load("e_big_phi")
+        load("e_percent")
+        load("e_percent_orbit")
+        load("e_nabla")
     }
 
     private fun loadMapEntities() {
-        for (i in 1..3) textures["mplatform$i"] = atlas.findRegion("mplatform$i")
-        textures["approx"] = atlas.findRegion("approx")
-        textures["curly_brace_portal"] = atlas.findRegion("curly_brace_portal")
-        textures["health_pack"] = atlas.findRegion("health_pack")
-        textures["between"] = atlas.findRegion("between")
+        for (i in 1..3) load("mplatform$i")
+        load("approx")
+        load("curly_brace_portal")
+        load("health_pack")
+        load("between")
     }
 
     private fun loadProjectiles() {
@@ -92,35 +93,35 @@ class Resources : Disposable {
     }
 
     private fun loadColors() {
-        textures["black"] = atlas.findRegion("black")
-        textures["hp_bar_color"] = atlas.findRegion("hp_bar_color")
-        textures["hp_bar_bg_color"] = atlas.findRegion("hp_bar_bg_color")
-        textures["hp_bar_green"] = atlas.findRegion("hp_bar_green")
+        load("black")
+        load("hp_bar_color")
+        load("hp_bar_bg_color")
+        load("hp_bar_green")
 
-        textures["3d40ffff"] = atlas.findRegion("3d40ffff")
-        textures["5fd0d8ff"] = atlas.findRegion("5fd0d8ff")
-        textures["8ace8bff"] = atlas.findRegion("8ace8bff")
-        textures["40aa00ff"] = atlas.findRegion("40aa00ff")
-        textures["69dbe5ff"] = atlas.findRegion("69dbe5ff")
-        textures["77cee5ff"] = atlas.findRegion("77cee5ff")
-        textures["a0e5ffff"] = atlas.findRegion("a0e5ffff")
-        textures["a477ffff"] = atlas.findRegion("a477ffff")
-        textures["aa0fffff"] = atlas.findRegion("aa0fffff")
-        textures["b2bdffff"] = atlas.findRegion("b2bdffff")
-        textures["b5ef51ff"] = atlas.findRegion("b5ef51ff")
-        textures["b8ccefff"] = atlas.findRegion("b8ccefff")
-        textures["bc49ffff"] = atlas.findRegion("bc49ffff")
-        textures["c1ff56ff"] = atlas.findRegion("c1ff56ff")
-        textures["dcc9ffff"] = atlas.findRegion("dcc9ffff")
-        textures["ff4f7dff"] = atlas.findRegion("ff4f7dff")
-        textures["ff75acff"] = atlas.findRegion("ff75acff")
-        textures["ff954fff"] = atlas.findRegion("ff954fff")
-        textures["ff5400ff"] = atlas.findRegion("ff5400ff")
-        textures["ff8795ff"] = atlas.findRegion("ff8795ff")
-        textures["ff9151ff"] = atlas.findRegion("ff9151ff")
-        textures["ffbd26ff"] = atlas.findRegion("ffbd26ff")
-        textures["ffd700ff"] = atlas.findRegion("ffd700ff")
-        textures["fff050ff"] = atlas.findRegion("fff050ff")
+        load(EntityColor.PLAYER_COLOR)
+        load(EntityColor.BETWEEN_COLOR)
+        load(EntityColor.SUM_COLOR)
+        load(EntityColor.LDOTS_COLOR)
+        load(EntityColor.PORTAL_COLOR)
+        load(EntityColor.SQUARE_BRACKET_COLOR)
+        load(EntityColor.XOR_COLOR)
+        load(EntityColor.NATURAL_JOIN_COLOR)
+        load(EntityColor.NABLA_COLOR)
+        load(EntityColor.SQRT_COLOR)
+        load(EntityColor.CUP_COLOR)
+        load(EntityColor.ALPHA_COLOR)
+        load(EntityColor.BIG_OMEGA_COLOR)
+        load(EntityColor.EXISTS_COLOR)
+        load(EntityColor.IMPLIES_COLOR)
+        load(EntityColor.LARGE_TRIANGLE_COLOR)
+        load(EntityColor.IN_COLOR)
+        load(EntityColor.LTIMES_COLOR)
+        load(EntityColor.PERCENT_COLOR)
+        load(EntityColor.ARROW_COLOR)
+        load(EntityColor.THETA_COLOR)
+        load(EntityColor.ANGLE_BRACKET_COLOR)
+        load(EntityColor.BIG_PHI_COLOR)
+        load(EntityColor.DOT_COLOR)
     }
 
     private fun loadButtons() {
@@ -147,8 +148,12 @@ class Resources : Disposable {
         return style
     }
 
-    private fun loadProjectile(key: String) {
+    private fun load(key: String) {
         textures[key] = atlas.findRegion(key)
+    }
+
+    private fun loadProjectile(key: String) {
+        load(key)
 
         val top = atlas.findRegion(key + TOP)
         val topRight = atlas.findRegion(key + TOP_RIGHT)
@@ -158,13 +163,13 @@ class Resources : Disposable {
     }
 
     private fun loadButton(key: String) {
-        textures[BUTTON + key + BUTTON_UP] = atlas.findRegion(BUTTON + key + BUTTON_UP)
-        textures[BUTTON + key + BUTTON_DOWN] = atlas.findRegion(BUTTON + key + BUTTON_DOWN)
+        load(BUTTON + key + BUTTON_UP)
+        load(BUTTON + key + BUTTON_DOWN)
     }
 
     private fun loadBracket(key: String) {
-        textures[key + BRACKET_LEFT] = atlas.findRegion(key + BRACKET_LEFT)
-        textures[key + BRACKET_RIGHT] = atlas.findRegion(key + BRACKET_RIGHT)
+        load(key + BRACKET_LEFT)
+        load(key + BRACKET_RIGHT)
     }
 
     override fun dispose() {
