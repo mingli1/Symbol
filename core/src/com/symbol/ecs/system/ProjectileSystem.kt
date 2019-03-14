@@ -76,8 +76,8 @@ class ProjectileSystem(private val res: Resources) : IteratingSystem(Family.all(
         pj.lifeTime += dt
 
         if (pj.acceleration != 0f) {
-            if (velocity.dx != 0f) velocity.dx += if (velocity.dx > 0f) pj.acceleration else -pj.acceleration
-            if (velocity.dy != 0f) velocity.dy += if (velocity.dy > 0f) pj.acceleration else -pj.acceleration
+            if (velocity.dx != 0f) velocity.dx += if (velocity.dx > 0f) pj.acceleration * dt else -pj.acceleration * dt
+            if (velocity.dy != 0f) velocity.dy += if (velocity.dy > 0f) pj.acceleration * dt else -pj.acceleration * dt
         }
 
         if (pj.collidesWithTerrain) {

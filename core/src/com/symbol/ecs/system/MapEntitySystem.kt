@@ -31,7 +31,7 @@ class MapEntitySystem(private val player: Player, private val res: Resources) :
             MapEntityType.MovingPlatform -> handleMovingPlatform(entity)
             MapEntityType.TemporaryPlatform -> handleTempPlatform(entity)
             MapEntityType.Portal -> handlePortal(entity)
-            MapEntityType.Clamp -> handleClamp(entity)
+            MapEntityType.Clamp -> handleClamp(entity, dt)
             MapEntityType.HealthPack -> handleHealthPack(entity)
             else -> {}
         }
@@ -104,7 +104,7 @@ class MapEntitySystem(private val player: Player, private val res: Resources) :
         }
     }
 
-    private fun handleClamp(entity: Entity?) {
+    private fun handleClamp(entity: Entity?, dt: Float) {
         val clamp = Mapper.CLAMP_MAPPER.get(entity)
         val pos = Mapper.POS_MAPPER.get(entity)
         val bounds = Mapper.BOUNDING_BOX_MAPPER.get(entity)
@@ -114,7 +114,7 @@ class MapEntitySystem(private val player: Player, private val res: Resources) :
         if (!clamp.right) {
             if (clamp.clamping) {
                 if (pos.x < clamp.rect.x + (clamp.rect.width / 2) - bounds.rect.width) {
-                    vel.dx += clamp.acceleration
+                    vel.dx += clamp.acceleration * dt
                 } else {
                     vel.dx = -clamp.backVelocity
                     clamp.clamping = false
@@ -124,7 +124,7 @@ class MapEntitySystem(private val player: Player, private val res: Resources) :
         else {
             if (clamp.clamping) {
                 if (pos.x > clamp.rect.x + clamp.rect.width / 2) {
-                    vel.dx -= clamp.acceleration
+                    vel.dx -= clamp.acceleration * dt
                 } else {
                     vel.dx = clamp.backVelocity
                     clamp.clamping = false

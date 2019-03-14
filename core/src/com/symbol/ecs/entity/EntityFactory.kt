@@ -215,7 +215,7 @@ object EntityFactory {
             }
             MapEntityType.Clamp -> {
                 val textureKey = (props["texture"] ?: "square_bracket") as String
-                val acceleration = (props["accel"] ?: 2.3f) as Float
+                val acceleration = (props["accel"] ?: 144f) as Float
                 val backVelocity = (props["backVel"] ?: 10f) as Float
                 val textureLeft = res.getTexture(textureKey + BRACKET_LEFT)!!
                 val textureRight = res.getTexture(textureKey + BRACKET_RIGHT)!!
