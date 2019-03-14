@@ -12,6 +12,7 @@ import com.symbol.ecs.system.enemy.EnemyActivationSystem
 import com.symbol.ecs.system.enemy.EnemyAttackSystem
 import com.symbol.ecs.system.enemy.EnemyHealthBarRenderSystem
 import com.symbol.ecs.system.enemy.EnemyMovementSystem
+import com.symbol.effects.particle.ParticleSpawner
 import com.symbol.game.Config
 import com.symbol.game.Symbol
 import com.symbol.input.AndroidInput
@@ -96,6 +97,7 @@ class GameScreen(game: Symbol) : AbstractScreen(game) {
         updateCamera(dt)
         background.update(dt)
         mm.update()
+        ParticleSpawner.update(dt)
 
         hud.update(dt)
         if (Config.onAndroid()) androidInput.update(dt)
@@ -127,6 +129,7 @@ class GameScreen(game: Symbol) : AbstractScreen(game) {
         background.render(game.batch)
         mm.render()
         engine.update(dt)
+        ParticleSpawner.render(game.batch)
 
         game.batch.end()
 
