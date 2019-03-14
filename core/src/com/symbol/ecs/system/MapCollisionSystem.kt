@@ -149,6 +149,9 @@ class MapCollisionSystem(private val res: Resources) : IteratingSystem(
             gravity.onMovingPlatform = false
             velocity.platformDx = 0f
         }
+
+        if (Mapper.PROJ_MAPPER.get(entity) != null) return
+
         for (mapObject in mapObjects) {
             if (bb.rect.overlaps(mapObject.bounds)) {
                 when (mapObject.type) {
