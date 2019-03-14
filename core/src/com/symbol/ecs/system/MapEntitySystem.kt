@@ -10,8 +10,13 @@ import com.symbol.ecs.component.map.MapEntityComponent
 import com.symbol.ecs.component.map.PortalComponent
 import com.symbol.ecs.entity.MapEntityType
 import com.symbol.ecs.entity.Player
+import com.symbol.effects.particle.DEFAULT_INTESITY
+import com.symbol.effects.particle.DEFAULT_LIFETIME
+import com.symbol.effects.particle.ParticleSpawner
+import com.symbol.util.Resources
 
-class MapEntitySystem(private val player: Player) : IteratingSystem(Family.all(MapEntityComponent::class.java).get()) {
+class MapEntitySystem(private val player: Player, private val res: Resources) :
+        IteratingSystem(Family.all(MapEntityComponent::class.java).get()) {
 
     private lateinit var portals: ImmutableArray<Entity>
 
@@ -130,6 +135,11 @@ class MapEntitySystem(private val player: Player) : IteratingSystem(Family.all(M
         if (playerBounds.rect.overlaps(bounds.rect)) {
             val playerHealth = Mapper.HEALTH_MAPPER.get(player)
             playerHealth.hp = 0
+
+            val color = Mapper.COLOR_MAPPER.get(player)
+            ParticleSpawner.spawn(res, color.hex!!, DEFAULT_LIFETIME, DEFAULT_INTESITY + playerHealth.maxHp,
+                    playerBounds.rect.x + playerBounds.rect.width / 2,
+                    playerBounds.rect.y + playerBounds.rect.height / 2)
         }
     }
 

@@ -9,8 +9,12 @@ import com.badlogic.gdx.utils.Array
 import com.symbol.ecs.Mapper
 import com.symbol.ecs.component.*
 import com.symbol.ecs.component.map.MovingPlatformComponent
+import com.symbol.effects.particle.DEFAULT_INTESITY
+import com.symbol.effects.particle.DEFAULT_LIFETIME
+import com.symbol.effects.particle.ParticleSpawner
 import com.symbol.map.MapObject
 import com.symbol.map.MapObjectType
+import com.symbol.util.Resources
 
 private const val NUM_SUB_STEPS = 30
 private const val MAP_OBJECT_DAMAGE_RATE = 1f
@@ -18,7 +22,7 @@ private const val MAP_OBJECT_SLOW_PERCENTAGE = 0.4f
 private const val MAP_OBJECT_PUSH = 45f
 const val MAP_OBJECT_JUMP_BOOST_PERCENTAGE = 1.5f
 
-class MapCollisionSystem : IteratingSystem(
+class MapCollisionSystem(private val res: Resources) : IteratingSystem(
         Family.all(BoundingBoxComponent::class.java, GravityComponent::class.java).get()
 ) {
 
@@ -181,6 +185,11 @@ class MapCollisionSystem : IteratingSystem(
     private fun handleLethalMapObject(entity: Entity?) {
         val health = Mapper.HEALTH_MAPPER.get(entity)
         health?.hp = 0
+
+        val bounds = Mapper.BOUNDING_BOX_MAPPER.get(entity)
+        val color = Mapper.COLOR_MAPPER.get(entity)
+        ParticleSpawner.spawn(res, color.hex!!, DEFAULT_LIFETIME, DEFAULT_INTESITY + health.maxHp,
+                bounds.rect.x + bounds.rect.width / 2, bounds.rect.y + bounds.rect.height / 2)
     }
 
     private fun handleDamageMapObject(mapObject: MapObject, entity: Entity?) {
@@ -188,6 +197,11 @@ class MapCollisionSystem : IteratingSystem(
             val health = Mapper.HEALTH_MAPPER.get(entity)
             health?.hit(mapObject.damage)
             startDamage[entity!!] = true
+
+            val bounds = Mapper.BOUNDING_BOX_MAPPER.get(entity)
+            val color = Mapper.COLOR_MAPPER.get(entity)
+            ParticleSpawner.spawn(res, color.hex!!, DEFAULT_LIFETIME, DEFAULT_INTESITY + mapObject.damage,
+                    bounds.rect.x + bounds.rect.width / 2, bounds.rect.y + bounds.rect.height / 2)
         }
     }
 

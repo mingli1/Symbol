@@ -14,6 +14,9 @@ import com.symbol.ecs.entity.EnemyAttackType
 import com.symbol.ecs.entity.EntityColor
 import com.symbol.ecs.entity.Player
 import com.symbol.ecs.system.DIAGONAL_PROJECTILE_SCALING
+import com.symbol.effects.particle.DEFAULT_INTESITY
+import com.symbol.effects.particle.DEFAULT_LIFETIME
+import com.symbol.effects.particle.ParticleSpawner
 import com.symbol.map.camera.CameraShake
 import com.symbol.util.*
 
@@ -43,6 +46,10 @@ class EnemyAttackSystem(private val player: Player, private val res: Resources) 
             val playerHealth = Mapper.HEALTH_MAPPER.get(player)
             playerHealth.hit(enemyComponent.damage)
             remove.shouldRemove = true
+
+            val color = Mapper.COLOR_MAPPER.get(entity)
+            ParticleSpawner.spawn(res, color.hex!!, DEFAULT_LIFETIME, DEFAULT_INTESITY + enemyComponent.damage,
+                    bounds.x + bounds.width / 2, bounds.y + bounds.height / 2)
             return
         }
 
