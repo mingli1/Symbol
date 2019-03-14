@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.math.Vector3
 import com.badlogic.gdx.utils.Pool
 import com.symbol.util.Resources
-import java.util.*
+import java.util.Random
 
 const val DEFAULT_INITIAL_Z = 3f
 const val DEFAULT_VX_SCALING = 0.3f
@@ -16,7 +16,7 @@ const val DEFAULT_Z_NEG_VY_SCALING = 0.6f
 const val DEFAULT_Z_NEG_VZ_SCALING = -0.5f
 const val DEFAULT_Z_POS_VZ_SCALING = 0.15f
 
-class Particle : Pool.Poolable {
+class Particle(private val rand: Random) : Pool.Poolable {
 
     private val position = Vector3()
     private val velocity = Vector3()
@@ -31,8 +31,6 @@ class Particle : Pool.Poolable {
     var shouldRemove: Boolean = false
     private var stateTime: Float = 0f
     private var lifetime: Float = 0f
-
-    private val rand = Random()
 
     fun set(res: Resources, hex: String, lifetime: Float) {
         texture = res.getTexture(hex)!!

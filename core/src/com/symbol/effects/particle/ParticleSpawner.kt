@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.utils.Array
 import com.badlogic.gdx.utils.Pool
 import com.symbol.util.Resources
+import java.util.Random
 
 object ParticleSpawner {
 
@@ -11,8 +12,9 @@ object ParticleSpawner {
     private val particlePool: Pool<Particle>
 
     init {
+        val rand = Random()
         particlePool = object : Pool<Particle>() {
-            override fun newObject(): Particle = Particle()
+            override fun newObject(): Particle = Particle(rand)
         }
     }
 
