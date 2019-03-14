@@ -75,7 +75,7 @@ class ProjectileSystem(private val res: Resources) : IteratingSystem(Family.all(
             if (velocity.dy != 0f) velocity.dy += if (velocity.dy > 0f) pj.acceleration else -pj.acceleration
         }
 
-        if (!pj.unstoppable) {
+        if (pj.collidesWithTerrain) {
             for (mapObject in mapObjects) {
                 if (bb.rect.overlaps(mapObject.bounds)) {
                     remove.shouldRemove = true
@@ -97,6 +97,19 @@ class ProjectileSystem(private val res: Resources) : IteratingSystem(Family.all(
                         velocity.dx = -velocity.dx
                         break
                     }
+                }
+            }
+        }
+
+        for (projectile in entities) {
+            val projectileComp = Mapper.PROJ_MAPPER.get(projectile)
+            if (entity!! != projectile && projectileComp.collidesWithProjectiles) {
+                val bounds = Mapper.BOUNDING_BOX_MAPPER.get(projectile)
+                if (bb.rect.overlaps(bounds.rect)) {
+                    remove.shouldRemove = true
+                    val projectileRemove = Mapper.REMOVE_MAPPER.get(projectile)
+                    projectileRemove.shouldRemove = true
+                    break
                 }
             }
         }
@@ -149,7 +162,7 @@ class ProjectileSystem(private val res: Resources) : IteratingSystem(Family.all(
     }
 
     private fun handleDetonation(entity: Entity?, pj: ProjectileComponent, bounds: Rectangle, remove: RemoveComponent) {
-        if (pj.enemy && pj.unstoppable && pj.detonateTime != 0f) {
+        if (pj.enemy && !pj.collidesWithTerrain && pj.detonateTime != 0f) {
             if (pj.lifeTime >= pj.detonateTime) {
                 val vel = Mapper.VEL_MAPPER.get(entity)
                 val speed = if (vel.dx != 0f) Math.abs(vel.dx) else Math.abs(vel.dy)
@@ -174,7 +187,7 @@ class ProjectileSystem(private val res: Resources) : IteratingSystem(Family.all(
         val bw = texture.regionWidth - 1
         val bh = texture.regionHeight - 1
         EntityBuilder.instance(engine as PooledEngine)
-                .projectile(unstoppable = true, enemy = true, damage = pj.damage)
+                .projectile(collidesWithTerrain = false, enemy = true, damage = pj.damage)
                 .position(bounds.x + (bounds.width / 2) - (bw / 2), bounds.y + (bounds.height / 2) - (bh / 2))
                 .velocity(dx = dx, dy = dy)
                 .boundingBox(bw.toFloat(), bh.toFloat())

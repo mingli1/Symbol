@@ -59,6 +59,7 @@ class EntityBuilder(private val engine: PooledEngine) {
               attackTexture: String? = null,
               projectileSpeed: Float = 0f,
               projectileAcceleration: Float = 0f,
+              projectileDestroyable: Boolean = false,
               attackDetonateTime: Float = 0f,
               explodeOnDeath: Boolean = false,
               teleportOnHit: Boolean = false,
@@ -74,6 +75,7 @@ class EntityBuilder(private val engine: PooledEngine) {
         enemyComponent?.attackTexture = attackTexture
         enemyComponent?.projectileSpeed = projectileSpeed
         enemyComponent?.projectileAcceleration = projectileAcceleration
+        enemyComponent?.projectileDestroyable = projectileDestroyable
         enemyComponent?.attackDetonateTime = attackDetonateTime
         enemyComponent?.explodeOnDeath = explodeOnDeath
         enemyComponent?.teleportOnHit = teleportOnHit
@@ -82,7 +84,8 @@ class EntityBuilder(private val engine: PooledEngine) {
         return this
     }
 
-    fun projectile(unstoppable: Boolean = false,
+    fun projectile(collidesWithTerrain: Boolean = true,
+                   collidesWithProjectiles: Boolean = false,
                    textureStr: String? = null,
                    enemy: Boolean = false,
                    damage: Int = 0,
@@ -90,7 +93,8 @@ class EntityBuilder(private val engine: PooledEngine) {
                    detonateTime: Float = 0f,
                    acceleration: Float = 0f) : EntityBuilder {
         projectileComponent = engine.createComponent(ProjectileComponent::class.java)
-        projectileComponent?.unstoppable = unstoppable
+        projectileComponent?.collidesWithTerrain = collidesWithTerrain
+        projectileComponent?.collidesWithProjectiles = collidesWithProjectiles
         projectileComponent?.textureStr = textureStr
         projectileComponent?.enemy = enemy
         projectileComponent?.damage = damage
