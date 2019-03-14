@@ -26,11 +26,13 @@ const val PLAYER_DAMAGE = 1
 class Player(res: Resources) : Entity() {
 
     init {
+        val color = ColorComponent()
         val bounds = BoundingBoxComponent()
         val texture = TextureComponent()
         val velocity = VelocityComponent()
         val health = HealthComponent()
 
+        color.hex = EntityColor.PLAYER_COLOR
         bounds.rect.setSize(PLAYER_BOUNDS_WIDTH, PLAYER_BOUNDS_HEIGHT)
         texture.texture = res.getTexture("player")
         velocity.speed = PLAYER_SPEED
@@ -41,6 +43,7 @@ class Player(res: Resources) : Entity() {
         add(PositionComponent())
         add(GravityComponent())
         add(DirectionComponent())
+        add(color)
         add(bounds)
         add(texture)
         add(velocity)

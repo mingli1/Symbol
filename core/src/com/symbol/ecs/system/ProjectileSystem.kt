@@ -17,6 +17,10 @@ import com.symbol.ecs.component.ProjectileComponent
 import com.symbol.ecs.component.RemoveComponent
 import com.symbol.ecs.component.map.MapEntityComponent
 import com.symbol.ecs.entity.MapEntityType
+import com.symbol.effects.particle.DEFAULT_INTESITY
+import com.symbol.effects.particle.DEFAULT_LIFETIME
+import com.symbol.effects.particle.DEFAULT_VX_SCALING
+import com.symbol.effects.particle.ParticleSpawner
 import com.symbol.map.MapObject
 import com.symbol.util.Resources
 
@@ -60,6 +64,7 @@ class ProjectileSystem(private val res: Resources) : IteratingSystem(Family.all(
 
     override fun processEntity(entity: Entity?, dt: Float) {
         val pj = Mapper.PROJ_MAPPER.get(entity)
+        val color = Mapper.COLOR_MAPPER.get(entity)
         val bb = Mapper.BOUNDING_BOX_MAPPER.get(entity)
         val position = Mapper.POS_MAPPER.get(entity)
         val velocity = Mapper.VEL_MAPPER.get(entity)
@@ -79,6 +84,10 @@ class ProjectileSystem(private val res: Resources) : IteratingSystem(Family.all(
             for (mapObject in mapObjects) {
                 if (bb.rect.overlaps(mapObject.bounds)) {
                     remove.shouldRemove = true
+                    ParticleSpawner.spawn(res, color.hex!!,
+                            DEFAULT_LIFETIME, DEFAULT_INTESITY + pj.damage,
+                            position.x + width / 2,
+                            position.y + height / 2)
                     break
                 }
             }
@@ -87,6 +96,10 @@ class ProjectileSystem(private val res: Resources) : IteratingSystem(Family.all(
                 val bounds = Mapper.BOUNDING_BOX_MAPPER.get(mapEntity)
                 if (me.projectileCollidable) {
                     if (bb.rect.overlaps(bounds.rect)) {
+                        ParticleSpawner.spawn(res, color.hex!!,
+                                DEFAULT_LIFETIME, DEFAULT_INTESITY + pj.damage,
+                                position.x + width / 2,
+                                position.y + height / 2)
                         remove.shouldRemove = true
                         break
                     }
@@ -130,6 +143,13 @@ class ProjectileSystem(private val res: Resources) : IteratingSystem(Family.all(
                         knockback.knockingBack = true
                     }
                     hit(e, pj.damage)
+
+                    val entityColor = Mapper.COLOR_MAPPER.get(e)
+                    ParticleSpawner.spawn(res, entityColor.hex!!,
+                            DEFAULT_LIFETIME, DEFAULT_INTESITY + pj.damage,
+                            ebb.rect.x + ebb.rect.width / 2,
+                            ebb.rect.y + ebb.rect.height / 2)
+
                     remove.shouldRemove = true
                     break
                 }

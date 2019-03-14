@@ -7,9 +7,12 @@ import com.badlogic.gdx.utils.Pool
 import com.symbol.util.Resources
 import java.util.Random
 
-const val DEFAULT_INITIAL_Z = 3f
-const val DEFAULT_VX_SCALING = 0.3f
-const val DEFAULT_VY_SCALING = 0.2f
+const val DEFAULT_LIFETIME = 0.5f
+const val DEFAULT_INTESITY = 7
+
+const val DEFAULT_INITIAL_Z = 2f
+const val DEFAULT_VX_SCALING = 0.5f
+const val DEFAULT_VY_SCALING = 0.5f
 const val DEFAULT_VZ_SCALING = 0.7f
 const val DEFAULT_Z_NEG_VX_SCALING = 0.6f
 const val DEFAULT_Z_NEG_VY_SCALING = 0.6f
