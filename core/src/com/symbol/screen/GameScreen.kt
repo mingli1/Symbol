@@ -61,7 +61,7 @@ class GameScreen(game: Symbol) : AbstractScreen(game) {
     private fun initSystems() {
         engine.addSystem(MovementSystem())
         engine.addSystem(MapCollisionSystem(game.res))
-        engine.addSystem(MapEntitySystem(player))
+        engine.addSystem(MapEntitySystem(player, game.res))
         engine.addSystem(ProjectileSystem(game.res))
         engine.addSystem(HealthSystem())
         engine.addSystem(EnemyActivationSystem(player))
