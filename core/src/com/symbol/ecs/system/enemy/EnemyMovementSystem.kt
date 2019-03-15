@@ -10,15 +10,19 @@ import com.symbol.ecs.entity.EnemyMovementType
 import com.symbol.ecs.entity.Player
 
 private const val MOVEMENT_FREQUENCY = 0.7f
+private const val JUMP_FREQUENCY = 1.2f
 
 class EnemyMovementSystem(private val player: Player) : IteratingSystem(Family.all(EnemyComponent::class.java).get()) {
 
     private var movementTimers: MutableMap<Entity, Float> = HashMap()
+    private var jumpTimers: MutableMap<Entity, Float> = HashMap()
 
     fun reset() {
         movementTimers.clear()
+        jumpTimers.clear()
         for (entity in entities) {
             movementTimers[entity] = 0f
+            jumpTimers[entity] = 0f
         }
     }
 
@@ -31,7 +35,8 @@ class EnemyMovementSystem(private val player: Player) : IteratingSystem(Family.a
 
         if (enemyComponent.active) {
             if (gravity != null) {
-                if (gravity.onGround && enemyComponent.jumpImpulse != 0f) {
+                if (gravity.onGround && enemyComponent.jumpImpulse != 0f
+                        && enemyComponent.movementType != EnemyMovementType.RandomWithJump) {
                     velocity.dy = enemyComponent.jumpImpulse
                 }
             }
@@ -40,6 +45,7 @@ class EnemyMovementSystem(private val player: Player) : IteratingSystem(Family.a
                 EnemyMovementType.BackAndForth -> backAndForth(entity, position, velocity, dirComponent, gravity)
                 EnemyMovementType.Charge -> charge(position, velocity)
                 EnemyMovementType.Random -> random(entity, dt, position, velocity, gravity)
+                EnemyMovementType.RandomWithJump -> randomWithJump(entity, dt, enemyComponent, position, velocity, gravity)
                 EnemyMovementType.Orbit -> orbit(entity, enemyComponent)
             }
         }
@@ -82,6 +88,18 @@ class EnemyMovementSystem(private val player: Player) : IteratingSystem(Family.a
                 else -> v.dx = 0f
             }
             movementTimers[entity] = 0f
+        }
+    }
+
+    private fun randomWithJump(entity: Entity?, dt: Float, e: EnemyComponent,
+                               p: PositionComponent, v: VelocityComponent, g: GravityComponent) {
+        random(entity, dt, p, v, g)
+        jumpTimers[entity!!] = jumpTimers[entity]?.plus(dt)!!
+        if (jumpTimers[entity]!! >= JUMP_FREQUENCY) {
+            if (e.jumpImpulse != 0f && MathUtils.randomBoolean()) {
+                v.dy = e.jumpImpulse
+            }
+            jumpTimers[entity] = 0f
         }
     }
 

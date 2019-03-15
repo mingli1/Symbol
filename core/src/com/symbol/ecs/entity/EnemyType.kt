@@ -39,7 +39,8 @@ enum class EnemyAttackType {
     ShootEight,
     ShootAtPlayer,
     SprayThree,
-    ShootAndQuake
+    ShootAndQuake,
+    Random
 
 }
 
@@ -49,6 +50,7 @@ enum class EnemyMovementType {
     BackAndForth,
     Charge,
     Random,
+    RandomWithJump,
     Orbit
 
 }
