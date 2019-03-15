@@ -17,7 +17,7 @@ object EntityFactory {
         when (type) {
             EnemyType.EConstant -> {
                 EntityBuilder.instance(engine)
-                        .enemy(movementType = EnemyMovementType.RandomWithJump, damage = 2, activationRange = 150f, jumpImpulse = 150f)
+                        .enemy(movementType = EnemyMovementType.BackAndForth, damage = 2, activationRange = 150f)
                         .color(EntityColor.E_COLOR)
                         .health(2)
                         .boundingBox(7f, 7f)

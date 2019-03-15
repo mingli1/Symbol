@@ -5,6 +5,7 @@ import com.badlogic.ashley.core.Family
 import com.badlogic.ashley.core.PooledEngine
 import com.badlogic.ashley.systems.IteratingSystem
 import com.badlogic.gdx.graphics.g2d.TextureRegion
+import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Rectangle
 import com.symbol.ecs.EntityBuilder
 import com.symbol.ecs.Mapper
@@ -72,6 +73,7 @@ class EnemyAttackSystem(private val player: Player, private val res: Resources) 
                     EnemyAttackType.ShootAtPlayer -> shootAtPlayer(enemyComponent, bounds, playerBounds, dir)
                     EnemyAttackType.SprayThree -> sprayThree(enemyComponent, bounds)
                     EnemyAttackType.ShootAndQuake -> shootAtPlayer(enemyComponent, bounds, playerBounds, dir)
+                    EnemyAttackType.Random -> random(enemyComponent, bounds, dir)
                 }
                 enemyComponent.canAttack = false
             }
@@ -171,6 +173,32 @@ class EnemyAttackSystem(private val player: Player, private val res: Resources) 
                 enemyComp.projectileSpeed, side, enemyComp.projectileDestroyable)
         createGravityProjectile(enemyComp, bounds, enemyComp.projectileSpeed / 4,
                 enemyComp.projectileSpeed, side, enemyComp.projectileDestroyable)
+    }
+
+    private fun random(enemyComp: EnemyComponent, bounds: Rectangle, dir: DirectionComponent) {
+        val action = MathUtils.random(3)
+        val texture = res.getTexture(enemyComp.attackTexture!!)!!
+        val topTexture = res.getTexture(enemyComp.attackTexture + TOP) ?: res.getTexture(enemyComp.attackTexture!!)!!
+        when (action) {
+            0 -> {
+                dir.facingRight = true
+                createProjectile(enemyComp, bounds, enemyComp.projectileSpeed, 0f, texture,
+                        enemyComp.attackDetonateTime, enemyComp.projectileAcceleration, enemyComp.projectileDestroyable)
+            }
+            1 -> {
+                dir.facingRight = false
+                createProjectile(enemyComp, bounds, -enemyComp.projectileSpeed, 0f, texture,
+                        enemyComp.attackDetonateTime, enemyComp.projectileAcceleration, enemyComp.projectileDestroyable)
+            }
+            2 -> {
+                createProjectile(enemyComp, bounds, 0f, enemyComp.projectileSpeed, topTexture,
+                        enemyComp.attackDetonateTime, enemyComp.projectileAcceleration, enemyComp.projectileDestroyable)
+            }
+            3 -> {
+                createProjectile(enemyComp, bounds, 0f, -enemyComp.projectileSpeed, topTexture,
+                        enemyComp.attackDetonateTime, enemyComp.projectileAcceleration, enemyComp.projectileDestroyable)
+            }
+        }
     }
 
     private fun explodeOnDeath(entity: Entity?, enemyComp: EnemyComponent, bounds: Rectangle) {
