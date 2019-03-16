@@ -1,9 +1,11 @@
 package com.symbol.input;
 
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.symbol.game.Symbol;
 import com.symbol.scene.Scene;
 
@@ -28,37 +30,49 @@ public class AndroidInput extends Scene {
     }
 
     private void createDirectionalButtons() {
-        ImageButton leftButton = new ImageButton(game.getRes().getButtonStyle("left"));
+        final ImageButton.ImageButtonStyle leftUp = new ImageButton.ImageButtonStyle();
+        leftUp.imageUp = new TextureRegionDrawable(game.getRes().getTexture("button_left_up"));
+        final ImageButton.ImageButtonStyle leftDown = new ImageButton.ImageButtonStyle();
+        leftDown.imageUp = new TextureRegionDrawable(game.getRes().getTexture("button_left_down"));
+
+        final ImageButton leftButton = new ImageButton(game.getRes().getButtonStyle("left"));
         leftButton.setPosition(LEFT_BUTTON_POSITION.x, LEFT_BUTTON_POSITION.y);
         leftButton.setSize(DIRECTIONAL_BUTTON_SIZE, DIRECTIONAL_BUTTON_SIZE);
 
         leftButton.addListener(new InputListener() {
             @Override
-            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
                 keyInputHandler.move(false);
-                return true;
+                leftButton.setStyle(leftDown);
             }
 
             @Override
-            public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
+            public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
                 keyInputHandler.stop(false);
+                leftButton.setStyle(leftUp);
             }
         });
 
-        ImageButton rightButton = new ImageButton(game.getRes().getButtonStyle("right"));
+        final ImageButton.ImageButtonStyle rightUp = new ImageButton.ImageButtonStyle();
+        rightUp.imageUp = new TextureRegionDrawable(game.getRes().getTexture("button_right_up"));
+        final ImageButton.ImageButtonStyle rightDown = new ImageButton.ImageButtonStyle();
+        rightDown.imageUp = new TextureRegionDrawable(game.getRes().getTexture("button_right_down"));
+
+        final ImageButton rightButton = new ImageButton(game.getRes().getButtonStyle("right"));
         rightButton.setPosition(RIGHT_BUTTON_POSITION.x, RIGHT_BUTTON_POSITION.y);
         rightButton.setSize(DIRECTIONAL_BUTTON_SIZE, DIRECTIONAL_BUTTON_SIZE);
 
         rightButton.addListener(new InputListener() {
             @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
                 keyInputHandler.move(true);
-                return true;
+                rightButton.setStyle(rightDown);
             }
 
             @Override
-            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+            public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
                 keyInputHandler.stop(true);
+                rightButton.setStyle(rightUp);
             }
         });
 
