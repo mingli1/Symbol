@@ -108,7 +108,7 @@ class EnemyMovementSystem(private val player: Player) : IteratingSystem(Family.a
         val remove = Mapper.REMOVE_MAPPER.get(entity)
         val parentRemove = Mapper.REMOVE_MAPPER.get(enemyComponent.parent)
 
-        if (!parentRemove.shouldRemove) {
+        if (parentRemove != null && !parentRemove.shouldRemove) {
             val bounds = Mapper.BOUNDING_BOX_MAPPER.get(enemyComponent.parent)
             val originX = bounds.rect.x + bounds.rect.width / 2
             val originY = bounds.rect.y + bounds.rect.height / 2
