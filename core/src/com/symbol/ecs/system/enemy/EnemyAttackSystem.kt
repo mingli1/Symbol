@@ -203,7 +203,7 @@ class EnemyAttackSystem(private val player: Player, private val res: Resources) 
     }
 
     private fun arcTwo(enemyComp: EnemyComponent, bounds: Rectangle, dir: DirectionComponent) {
-        val texture = res.getTexture(enemyComp.attackTexture + TOP_RIGHT)!!
+        val texture = res.getTexture(enemyComp.attackTexture + TOP_RIGHT) ?: res.getTexture(enemyComp.attackTexture!!)!!
         val initialDx = if (dir.facingRight) -enemyComp.projectileSpeed * DIAGONAL_PROJECTILE_SCALING
                             else enemyComp.projectileSpeed * DIAGONAL_PROJECTILE_SCALING
         createProjectile(enemyComp, dir, bounds, initialDx,
