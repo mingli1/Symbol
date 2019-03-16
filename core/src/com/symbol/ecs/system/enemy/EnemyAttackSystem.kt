@@ -64,23 +64,24 @@ class EnemyAttackSystem(private val player: Player, private val res: Resources) 
             if (enemyComponent.canAttack) {
                 when (enemyComponent.attackType) {
                     EnemyAttackType.None -> {}
-                    EnemyAttackType.ShootOne -> shootOne(enemyComponent, bounds, dir.facingRight)
-                    EnemyAttackType.ShootTwoHorizontal -> shootTwoHorizontal(enemyComponent, bounds)
-                    EnemyAttackType.ShootTwoVertical -> shootTwoVertical(enemyComponent, bounds)
-                    EnemyAttackType.ShootFour -> shootFour(enemyComponent, bounds)
-                    EnemyAttackType.ShootFourDiagonal -> shootFourDiagonal(enemyComponent, bounds)
-                    EnemyAttackType.ShootEight -> shootEight(enemyComponent, bounds)
-                    EnemyAttackType.ShootAtPlayer -> shootAtPlayer(enemyComponent, bounds, playerBounds, dir)
+                    EnemyAttackType.ShootOne -> shootOne(enemyComponent, dir, bounds)
+                    EnemyAttackType.ShootTwoHorizontal -> shootTwoHorizontal(enemyComponent, dir, bounds)
+                    EnemyAttackType.ShootTwoVertical -> shootTwoVertical(enemyComponent, dir, bounds)
+                    EnemyAttackType.ShootFour -> shootFour(enemyComponent, dir, bounds)
+                    EnemyAttackType.ShootFourDiagonal -> shootFourDiagonal(enemyComponent, dir, bounds)
+                    EnemyAttackType.ShootEight -> shootEight(enemyComponent, dir, bounds)
+                    EnemyAttackType.ShootAtPlayer -> shootAtPlayer(enemyComponent, dir, bounds, playerBounds)
                     EnemyAttackType.SprayThree -> sprayThree(enemyComponent, bounds)
-                    EnemyAttackType.ShootAndQuake -> shootAtPlayer(enemyComponent, bounds, playerBounds, dir)
+                    EnemyAttackType.ShootAndQuake -> shootAtPlayer(enemyComponent, dir, bounds, playerBounds)
                     EnemyAttackType.Random -> random(enemyComponent, bounds, dir)
+                    EnemyAttackType.ArcTwo -> arcTwo(enemyComponent, bounds, dir)
                 }
                 enemyComponent.canAttack = false
             }
         }
 
         if (enemyComponent.explodeOnDeath) {
-            explodeOnDeath(entity, enemyComponent, bounds)
+            explodeOnDeath(entity, enemyComponent, dir, bounds)
         }
 
         if (!enemyComponent.canAttack) {
@@ -92,55 +93,55 @@ class EnemyAttackSystem(private val player: Player, private val res: Resources) 
         }
     }
 
-    private fun shootOne(enemyComp: EnemyComponent, bounds: Rectangle, facingRight: Boolean) {
+    private fun shootOne(enemyComp: EnemyComponent, dir: DirectionComponent, bounds: Rectangle) {
         val texture = res.getTexture(enemyComp.attackTexture!!)!!
-        createProjectile(enemyComp, bounds, if (facingRight) enemyComp.projectileSpeed else -enemyComp.projectileSpeed,
+        createProjectile(enemyComp, dir, bounds, if (dir.facingRight) enemyComp.projectileSpeed else -enemyComp.projectileSpeed,
                 0f, texture, enemyComp.attackDetonateTime, enemyComp.projectileAcceleration, enemyComp.projectileDestroyable)
     }
 
-    private fun shootTwoHorizontal(enemyComp: EnemyComponent, bounds: Rectangle) {
+    private fun shootTwoHorizontal(enemyComp: EnemyComponent, dir: DirectionComponent, bounds: Rectangle) {
         val texture = res.getTexture(enemyComp.attackTexture!!)!!
-        createProjectile(enemyComp, bounds, enemyComp.projectileSpeed, 0f, texture,
+        createProjectile(enemyComp, dir, bounds, enemyComp.projectileSpeed, 0f, texture,
                 enemyComp.attackDetonateTime, enemyComp.projectileAcceleration, enemyComp.projectileDestroyable)
-        createProjectile(enemyComp, bounds, -enemyComp.projectileSpeed, 0f, texture,
+        createProjectile(enemyComp, dir, bounds, -enemyComp.projectileSpeed, 0f, texture,
                 enemyComp.attackDetonateTime, enemyComp.projectileAcceleration, enemyComp.projectileDestroyable)
     }
 
-    private fun shootTwoVertical(enemyComp: EnemyComponent, bounds: Rectangle) {
+    private fun shootTwoVertical(enemyComp: EnemyComponent, dir: DirectionComponent, bounds: Rectangle) {
         val topTexture = res.getTexture(enemyComp.attackTexture + TOP) ?: res.getTexture(enemyComp.attackTexture!!)!!
-        createProjectile(enemyComp, bounds, 0f, enemyComp.projectileSpeed, topTexture,
+        createProjectile(enemyComp, dir, bounds, 0f, enemyComp.projectileSpeed, topTexture,
                 enemyComp.attackDetonateTime, enemyComp.projectileAcceleration, enemyComp.projectileDestroyable)
-        createProjectile(enemyComp, bounds, 0f, -enemyComp.projectileSpeed, topTexture,
+        createProjectile(enemyComp, dir, bounds, 0f, -enemyComp.projectileSpeed, topTexture,
                 enemyComp.attackDetonateTime, enemyComp.projectileAcceleration, enemyComp.projectileDestroyable)
     }
 
-    private fun shootFour(enemyComp: EnemyComponent, bounds: Rectangle) {
-        shootTwoHorizontal(enemyComp, bounds)
-        shootTwoVertical(enemyComp, bounds)
+    private fun shootFour(enemyComp: EnemyComponent, dir: DirectionComponent, bounds: Rectangle) {
+        shootTwoHorizontal(enemyComp, dir, bounds)
+        shootTwoVertical(enemyComp, dir, bounds)
     }
 
-    private fun shootFourDiagonal(enemyComp: EnemyComponent, bounds: Rectangle) {
+    private fun shootFourDiagonal(enemyComp: EnemyComponent, dir: DirectionComponent, bounds: Rectangle) {
         val trTexture = res.getTexture(enemyComp.attackTexture + TOP_RIGHT) ?: res.getTexture(enemyComp.attackTexture!!)!!
-        createProjectile(enemyComp, bounds, -enemyComp.projectileSpeed * DIAGONAL_PROJECTILE_SCALING,
+        createProjectile(enemyComp, dir, bounds, -enemyComp.projectileSpeed * DIAGONAL_PROJECTILE_SCALING,
                 enemyComp.projectileSpeed * DIAGONAL_PROJECTILE_SCALING, trTexture,
                 enemyComp.attackDetonateTime, enemyComp.projectileAcceleration, enemyComp.projectileDestroyable)
-        createProjectile(enemyComp, bounds, enemyComp.projectileSpeed * DIAGONAL_PROJECTILE_SCALING,
+        createProjectile(enemyComp, dir, bounds, enemyComp.projectileSpeed * DIAGONAL_PROJECTILE_SCALING,
                 enemyComp.projectileSpeed * DIAGONAL_PROJECTILE_SCALING, trTexture,
                 enemyComp.attackDetonateTime, enemyComp.projectileAcceleration, enemyComp.projectileDestroyable)
-        createProjectile(enemyComp, bounds, -enemyComp.projectileSpeed * DIAGONAL_PROJECTILE_SCALING,
+        createProjectile(enemyComp, dir, bounds, -enemyComp.projectileSpeed * DIAGONAL_PROJECTILE_SCALING,
                 -enemyComp.projectileSpeed * DIAGONAL_PROJECTILE_SCALING, trTexture,
                 enemyComp.attackDetonateTime, enemyComp.projectileAcceleration, enemyComp.projectileDestroyable)
-        createProjectile(enemyComp, bounds, enemyComp.projectileSpeed * DIAGONAL_PROJECTILE_SCALING,
+        createProjectile(enemyComp, dir, bounds, enemyComp.projectileSpeed * DIAGONAL_PROJECTILE_SCALING,
                 -enemyComp.projectileSpeed * DIAGONAL_PROJECTILE_SCALING, trTexture,
                 enemyComp.attackDetonateTime, enemyComp.projectileAcceleration, enemyComp.projectileDestroyable)
     }
 
-    private fun shootEight(enemyComp: EnemyComponent, bounds: Rectangle) {
-        shootFour(enemyComp, bounds)
-        shootFourDiagonal(enemyComp, bounds)
+    private fun shootEight(enemyComp: EnemyComponent, dir: DirectionComponent, bounds: Rectangle) {
+        shootFour(enemyComp, dir, bounds)
+        shootFourDiagonal(enemyComp, dir, bounds)
     }
 
-    private fun shootAtPlayer(enemyComp: EnemyComponent, bounds: Rectangle, playerBounds: Rectangle, dir: DirectionComponent) {
+    private fun shootAtPlayer(enemyComp: EnemyComponent, dir: DirectionComponent, bounds: Rectangle, playerBounds: Rectangle) {
         val topTexture = res.getTexture(enemyComp.attackTexture + TOP) ?: res.getTexture(enemyComp.attackTexture!!)!!
         val texture = res.getTexture(enemyComp.attackTexture!!)!!
 
@@ -151,16 +152,16 @@ class EnemyAttackSystem(private val player: Player, private val res: Resources) 
         dir.facingRight = bounds.x < xCenter
 
         if (bounds.x < xCenter && xBiased)
-            createProjectile(enemyComp, bounds, enemyComp.projectileSpeed, 0f, texture,
+            createProjectile(enemyComp, dir, bounds, enemyComp.projectileSpeed, 0f, texture,
                     enemyComp.attackDetonateTime, enemyComp.projectileAcceleration, enemyComp.projectileDestroyable)
         if (bounds.x >= xCenter && xBiased)
-            createProjectile(enemyComp, bounds, -enemyComp.projectileSpeed, 0f, texture,
+            createProjectile(enemyComp, dir, bounds, -enemyComp.projectileSpeed, 0f, texture,
                     enemyComp.attackDetonateTime, enemyComp.projectileAcceleration, enemyComp.projectileDestroyable)
         if (bounds.y < yCenter && !xBiased)
-            createProjectile(enemyComp, bounds, 0f, enemyComp.projectileSpeed, topTexture,
+            createProjectile(enemyComp, dir, bounds, 0f, enemyComp.projectileSpeed, topTexture,
                     enemyComp.attackDetonateTime, enemyComp.projectileAcceleration, enemyComp.projectileDestroyable)
         if (bounds.y >= yCenter && !xBiased)
-            createProjectile(enemyComp, bounds, 0f, -enemyComp.projectileSpeed, topTexture,
+            createProjectile(enemyComp, dir, bounds, 0f, -enemyComp.projectileSpeed, topTexture,
                     enemyComp.attackDetonateTime, enemyComp.projectileAcceleration, enemyComp.projectileDestroyable)
     }
 
@@ -182,41 +183,56 @@ class EnemyAttackSystem(private val player: Player, private val res: Resources) 
         when (action) {
             0 -> {
                 dir.facingRight = true
-                createProjectile(enemyComp, bounds, enemyComp.projectileSpeed, 0f, texture,
+                createProjectile(enemyComp, dir, bounds, enemyComp.projectileSpeed, 0f, texture,
                         enemyComp.attackDetonateTime, enemyComp.projectileAcceleration, enemyComp.projectileDestroyable)
             }
             1 -> {
                 dir.facingRight = false
-                createProjectile(enemyComp, bounds, -enemyComp.projectileSpeed, 0f, texture,
+                createProjectile(enemyComp, dir, bounds, -enemyComp.projectileSpeed, 0f, texture,
                         enemyComp.attackDetonateTime, enemyComp.projectileAcceleration, enemyComp.projectileDestroyable)
             }
             2 -> {
-                createProjectile(enemyComp, bounds, 0f, enemyComp.projectileSpeed, topTexture,
+                createProjectile(enemyComp, dir, bounds, 0f, enemyComp.projectileSpeed, topTexture,
                         enemyComp.attackDetonateTime, enemyComp.projectileAcceleration, enemyComp.projectileDestroyable)
             }
             3 -> {
-                createProjectile(enemyComp, bounds, 0f, -enemyComp.projectileSpeed, topTexture,
+                createProjectile(enemyComp, dir, bounds, 0f, -enemyComp.projectileSpeed, topTexture,
                         enemyComp.attackDetonateTime, enemyComp.projectileAcceleration, enemyComp.projectileDestroyable)
             }
         }
     }
 
-    private fun explodeOnDeath(entity: Entity?, enemyComp: EnemyComponent, bounds: Rectangle) {
+    private fun arcTwo(enemyComp: EnemyComponent, bounds: Rectangle, dir: DirectionComponent) {
+        val texture = res.getTexture(enemyComp.attackTexture + TOP_RIGHT)!!
+        val initialDx = if (dir.facingRight) -enemyComp.projectileSpeed * DIAGONAL_PROJECTILE_SCALING
+                            else enemyComp.projectileSpeed * DIAGONAL_PROJECTILE_SCALING
+        createProjectile(enemyComp, dir, bounds, initialDx,
+                enemyComp.projectileSpeed * DIAGONAL_PROJECTILE_SCALING, texture,
+                enemyComp.attackDetonateTime, enemyComp.projectileAcceleration, enemyComp.projectileDestroyable, true)
+        createProjectile(enemyComp, dir, bounds, initialDx,
+                -enemyComp.projectileSpeed * DIAGONAL_PROJECTILE_SCALING, texture,
+                enemyComp.attackDetonateTime, enemyComp.projectileAcceleration, enemyComp.projectileDestroyable, true)
+    }
+
+    private fun explodeOnDeath(entity: Entity?, enemyComp: EnemyComponent, dir: DirectionComponent, bounds: Rectangle) {
         val remove = Mapper.REMOVE_MAPPER.get(entity)
         if (remove.shouldRemove) {
-            shootEight(enemyComp, bounds)
+            shootEight(enemyComp, dir, bounds)
         }
     }
 
-    private fun createProjectile(enemyComp: EnemyComponent, bounds: Rectangle, dx: Float = 0f, dy: Float = 0f,
+    private fun createProjectile(enemyComp: EnemyComponent, dir: DirectionComponent, bounds: Rectangle,
+                                 dx: Float = 0f, dy: Float = 0f,
                                  texture: TextureRegion, detonateTime: Float = 0f, acceleration: Float = 0f,
-                                 destroyable: Boolean = false) {
+                                 destroyable: Boolean = false, arc: Boolean = false) {
         val bw = texture.regionWidth - 1
         val bh = texture.regionHeight - 1
         EntityBuilder.instance(engine as PooledEngine)
-                .projectile(collidesWithTerrain = false, collidesWithProjectiles = destroyable,
+                .projectile(parentFacingRight = dir.facingRight,
+                        collidesWithTerrain = false, collidesWithProjectiles = destroyable,
                         textureStr = enemyComp.attackTexture, enemy = true,
-                        damage = enemyComp.damage, detonateTime = detonateTime, acceleration = acceleration)
+                        damage = enemyComp.damage, detonateTime = detonateTime,
+                        acceleration = acceleration, arc = arc)
                 .color(EntityColor.getProjectileColor(enemyComp.attackTexture)!!)
                 .position(bounds.x + (bounds.width / 2) - (bw / 2), bounds.y + (bounds.height / 2) - (bh / 2))
                 .velocity(dx = dx, dy = dy)

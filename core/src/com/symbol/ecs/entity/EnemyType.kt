@@ -15,7 +15,8 @@ enum class EnemyType(val typeStr: String) {
     BigPhi("big_phi"),
     Percent("percent"),
     PercentOrbit("percent_orbit"),
-    Nabla("nabla");
+    Nabla("nabla"),
+    CIntegral("cintegral");
 
     companion object {
         fun getType(typeStr: String) : EnemyType? {
@@ -40,7 +41,8 @@ enum class EnemyAttackType {
     ShootAtPlayer,
     SprayThree,
     ShootAndQuake,
-    Random
+    Random,
+    ArcTwo
 
 }
 

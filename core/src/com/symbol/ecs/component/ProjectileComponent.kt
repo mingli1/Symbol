@@ -7,6 +7,8 @@ class ProjectileComponent : Component, Pool.Poolable {
 
     var lifeTime: Float = 0f
 
+    var parentFacingRight: Boolean = false
+
     var textureStr: String? = null
     var collidesWithTerrain: Boolean = true
     var collidesWithProjectiles: Boolean = false
@@ -17,8 +19,12 @@ class ProjectileComponent : Component, Pool.Poolable {
     var detonateTime: Float = 0f
     var acceleration: Float = 0f
 
+    var arc: Boolean = false
+    var arcHalf: Boolean = false
+
     override fun reset() {
         lifeTime = 0f
+        parentFacingRight = false
         textureStr = null
         collidesWithTerrain = true
         collidesWithProjectiles = false
@@ -27,5 +33,7 @@ class ProjectileComponent : Component, Pool.Poolable {
         knockback = 0f
         detonateTime = 0f
         acceleration = 0f
+        arc = false
+        arcHalf = false
     }
 }

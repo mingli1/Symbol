@@ -75,7 +75,7 @@ class ProjectileSystem(private val res: Resources) : IteratingSystem(Family.all(
 
         pj.lifeTime += dt
 
-        if (pj.acceleration != 0f) {
+        if (pj.acceleration != 0f && !pj.arc) {
             if (velocity.dx != 0f) velocity.dx += if (velocity.dx > 0f) pj.acceleration * dt else -pj.acceleration * dt
             if (velocity.dy != 0f) velocity.dy += if (velocity.dy > 0f) pj.acceleration * dt else -pj.acceleration * dt
         }
@@ -157,6 +157,7 @@ class ProjectileSystem(private val res: Resources) : IteratingSystem(Family.all(
         }
 
         handleDetonation(entity, pj, bb.rect, remove)
+        handleArcMovement(entity, dt, pj, bb.rect)
     }
 
     fun setMapData(mapObjects: Array<MapObject>) {
@@ -198,6 +199,28 @@ class ProjectileSystem(private val res: Resources) : IteratingSystem(Family.all(
                 createSubProjectile(pj, bounds, speed * DIAGONAL_PROJECTILE_SCALING, speed * DIAGONAL_PROJECTILE_SCALING, texture)
 
                 remove.shouldRemove = true
+            }
+        }
+    }
+
+    private fun handleArcMovement(entity: Entity?, dt: Float, pj: ProjectileComponent, bounds: Rectangle) {
+        if (pj.arc) {
+            val vel = Mapper.VEL_MAPPER.get(entity)
+            val ay = (pj.acceleration / 1.5f) * dt
+            vel.dx += if (pj.parentFacingRight) pj.acceleration * dt else -pj.acceleration * dt
+
+            if (!pj.arcHalf) {
+                if (vel.dy > 0) {
+                    vel.dy -= ay
+                    if (vel.dy < 0) pj.arcHalf = true
+                } else if (vel.dy < 0) {
+                    vel.dy += ay
+                    if (vel.dy > 0) pj.arcHalf = true
+                }
+            }
+            else {
+                if (vel.dy < 0) vel.dy -= ay
+                else if (vel.dy > 0) vel.dy += ay
             }
         }
     }

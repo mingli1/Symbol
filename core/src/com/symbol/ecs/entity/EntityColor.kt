@@ -31,6 +31,8 @@ object EntityColor {
     const val ANGLE_BRACKET_COLOR = "a0e5ffff"
     const val BIG_PHI_COLOR = "aa0fffff"
     const val DOT_COLOR = "ff8795ff"
+    const val CINTEGRAL_COLOR = "9bffd5ff"
+    const val SUCC_COLOR = "b5ffdeff"
 
     fun getProjectileColor(key: String?) : String? {
         return when (key) {
@@ -45,6 +47,7 @@ object EntityColor {
             "p_big_ll" -> BIG_LL_COLOR
             "p_ltimes" -> LTIMES_COLOR
             "p_alpha" -> ALPHA_COLOR
+            "p_succ" -> SUCC_COLOR
             else -> null
         }
     }

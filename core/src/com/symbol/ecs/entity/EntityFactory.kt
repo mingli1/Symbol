@@ -168,6 +168,20 @@ object EntityFactory {
                         .texture(texture)
                         .remove().build()
             }
+            EnemyType.CIntegral -> {
+                EntityBuilder.instance(engine)
+                        .enemy(damage = 4, activationRange = 120f, attackType = EnemyAttackType.ArcTwo,
+                                attackTexture = "p_succ", attackRate = 2f,
+                                projectileSpeed = 80f, projectileAcceleration = 80f)
+                        .color(EntityColor.CINTEGRAL_COLOR)
+                        .health(5)
+                        .boundingBox(8f, 16f)
+                        .position(rect.x, rect.y)
+                        .direction(facingRight)
+                        .velocity()
+                        .texture(texture)
+                        .gravity().remove().build()
+            }
             else -> {}
         }
     }

@@ -63,6 +63,7 @@ class Resources : Disposable {
         load("e_percent")
         load("e_percent_orbit")
         load("e_nabla")
+        load("e_cintegral")
     }
 
     private fun loadMapEntities() {
@@ -86,6 +87,7 @@ class Resources : Disposable {
         loadProjectile("p_big_ll")
         loadProjectile("p_ltimes")
         loadProjectile("p_alpha")
+        loadProjectile("p_succ")
     }
 
     private fun loadBrackets() {
@@ -122,6 +124,8 @@ class Resources : Disposable {
         load(EntityColor.ANGLE_BRACKET_COLOR)
         load(EntityColor.BIG_PHI_COLOR)
         load(EntityColor.DOT_COLOR)
+        load(EntityColor.CINTEGRAL_COLOR)
+        load(EntityColor.SUCC_COLOR)
     }
 
     private fun loadButtons() {
