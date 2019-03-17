@@ -56,6 +56,8 @@ class EntityBuilder(private val engine: PooledEngine) {
               jumpImpulse: Float = 0f,
               activationRange: Float = -1f,
               attackRate: Float = 0f,
+              corporeal: Boolean = true,
+              incorporealTime: Float = 0f,
               attackTexture: String? = null,
               projectileSpeed: Float = 0f,
               projectileAcceleration: Float = 0f,
@@ -71,6 +73,8 @@ class EntityBuilder(private val engine: PooledEngine) {
         enemyComponent?.jumpImpulse = jumpImpulse
         enemyComponent?.damage = damage
         enemyComponent?.activationRange = activationRange
+        enemyComponent?.corporeal = corporeal
+        enemyComponent?.incorporealTime = incorporealTime
         enemyComponent?.attackRate = attackRate
         enemyComponent?.attackTexture = attackTexture
         enemyComponent?.projectileSpeed = projectileSpeed
@@ -199,9 +203,10 @@ class EntityBuilder(private val engine: PooledEngine) {
         return this
     }
 
-    fun texture(texture: TextureRegion) : EntityBuilder {
+    fun texture(texture: TextureRegion, textureStr: String? = null) : EntityBuilder {
         textureComponent = engine.createComponent(TextureComponent::class.java)
         textureComponent?.texture = texture
+        textureComponent?.textureStr = textureStr
         return this
     }
 

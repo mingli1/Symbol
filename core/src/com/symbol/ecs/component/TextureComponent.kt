@@ -7,8 +7,10 @@ import com.badlogic.gdx.utils.Pool
 class TextureComponent : Component, Pool.Poolable {
 
     var texture: TextureRegion? = null
+    var textureStr: String? = null
 
     override fun reset() {
         texture = null
+        textureStr = null
     }
 }

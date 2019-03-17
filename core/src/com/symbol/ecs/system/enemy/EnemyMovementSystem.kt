@@ -8,21 +8,27 @@ import com.symbol.ecs.Mapper
 import com.symbol.ecs.component.*
 import com.symbol.ecs.entity.EnemyMovementType
 import com.symbol.ecs.entity.Player
+import com.symbol.util.INCORPOREAL
+import com.symbol.util.Resources
 
 private const val MOVEMENT_FREQUENCY = 0.7f
 private const val JUMP_FREQUENCY = 1.2f
 
-class EnemyMovementSystem(private val player: Player) : IteratingSystem(Family.all(EnemyComponent::class.java).get()) {
+class EnemyMovementSystem(private val player: Player, private val res: Resources)
+    : IteratingSystem(Family.all(EnemyComponent::class.java).get()) {
 
     private var movementTimers: MutableMap<Entity, Float> = HashMap()
     private var jumpTimers: MutableMap<Entity, Float> = HashMap()
+    private var corporealTimers: MutableMap<Entity, Float> = HashMap()
 
     fun reset() {
         movementTimers.clear()
         jumpTimers.clear()
+        corporealTimers.clear()
         for (entity in entities) {
             movementTimers[entity] = 0f
             jumpTimers[entity] = 0f
+            corporealTimers[entity] = 0f
         }
     }
 
@@ -32,6 +38,20 @@ class EnemyMovementSystem(private val player: Player) : IteratingSystem(Family.a
         val position = Mapper.POS_MAPPER.get(entity)
         val velocity = Mapper.VEL_MAPPER.get(entity)
         val gravity = Mapper.GRAVITY_MAPPER.get(entity)
+
+        if (enemyComponent.incorporealTime != 0f) {
+            corporealTimers[entity!!] = corporealTimers[entity]?.plus(dt)!!
+            if (corporealTimers[entity]!! >= enemyComponent.incorporealTime) {
+                enemyComponent.corporeal = !enemyComponent.corporeal
+
+                if (!enemyComponent.corporeal) {
+                    val texture = Mapper.TEXTURE_MAPPER.get(entity)
+                    texture.texture = res.getTexture(texture.textureStr + INCORPOREAL) ?: texture.texture
+                }
+
+                corporealTimers[entity] = 0f
+            }
+        }
 
         if (enemyComponent.active) {
             if (gravity != null) {

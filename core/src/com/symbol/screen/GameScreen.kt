@@ -66,7 +66,7 @@ class GameScreen(game: Symbol) : AbstractScreen(game) {
         engine.addSystem(HealthSystem())
         engine.addSystem(EnemyActivationSystem(player))
         engine.addSystem(EnemyAttackSystem(player, game.res))
-        engine.addSystem(EnemyMovementSystem(player))
+        engine.addSystem(EnemyMovementSystem(player, game.res))
         engine.addSystem(DirectionSystem())
         engine.addSystem(GravitySystem())
         engine.addSystem(RenderSystem(game.batch))

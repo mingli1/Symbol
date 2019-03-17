@@ -13,7 +13,8 @@ import com.symbol.util.Resources
 object EntityFactory {
 
     fun createEnemy(engine: PooledEngine, res: Resources, type: EnemyType, rect: Rectangle, facingRight: Boolean) {
-        val texture = res.getTexture("e_${type.typeStr}")!!
+        val textureStr = "e_${type.typeStr}"
+        val texture = res.getTexture(textureStr)!!
         when (type) {
             EnemyType.EConstant -> {
                 EntityBuilder.instance(engine)
@@ -24,7 +25,7 @@ object EntityFactory {
                         .position(rect.x, rect.y)
                         .velocity(speed = 25f)
                         .direction(facingRight = facingRight)
-                        .texture(texture)
+                        .texture(texture, textureStr)
                         .knockback().gravity().remove().build()
             }
             EnemyType.SquareRoot -> {
@@ -37,7 +38,7 @@ object EntityFactory {
                         .position(rect.x, rect.y)
                         .velocity(speed = 60f)
                         .direction(facingRight = facingRight)
-                        .texture(texture)
+                        .texture(texture, textureStr)
                         .gravity().remove().build()
             }
             EnemyType.Exists -> {
@@ -50,7 +51,7 @@ object EntityFactory {
                         .position(rect.x, rect.y)
                         .velocity(speed = 75f)
                         .direction(facingRight = facingRight)
-                        .texture(texture)
+                        .texture(texture, textureStr)
                         .gravity().remove().build()
             }
             EnemyType.Summation -> {
@@ -63,7 +64,7 @@ object EntityFactory {
                         .position(rect.x, rect.y)
                         .velocity()
                         .direction(facingRight = facingRight)
-                        .texture(texture)
+                        .texture(texture, textureStr)
                         .gravity().remove().build()
             }
             EnemyType.BigPi -> {
@@ -76,7 +77,7 @@ object EntityFactory {
                         .position(rect.x, rect.y)
                         .velocity()
                         .direction(facingRight = facingRight)
-                        .texture(texture)
+                        .texture(texture, textureStr)
                         .gravity().remove().build()
             }
             EnemyType.In -> {
@@ -89,7 +90,7 @@ object EntityFactory {
                         .position(rect.x, rect.y)
                         .velocity()
                         .direction(facingRight = facingRight)
-                        .texture(texture)
+                        .texture(texture, textureStr)
                         .gravity().remove().build()
             }
             EnemyType.BigOmega -> {
@@ -101,7 +102,7 @@ object EntityFactory {
                         .boundingBox(12f, 13f)
                         .position(rect.x, rect.y)
                         .velocity()
-                        .texture(texture)
+                        .texture(texture, textureStr)
                         .gravity().remove().build()
             }
             EnemyType.NaturalJoin -> {
@@ -113,7 +114,7 @@ object EntityFactory {
                         .boundingBox(9f, 7f)
                         .position(rect.x, rect.y)
                         .velocity(speed = 30f)
-                        .texture(texture)
+                        .texture(texture, textureStr)
                         .direction(facingRight = facingRight)
                         .knockback().gravity().remove().build()
             }
@@ -126,7 +127,7 @@ object EntityFactory {
                         .boundingBox(14f, 16f)
                         .position(rect.x, rect.y)
                         .velocity()
-                        .texture(texture)
+                        .texture(texture, textureStr)
                         .direction(facingRight = facingRight)
                         .gravity().remove().build()
             }
@@ -138,7 +139,7 @@ object EntityFactory {
                         .boundingBox(10f, 10f)
                         .position(rect.x, rect.y)
                         .velocity(speed = 20f)
-                        .texture(texture)
+                        .texture(texture, textureStr)
                         .direction(facingRight = facingRight)
                         .gravity(gravity = -480f, terminalVelocity = -240f).knockback().remove().build()
 
@@ -151,7 +152,7 @@ object EntityFactory {
                             .boundingBox(6f, 6f)
                             .position(rect.x, rect.y)
                             .velocity()
-                            .texture(res.getTexture("e_${type.typeStr}$ORBIT")!!)
+                            .texture(res.getTexture("e_${type.typeStr}$ORBIT")!!, "e_${type.typeStr}$ORBIT")
                             .orbit(angle = angle, speed = 2f, radius = 15f)
                             .remove().build()
                 }
@@ -165,21 +166,22 @@ object EntityFactory {
                         .boundingBox(texture.regionWidth.toFloat() - 4, texture.regionHeight.toFloat())
                         .position(rect.x, rect.y)
                         .velocity()
-                        .texture(texture)
+                        .texture(texture, textureStr)
                         .remove().build()
             }
             EnemyType.CIntegral -> {
                 EntityBuilder.instance(engine)
                         .enemy(damage = 4, activationRange = 120f, attackType = EnemyAttackType.ArcTwo,
                                 attackTexture = "p_succ", attackRate = 2f,
-                                projectileSpeed = 80f, projectileAcceleration = 80f)
+                                projectileSpeed = 80f, projectileAcceleration = 80f,
+                                incorporealTime = 2f)
                         .color(EntityColor.CINTEGRAL_COLOR)
                         .health(5)
                         .boundingBox(8f, 16f)
                         .position(rect.x, rect.y)
                         .direction(facingRight)
                         .velocity()
-                        .texture(texture)
+                        .texture(texture, textureStr)
                         .gravity().remove().build()
             }
             else -> {}
@@ -191,7 +193,8 @@ object EntityFactory {
             MapEntityType.MovingPlatform -> {
                 val dist = (props["dist"] ?: 0f) as Float
                 val dx = (props["dx"] ?: 0f) as Float
-                val texture = res.getTexture("${type.typeStr}${MathUtils.ceil(rect.width / 8)}")!!
+                val textureStr = "${type.typeStr}${MathUtils.ceil(rect.width / 8)}"
+                val texture = res.getTexture(textureStr)!!
 
                 EntityBuilder.instance(engine)
                         .mapEntity(type = type, projectileCollidable = true)
@@ -199,7 +202,7 @@ object EntityFactory {
                         .boundingBox(texture.regionWidth.toFloat(), texture.regionHeight.toFloat())
                         .position(rect.x, rect.y)
                         .velocity(dx = dx)
-                        .texture(texture)
+                        .texture(texture, textureStr)
                         .build()
             }
             MapEntityType.TemporaryPlatform -> {
@@ -208,7 +211,7 @@ object EntityFactory {
                         .mapEntity(type = type)
                         .boundingBox(texture.regionWidth.toFloat(), texture.regionHeight.toFloat(), x = rect.x, y = rect.y)
                         .position(rect.x, rect.y)
-                        .texture(texture)
+                        .texture(texture, "approx")
                         .remove().build()
             }
             MapEntityType.Portal -> {
@@ -224,7 +227,7 @@ object EntityFactory {
                         .boundingBox(bw, bh)
                         .position(rect.x, rect.y)
                         .velocity()
-                        .texture(texture)
+                        .texture(texture, "curly_brace_portal")
                         .build()
             }
             MapEntityType.Clamp -> {
@@ -262,7 +265,7 @@ object EntityFactory {
                         .boundingBox(texture.regionWidth.toFloat(), texture.regionHeight.toFloat())
                         .position(rect.x, rect.y)
                         .velocity()
-                        .texture(texture)
+                        .texture(texture, "health_pack")
                         .remove().build()
             }
             MapEntityType.Mirror -> {
@@ -273,7 +276,7 @@ object EntityFactory {
                         .boundingBox(texture.regionWidth.toFloat(), texture.regionHeight.toFloat())
                         .position(rect.x, rect.y)
                         .velocity()
-                        .texture(texture)
+                        .texture(texture, "between")
                         .build()
             }
             else -> {}

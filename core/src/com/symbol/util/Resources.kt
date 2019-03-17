@@ -14,6 +14,8 @@ const val TOP = "_t"
 const val TOP_RIGHT ="_tr"
 const val ORBIT = "_orbit"
 
+const val INCORPOREAL = "_ic"
+
 const val BRACKET_LEFT = "_left"
 const val BRACKET_RIGHT = "_right"
 

@@ -142,6 +142,9 @@ class ProjectileSystem(private val res: Resources) : IteratingSystem(Family.all(
                         startKnockback[e] = true
                         knockback.knockingBack = true
                     }
+                    val enemy = Mapper.ENEMY_MAPPER.get(e)
+                    if (enemy != null && !enemy.corporeal) break
+
                     hit(e, pj.damage)
 
                     val entityColor = Mapper.COLOR_MAPPER.get(e)

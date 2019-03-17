@@ -16,6 +16,9 @@ class EnemyComponent : Component, Pool.Poolable {
     var activationRange = -1f
     var active: Boolean = false
 
+    var corporeal: Boolean = true
+    var incorporealTime: Float = 0f
+
     var damage: Int = 0
     var attackRate: Float = 0f
     var canAttack: Boolean = true
@@ -46,6 +49,9 @@ class EnemyComponent : Component, Pool.Poolable {
         projectileSpeed = 0f
         projectileAcceleration = 0f
         projectileDestroyable = false
+
+        corporeal = true
+        incorporealTime = 0f
 
         attackDetonateTime = 0f
         explodeOnDeath = false
