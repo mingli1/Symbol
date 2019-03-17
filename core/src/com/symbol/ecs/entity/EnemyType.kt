@@ -42,7 +42,12 @@ enum class EnemyAttackType {
     SprayThree,
     ShootAndQuake,
     Random,
-    ArcTwo
+    ArcTwo,
+    HorizontalWave,
+    VerticalWave,
+    TwoHorizontalWave,
+    TwoVerticalWave,
+    FourWave
 
 }
 

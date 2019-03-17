@@ -12,9 +12,7 @@ import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.utils.Array
 import com.symbol.ecs.EntityBuilder
 import com.symbol.ecs.Mapper
-import com.symbol.ecs.component.HealthComponent
-import com.symbol.ecs.component.ProjectileComponent
-import com.symbol.ecs.component.RemoveComponent
+import com.symbol.ecs.component.*
 import com.symbol.ecs.component.map.MapEntityComponent
 import com.symbol.ecs.entity.MapEntityType
 import com.symbol.effects.particle.DEFAULT_INTESITY
@@ -38,10 +36,27 @@ class ProjectileSystem(private val res: Resources) : IteratingSystem(Family.all(
     private var prevVelocities: MutableMap<Entity, Float> = HashMap()
     private var startKnockback: MutableMap<Entity, Boolean> = HashMap()
 
+    private var waveTimers: MutableMap<Entity, Float> = HashMap()
+
     override fun addedToEngine(engine: Engine?) {
         super.addedToEngine(engine)
         allEntities = engine!!.getEntitiesFor(Family.all(HealthComponent::class.java).get())
         mapEntities = engine.getEntitiesFor(Family.all(MapEntityComponent::class.java).get())
+    }
+
+    fun setMapData(mapObjects: Array<MapObject>) {
+        this.mapObjects.clear()
+        this.mapObjects.addAll(mapObjects)
+
+        knockbackTimes.clear()
+        prevVelocities.clear()
+        startKnockback.clear()
+        waveTimers.clear()
+        for (entity in allEntities) {
+            knockbackTimes[entity] = 0f
+            prevVelocities[entity] = 0f
+            startKnockback[entity] = false
+        }
     }
 
     override fun update(dt: Float) {
@@ -75,7 +90,7 @@ class ProjectileSystem(private val res: Resources) : IteratingSystem(Family.all(
 
         pj.lifeTime += dt
 
-        if (pj.acceleration != 0f && !pj.arc) {
+        if (pj.acceleration != 0f && pj.movementType == ProjectileMovementType.Normal) {
             if (velocity.dx != 0f) velocity.dx += if (velocity.dx > 0f) pj.acceleration * dt else -pj.acceleration * dt
             if (velocity.dy != 0f) velocity.dy += if (velocity.dy > 0f) pj.acceleration * dt else -pj.acceleration * dt
         }
@@ -159,22 +174,13 @@ class ProjectileSystem(private val res: Resources) : IteratingSystem(Family.all(
             }
         }
 
-        handleDetonation(entity, pj, bb.rect, remove)
-        handleArcMovement(entity, dt, pj, bb.rect)
-    }
-
-    fun setMapData(mapObjects: Array<MapObject>) {
-        this.mapObjects.clear()
-        this.mapObjects.addAll(mapObjects)
-
-        knockbackTimes.clear()
-        prevVelocities.clear()
-        startKnockback.clear()
-        for (entity in allEntities) {
-            knockbackTimes[entity] = 0f
-            prevVelocities[entity] = 0f
-            startKnockback[entity] = false
+        when (pj.movementType) {
+            ProjectileMovementType.Normal -> {}
+            ProjectileMovementType.Arc -> handleArcMovement(entity, dt, pj)
+            ProjectileMovementType.Wave -> handleWaveMovement(entity, dt, pj)
         }
+
+        handleDetonation(entity, pj, bb.rect, remove)
     }
 
     private fun hit(entity: Entity, damage: Int) {
@@ -206,25 +212,37 @@ class ProjectileSystem(private val res: Resources) : IteratingSystem(Family.all(
         }
     }
 
-    private fun handleArcMovement(entity: Entity?, dt: Float, pj: ProjectileComponent, bounds: Rectangle) {
-        if (pj.arc) {
-            val vel = Mapper.VEL_MAPPER.get(entity)
-            val ay = (pj.acceleration / 1.5f) * dt
-            vel.dx += if (pj.parentFacingRight) pj.acceleration * dt else -pj.acceleration * dt
+    private fun handleArcMovement(entity: Entity?, dt: Float, pj: ProjectileComponent) {
+        val vel = Mapper.VEL_MAPPER.get(entity)
+        val ay = (pj.acceleration / 1.5f) * dt
+        vel.dx += if (pj.parentFacingRight) pj.acceleration * dt else -pj.acceleration * dt
 
-            if (!pj.arcHalf) {
-                if (vel.dy > 0) {
-                    vel.dy -= ay
-                    if (vel.dy < 0) pj.arcHalf = true
-                } else if (vel.dy < 0) {
-                    vel.dy += ay
-                    if (vel.dy > 0) pj.arcHalf = true
-                }
+        if (!pj.arcHalf) {
+            if (vel.dy > 0) {
+                vel.dy -= ay
+                if (vel.dy < 0) pj.arcHalf = true
+            } else if (vel.dy < 0) {
+                vel.dy += ay
+                if (vel.dy > 0) pj.arcHalf = true
             }
-            else {
-                if (vel.dy < 0) vel.dy -= ay
-                else if (vel.dy > 0) vel.dy += ay
-            }
+        }
+        else {
+            if (vel.dy < 0) vel.dy -= ay
+            else if (vel.dy > 0) vel.dy += ay
+        }
+    }
+
+    private fun handleWaveMovement(entity: Entity?, dt: Float, pj: ProjectileComponent) {
+        if (waveTimers[entity] == null) waveTimers[entity!!] = 0f
+        waveTimers[entity!!] = waveTimers[entity]?.plus(dt * (pj.acceleration / 10f))!!
+        if (waveTimers[entity]!! >= MathUtils.PI2) waveTimers[entity] = 0f
+        val offset = MathUtils.sin(waveTimers[entity]!!) * pj.acceleration
+
+        val velocity = Mapper.VEL_MAPPER.get(entity)
+
+        when (pj.waveDir) {
+            Direction.Left, Direction.Right -> velocity.dy = offset
+            Direction.Up, Direction.Down -> velocity.dx = offset
         }
     }
 

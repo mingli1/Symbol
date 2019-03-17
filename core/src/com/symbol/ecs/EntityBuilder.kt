@@ -88,7 +88,8 @@ class EntityBuilder(private val engine: PooledEngine) {
         return this
     }
 
-    fun projectile(parentFacingRight: Boolean = false,
+    fun projectile(movementType: ProjectileMovementType = ProjectileMovementType.Normal,
+                   parentFacingRight: Boolean = false,
                    collidesWithTerrain: Boolean = true,
                    collidesWithProjectiles: Boolean = false,
                    textureStr: String? = null,
@@ -96,9 +97,9 @@ class EntityBuilder(private val engine: PooledEngine) {
                    damage: Int = 0,
                    knockback: Float = 0f,
                    detonateTime: Float = 0f,
-                   acceleration: Float = 0f,
-                   arc: Boolean = false) : EntityBuilder {
+                   acceleration: Float = 0f) : EntityBuilder {
         projectileComponent = engine.createComponent(ProjectileComponent::class.java)
+        projectileComponent?.movementType = movementType
         projectileComponent?.parentFacingRight = parentFacingRight
         projectileComponent?.collidesWithTerrain = collidesWithTerrain
         projectileComponent?.collidesWithProjectiles = collidesWithProjectiles
@@ -108,7 +109,6 @@ class EntityBuilder(private val engine: PooledEngine) {
         projectileComponent?.knockback = knockback
         projectileComponent?.detonateTime = detonateTime
         projectileComponent?.acceleration = acceleration
-        projectileComponent?.arc = arc
         return this
     }
 

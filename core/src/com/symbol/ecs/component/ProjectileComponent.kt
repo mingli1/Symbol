@@ -19,8 +19,10 @@ class ProjectileComponent : Component, Pool.Poolable {
     var detonateTime: Float = 0f
     var acceleration: Float = 0f
 
-    var arc: Boolean = false
+    var movementType = ProjectileMovementType.Normal
+
     var arcHalf: Boolean = false
+    var waveDir: Direction = Direction.Left
 
     override fun reset() {
         lifeTime = 0f
@@ -33,7 +35,17 @@ class ProjectileComponent : Component, Pool.Poolable {
         knockback = 0f
         detonateTime = 0f
         acceleration = 0f
-        arc = false
+        movementType = ProjectileMovementType.Normal
+
         arcHalf = false
+        waveDir = Direction.Left
     }
+}
+
+enum class ProjectileMovementType {
+
+    Normal,
+    Arc,
+    Wave
+
 }

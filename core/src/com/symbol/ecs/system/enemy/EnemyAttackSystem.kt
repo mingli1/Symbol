@@ -9,8 +9,10 @@ import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Rectangle
 import com.symbol.ecs.EntityBuilder
 import com.symbol.ecs.Mapper
+import com.symbol.ecs.component.Direction
 import com.symbol.ecs.component.DirectionComponent
 import com.symbol.ecs.component.EnemyComponent
+import com.symbol.ecs.component.ProjectileMovementType
 import com.symbol.ecs.entity.EnemyAttackType
 import com.symbol.ecs.entity.EntityColor
 import com.symbol.ecs.entity.Player
@@ -75,6 +77,11 @@ class EnemyAttackSystem(private val player: Player, private val res: Resources) 
                     EnemyAttackType.ShootAndQuake -> shootAtPlayer(enemyComponent, dir, bounds, playerBounds)
                     EnemyAttackType.Random -> random(enemyComponent, bounds, dir)
                     EnemyAttackType.ArcTwo -> arcTwo(enemyComponent, bounds, dir)
+                    EnemyAttackType.HorizontalWave -> horizontalWave(enemyComponent, bounds, dir)
+                    EnemyAttackType.VerticalWave -> verticalWave(enemyComponent, bounds, dir)
+                    EnemyAttackType.TwoHorizontalWave -> twoHorizontalWave(enemyComponent, bounds, dir)
+                    EnemyAttackType.TwoVerticalWave -> twoVerticalWave(enemyComponent, bounds, dir)
+                    EnemyAttackType.FourWave -> fourWave(enemyComponent, bounds, dir)
                 }
                 enemyComponent.canAttack = false
             }
@@ -208,10 +215,12 @@ class EnemyAttackSystem(private val player: Player, private val res: Resources) 
                             else enemyComp.projectileSpeed * DIAGONAL_PROJECTILE_SCALING
         createProjectile(enemyComp, dir, bounds, initialDx,
                 enemyComp.projectileSpeed * DIAGONAL_PROJECTILE_SCALING, texture,
-                enemyComp.attackDetonateTime, enemyComp.projectileAcceleration, enemyComp.projectileDestroyable, true)
+                enemyComp.attackDetonateTime, enemyComp.projectileAcceleration, enemyComp.projectileDestroyable,
+                ProjectileMovementType.Arc)
         createProjectile(enemyComp, dir, bounds, initialDx,
                 -enemyComp.projectileSpeed * DIAGONAL_PROJECTILE_SCALING, texture,
-                enemyComp.attackDetonateTime, enemyComp.projectileAcceleration, enemyComp.projectileDestroyable, true)
+                enemyComp.attackDetonateTime, enemyComp.projectileAcceleration, enemyComp.projectileDestroyable,
+                ProjectileMovementType.Arc)
     }
 
     private fun explodeOnDeath(entity: Entity?, enemyComp: EnemyComponent, dir: DirectionComponent, bounds: Rectangle) {
@@ -221,18 +230,70 @@ class EnemyAttackSystem(private val player: Player, private val res: Resources) 
         }
     }
 
+    private fun horizontalWave(enemyComp: EnemyComponent, bounds: Rectangle, dir: DirectionComponent) {
+        val texture = res.getTexture(enemyComp.attackTexture + TOP_RIGHT) ?: res.getTexture(enemyComp.attackTexture!!)!!
+        val proj = createProjectile(enemyComp, dir, bounds, if (dir.facingRight) enemyComp.projectileSpeed else -enemyComp.projectileSpeed,
+                0f, texture, enemyComp.attackDetonateTime, enemyComp.projectileAcceleration, enemyComp.projectileDestroyable,
+                ProjectileMovementType.Wave)
+        val projComp = Mapper.PROJ_MAPPER.get(proj)
+        projComp.waveDir = Direction.Right
+    }
+
+    private fun verticalWave(enemyComp: EnemyComponent, bounds: Rectangle, dir: DirectionComponent) {
+        val texture = res.getTexture(enemyComp.attackTexture + TOP_RIGHT) ?: res.getTexture(enemyComp.attackTexture!!)!!
+        val proj = createProjectile(enemyComp, dir, bounds, 0f,
+                if (MathUtils.randomBoolean()) enemyComp.projectileSpeed else -enemyComp.projectileSpeed,
+                texture, enemyComp.attackDetonateTime, enemyComp.projectileAcceleration, enemyComp.projectileDestroyable,
+                ProjectileMovementType.Wave)
+        val projComp = Mapper.PROJ_MAPPER.get(proj)
+        projComp.waveDir = Direction.Up
+    }
+
+    private fun twoHorizontalWave(enemyComp: EnemyComponent, bounds: Rectangle, dir: DirectionComponent) {
+        val texture = res.getTexture(enemyComp.attackTexture + TOP_RIGHT) ?: res.getTexture(enemyComp.attackTexture!!)!!
+        val projLeft = createProjectile(enemyComp, dir, bounds, -enemyComp.projectileSpeed,
+                0f, texture, enemyComp.attackDetonateTime, enemyComp.projectileAcceleration, enemyComp.projectileDestroyable,
+                ProjectileMovementType.Wave)
+        val projRight = createProjectile(enemyComp, dir, bounds, enemyComp.projectileSpeed,
+                0f, texture, enemyComp.attackDetonateTime, enemyComp.projectileAcceleration, enemyComp.projectileDestroyable,
+                ProjectileMovementType.Wave)
+        val pl = Mapper.PROJ_MAPPER.get(projLeft)
+        val pr = Mapper.PROJ_MAPPER.get(projRight)
+        pl.waveDir = Direction.Left
+        pr.waveDir = Direction.Right
+    }
+
+    private fun twoVerticalWave(enemyComp: EnemyComponent, bounds: Rectangle, dir: DirectionComponent) {
+        val texture = res.getTexture(enemyComp.attackTexture + TOP_RIGHT) ?: res.getTexture(enemyComp.attackTexture!!)!!
+        val projTop = createProjectile(enemyComp, dir, bounds, 0f, enemyComp.projectileSpeed,
+                texture, enemyComp.attackDetonateTime, enemyComp.projectileAcceleration, enemyComp.projectileDestroyable,
+                ProjectileMovementType.Wave)
+        val projBot = createProjectile(enemyComp, dir, bounds, 0f, -enemyComp.projectileSpeed,
+                texture, enemyComp.attackDetonateTime, enemyComp.projectileAcceleration, enemyComp.projectileDestroyable,
+                ProjectileMovementType.Wave)
+        val pt = Mapper.PROJ_MAPPER.get(projTop)
+        val pb = Mapper.PROJ_MAPPER.get(projBot)
+        pt.waveDir = Direction.Up
+        pb.waveDir = Direction.Down
+    }
+
+    private fun fourWave(enemyComp: EnemyComponent, bounds: Rectangle, dir: DirectionComponent) {
+        twoHorizontalWave(enemyComp, bounds, dir)
+        twoVerticalWave(enemyComp, bounds, dir)
+    }
+
     private fun createProjectile(enemyComp: EnemyComponent, dir: DirectionComponent, bounds: Rectangle,
-                                 dx: Float = 0f, dy: Float = 0f,
-                                 texture: TextureRegion, detonateTime: Float = 0f, acceleration: Float = 0f,
-                                 destroyable: Boolean = false, arc: Boolean = false) {
+                                 dx: Float = 0f, dy: Float = 0f, texture: TextureRegion,
+                                 detonateTime: Float = 0f, acceleration: Float = 0f, destroyable: Boolean = false,
+                                 movementType: ProjectileMovementType = ProjectileMovementType.Normal) : Entity? {
         val bw = texture.regionWidth - 1
         val bh = texture.regionHeight - 1
-        EntityBuilder.instance(engine as PooledEngine)
-                .projectile(parentFacingRight = dir.facingRight,
+        return EntityBuilder.instance(engine as PooledEngine)
+                .projectile(movementType = movementType,
+                        parentFacingRight = dir.facingRight,
                         collidesWithTerrain = false, collidesWithProjectiles = destroyable,
                         textureStr = enemyComp.attackTexture, enemy = true,
-                        damage = enemyComp.damage, detonateTime = detonateTime,
-                        acceleration = acceleration, arc = arc)
+                        damage = enemyComp.damage, detonateTime = detonateTime, acceleration = acceleration)
                 .color(EntityColor.getProjectileColor(enemyComp.attackTexture)!!)
                 .position(bounds.x + (bounds.width / 2) - (bw / 2), bounds.y + (bounds.height / 2) - (bh / 2))
                 .velocity(dx = dx, dy = dy)
@@ -242,10 +303,10 @@ class EnemyAttackSystem(private val player: Player, private val res: Resources) 
     }
 
     private fun createGravityProjectile(enemyComp: EnemyComponent, bounds: Rectangle,
-                                        dx: Float, dy: Float, texture: TextureRegion, destroyable: Boolean = false) {
+                                        dx: Float, dy: Float, texture: TextureRegion, destroyable: Boolean = false) : Entity? {
         val bw = texture.regionWidth - 1
         val bh = texture.regionHeight - 1
-        EntityBuilder.instance(engine as PooledEngine)
+        return EntityBuilder.instance(engine as PooledEngine)
                 .projectile(collidesWithTerrain = false, collidesWithProjectiles = destroyable,
                         textureStr = enemyComp.attackTexture, enemy = true, damage = enemyComp.damage)
                 .color(EntityColor.getProjectileColor(enemyComp.attackTexture)!!)
