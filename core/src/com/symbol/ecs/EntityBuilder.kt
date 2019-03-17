@@ -5,9 +5,6 @@ import com.badlogic.ashley.core.PooledEngine
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.math.Rectangle
 import com.symbol.ecs.component.*
-import com.symbol.ecs.component.EnemyComponent
-import com.symbol.ecs.component.PlayerComponent
-import com.symbol.ecs.component.ProjectileComponent
 import com.symbol.ecs.component.map.*
 import com.symbol.ecs.entity.EnemyAttackType
 import com.symbol.ecs.entity.EnemyMovementType

@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.utils.Array
 import com.badlogic.gdx.utils.Pool
 import com.symbol.util.Resources
-import java.util.Random
+import java.util.*
 
 object ParticleSpawner {
 

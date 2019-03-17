@@ -18,8 +18,8 @@ import com.symbol.game.Symbol
 import com.symbol.input.AndroidInput
 import com.symbol.input.KeyInput
 import com.symbol.input.KeyInputSystem
-import com.symbol.map.camera.Background
 import com.symbol.map.MapManager
+import com.symbol.map.camera.Background
 import com.symbol.map.camera.CameraShake
 import com.symbol.scene.Hud
 

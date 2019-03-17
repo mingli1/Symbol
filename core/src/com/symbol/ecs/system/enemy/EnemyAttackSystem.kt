@@ -21,7 +21,9 @@ import com.symbol.effects.particle.DEFAULT_INTESITY
 import com.symbol.effects.particle.DEFAULT_LIFETIME
 import com.symbol.effects.particle.ParticleSpawner
 import com.symbol.map.camera.CameraShake
-import com.symbol.util.*
+import com.symbol.util.Resources
+import com.symbol.util.TOP
+import com.symbol.util.TOP_RIGHT
 
 private const val CAMERA_SHAKE_POWER = 3f
 private const val CAMERA_SHAKE_DURATION = 0.7f

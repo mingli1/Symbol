@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.math.Vector3
 import com.badlogic.gdx.utils.Pool
 import com.symbol.util.Resources
-import java.util.Random
+import java.util.*
 
 const val DEFAULT_LIFETIME = 0.5f
 const val DEFAULT_INTESITY = 7

@@ -12,8 +12,8 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.utils.Array
 import com.badlogic.gdx.utils.Disposable
-import com.symbol.ecs.entity.EntityFactory
 import com.symbol.ecs.entity.EnemyType
+import com.symbol.ecs.entity.EntityFactory
 import com.symbol.ecs.entity.MapEntityType
 import com.symbol.util.Resources
 

@@ -18,7 +18,6 @@ import com.symbol.ecs.entity.MapEntityType
 import com.symbol.ecs.entity.Player
 import com.symbol.effects.particle.DEFAULT_INTESITY
 import com.symbol.effects.particle.DEFAULT_LIFETIME
-import com.symbol.effects.particle.DEFAULT_VX_SCALING
 import com.symbol.effects.particle.ParticleSpawner
 import com.symbol.map.MapObject
 import com.symbol.util.Resources

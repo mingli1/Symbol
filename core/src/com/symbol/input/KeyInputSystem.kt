@@ -3,8 +3,8 @@ package com.symbol.input
 import com.badlogic.ashley.core.*
 import com.symbol.ecs.EntityBuilder
 import com.symbol.ecs.Mapper
-import com.symbol.ecs.component.VelocityComponent
 import com.symbol.ecs.component.PlayerComponent
+import com.symbol.ecs.component.VelocityComponent
 import com.symbol.ecs.entity.*
 import com.symbol.ecs.system.MAP_OBJECT_JUMP_BOOST_PERCENTAGE
 import com.symbol.util.Resources
