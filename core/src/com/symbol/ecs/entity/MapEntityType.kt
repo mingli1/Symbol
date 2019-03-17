@@ -8,7 +8,8 @@ enum class MapEntityType(val typeStr: String) {
     Portal("portal"),
     Clamp("clamp"),
     HealthPack("hp_pack"),
-    Mirror("mirror");
+    Mirror("mirror"),
+    GravitySwitch("gswitch");
 
     companion object {
         fun getType(typeStr: String) : MapEntityType? {

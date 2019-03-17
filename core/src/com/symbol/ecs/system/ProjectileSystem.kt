@@ -15,17 +15,21 @@ import com.symbol.ecs.Mapper
 import com.symbol.ecs.component.*
 import com.symbol.ecs.component.map.MapEntityComponent
 import com.symbol.ecs.entity.MapEntityType
+import com.symbol.ecs.entity.Player
 import com.symbol.effects.particle.DEFAULT_INTESITY
 import com.symbol.effects.particle.DEFAULT_LIFETIME
 import com.symbol.effects.particle.DEFAULT_VX_SCALING
 import com.symbol.effects.particle.ParticleSpawner
 import com.symbol.map.MapObject
 import com.symbol.util.Resources
+import com.symbol.util.TOGGLE_OFF
+import com.symbol.util.TOGGLE_ON
 
 const val DIAGONAL_PROJECTILE_SCALING = 0.75f
 private const val KNOCKBACK_TIME = 0.1f
 
-class ProjectileSystem(private val res: Resources) : IteratingSystem(Family.all(ProjectileComponent::class.java).get()) {
+class ProjectileSystem(private val player: Player, private val res: Resources)
+    : IteratingSystem(Family.all(ProjectileComponent::class.java).get()) {
 
     private var mapObjects: Array<MapObject> = Array()
 
@@ -109,6 +113,22 @@ class ProjectileSystem(private val res: Resources) : IteratingSystem(Family.all(
             for (mapEntity in mapEntities) {
                 val me = Mapper.MAP_ENTITY_MAPPER.get(mapEntity)
                 val bounds = Mapper.BOUNDING_BOX_MAPPER.get(mapEntity)
+
+                if (!pj.enemy && bb.rect.overlaps(bounds.rect)) {
+                    if (me.mapEntityType == MapEntityType.Mirror) {
+                        pj.enemy = true
+                        velocity.dx = -velocity.dx
+                    }
+                    else if (me.mapEntityType == MapEntityType.GravitySwitch) {
+                        val gravity = Mapper.GRAVITY_MAPPER.get(player)
+                        val meTexture = Mapper.TEXTURE_MAPPER.get(mapEntity)
+
+                        gravity.reverse = !gravity.reverse
+                        meTexture.texture = res.getTexture(meTexture.textureStr +
+                                if (gravity.reverse) TOGGLE_ON else TOGGLE_OFF)
+                    }
+                }
+
                 if (me.projectileCollidable) {
                     if (bb.rect.overlaps(bounds.rect)) {
                         ParticleSpawner.spawn(res, color.hex!!,
@@ -116,13 +136,6 @@ class ProjectileSystem(private val res: Resources) : IteratingSystem(Family.all(
                                 position.x + width / 2,
                                 position.y + height / 2)
                         remove.shouldRemove = true
-                        break
-                    }
-                }
-                if (me.mapEntityType == MapEntityType.Mirror && !pj.enemy) {
-                    if (bb.rect.overlaps(bounds.rect)) {
-                        pj.enemy = true
-                        velocity.dx = -velocity.dx
                         break
                     }
                 }

@@ -13,6 +13,7 @@ class RenderSystem(private val batch: Batch) : IteratingSystem(Family.all(Textur
         val texture = Mapper.TEXTURE_MAPPER.get(entity)
         val position = Mapper.POS_MAPPER.get(entity)
         val dir = Mapper.DIR_MAPPER.get(entity)
+        val gravity = Mapper.GRAVITY_MAPPER.get(entity)
 
         val width = texture.texture!!.regionWidth.toFloat()
         val height = texture.texture!!.regionHeight.toFloat()
@@ -27,7 +28,7 @@ class RenderSystem(private val batch: Batch) : IteratingSystem(Family.all(Textur
                 xOffset = width
                 fWidth = -width
             }
-            if (dir.yFlip && !dir.facingUp) {
+            if ((dir.yFlip && !dir.facingUp) || (gravity != null && gravity.reverse)) {
                 yOffset = height
                 fHeight = -height
             }

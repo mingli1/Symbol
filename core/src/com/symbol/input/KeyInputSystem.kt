@@ -36,12 +36,15 @@ class KeyInputSystem(private val res: Resources) : EntitySystem(), KeyInputHandl
         val gravity = Mapper.GRAVITY_MAPPER.get(player)
 
         if (gravity.onGround && playerComp.canJump) {
-            vel.dy = if (playerComp.hasJumpBoost) PLAYER_JUMP_IMPULSE * MAP_OBJECT_JUMP_BOOST_PERCENTAGE else PLAYER_JUMP_IMPULSE
+            if (gravity.reverse)
+                vel.dy = if (playerComp.hasJumpBoost) -PLAYER_JUMP_IMPULSE * MAP_OBJECT_JUMP_BOOST_PERCENTAGE else -PLAYER_JUMP_IMPULSE
+            else
+                vel.dy = if (playerComp.hasJumpBoost) PLAYER_JUMP_IMPULSE * MAP_OBJECT_JUMP_BOOST_PERCENTAGE else PLAYER_JUMP_IMPULSE
             playerComp.canJump = false
             playerComp.canDoubleJump = true
         }
         else if (playerComp.canDoubleJump) {
-            vel.dy = PLAYER_JUMP_IMPULSE
+            vel.dy = if (gravity.reverse) -PLAYER_JUMP_IMPULSE else PLAYER_JUMP_IMPULSE
             playerComp.canDoubleJump = false
         }
     }

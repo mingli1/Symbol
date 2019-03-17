@@ -5,10 +5,7 @@ import com.badlogic.gdx.maps.MapProperties
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Rectangle
 import com.symbol.ecs.EntityBuilder
-import com.symbol.util.BRACKET_LEFT
-import com.symbol.util.BRACKET_RIGHT
-import com.symbol.util.ORBIT
-import com.symbol.util.Resources
+import com.symbol.util.*
 
 object EntityFactory {
 
@@ -277,6 +274,18 @@ object EntityFactory {
                         .position(rect.x, rect.y)
                         .velocity()
                         .texture(texture, "between")
+                        .build()
+            }
+            MapEntityType.GravitySwitch -> {
+                val textureStr = "updownarrow"
+                val texture = res.getTexture(textureStr + TOGGLE_OFF)!!
+
+                EntityBuilder.instance(engine)
+                        .mapEntity(type = type, projectileCollidable = true)
+                        .boundingBox(texture.regionWidth.toFloat(), texture.regionHeight.toFloat())
+                        .position(rect.x, rect.y)
+                        .velocity()
+                        .texture(texture, textureStr)
                         .build()
             }
             else -> {}

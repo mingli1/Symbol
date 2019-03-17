@@ -106,7 +106,7 @@ class MapCollisionSystem(private val res: Resources) : IteratingSystem(
                 for (mapObject in mapObjects) {
                     if (mapObject.type.solid && bb.rect.overlaps(mapObject.bounds)) {
                         revertCurrentPosition(position)
-                        if (velocity.dy < 0) {
+                        if (velocity.dy < 0 || (gravity.reverse && velocity.dy > 0 )) {
                             gravity.onGround = true
                             gravity.platform.set(mapObject.bounds)
 
@@ -123,7 +123,7 @@ class MapCollisionSystem(private val res: Resources) : IteratingSystem(
                     val bounds = Mapper.BOUNDING_BOX_MAPPER.get(mplatform)
                     if (bb.rect.overlaps(bounds.rect)) {
                         revertCurrentPosition(position)
-                        if (velocity.dy < 0 &&
+                        if ((velocity.dy < 0 || (gravity.reverse && velocity.dy > 0)) &&
                                 bb.rect.x + bb.rect.width > bounds.rect.x &&
                                 bb.rect.x < bounds.rect.x + bounds.rect.width) {
                             gravity.onGround = true

@@ -16,6 +16,8 @@ class GravityComponent : Component, Pool.Poolable {
     var gravity: Float = GRAVITY
     var terminalVelocity: Float = TERMINAL_VELOCITY
 
+    var reverse: Boolean = false
+
     override fun reset() {
         onGround = false
         onMovingPlatform = false
@@ -23,5 +25,6 @@ class GravityComponent : Component, Pool.Poolable {
         platform.set(0f, 0f, 0f, 0f)
         gravity = GRAVITY
         terminalVelocity = TERMINAL_VELOCITY
+        reverse = false
     }
 }

@@ -16,6 +16,9 @@ const val ORBIT = "_orbit"
 
 const val INCORPOREAL = "_ic"
 
+const val TOGGLE_ON = "_on"
+const val TOGGLE_OFF = "_off"
+
 const val BRACKET_LEFT = "_left"
 const val BRACKET_RIGHT = "_right"
 
@@ -74,6 +77,8 @@ class Resources : Disposable {
         load("curly_brace_portal")
         load("health_pack")
         load("between")
+        load("updownarrow$TOGGLE_OFF")
+        load("updownarrow$TOGGLE_ON")
     }
 
     private fun loadProjectiles() {

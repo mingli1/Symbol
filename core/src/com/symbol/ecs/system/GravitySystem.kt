@@ -15,8 +15,14 @@ class GravitySystem : IteratingSystem(Family.all(GravityComponent::class.java).g
         val vel = Mapper.VEL_MAPPER.get(entity)
         val grav = Mapper.GRAVITY_MAPPER.get(entity)
 
-        if (vel.dy > grav.terminalVelocity) vel.dy += grav.gravity * deltaTime
-        else vel.dy = grav.terminalVelocity
+        if (grav.reverse) {
+            if (vel.dy < -grav.terminalVelocity) vel.dy -= grav.gravity * deltaTime
+            else vel.dy = -grav.terminalVelocity
+        }
+        else {
+            if (vel.dy > grav.terminalVelocity) vel.dy += grav.gravity * deltaTime
+            else vel.dy = grav.terminalVelocity
+        }
     }
 
 }
