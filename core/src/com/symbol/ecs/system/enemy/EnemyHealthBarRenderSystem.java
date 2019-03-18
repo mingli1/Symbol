@@ -5,7 +5,7 @@ import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.symbol.ecs.Mapper;
-import com.symbol.ecs.component.EnemyComponent;
+import com.symbol.ecs.component.enemy.EnemyComponent;
 import com.symbol.ecs.component.HealthComponent;
 import com.symbol.ecs.component.PositionComponent;
 import com.symbol.ecs.component.TextureComponent;

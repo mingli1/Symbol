@@ -6,11 +6,6 @@ import com.symbol.util.Resources
 
 const val PLAYER_WIDTH = 8f
 const val PLAYER_HEIGHT = 8f
-const val PLAYER_BOUNDS_WIDTH = 7f
-const val PLAYER_BOUNDS_HEIGHT = 7f
-
-const val PLAYER_SPEED = 35f
-const val PLAYER_JUMP_IMPULSE = 160f
 
 const val PLAYER_PROJECTILE_SHOOT_DELAY = 0.1f
 const val PLAYER_PROJECTILE_SPEED = 80f
@@ -22,6 +17,11 @@ const val PLAYER_PROJECTILE_KNOCKBACK = 75f
 const val PLAYER_HP = 8
 const val PLAYER_DAMAGE = 1
 
+private const val PLAYER_SPEED = 35f
+private const val PLAYER_JUMP_IMPULSE = 160f
+private const val PLAYER_BOUNDS_WIDTH = 7f
+private const val PLAYER_BOUNDS_HEIGHT = 7f
+
 class Player(res: Resources) : Entity() {
 
     init {
@@ -30,6 +30,7 @@ class Player(res: Resources) : Entity() {
         val texture = TextureComponent()
         val velocity = VelocityComponent()
         val health = HealthComponent()
+        val jump = JumpComponent()
 
         color.hex = EntityColor.PLAYER_COLOR
         bounds.rect.setSize(PLAYER_BOUNDS_WIDTH, PLAYER_BOUNDS_HEIGHT)
@@ -37,6 +38,7 @@ class Player(res: Resources) : Entity() {
         velocity.speed = PLAYER_SPEED
         health.hp = PLAYER_HP
         health.maxHp = PLAYER_HP
+        jump.impulse = PLAYER_JUMP_IMPULSE
 
         add(PlayerComponent())
         add(PositionComponent())
@@ -47,6 +49,7 @@ class Player(res: Resources) : Entity() {
         add(texture)
         add(velocity)
         add(health)
+        add(jump)
     }
 
 }

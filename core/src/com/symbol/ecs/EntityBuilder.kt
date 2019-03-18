@@ -5,6 +5,7 @@ import com.badlogic.ashley.core.PooledEngine
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.math.Rectangle
 import com.symbol.ecs.component.*
+import com.symbol.ecs.component.enemy.EnemyComponent
 import com.symbol.ecs.component.map.*
 import com.symbol.ecs.entity.EnemyAttackType
 import com.symbol.ecs.entity.EnemyMovementType
@@ -18,17 +19,10 @@ class EntityBuilder(private val engine: PooledEngine) {
     private var enemyComponent: EnemyComponent? = null
     private var projectileComponent: ProjectileComponent? = null
 
-    private var mapEntityComponent: MapEntityComponent? = null
-    private var movingPlatformComponent: MovingPlatformComponent? = null
-    private var portalComponent: PortalComponent? = null
-    private var clampComponent: ClampComponent? = null
-    private var healthPackComponent: HealthPackComponent? = null
-    private var squareSwitchComponent: SquareSwitchComponent? = null
-    private var toggleTileComponent: ToggleTileComponent? = null
-
     private var boundingBoxComponent: BoundingBoxComponent? = null
     private var directionComponent: DirectionComponent? = null
     private var gravityComponent: GravityComponent? = null
+    private var jumpComponent: JumpComponent? = null
     private var healthComponent: HealthComponent? = null
     private var knockbackComponent: KnockbackComponent? = null
     private var positionComponent: PositionComponent? = null
@@ -37,6 +31,14 @@ class EntityBuilder(private val engine: PooledEngine) {
     private var velocityComponent: VelocityComponent? = null
     private var orbitComponent: OrbitComponent? = null
     private var colorComponent: ColorComponent? = null
+
+    private var mapEntityComponent: MapEntityComponent? = null
+    private var movingPlatformComponent: MovingPlatformComponent? = null
+    private var portalComponent: PortalComponent? = null
+    private var clampComponent: ClampComponent? = null
+    private var healthPackComponent: HealthPackComponent? = null
+    private var squareSwitchComponent: SquareSwitchComponent? = null
+    private var toggleTileComponent: ToggleTileComponent? = null
 
     companion object {
         fun instance(engine: PooledEngine) : EntityBuilder = EntityBuilder(engine)
@@ -52,7 +54,6 @@ class EntityBuilder(private val engine: PooledEngine) {
     fun enemy(movementType: EnemyMovementType = EnemyMovementType.None,
               attackType: EnemyAttackType = EnemyAttackType.None,
               damage: Int = 0,
-              jumpImpulse: Float = 0f,
               activationRange: Float = -1f,
               attackRate: Float = 0f,
               corporeal: Boolean = true,
@@ -69,7 +70,6 @@ class EntityBuilder(private val engine: PooledEngine) {
         enemyComponent = engine.createComponent(EnemyComponent::class.java)
         enemyComponent?.movementType = movementType
         enemyComponent?.attackType = attackType
-        enemyComponent?.jumpImpulse = jumpImpulse
         enemyComponent?.damage = damage
         enemyComponent?.activationRange = activationRange
         enemyComponent?.corporeal = corporeal
@@ -108,6 +108,92 @@ class EntityBuilder(private val engine: PooledEngine) {
         projectileComponent?.knockback = knockback
         projectileComponent?.detonateTime = detonateTime
         projectileComponent?.acceleration = acceleration
+        return this
+    }
+
+    fun color(hex: String) : EntityBuilder {
+        colorComponent = engine.createComponent(ColorComponent::class.java)
+        colorComponent?.hex = hex
+        return this
+    }
+
+    fun boundingBox(bx: Float, by: Float, x: Float = 0f, y: Float = 0f) : EntityBuilder {
+        boundingBoxComponent = engine.createComponent(BoundingBoxComponent::class.java)
+        boundingBoxComponent?.rect?.set(x, y, bx, by)
+        return this
+    }
+
+    fun direction(facingRight: Boolean = true, yFlip: Boolean = false) : EntityBuilder {
+        directionComponent = engine.createComponent(DirectionComponent::class.java)
+        directionComponent?.facingRight = facingRight
+        directionComponent?.yFlip = yFlip
+        return this
+    }
+
+    fun gravity(onGround: Boolean = false, gravity: Float = GRAVITY,
+                terminalVelocity: Float = TERMINAL_VELOCITY, collidable: Boolean = true) : EntityBuilder {
+        gravityComponent = engine.createComponent(GravityComponent::class.java)
+        gravityComponent?.onGround = onGround
+        gravityComponent?.gravity = gravity
+        gravityComponent?.terminalVelocity = terminalVelocity
+        gravityComponent?.collidable = collidable
+        return this
+    }
+
+    fun jump(impulse: Float = 0f) : EntityBuilder {
+        jumpComponent = engine.createComponent(JumpComponent::class.java)
+        jumpComponent?.impulse = impulse
+        return this
+    }
+
+    fun health(hp: Int) : EntityBuilder {
+        healthComponent = engine.createComponent(HealthComponent::class.java)
+        healthComponent?.hp = hp
+        healthComponent?.maxHp = hp
+        return this
+    }
+
+    fun knockback() : EntityBuilder {
+        knockbackComponent = engine.createComponent(KnockbackComponent::class.java)
+        return this
+    }
+
+    fun position(x: Float, y: Float) : EntityBuilder {
+        positionComponent = engine.createComponent(PositionComponent::class.java)
+        positionComponent?.x = x
+        positionComponent?.y = y
+        return this
+    }
+
+    fun remove() : EntityBuilder {
+        removeComponent = engine.createComponent(RemoveComponent::class.java)
+        return this
+    }
+
+    fun texture(texture: TextureRegion, textureStr: String? = null) : EntityBuilder {
+        textureComponent = engine.createComponent(TextureComponent::class.java)
+        textureComponent?.texture = texture
+        textureComponent?.textureStr = textureStr
+        return this
+    }
+
+    fun velocity(dx: Float = 0f, dy: Float = 0f, speed: Float = 0f) : EntityBuilder {
+        velocityComponent = engine.createComponent(VelocityComponent::class.java)
+        velocityComponent?.dx = dx
+        velocityComponent?.dy = dy
+        velocityComponent?.speed = speed
+        return this
+    }
+
+    fun orbit(clockwise: Boolean = true, originX: Float = 0f, originY: Float = 0f,
+              angle: Float = 0f, speed: Float = 0f, radius: Float = 0f) : EntityBuilder {
+        orbitComponent = engine.createComponent(OrbitComponent::class.java)
+        orbitComponent?.clockwise = clockwise
+        orbitComponent?.originX = originX
+        orbitComponent?.originY = originY
+        orbitComponent?.angle = angle
+        orbitComponent?.speed = speed
+        orbitComponent?.radius = radius
         return this
     }
 
@@ -164,96 +250,18 @@ class EntityBuilder(private val engine: PooledEngine) {
         return this
     }
 
-    fun color(hex: String) : EntityBuilder {
-        colorComponent = engine.createComponent(ColorComponent::class.java)
-        colorComponent?.hex = hex
-        return this
-    }
-
-    fun boundingBox(bx: Float, by: Float, x: Float = 0f, y: Float = 0f) : EntityBuilder {
-        boundingBoxComponent = engine.createComponent(BoundingBoxComponent::class.java)
-        boundingBoxComponent?.rect?.set(x, y, bx, by)
-        return this
-    }
-
-    fun direction(facingRight: Boolean = true, yFlip: Boolean = false) : EntityBuilder {
-        directionComponent = engine.createComponent(DirectionComponent::class.java)
-        directionComponent?.facingRight = facingRight
-        directionComponent?.yFlip = yFlip
-        return this
-    }
-
-    fun gravity(onGround: Boolean = false, gravity: Float = GRAVITY,
-                terminalVelocity: Float = TERMINAL_VELOCITY, collidable: Boolean = true) : EntityBuilder {
-        gravityComponent = engine.createComponent(GravityComponent::class.java)
-        gravityComponent?.onGround = onGround
-        gravityComponent?.gravity = gravity
-        gravityComponent?.terminalVelocity = terminalVelocity
-        gravityComponent?.collidable = collidable
-        return this
-    }
-
-    fun health(hp: Int) : EntityBuilder {
-        healthComponent = engine.createComponent(HealthComponent::class.java)
-        healthComponent?.hp = hp
-        healthComponent?.maxHp = hp
-        return this
-    }
-
-    fun knockback() : EntityBuilder {
-        knockbackComponent = engine.createComponent(KnockbackComponent::class.java)
-        return this
-    }
-
-    fun position(x: Float, y: Float) : EntityBuilder {
-        positionComponent = engine.createComponent(PositionComponent::class.java)
-        positionComponent?.x = x
-        positionComponent?.y = y
-        return this
-    }
-
-    fun remove() : EntityBuilder {
-        removeComponent = engine.createComponent(RemoveComponent::class.java)
-        return this
-    }
-
-    fun texture(texture: TextureRegion, textureStr: String? = null) : EntityBuilder {
-        textureComponent = engine.createComponent(TextureComponent::class.java)
-        textureComponent?.texture = texture
-        textureComponent?.textureStr = textureStr
-        return this
-    }
-
-    fun velocity(dx: Float = 0f, dy: Float = 0f, speed: Float = 0f) : EntityBuilder {
-        velocityComponent = engine.createComponent(VelocityComponent::class.java)
-        velocityComponent?.dx = dx
-        velocityComponent?.dy = dy
-        velocityComponent?.speed = speed
-        return this
-    }
-
-    fun orbit(clockwise: Boolean = true, originX: Float = 0f, originY: Float = 0f,
-              angle: Float = 0f, speed: Float = 0f, radius: Float = 0f) : EntityBuilder {
-        orbitComponent = engine.createComponent(OrbitComponent::class.java)
-        orbitComponent?.clockwise = clockwise
-        orbitComponent?.originX = originX
-        orbitComponent?.originY = originY
-        orbitComponent?.angle = angle
-        orbitComponent?.speed = speed
-        orbitComponent?.radius = radius
-        return this
-    }
-
     fun build() : Entity {
         val entity = engine.createEntity()
 
         if (enemyComponent != null) entity.add(enemyComponent)
         if (playerComponent != null) entity.add(playerComponent)
         if (projectileComponent != null) entity.add(projectileComponent)
+
         if (colorComponent != null) entity.add(colorComponent)
         if (boundingBoxComponent != null) entity.add(boundingBoxComponent)
         if (directionComponent != null) entity.add(directionComponent)
         if (gravityComponent != null) entity.add(gravityComponent)
+        if (jumpComponent != null) entity.add(jumpComponent)
         if (healthComponent != null) entity.add(healthComponent)
         if (knockbackComponent != null) entity.add(knockbackComponent)
         if (positionComponent != null) entity.add(positionComponent)
@@ -261,6 +269,7 @@ class EntityBuilder(private val engine: PooledEngine) {
         if (textureComponent != null) entity.add(textureComponent)
         if (velocityComponent != null) entity.add(velocityComponent)
         if (orbitComponent != null) entity.add(orbitComponent)
+
         if (mapEntityComponent != null) entity.add(mapEntityComponent)
         if (movingPlatformComponent != null) entity.add(movingPlatformComponent)
         if (portalComponent != null) entity.add(portalComponent)

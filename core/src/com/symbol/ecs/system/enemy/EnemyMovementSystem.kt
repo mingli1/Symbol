@@ -6,6 +6,7 @@ import com.badlogic.ashley.systems.IteratingSystem
 import com.badlogic.gdx.math.MathUtils
 import com.symbol.ecs.Mapper
 import com.symbol.ecs.component.*
+import com.symbol.ecs.component.enemy.EnemyComponent
 import com.symbol.ecs.entity.EnemyMovementType
 import com.symbol.ecs.entity.Player
 import com.symbol.util.INCORPOREAL
@@ -38,6 +39,7 @@ class EnemyMovementSystem(private val player: Player, private val res: Resources
         val position = Mapper.POS_MAPPER.get(entity)
         val velocity = Mapper.VEL_MAPPER.get(entity)
         val gravity = Mapper.GRAVITY_MAPPER.get(entity)
+        val jump = Mapper.JUMP_MAPPER.get(entity)
 
         if (enemyComponent.incorporealTime != 0f) {
             corporealTimers[entity!!] = corporealTimers[entity]?.plus(dt)!!
@@ -55,9 +57,9 @@ class EnemyMovementSystem(private val player: Player, private val res: Resources
 
         if (enemyComponent.active) {
             if (gravity != null) {
-                if (gravity.onGround && enemyComponent.jumpImpulse != 0f
+                if (gravity.onGround && jump != null
                         && enemyComponent.movementType != EnemyMovementType.RandomWithJump) {
-                    velocity.dy = enemyComponent.jumpImpulse
+                    velocity.dy = jump.impulse
                 }
             }
             when (enemyComponent.movementType) {
@@ -65,7 +67,7 @@ class EnemyMovementSystem(private val player: Player, private val res: Resources
                 EnemyMovementType.BackAndForth -> backAndForth(entity, position, velocity, dirComponent, gravity)
                 EnemyMovementType.Charge -> charge(position, velocity)
                 EnemyMovementType.Random -> random(entity, dt, position, velocity, gravity)
-                EnemyMovementType.RandomWithJump -> randomWithJump(entity, dt, enemyComponent, position, velocity, gravity)
+                EnemyMovementType.RandomWithJump -> randomWithJump(entity, dt, position, velocity, gravity)
                 EnemyMovementType.Orbit -> orbit(entity, enemyComponent)
             }
         }
@@ -111,13 +113,14 @@ class EnemyMovementSystem(private val player: Player, private val res: Resources
         }
     }
 
-    private fun randomWithJump(entity: Entity?, dt: Float, e: EnemyComponent,
-                               p: PositionComponent, v: VelocityComponent, g: GravityComponent) {
+    private fun randomWithJump(entity: Entity?, dt: Float, p: PositionComponent,
+                               v: VelocityComponent, g: GravityComponent) {
         random(entity, dt, p, v, g)
+        val jump = Mapper.JUMP_MAPPER.get(entity)
         jumpTimers[entity!!] = jumpTimers[entity]?.plus(dt)!!
         if (jumpTimers[entity]!! >= JUMP_FREQUENCY) {
-            if (e.jumpImpulse != 0f && MathUtils.randomBoolean()) {
-                v.dy = e.jumpImpulse
+            if (jump.impulse != 0f && MathUtils.randomBoolean()) {
+                v.dy = jump.impulse
             }
             jumpTimers[entity] = 0f
         }

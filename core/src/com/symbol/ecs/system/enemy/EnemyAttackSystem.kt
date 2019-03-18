@@ -11,7 +11,7 @@ import com.symbol.ecs.EntityBuilder
 import com.symbol.ecs.Mapper
 import com.symbol.ecs.component.Direction
 import com.symbol.ecs.component.DirectionComponent
-import com.symbol.ecs.component.EnemyComponent
+import com.symbol.ecs.component.enemy.EnemyComponent
 import com.symbol.ecs.component.ProjectileMovementType
 import com.symbol.ecs.entity.EnemyAttackType
 import com.symbol.ecs.entity.EntityColor

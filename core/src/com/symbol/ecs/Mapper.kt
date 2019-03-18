@@ -2,6 +2,7 @@ package com.symbol.ecs
 
 import com.badlogic.ashley.core.ComponentMapper
 import com.symbol.ecs.component.*
+import com.symbol.ecs.component.enemy.EnemyComponent
 import com.symbol.ecs.component.map.*
 
 object Mapper {
@@ -16,6 +17,8 @@ object Mapper {
 
     val GRAVITY_MAPPER: ComponentMapper<GravityComponent> = ComponentMapper.getFor(GravityComponent::class.java)
 
+    val JUMP_MAPPER: ComponentMapper<JumpComponent> = ComponentMapper.getFor(JumpComponent::class.java)
+
     val DIR_MAPPER: ComponentMapper<DirectionComponent> = ComponentMapper.getFor(DirectionComponent::class.java)
 
     val PLAYER_MAPPER: ComponentMapper<PlayerComponent> = ComponentMapper.getFor(PlayerComponent::class.java)
@@ -24,17 +27,19 @@ object Mapper {
 
     val PROJ_MAPPER: ComponentMapper<ProjectileComponent> = ComponentMapper.getFor(ProjectileComponent::class.java)
 
-    val ENEMY_MAPPER: ComponentMapper<EnemyComponent> = ComponentMapper.getFor(EnemyComponent::class.java)
-
     val HEALTH_MAPPER: ComponentMapper<HealthComponent> = ComponentMapper.getFor(HealthComponent::class.java)
 
     val KNOCKBACK_MAPPER: ComponentMapper<KnockbackComponent> = ComponentMapper.getFor(KnockbackComponent::class.java)
 
     val ORBIT_MAPPER: ComponentMapper<OrbitComponent> = ComponentMapper.getFor(OrbitComponent::class.java)
 
-    val MOVING_PLATFORM_MAPPER: ComponentMapper<MovingPlatformComponent> = ComponentMapper.getFor(MovingPlatformComponent::class.java)
+
+    val ENEMY_MAPPER: ComponentMapper<EnemyComponent> = ComponentMapper.getFor(EnemyComponent::class.java)
+
 
     val MAP_ENTITY_MAPPER: ComponentMapper<MapEntityComponent> = ComponentMapper.getFor(MapEntityComponent::class.java)
+
+    val MOVING_PLATFORM_MAPPER: ComponentMapper<MovingPlatformComponent> = ComponentMapper.getFor(MovingPlatformComponent::class.java)
 
     val PORTAL_MAPPER: ComponentMapper<PortalComponent> = ComponentMapper.getFor(PortalComponent::class.java)
 

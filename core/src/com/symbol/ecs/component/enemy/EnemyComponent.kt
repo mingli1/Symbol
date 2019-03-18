@@ -1,4 +1,4 @@
-package com.symbol.ecs.component
+package com.symbol.ecs.component.enemy
 
 import com.badlogic.ashley.core.Component
 import com.badlogic.ashley.core.Entity
@@ -10,8 +10,6 @@ class EnemyComponent : Component, Pool.Poolable {
 
     var movementType: EnemyMovementType = EnemyMovementType.None
     var attackType: EnemyAttackType = EnemyAttackType.None
-
-    var jumpImpulse: Float = 0f
 
     var activationRange = -1f
     var active: Boolean = false
@@ -37,8 +35,6 @@ class EnemyComponent : Component, Pool.Poolable {
     override fun reset() {
         movementType = EnemyMovementType.None
         attackType = EnemyAttackType.None
-
-        jumpImpulse = 0f
 
         damage = 0
         activationRange = -1f

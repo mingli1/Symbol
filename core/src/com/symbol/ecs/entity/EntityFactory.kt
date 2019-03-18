@@ -118,24 +118,26 @@ object EntityFactory {
             EnemyType.BigPhi -> {
                 EntityBuilder.instance(engine)
                         .enemy(damage = 4, activationRange = 200f, attackType = EnemyAttackType.ShootAndQuake,
-                                attackTexture = "p_alpha", attackRate = 1.5f, jumpImpulse = 150f, projectileSpeed = 60f, explodeOnDeath = true)
+                                attackTexture = "p_alpha", attackRate = 1.5f, projectileSpeed = 60f, explodeOnDeath = true)
                         .color(EntityColor.BIG_PHI_COLOR)
                         .health(10)
                         .boundingBox(14f, 16f)
                         .position(rect.x, rect.y)
                         .velocity()
+                        .jump(150f)
                         .texture(texture, textureStr)
                         .direction(facingRight = facingRight)
                         .gravity().remove().build()
             }
             EnemyType.Percent -> {
                 val parent = EntityBuilder.instance(engine)
-                        .enemy(damage = 1, activationRange = 120f, movementType = EnemyMovementType.BackAndForth, jumpImpulse = 120f)
+                        .enemy(damage = 1, activationRange = 120f, movementType = EnemyMovementType.BackAndForth)
                         .color(EntityColor.PERCENT_COLOR)
                         .health(2)
                         .boundingBox(10f, 10f)
                         .position(rect.x, rect.y)
                         .velocity(speed = 20f)
+                        .jump(120f)
                         .texture(texture, textureStr)
                         .direction(facingRight = facingRight)
                         .gravity(gravity = -480f, terminalVelocity = -240f).knockback().remove().build()
