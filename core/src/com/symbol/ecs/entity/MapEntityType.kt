@@ -9,7 +9,9 @@ enum class MapEntityType(val typeStr: String) {
     Clamp("clamp"),
     HealthPack("hp_pack"),
     Mirror("mirror"),
-    GravitySwitch("gswitch");
+    GravitySwitch("gswitch"),
+    SquareSwitch("sswitch"),
+    ToggleTile("toggle");
 
     companion object {
         fun getType(typeStr: String) : MapEntityType? {

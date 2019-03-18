@@ -8,6 +8,7 @@ import com.badlogic.ashley.utils.ImmutableArray
 import com.badlogic.gdx.utils.Array
 import com.symbol.ecs.Mapper
 import com.symbol.ecs.component.*
+import com.symbol.ecs.component.map.MapEntityComponent
 import com.symbol.ecs.component.map.MovingPlatformComponent
 import com.symbol.effects.particle.DEFAULT_INTESITY
 import com.symbol.effects.particle.DEFAULT_LIFETIME
@@ -35,6 +36,7 @@ class MapCollisionSystem(private val res: Resources) : IteratingSystem(
 
     private lateinit var removableEntities: ImmutableArray<Entity>
     private lateinit var movingPlatforms: ImmutableArray<Entity>
+    private lateinit var mapEntities: ImmutableArray<Entity>
 
     private var damageTimes: MutableMap<Entity, Float> = HashMap()
     private var startDamage: MutableMap<Entity, Boolean> = HashMap()
@@ -43,6 +45,7 @@ class MapCollisionSystem(private val res: Resources) : IteratingSystem(
         super.addedToEngine(engine)
         removableEntities = engine!!.getEntitiesFor(Family.all(RemoveComponent::class.java).get())
         movingPlatforms = engine.getEntitiesFor(Family.all(MovingPlatformComponent::class.java).get())
+        mapEntities = engine.getEntitiesFor(Family.all(MapEntityComponent::class.java).exclude(MovingPlatformComponent::class.java).get())
     }
 
     override fun update(dt: Float) {
@@ -77,6 +80,13 @@ class MapCollisionSystem(private val res: Resources) : IteratingSystem(
             if (gravity.collidable) {
                 for (mapObject in mapObjects) {
                     if (mapObject.type.solid && bb.rect.overlaps(mapObject.bounds)) {
+                        revertCurrentPosition(position)
+                    }
+                }
+                for (mapEntity in mapEntities) {
+                    val comp = Mapper.MAP_ENTITY_MAPPER.get(mapEntity)
+                    val bounds = Mapper.BOUNDING_BOX_MAPPER.get(mapEntity)
+                    if (comp.mapCollidable && bb.rect.overlaps(bounds.rect)) {
                         revertCurrentPosition(position)
                     }
                 }
@@ -115,6 +125,19 @@ class MapCollisionSystem(private val res: Resources) : IteratingSystem(
                             handlePushRightMapObject(mapObject, velocity)
                             handlePushLeftMapObject(mapObject, velocity)
                             handleJumpBoostMapObject(mapObject, player)
+                        }
+                        velocity.dy = 0f
+                    }
+                }
+                for (mapEntity in mapEntities) {
+                    val comp = Mapper.MAP_ENTITY_MAPPER.get(mapEntity)
+                    val bounds = Mapper.BOUNDING_BOX_MAPPER.get(mapEntity)
+                    if (comp.mapCollidable && bb.rect.overlaps(bounds.rect)) {
+                        revertCurrentPosition(position)
+                        if (velocity.dy < 0 || (gravity.reverse && velocity.dy > 0 )) {
+                            gravity.onGround = true
+                            gravity.platform.set(bounds.rect)
+                            player?.canJump = true
                         }
                         velocity.dy = 0f
                     }

@@ -23,6 +23,8 @@ class EntityBuilder(private val engine: PooledEngine) {
     private var portalComponent: PortalComponent? = null
     private var clampComponent: ClampComponent? = null
     private var healthPackComponent: HealthPackComponent? = null
+    private var squareSwitchComponent: SquareSwitchComponent? = null
+    private var toggleTileComponent: ToggleTileComponent? = null
 
     private var boundingBoxComponent: BoundingBoxComponent? = null
     private var directionComponent: DirectionComponent? = null
@@ -109,9 +111,12 @@ class EntityBuilder(private val engine: PooledEngine) {
         return this
     }
 
-    fun mapEntity(type: MapEntityType = MapEntityType.None, projectileCollidable: Boolean = false) : EntityBuilder {
+    fun mapEntity(type: MapEntityType = MapEntityType.None,
+                  mapCollidable: Boolean = false,
+                  projectileCollidable: Boolean = false) : EntityBuilder {
         mapEntityComponent = engine.createComponent(MapEntityComponent::class.java)
         mapEntityComponent?.mapEntityType = type
+        mapEntityComponent?.mapCollidable = mapCollidable
         mapEntityComponent?.projectileCollidable = projectileCollidable
         return this
     }
@@ -144,6 +149,18 @@ class EntityBuilder(private val engine: PooledEngine) {
     fun healthPack(regen: Int = 0) : EntityBuilder {
         healthPackComponent = engine.createComponent(HealthPackComponent::class.java)
         healthPackComponent?.regen = regen
+        return this
+    }
+
+    fun squareSwitch(targetId: Int) : EntityBuilder {
+        squareSwitchComponent = engine.createComponent(SquareSwitchComponent::class.java)
+        squareSwitchComponent?.targetId = targetId
+        return this
+    }
+
+    fun toggleTile(id: Int) : EntityBuilder {
+        toggleTileComponent = engine.createComponent(ToggleTileComponent::class.java)
+        toggleTileComponent?.id = id
         return this
     }
 
@@ -249,6 +266,8 @@ class EntityBuilder(private val engine: PooledEngine) {
         if (portalComponent != null) entity.add(portalComponent)
         if (clampComponent != null) entity.add(clampComponent)
         if (healthPackComponent != null) entity.add(healthPackComponent)
+        if (squareSwitchComponent != null) entity.add(squareSwitchComponent)
+        if (toggleTileComponent != null) entity.add(toggleTileComponent)
 
         engine.addEntity(entity)
         return entity

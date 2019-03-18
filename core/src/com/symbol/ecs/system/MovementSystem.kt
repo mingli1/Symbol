@@ -18,8 +18,12 @@ class MovementSystem : IteratingSystem(
         val velocity = Mapper.VEL_MAPPER.get(entity)
         val orbit = Mapper.ORBIT_MAPPER.get(entity)
         val bounds = Mapper.BOUNDING_BOX_MAPPER.get(entity)
-        val width = Mapper.TEXTURE_MAPPER.get(entity).texture!!.regionWidth
-        val height = Mapper.TEXTURE_MAPPER.get(entity).texture!!.regionHeight
+        val texture = Mapper.TEXTURE_MAPPER.get(entity)
+
+        if (texture.texture == null) return
+
+        val width = texture.texture!!.regionWidth
+        val height = texture.texture!!.regionHeight
 
         bounds.rect.setPosition(position.x + (width - bounds.rect.width) / 2, position.y + (height - bounds.rect.height) / 2)
 

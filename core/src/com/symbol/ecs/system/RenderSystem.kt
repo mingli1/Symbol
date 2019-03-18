@@ -15,6 +15,8 @@ class RenderSystem(private val batch: Batch) : IteratingSystem(Family.all(Textur
         val dir = Mapper.DIR_MAPPER.get(entity)
         val gravity = Mapper.GRAVITY_MAPPER.get(entity)
 
+        if (texture.texture == null) return
+
         val width = texture.texture!!.regionWidth.toFloat()
         val height = texture.texture!!.regionHeight.toFloat()
 

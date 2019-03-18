@@ -288,6 +288,33 @@ object EntityFactory {
                         .texture(texture, textureStr)
                         .build()
             }
+            MapEntityType.SquareSwitch -> {
+                val textureStr = "square_switch"
+                val texture = res.getTexture(textureStr + TOGGLE_ON)!!
+                val targetId = props["targetId"]!! as Int
+
+                EntityBuilder.instance(engine)
+                        .mapEntity(type = type, mapCollidable = true, projectileCollidable = true)
+                        .squareSwitch(targetId)
+                        .boundingBox(texture.regionWidth.toFloat(), texture.regionHeight.toFloat())
+                        .position(rect.x, rect.y)
+                        .velocity()
+                        .texture(texture, textureStr)
+                        .build()
+            }
+            MapEntityType.ToggleTile -> {
+                val texture = res.getTexture("toggle_square")!!
+                val id = props["id"]!! as Int
+
+                EntityBuilder.instance(engine)
+                        .mapEntity(type = type, mapCollidable = true, projectileCollidable = true)
+                        .toggleTile(id)
+                        .boundingBox(texture.regionWidth.toFloat(), texture.regionHeight.toFloat())
+                        .position(rect.x, rect.y)
+                        .velocity()
+                        .texture(texture, "toggle_square")
+                        .build()
+            }
             else -> {}
         }
     }

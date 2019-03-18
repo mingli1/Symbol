@@ -44,4 +44,8 @@ object Mapper {
 
     val COLOR_MAPPER: ComponentMapper<ColorComponent> = ComponentMapper.getFor(ColorComponent::class.java)
 
+    val SQUARE_SWITCH_MAPPER: ComponentMapper<SquareSwitchComponent> = ComponentMapper.getFor(SquareSwitchComponent::class.java)
+
+    val TOGGLE_TILE_MAPPER: ComponentMapper<ToggleTileComponent> = ComponentMapper.getFor(ToggleTileComponent::class.java)
+
 }

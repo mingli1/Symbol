@@ -14,6 +14,7 @@ import com.symbol.ecs.EntityBuilder
 import com.symbol.ecs.Mapper
 import com.symbol.ecs.component.*
 import com.symbol.ecs.component.map.MapEntityComponent
+import com.symbol.ecs.component.map.ToggleTileComponent
 import com.symbol.ecs.entity.MapEntityType
 import com.symbol.ecs.entity.Player
 import com.symbol.effects.particle.DEFAULT_INTESITY
@@ -34,6 +35,7 @@ class ProjectileSystem(private val player: Player, private val res: Resources)
 
     private lateinit var allEntities: ImmutableArray<Entity>
     private lateinit var mapEntities: ImmutableArray<Entity>
+    private lateinit var toggleTiles: ImmutableArray<Entity>
 
     private var knockbackTimes: MutableMap<Entity, Float> = HashMap()
     private var prevVelocities: MutableMap<Entity, Float> = HashMap()
@@ -45,6 +47,7 @@ class ProjectileSystem(private val player: Player, private val res: Resources)
         super.addedToEngine(engine)
         allEntities = engine!!.getEntitiesFor(Family.all(HealthComponent::class.java).get())
         mapEntities = engine.getEntitiesFor(Family.all(MapEntityComponent::class.java).get())
+        toggleTiles = engine.getEntitiesFor(Family.all(ToggleTileComponent::class.java).get())
     }
 
     fun setMapData(mapObjects: Array<MapObject>) {
@@ -114,17 +117,41 @@ class ProjectileSystem(private val player: Player, private val res: Resources)
                 val bounds = Mapper.BOUNDING_BOX_MAPPER.get(mapEntity)
 
                 if (!pj.enemy && bb.rect.overlaps(bounds.rect)) {
-                    if (me.mapEntityType == MapEntityType.Mirror) {
-                        pj.enemy = true
-                        velocity.dx = -velocity.dx
-                    }
-                    else if (me.mapEntityType == MapEntityType.GravitySwitch) {
-                        val gravity = Mapper.GRAVITY_MAPPER.get(player)
-                        val meTexture = Mapper.TEXTURE_MAPPER.get(mapEntity)
+                    when (me.mapEntityType) {
+                        MapEntityType.Mirror -> {
+                            pj.enemy = true
+                            velocity.dx = -velocity.dx
+                        }
+                        MapEntityType.GravitySwitch -> {
+                            val gravity = Mapper.GRAVITY_MAPPER.get(player)
+                            val meTexture = Mapper.TEXTURE_MAPPER.get(mapEntity)
 
-                        gravity.reverse = !gravity.reverse
-                        meTexture.texture = res.getTexture(meTexture.textureStr +
-                                if (gravity.reverse) TOGGLE_ON else TOGGLE_OFF)
+                            gravity.reverse = !gravity.reverse
+                            meTexture.texture = res.getTexture(meTexture.textureStr +
+                                    if (gravity.reverse) TOGGLE_ON else TOGGLE_OFF)
+                        }
+                        MapEntityType.SquareSwitch -> {
+                            val switch = Mapper.SQUARE_SWITCH_MAPPER.get(mapEntity)
+                            val switchTexture = Mapper.TEXTURE_MAPPER.get(mapEntity)
+
+                            switch.toggle = !switch.toggle
+                            switchTexture.texture = res.getTexture(switchTexture.textureStr +
+                                    if (switch.toggle) TOGGLE_ON else TOGGLE_OFF)
+
+                            for (tt in toggleTiles) {
+                                val tme = Mapper.MAP_ENTITY_MAPPER.get(tt)
+                                val toggleComp = Mapper.TOGGLE_TILE_MAPPER.get(tt)
+                                val toggleTexture = Mapper.TEXTURE_MAPPER.get(tt)
+
+                                if (switch.targetId == toggleComp.id) {
+                                    toggleComp.toggle = !toggleComp.toggle
+                                    toggleTexture.texture = if (toggleComp.toggle) res.getTexture(toggleTexture.textureStr!!) else null
+                                    tme.mapCollidable = toggleComp.toggle
+                                    tme.projectileCollidable = toggleComp.toggle
+                                }
+                            }
+                        }
+                        else -> {}
                     }
                 }
 

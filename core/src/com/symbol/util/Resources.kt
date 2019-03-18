@@ -49,6 +49,7 @@ class Resources : Disposable {
         loadMapEntities()
         loadProjectiles()
         loadBrackets()
+        loadToggles()
         loadColors()
         loadButtons()
     }
@@ -77,8 +78,7 @@ class Resources : Disposable {
         load("curly_brace_portal")
         load("health_pack")
         load("between")
-        load("updownarrow$TOGGLE_OFF")
-        load("updownarrow$TOGGLE_ON")
+        load("toggle_square")
     }
 
     private fun loadProjectiles() {
@@ -99,6 +99,11 @@ class Resources : Disposable {
 
     private fun loadBrackets() {
         loadBracket("square_bracket")
+    }
+
+    private fun loadToggles() {
+        loadToggle("updownarrow")
+        loadToggle("square_switch")
     }
 
     private fun loadColors() {
@@ -181,6 +186,11 @@ class Resources : Disposable {
     private fun loadBracket(key: String) {
         load(key + BRACKET_LEFT)
         load(key + BRACKET_RIGHT)
+    }
+
+    private fun loadToggle(key: String) {
+        load(key + TOGGLE_OFF)
+        load(key + TOGGLE_ON)
     }
 
     override fun dispose() {
