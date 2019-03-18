@@ -10,9 +10,9 @@ import com.symbol.ecs.entity.Player
 class EnemyActivationSystem(private val player: Player) : IteratingSystem(Family.all(EnemyComponent::class.java).get()) {
 
     override fun processEntity(entity: Entity?, deltaTime: Float) {
-        val enemyComponent = Mapper.ENEMY_MAPPER.get(entity)
+        val activation = Mapper.ACTIVATION_MAPPER.get(entity)
 
-        if (enemyComponent.activationRange != -1f) {
+        if (activation.activationRange != -1f) {
             val playerBounds = Mapper.BOUNDING_BOX_MAPPER.get(player)
             val enemyBounds = Mapper.BOUNDING_BOX_MAPPER.get(entity)
             val x1 = playerBounds.rect.x + playerBounds.rect.width / 2
@@ -21,10 +21,10 @@ class EnemyActivationSystem(private val player: Player) : IteratingSystem(Family
             val y2 = enemyBounds.rect.y + enemyBounds.rect.height / 2
             val sqdist = ((x1 - x2) * (x1 - x2)) + ((y1 - y2) * (y1 - y2))
 
-            if (sqdist <= enemyComponent.activationRange * enemyComponent.activationRange) {
-                enemyComponent.active = true
+            if (sqdist <= activation.activationRange * activation.activationRange) {
+                activation.active = true
             }
-        } else enemyComponent.active = true
+        } else activation.active = true
     }
 
 }

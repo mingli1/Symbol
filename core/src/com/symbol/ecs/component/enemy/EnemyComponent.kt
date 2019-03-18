@@ -11,9 +11,6 @@ class EnemyComponent : Component, Pool.Poolable {
     var movementType: EnemyMovementType = EnemyMovementType.None
     var attackType: EnemyAttackType = EnemyAttackType.None
 
-    var activationRange = -1f
-    var active: Boolean = false
-
     var corporeal: Boolean = true
     var incorporealTime: Float = 0f
 
@@ -37,8 +34,6 @@ class EnemyComponent : Component, Pool.Poolable {
         attackType = EnemyAttackType.None
 
         damage = 0
-        activationRange = -1f
-        active = false
         attackRate = 0f
         canAttack = true
         attackTexture = null

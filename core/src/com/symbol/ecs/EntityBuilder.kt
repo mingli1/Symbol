@@ -5,6 +5,7 @@ import com.badlogic.ashley.core.PooledEngine
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.math.Rectangle
 import com.symbol.ecs.component.*
+import com.symbol.ecs.component.enemy.ActivationComponent
 import com.symbol.ecs.component.enemy.EnemyComponent
 import com.symbol.ecs.component.map.*
 import com.symbol.ecs.entity.EnemyAttackType
@@ -16,7 +17,6 @@ import com.symbol.ecs.system.TERMINAL_VELOCITY
 class EntityBuilder(private val engine: PooledEngine) {
 
     private var playerComponent: PlayerComponent? = null
-    private var enemyComponent: EnemyComponent? = null
     private var projectileComponent: ProjectileComponent? = null
 
     private var boundingBoxComponent: BoundingBoxComponent? = null
@@ -31,6 +31,9 @@ class EntityBuilder(private val engine: PooledEngine) {
     private var velocityComponent: VelocityComponent? = null
     private var orbitComponent: OrbitComponent? = null
     private var colorComponent: ColorComponent? = null
+
+    private var enemyComponent: EnemyComponent? = null
+    private var activationComponent: ActivationComponent? = null
 
     private var mapEntityComponent: MapEntityComponent? = null
     private var movingPlatformComponent: MovingPlatformComponent? = null
@@ -48,42 +51,6 @@ class EntityBuilder(private val engine: PooledEngine) {
         playerComponent = engine.createComponent(PlayerComponent::class.java)
         playerComponent?.canDoubleJump = canDoubleJump
         playerComponent?.canShoot = canShoot
-        return this
-    }
-
-    fun enemy(movementType: EnemyMovementType = EnemyMovementType.None,
-              attackType: EnemyAttackType = EnemyAttackType.None,
-              damage: Int = 0,
-              activationRange: Float = -1f,
-              attackRate: Float = 0f,
-              corporeal: Boolean = true,
-              incorporealTime: Float = 0f,
-              attackTexture: String? = null,
-              projectileSpeed: Float = 0f,
-              projectileAcceleration: Float = 0f,
-              projectileDestroyable: Boolean = false,
-              attackDetonateTime: Float = 0f,
-              explodeOnDeath: Boolean = false,
-              teleportOnHit: Boolean = false,
-              lastStand: Boolean = false,
-              parent: Entity? = null) : EntityBuilder {
-        enemyComponent = engine.createComponent(EnemyComponent::class.java)
-        enemyComponent?.movementType = movementType
-        enemyComponent?.attackType = attackType
-        enemyComponent?.damage = damage
-        enemyComponent?.activationRange = activationRange
-        enemyComponent?.corporeal = corporeal
-        enemyComponent?.incorporealTime = incorporealTime
-        enemyComponent?.attackRate = attackRate
-        enemyComponent?.attackTexture = attackTexture
-        enemyComponent?.projectileSpeed = projectileSpeed
-        enemyComponent?.projectileAcceleration = projectileAcceleration
-        enemyComponent?.projectileDestroyable = projectileDestroyable
-        enemyComponent?.attackDetonateTime = attackDetonateTime
-        enemyComponent?.explodeOnDeath = explodeOnDeath
-        enemyComponent?.teleportOnHit = teleportOnHit
-        enemyComponent?.lastStand = lastStand
-        enemyComponent?.parent = parent
         return this
     }
 
@@ -197,6 +164,46 @@ class EntityBuilder(private val engine: PooledEngine) {
         return this
     }
 
+    fun enemy(movementType: EnemyMovementType = EnemyMovementType.None,
+              attackType: EnemyAttackType = EnemyAttackType.None,
+              damage: Int = 0,
+              attackRate: Float = 0f,
+              corporeal: Boolean = true,
+              incorporealTime: Float = 0f,
+              attackTexture: String? = null,
+              projectileSpeed: Float = 0f,
+              projectileAcceleration: Float = 0f,
+              projectileDestroyable: Boolean = false,
+              attackDetonateTime: Float = 0f,
+              explodeOnDeath: Boolean = false,
+              teleportOnHit: Boolean = false,
+              lastStand: Boolean = false,
+              parent: Entity? = null) : EntityBuilder {
+        enemyComponent = engine.createComponent(EnemyComponent::class.java)
+        enemyComponent?.movementType = movementType
+        enemyComponent?.attackType = attackType
+        enemyComponent?.damage = damage
+        enemyComponent?.corporeal = corporeal
+        enemyComponent?.incorporealTime = incorporealTime
+        enemyComponent?.attackRate = attackRate
+        enemyComponent?.attackTexture = attackTexture
+        enemyComponent?.projectileSpeed = projectileSpeed
+        enemyComponent?.projectileAcceleration = projectileAcceleration
+        enemyComponent?.projectileDestroyable = projectileDestroyable
+        enemyComponent?.attackDetonateTime = attackDetonateTime
+        enemyComponent?.explodeOnDeath = explodeOnDeath
+        enemyComponent?.teleportOnHit = teleportOnHit
+        enemyComponent?.lastStand = lastStand
+        enemyComponent?.parent = parent
+        return this
+    }
+
+    fun activation(activationRange: Float = -1f) : EntityBuilder {
+        activationComponent = engine.createComponent(ActivationComponent::class.java)
+        activationComponent?.activationRange = activationRange
+        return this
+    }
+
     fun mapEntity(type: MapEntityType = MapEntityType.None,
                   mapCollidable: Boolean = false,
                   projectileCollidable: Boolean = false) : EntityBuilder {
@@ -253,7 +260,6 @@ class EntityBuilder(private val engine: PooledEngine) {
     fun build() : Entity {
         val entity = engine.createEntity()
 
-        if (enemyComponent != null) entity.add(enemyComponent)
         if (playerComponent != null) entity.add(playerComponent)
         if (projectileComponent != null) entity.add(projectileComponent)
 
@@ -269,6 +275,9 @@ class EntityBuilder(private val engine: PooledEngine) {
         if (textureComponent != null) entity.add(textureComponent)
         if (velocityComponent != null) entity.add(velocityComponent)
         if (orbitComponent != null) entity.add(orbitComponent)
+
+        if (enemyComponent != null) entity.add(enemyComponent)
+        if (activationComponent != null) entity.add(activationComponent)
 
         if (mapEntityComponent != null) entity.add(mapEntityComponent)
         if (movingPlatformComponent != null) entity.add(movingPlatformComponent)

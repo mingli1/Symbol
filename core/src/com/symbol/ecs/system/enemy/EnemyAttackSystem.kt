@@ -42,6 +42,7 @@ class EnemyAttackSystem(private val player: Player, private val res: Resources) 
 
     override fun processEntity(entity: Entity?, dt: Float) {
         val enemyComponent = Mapper.ENEMY_MAPPER.get(entity)
+        val activation = Mapper.ACTIVATION_MAPPER.get(entity)
         val remove = Mapper.REMOVE_MAPPER.get(entity)
         val bounds = Mapper.BOUNDING_BOX_MAPPER.get(entity).rect
         val playerBounds = Mapper.BOUNDING_BOX_MAPPER.get(player).rect
@@ -58,7 +59,7 @@ class EnemyAttackSystem(private val player: Player, private val res: Resources) 
             return
         }
 
-        if (enemyComponent.active) {
+        if (activation.active) {
             if (enemyComponent.attackType == EnemyAttackType.ShootAndQuake) {
                 val gravity = Mapper.GRAVITY_MAPPER.get(entity)
                 if (gravity.onGround) {

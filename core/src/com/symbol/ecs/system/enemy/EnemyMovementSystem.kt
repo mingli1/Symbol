@@ -35,6 +35,7 @@ class EnemyMovementSystem(private val player: Player, private val res: Resources
 
     override fun processEntity(entity: Entity?, dt: Float) {
         val enemyComponent = Mapper.ENEMY_MAPPER.get(entity)
+        val activation = Mapper.ACTIVATION_MAPPER.get(entity)
         val dirComponent = Mapper.DIR_MAPPER.get(entity)
         val position = Mapper.POS_MAPPER.get(entity)
         val velocity = Mapper.VEL_MAPPER.get(entity)
@@ -55,7 +56,7 @@ class EnemyMovementSystem(private val player: Player, private val res: Resources
             }
         }
 
-        if (enemyComponent.active) {
+        if (activation.active) {
             if (gravity != null) {
                 if (gravity.onGround && jump != null
                         && enemyComponent.movementType != EnemyMovementType.RandomWithJump) {
