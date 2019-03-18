@@ -15,8 +15,9 @@ object EntityFactory {
         when (type) {
             EnemyType.EConstant -> {
                 EntityBuilder.instance(engine)
-                        .enemy(movementType = EnemyMovementType.BackAndForth, damage = 2)
+                        .enemy(movementType = EnemyMovementType.BackAndForth)
                         .activation(150f)
+                        .attack(damage = 2)
                         .color(EntityColor.E_COLOR)
                         .health(2)
                         .boundingBox(7f, 7f)
@@ -28,8 +29,9 @@ object EntityFactory {
             }
             EnemyType.SquareRoot -> {
                 EntityBuilder.instance(engine)
-                        .enemy(movementType = EnemyMovementType.Charge, damage = 3)
+                        .enemy(movementType = EnemyMovementType.Charge)
                         .activation(75f)
+                        .attack(damage = 3)
                         .color(EntityColor.SQRT_COLOR)
                         .health(3)
                         .boundingBox(10f, 8f)
@@ -41,8 +43,9 @@ object EntityFactory {
             }
             EnemyType.Exists -> {
                 EntityBuilder.instance(engine)
-                        .enemy(movementType = EnemyMovementType.Charge, damage = PLAYER_HP)
+                        .enemy(movementType = EnemyMovementType.Charge)
                         .activation(90f)
+                        .attack(damage = PLAYER_HP)
                         .color(EntityColor.EXISTS_COLOR)
                         .health(2)
                         .boundingBox(9f, 13f)
@@ -54,9 +57,9 @@ object EntityFactory {
             }
             EnemyType.Summation -> {
                 EntityBuilder.instance(engine)
-                        .enemy(damage = 2, attackType = EnemyAttackType.ShootOne,
-                                attackTexture = "p_large_triangle", attackRate = 1.4f, projectileSpeed = 45f)
+                        .enemy(attackType = EnemyAttackType.ShootOne)
                         .activation(120f)
+                        .attack(damage = 2, attackTexture = "p_large_triangle", attackRate = 1.4f, projectileSpeed = 45f)
                         .color(EntityColor.SUM_COLOR)
                         .health(2)
                         .boundingBox(10f, 13f)
@@ -68,9 +71,9 @@ object EntityFactory {
             }
             EnemyType.BigPi -> {
                 EntityBuilder.instance(engine)
-                        .enemy(damage = 4, attackType = EnemyAttackType.ShootOne,
-                                attackTexture = "p_big_ll", attackRate = 1.4f, projectileSpeed = 45f)
+                        .enemy(attackType = EnemyAttackType.ShootOne)
                         .activation(120f)
+                        .attack(damage = 4, attackTexture = "p_big_ll", attackRate = 1.4f, projectileSpeed = 45f)
                         .color(EntityColor.BIG_PI_COLOR)
                         .health(4)
                         .boundingBox(11f, 13f)
@@ -82,9 +85,9 @@ object EntityFactory {
             }
             EnemyType.In -> {
                 EntityBuilder.instance(engine)
-                        .enemy(damage = 1, attackType = EnemyAttackType.ShootOne,
-                                attackTexture = "p_xor", attackRate = 2f, projectileSpeed = 45f, attackDetonateTime = 2f)
+                        .enemy(attackType = EnemyAttackType.ShootOne)
                         .activation(100f)
+                        .attack(damage = 1, attackTexture = "p_xor", attackRate = 2f, projectileSpeed = 45f, attackDetonateTime = 2f)
                         .color(EntityColor.IN_COLOR)
                         .health(3)
                         .boundingBox(11f, 11f)
@@ -96,9 +99,9 @@ object EntityFactory {
             }
             EnemyType.BigOmega -> {
                 EntityBuilder.instance(engine)
-                        .enemy(damage = 2, attackType = EnemyAttackType.SprayThree,
-                                attackTexture = "p_cup", attackRate = 2.5f, projectileSpeed = 200f)
+                        .enemy(attackType = EnemyAttackType.SprayThree)
                         .activation(150f)
+                        .attack(damage = 2, attackTexture = "p_cup", attackRate = 2.5f, projectileSpeed = 200f)
                         .color(EntityColor.BIG_OMEGA_COLOR)
                         .health(3)
                         .boundingBox(12f, 13f)
@@ -109,9 +112,10 @@ object EntityFactory {
             }
             EnemyType.NaturalJoin -> {
                 EntityBuilder.instance(engine)
-                        .enemy(damage = 2, explodeOnDeath = true, attackTexture = "p_ltimes",
-                                projectileSpeed = 45f, movementType = EnemyMovementType.BackAndForth)
+                        .enemy(movementType = EnemyMovementType.BackAndForth)
                         .activation(100f)
+                        .attack(damage = 2, attackTexture = "p_ltimes", projectileSpeed = 45f)
+                        .explode()
                         .color(EntityColor.NATURAL_JOIN_COLOR)
                         .health(4)
                         .boundingBox(9f, 7f)
@@ -123,9 +127,10 @@ object EntityFactory {
             }
             EnemyType.BigPhi -> {
                 EntityBuilder.instance(engine)
-                        .enemy(damage = 4, attackType = EnemyAttackType.ShootAndQuake,
-                                attackTexture = "p_alpha", attackRate = 1.5f, projectileSpeed = 60f, explodeOnDeath = true)
+                        .enemy(attackType = EnemyAttackType.ShootAndQuake)
                         .activation(200f)
+                        .attack(damage = 4, attackTexture = "p_alpha", attackRate = 1.5f, projectileSpeed = 60f)
+                        .explode()
                         .color(EntityColor.BIG_PHI_COLOR)
                         .health(10)
                         .boundingBox(14f, 16f)
@@ -138,8 +143,9 @@ object EntityFactory {
             }
             EnemyType.Percent -> {
                 val parent = EntityBuilder.instance(engine)
-                        .enemy(damage = 1, movementType = EnemyMovementType.BackAndForth)
+                        .enemy(movementType = EnemyMovementType.BackAndForth)
                         .activation(120f)
+                        .attack(damage = 1)
                         .color(EntityColor.PERCENT_COLOR)
                         .health(2)
                         .boundingBox(10f, 10f)
@@ -153,8 +159,9 @@ object EntityFactory {
                 val angles = listOf(MathUtils.PI2 / 5f, MathUtils.PI2 * 2f / 5f, MathUtils.PI2 * 3 / 5f, MathUtils.PI2 * 4 / 5f, 0f)
                 for (angle in angles) {
                     EntityBuilder.instance(engine)
-                            .enemy(damage = 1, movementType = EnemyMovementType.Orbit, parent = parent)
+                            .enemy(movementType = EnemyMovementType.Orbit, parent = parent)
                             .activation(150f)
+                            .attack(damage = 1)
                             .color(EntityColor.PERCENT_ORBIT_COLOR)
                             .health(1)
                             .boundingBox(6f, 6f)
@@ -167,8 +174,9 @@ object EntityFactory {
             }
             EnemyType.Nabla -> {
                 EntityBuilder.instance(engine)
-                        .enemy(damage = 4)
+                        .enemy()
                         .activation(140f)
+                        .attack(damage = 4)
                         .color(EntityColor.NABLA_COLOR)
                         .health(1)
                         .gravity(gravity = -1200f, terminalVelocity = -160f, collidable = false)
@@ -180,11 +188,11 @@ object EntityFactory {
             }
             EnemyType.CIntegral -> {
                 EntityBuilder.instance(engine)
-                        .enemy(damage = 4, attackType = EnemyAttackType.ArcTwo,
-                                attackTexture = "p_succ", attackRate = 2f,
-                                projectileSpeed = 80f, projectileAcceleration = 80f,
-                                incorporealTime = 2f)
+                        .enemy(attackType = EnemyAttackType.ArcTwo)
                         .activation(120f)
+                        .attack(damage = 4, attackTexture = "p_succ", attackRate = 2f,
+                                projectileSpeed = 80f, projectileAcceleration = 80f)
+                        .corporeal(incorporealTime = 2f)
                         .color(EntityColor.CINTEGRAL_COLOR)
                         .health(5)
                         .boundingBox(8f, 16f)

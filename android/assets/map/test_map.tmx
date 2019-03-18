@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.0.1" orientation="orthogonal" renderorder="right-down" width="50" height="20" tilewidth="8" tileheight="8" nextobjectid="120">
+<map version="1.0" tiledversion="1.0.1" orientation="orthogonal" renderorder="right-down" width="50" height="20" tilewidth="8" tileheight="8" nextobjectid="121">
  <tileset firstgid="1" name="set" tilewidth="8" tileheight="8" tilecount="64" columns="8">
   <image source="tileset.png" width="64" height="64"/>
  </tileset>
@@ -118,6 +118,11 @@
   <object id="102" x="136.545" y="33.4545" width="6.90909" height="5.81818">
    <properties>
     <property name="type" value="njoin"/>
+   </properties>
+  </object>
+  <object id="120" x="192" y="136.909" width="8.18182" height="6.36364">
+   <properties>
+    <property name="type" value="cintegral"/>
    </properties>
   </object>
  </objectgroup>

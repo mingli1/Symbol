@@ -137,15 +137,15 @@ class ProjectileSystem(private val player: Player, private val res: Resources)
                 val player = Mapper.PLAYER_MAPPER.get(e)
 
                 if ((pj.enemy && player != null) || (!pj.enemy && player == null)) {
+                    val corp = Mapper.CORPOREAL_MAPPER.get(e)
+                    if (corp != null && !corp.corporeal) break
+
                     if (knockback != null) {
                         prevVelocities[e] = ev.dx
                         ev.dx = if (bb.rect.x < ebb.rect.x + ebb.rect.width / 2) pj.knockback else -pj.knockback
                         startKnockback[e] = true
                         knockback.knockingBack = true
                     }
-                    val enemy = Mapper.ENEMY_MAPPER.get(e)
-                    if (enemy != null && !enemy.corporeal) break
-
                     hit(e, pj.damage)
 
                     val entityColor = Mapper.COLOR_MAPPER.get(e)
@@ -312,30 +312,27 @@ class ProjectileSystem(private val player: Player, private val res: Resources)
     }
 
     private fun handleTeleportation(entity: Entity?) {
-        val enemyComp = Mapper.ENEMY_MAPPER.get(entity)
-        if (enemyComp != null) {
-            if (enemyComp.teleportOnHit) {
-                val bounds = Mapper.BOUNDING_BOX_MAPPER.get(entity)
-                val position = Mapper.POS_MAPPER.get(entity)
-                val velocity = Mapper.VEL_MAPPER.get(entity)
+        if (Mapper.TELEPORT_MAPPER.get(entity) != null) {
+            val bounds = Mapper.BOUNDING_BOX_MAPPER.get(entity)
+            val position = Mapper.POS_MAPPER.get(entity)
+            val velocity = Mapper.VEL_MAPPER.get(entity)
 
-                val platform = mapObjects.random().bounds
-                val randX = MathUtils.random(platform.x, platform.x + platform.width - bounds.rect.width)
-                val newY = platform.y + platform.height + bounds.rect.height / 2
+            val platform = mapObjects.random().bounds
+            val randX = MathUtils.random(platform.x, platform.x + platform.width - bounds.rect.width)
+            val newY = platform.y + platform.height + bounds.rect.height / 2
 
-                position.set(randX, newY)
-                velocity.dx = 0f
-            }
+            position.set(randX, newY)
+            velocity.dx = 0f
         }
     }
 
     private fun handleLastStand(entity: Entity?) {
-        val enemyComp = Mapper.ENEMY_MAPPER.get(entity)
-        if (enemyComp != null) {
-            if (enemyComp.lastStand) {
+        val attackComp = Mapper.ATTACK_MAPPER.get(entity)
+        if (attackComp != null) {
+            if (Mapper.LAST_STAND_MAPPER.get(entity) != null) {
                 val health = Mapper.HEALTH_MAPPER.get(entity)
                 val scale = 1f / health.maxHp
-                enemyComp.attackRate -= enemyComp.attackRate * scale
+                attackComp.attackRate -= attackComp.attackRate * scale
             }
         }
     }

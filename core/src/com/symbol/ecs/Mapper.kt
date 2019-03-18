@@ -2,8 +2,7 @@ package com.symbol.ecs
 
 import com.badlogic.ashley.core.ComponentMapper
 import com.symbol.ecs.component.*
-import com.symbol.ecs.component.enemy.ActivationComponent
-import com.symbol.ecs.component.enemy.EnemyComponent
+import com.symbol.ecs.component.enemy.*
 import com.symbol.ecs.component.map.*
 
 object Mapper {
@@ -24,6 +23,11 @@ object Mapper {
 
     val ENEMY_MAPPER: ComponentMapper<EnemyComponent> = ComponentMapper.getFor(EnemyComponent::class.java)
     val ACTIVATION_MAPPER: ComponentMapper<ActivationComponent> = ComponentMapper.getFor(ActivationComponent::class.java)
+    val CORPOREAL_MAPPER: ComponentMapper<CorporealComponent> = ComponentMapper.getFor(CorporealComponent::class.java)
+    val ATTACK_MAPPER: ComponentMapper<AttackComponent> = ComponentMapper.getFor(AttackComponent::class.java)
+    val EXPLODE_MAPPER: ComponentMapper<ExplodeComponent> = ComponentMapper.getFor(ExplodeComponent::class.java)
+    val TELEPORT_MAPPER: ComponentMapper<TeleportComponent> = ComponentMapper.getFor(TeleportComponent::class.java)
+    val LAST_STAND_MAPPER: ComponentMapper<LastStandComponent> = ComponentMapper.getFor(LastStandComponent::class.java)
 
     val MAP_ENTITY_MAPPER: ComponentMapper<MapEntityComponent> = ComponentMapper.getFor(MapEntityComponent::class.java)
     val MOVING_PLATFORM_MAPPER: ComponentMapper<MovingPlatformComponent> = ComponentMapper.getFor(MovingPlatformComponent::class.java)

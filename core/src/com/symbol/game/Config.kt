@@ -9,7 +9,7 @@ object Config {
 
     const val V_WIDTH = 200
     const val V_HEIGHT = V_WIDTH * 3 / 5
-    const val SCALE = 2
+    const val SCALE = 6
 
     const val S_WIDTH = V_WIDTH * SCALE
     const val S_HEIGHT = V_HEIGHT * SCALE

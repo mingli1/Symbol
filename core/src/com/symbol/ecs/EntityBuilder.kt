@@ -5,8 +5,7 @@ import com.badlogic.ashley.core.PooledEngine
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.math.Rectangle
 import com.symbol.ecs.component.*
-import com.symbol.ecs.component.enemy.ActivationComponent
-import com.symbol.ecs.component.enemy.EnemyComponent
+import com.symbol.ecs.component.enemy.*
 import com.symbol.ecs.component.map.*
 import com.symbol.ecs.entity.EnemyAttackType
 import com.symbol.ecs.entity.EnemyMovementType
@@ -34,6 +33,11 @@ class EntityBuilder(private val engine: PooledEngine) {
 
     private var enemyComponent: EnemyComponent? = null
     private var activationComponent: ActivationComponent? = null
+    private var corporalComponent: CorporealComponent? = null
+    private var attackComponent: AttackComponent? = null
+    private var explodeComponent: ExplodeComponent? = null
+    private var teleportComponent: TeleportComponent? = null
+    private var lastStandComponent: LastStandComponent? = null
 
     private var mapEntityComponent: MapEntityComponent? = null
     private var movingPlatformComponent: MovingPlatformComponent? = null
@@ -166,34 +170,10 @@ class EntityBuilder(private val engine: PooledEngine) {
 
     fun enemy(movementType: EnemyMovementType = EnemyMovementType.None,
               attackType: EnemyAttackType = EnemyAttackType.None,
-              damage: Int = 0,
-              attackRate: Float = 0f,
-              corporeal: Boolean = true,
-              incorporealTime: Float = 0f,
-              attackTexture: String? = null,
-              projectileSpeed: Float = 0f,
-              projectileAcceleration: Float = 0f,
-              projectileDestroyable: Boolean = false,
-              attackDetonateTime: Float = 0f,
-              explodeOnDeath: Boolean = false,
-              teleportOnHit: Boolean = false,
-              lastStand: Boolean = false,
               parent: Entity? = null) : EntityBuilder {
         enemyComponent = engine.createComponent(EnemyComponent::class.java)
         enemyComponent?.movementType = movementType
         enemyComponent?.attackType = attackType
-        enemyComponent?.damage = damage
-        enemyComponent?.corporeal = corporeal
-        enemyComponent?.incorporealTime = incorporealTime
-        enemyComponent?.attackRate = attackRate
-        enemyComponent?.attackTexture = attackTexture
-        enemyComponent?.projectileSpeed = projectileSpeed
-        enemyComponent?.projectileAcceleration = projectileAcceleration
-        enemyComponent?.projectileDestroyable = projectileDestroyable
-        enemyComponent?.attackDetonateTime = attackDetonateTime
-        enemyComponent?.explodeOnDeath = explodeOnDeath
-        enemyComponent?.teleportOnHit = teleportOnHit
-        enemyComponent?.lastStand = lastStand
         enemyComponent?.parent = parent
         return this
     }
@@ -201,6 +181,43 @@ class EntityBuilder(private val engine: PooledEngine) {
     fun activation(activationRange: Float = -1f) : EntityBuilder {
         activationComponent = engine.createComponent(ActivationComponent::class.java)
         activationComponent?.activationRange = activationRange
+        return this
+    }
+
+    fun corporeal(corporeal: Boolean = true, incorporealTime: Float = 0f) : EntityBuilder {
+        corporalComponent = engine.createComponent(CorporealComponent::class.java)
+        corporalComponent?.corporeal = corporeal
+        corporalComponent?.incorporealTime = incorporealTime
+        return this
+    }
+
+    fun attack(damage: Int = 0, attackRate: Float = 0f, attackTexture: String? = null,
+               projectileSpeed: Float = 0f, projectileAcceleration: Float = 0f,
+               projectileDestroyable: Boolean = false,
+               attackDetonateTime: Float = 0f) : EntityBuilder {
+        attackComponent = engine.createComponent(AttackComponent::class.java)
+        attackComponent?.damage = damage
+        attackComponent?.attackRate = attackRate
+        attackComponent?.attackTexture = attackTexture
+        attackComponent?.projectileSpeed = projectileSpeed
+        attackComponent?.projectileAcceleration = projectileAcceleration
+        attackComponent?.projectileDestroyable = projectileDestroyable
+        attackComponent?.attackDetonateTime = attackDetonateTime
+        return this
+    }
+
+    fun explode() : EntityBuilder {
+        explodeComponent = engine.createComponent(ExplodeComponent::class.java)
+        return this
+    }
+
+    fun teleport() : EntityBuilder {
+        teleportComponent = engine.createComponent(TeleportComponent::class.java)
+        return this
+    }
+
+    fun lastStand() : EntityBuilder {
+        lastStandComponent = engine.createComponent(LastStandComponent::class.java)
         return this
     }
 
@@ -278,6 +295,11 @@ class EntityBuilder(private val engine: PooledEngine) {
 
         if (enemyComponent != null) entity.add(enemyComponent)
         if (activationComponent != null) entity.add(activationComponent)
+        if (corporalComponent != null) entity.add(corporalComponent)
+        if (attackComponent != null) entity.add(attackComponent)
+        if (explodeComponent != null) entity.add(explodeComponent)
+        if (teleportComponent != null) entity.add(teleportComponent)
+        if (lastStandComponent != null) entity.add(lastStandComponent)
 
         if (mapEntityComponent != null) entity.add(mapEntityComponent)
         if (movingPlatformComponent != null) entity.add(movingPlatformComponent)

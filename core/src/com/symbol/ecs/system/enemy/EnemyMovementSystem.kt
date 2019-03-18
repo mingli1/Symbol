@@ -5,7 +5,10 @@ import com.badlogic.ashley.core.Family
 import com.badlogic.ashley.systems.IteratingSystem
 import com.badlogic.gdx.math.MathUtils
 import com.symbol.ecs.Mapper
-import com.symbol.ecs.component.*
+import com.symbol.ecs.component.DirectionComponent
+import com.symbol.ecs.component.GravityComponent
+import com.symbol.ecs.component.PositionComponent
+import com.symbol.ecs.component.VelocityComponent
 import com.symbol.ecs.component.enemy.EnemyComponent
 import com.symbol.ecs.entity.EnemyMovementType
 import com.symbol.ecs.entity.Player
@@ -36,18 +39,19 @@ class EnemyMovementSystem(private val player: Player, private val res: Resources
     override fun processEntity(entity: Entity?, dt: Float) {
         val enemyComponent = Mapper.ENEMY_MAPPER.get(entity)
         val activation = Mapper.ACTIVATION_MAPPER.get(entity)
+        val corp = Mapper.CORPOREAL_MAPPER.get(entity)
         val dirComponent = Mapper.DIR_MAPPER.get(entity)
         val position = Mapper.POS_MAPPER.get(entity)
         val velocity = Mapper.VEL_MAPPER.get(entity)
         val gravity = Mapper.GRAVITY_MAPPER.get(entity)
         val jump = Mapper.JUMP_MAPPER.get(entity)
 
-        if (enemyComponent.incorporealTime != 0f) {
+        if (corp != null && corp.incorporealTime != 0f) {
             corporealTimers[entity!!] = corporealTimers[entity]?.plus(dt)!!
-            if (corporealTimers[entity]!! >= enemyComponent.incorporealTime) {
-                enemyComponent.corporeal = !enemyComponent.corporeal
+            if (corporealTimers[entity]!! >= corp.incorporealTime) {
+                corp.corporeal = !corp.corporeal
 
-                if (!enemyComponent.corporeal) {
+                if (!corp.corporeal) {
                     val texture = Mapper.TEXTURE_MAPPER.get(entity)
                     texture.texture = res.getTexture(texture.textureStr + INCORPOREAL) ?: texture.texture
                 }
