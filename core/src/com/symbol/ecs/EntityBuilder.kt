@@ -10,6 +10,7 @@ import com.symbol.ecs.component.map.*
 import com.symbol.ecs.entity.EnemyAttackType
 import com.symbol.ecs.entity.EnemyMovementType
 import com.symbol.ecs.entity.MapEntityType
+import com.symbol.ecs.entity.ProjectileMovementType
 import com.symbol.ecs.system.GRAVITY
 import com.symbol.ecs.system.TERMINAL_VELOCITY
 

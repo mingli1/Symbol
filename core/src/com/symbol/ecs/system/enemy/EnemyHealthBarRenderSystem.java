@@ -49,27 +49,27 @@ public class EnemyHealthBarRenderSystem extends IteratingSystem {
     protected void processEntity(Entity entity, float dt) {
         PositionComponent pos = Mapper.INSTANCE.getPOS_MAPPER().get(entity);
         TextureComponent texture = Mapper.INSTANCE.getTEXTURE_MAPPER().get(entity);
-        float width = texture.getTexture().getRegionWidth();
-        float height = texture.getTexture().getRegionHeight();
+        float width = texture.texture.getRegionWidth();
+        float height = texture.texture.getRegionHeight();
 
         HealthComponent health = Mapper.INSTANCE.getHEALTH_MAPPER().get(entity);
-        if (health.getHpChange() && health.getHp() != 0) {
+        if (health.hpChange && health.hp != 0) {
             startHealthBars.put(entity, true);
             timers.put(entity, 0f);
-            health.setHpChange(false);
+            health.hpChange = false;
         }
 
         if (startHealthBars.get(entity)) {
             timers.put(entity, timers.get(entity) + dt);
 
             float maxHpBarWidth = width + (X_OFFSET * 2) - 2;
-            float hpBarWidth = maxHpBarWidth * ((float) health.getHp() / health.getMaxHp());
+            float hpBarWidth = maxHpBarWidth * ((float) health.hp / health.maxHp);
 
-            batch.draw(res.getTexture("black"), pos.getX() - X_OFFSET, pos.getY() + height + Y_OFFSET,
+            batch.draw(res.getTexture("black"), pos.x - X_OFFSET, pos.y + height + Y_OFFSET,
                     width + (X_OFFSET * 2), HEALTH_BAR_HEIGHT + 2);
-            batch.draw(res.getTexture("hp_bar_bg_color"), pos.getX() - X_OFFSET + 1, pos.getY() + height + Y_OFFSET + 1,
+            batch.draw(res.getTexture("hp_bar_bg_color"), pos.x - X_OFFSET + 1, pos.y + height + Y_OFFSET + 1,
                     maxHpBarWidth, HEALTH_BAR_HEIGHT);
-            batch.draw(res.getTexture("hp_bar_color"), pos.getX() - X_OFFSET + 1, pos.getY() + height + Y_OFFSET + 1,
+            batch.draw(res.getTexture("hp_bar_color"), pos.x - X_OFFSET + 1, pos.y + height + Y_OFFSET + 1,
                     hpBarWidth, HEALTH_BAR_HEIGHT);
 
             if (timers.get(entity) >= VISIBLE_DURATION) {

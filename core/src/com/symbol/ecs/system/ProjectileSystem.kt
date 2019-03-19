@@ -17,10 +17,12 @@ import com.symbol.ecs.component.map.MapEntityComponent
 import com.symbol.ecs.component.map.ToggleTileComponent
 import com.symbol.ecs.entity.MapEntityType
 import com.symbol.ecs.entity.Player
+import com.symbol.ecs.entity.ProjectileMovementType
 import com.symbol.effects.particle.DEFAULT_INTESITY
 import com.symbol.effects.particle.DEFAULT_LIFETIME
 import com.symbol.effects.particle.ParticleSpawner
 import com.symbol.map.MapObject
+import com.symbol.util.Direction
 import com.symbol.util.Resources
 import com.symbol.util.TOGGLE_OFF
 import com.symbol.util.TOGGLE_ON
