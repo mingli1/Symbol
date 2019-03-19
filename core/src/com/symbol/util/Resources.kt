@@ -28,7 +28,7 @@ private const val BUTTON_DOWN = "_down"
 
 class Resources : Disposable {
 
-    private val assetManager: AssetManager = AssetManager()
+    private val assetManager = AssetManager()
     private val atlas: TextureAtlas
     private val textures: MutableMap<String, TextureRegion> = HashMap()
 
@@ -70,6 +70,7 @@ class Resources : Disposable {
         load("e_percent_orbit")
         load("e_nabla")
         load("e_cintegral")
+        for (i in 0..3) load("e_because$i")
     }
 
     private fun loadMapEntities() {
@@ -95,6 +96,7 @@ class Resources : Disposable {
         loadProjectile("p_ltimes")
         loadProjectile("p_alpha")
         loadProjectile("p_succ")
+        loadProjectile("p_because")
     }
 
     private fun loadBrackets() {
@@ -138,6 +140,8 @@ class Resources : Disposable {
         load(EntityColor.DOT_COLOR)
         load(EntityColor.CINTEGRAL_COLOR)
         load(EntityColor.SUCC_COLOR)
+        load(EntityColor.BECAUSE_COLOR)
+        load(EntityColor.BECAUSE_PROJ_COLOR)
     }
 
     private fun loadButtons() {

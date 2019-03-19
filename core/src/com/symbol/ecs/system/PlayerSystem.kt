@@ -7,7 +7,7 @@ import com.symbol.ecs.entity.Player
 
 class PlayerSystem(private val player: Player) : EntitySystem() {
 
-    private var stateTime: Float = 0f
+    private var stateTime = 0f
 
     override fun update(dt: Float) {
         val playerComp = Mapper.PLAYER_MAPPER.get(player)

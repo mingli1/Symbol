@@ -29,6 +29,8 @@ import com.symbol.util.TOP_RIGHT
 private const val CAMERA_SHAKE_POWER = 3f
 private const val CAMERA_SHAKE_DURATION = 0.7f
 
+private const val TRAP_EXPLODE_TIME = 2f
+
 class EnemyAttackSystem(private val player: Player, private val res: Resources) :
         IteratingSystem(Family.all(EnemyComponent::class.java).get()) {
 
@@ -94,6 +96,17 @@ class EnemyAttackSystem(private val player: Player, private val res: Resources) 
 
         if (Mapper.EXPLODE_MAPPER.get(entity) != null) {
             explodeOnDeath(entity, attack, dir, bounds)
+        }
+
+        val trap = Mapper.TRAP_MAPPER.get(entity)
+        if (trap != null) {
+            if (trap.countdown) {
+                trap.timer += dt
+                if (trap.timer >= TRAP_EXPLODE_TIME) {
+                    remove.shouldRemove = true
+                    if (trap.hits != 3) explodeOnDeath(entity, attack, dir, bounds)
+                }
+            }
         }
 
         if (!attack.canAttack) {

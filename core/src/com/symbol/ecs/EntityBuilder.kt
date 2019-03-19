@@ -39,6 +39,7 @@ class EntityBuilder(private val engine: PooledEngine) {
     private var explodeComponent: ExplodeComponent? = null
     private var teleportComponent: TeleportComponent? = null
     private var lastStandComponent: LastStandComponent? = null
+    private var trapComponent: TrapComponent? = null
 
     private var mapEntityComponent: MapEntityComponent? = null
     private var movingPlatformComponent: MovingPlatformComponent? = null
@@ -222,6 +223,11 @@ class EntityBuilder(private val engine: PooledEngine) {
         return this
     }
 
+    fun trap() : EntityBuilder {
+        trapComponent = engine.createComponent(TrapComponent::class.java)
+        return this
+    }
+
     fun mapEntity(type: MapEntityType = MapEntityType.None,
                   mapCollidable: Boolean = false,
                   projectileCollidable: Boolean = false) : EntityBuilder {
@@ -301,6 +307,7 @@ class EntityBuilder(private val engine: PooledEngine) {
         if (explodeComponent != null) entity.add(explodeComponent)
         if (teleportComponent != null) entity.add(teleportComponent)
         if (lastStandComponent != null) entity.add(lastStandComponent)
+        if (trapComponent != null) entity.add(trapComponent)
 
         if (mapEntityComponent != null) entity.add(mapEntityComponent)
         if (movingPlatformComponent != null) entity.add(movingPlatformComponent)

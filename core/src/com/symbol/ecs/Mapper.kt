@@ -28,6 +28,7 @@ object Mapper {
     val EXPLODE_MAPPER: ComponentMapper<ExplodeComponent> = ComponentMapper.getFor(ExplodeComponent::class.java)
     val TELEPORT_MAPPER: ComponentMapper<TeleportComponent> = ComponentMapper.getFor(TeleportComponent::class.java)
     val LAST_STAND_MAPPER: ComponentMapper<LastStandComponent> = ComponentMapper.getFor(LastStandComponent::class.java)
+    val TRAP_MAPPER: ComponentMapper<TrapComponent> = ComponentMapper.getFor(TrapComponent::class.java)
 
     val MAP_ENTITY_MAPPER: ComponentMapper<MapEntityComponent> = ComponentMapper.getFor(MapEntityComponent::class.java)
     val MOVING_PLATFORM_MAPPER: ComponentMapper<MovingPlatformComponent> = ComponentMapper.getFor(MovingPlatformComponent::class.java)

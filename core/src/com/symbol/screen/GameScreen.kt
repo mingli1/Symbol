@@ -30,17 +30,17 @@ class GameScreen(game: Symbol) : AbstractScreen(game) {
 
     private val engine = PooledEngine()
 
-    private val multiplexer: InputMultiplexer = InputMultiplexer()
+    private val multiplexer = InputMultiplexer()
     private val input: KeyInput
     private val androidInput: AndroidInput
 
-    private val mm: MapManager = MapManager(game.batch, cam, engine, game.res)
+    private val mm = MapManager(game.batch, cam, engine, game.res)
 
-    private var player: Player = Player(game.res)
-    private val background: Background = Background(game.res.getTexture("background")!!,
+    private var player = Player(game.res)
+    private val background = Background(game.res.getTexture("background")!!,
             cam, Vector2(PARALLAX_SCALING, PARALLAX_SCALING))
 
-    private val hud: Hud = Hud(game, player)
+    private val hud = Hud(game, player)
 
     init {
         engine.addEntity(player)

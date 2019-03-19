@@ -8,11 +8,11 @@ import com.symbol.game.Config
 
 class Background(private val bgTexture: TextureRegion, private val cam: OrthographicCamera, private val scale: Vector2) {
 
-    private var position: Vector2 = Vector2()
-    private var velocity: Vector2 = Vector2()
+    private var position = Vector2()
+    private var velocity = Vector2()
 
-    private var numDrawX: Int = 0
-    private var numDrawY: Int = 0
+    private var numDrawX = 0
+    private var numDrawY = 0
 
     init {
         numDrawX = Config.V_WIDTH / bgTexture.regionWidth + 1

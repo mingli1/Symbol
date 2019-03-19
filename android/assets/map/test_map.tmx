@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.0.1" orientation="orthogonal" renderorder="right-down" width="50" height="20" tilewidth="8" tileheight="8" nextobjectid="121">
+<map version="1.0" tiledversion="1.0.1" orientation="orthogonal" renderorder="right-down" width="50" height="20" tilewidth="8" tileheight="8" nextobjectid="122">
  <tileset firstgid="1" name="set" tilewidth="8" tileheight="8" tilecount="64" columns="8">
   <image source="tileset.png" width="64" height="64"/>
  </tileset>
@@ -125,13 +125,14 @@
     <property name="type" value="cintegral"/>
    </properties>
   </object>
- </objectgroup>
- <objectgroup name="map">
-  <object id="109" x="312" y="56" width="8" height="8">
+  <object id="121" x="304" y="56" width="8" height="8">
    <properties>
-    <property name="type" value="gswitch"/>
+    <property name="facingRight" type="bool" value="false"/>
+    <property name="type" value="because"/>
    </properties>
   </object>
+ </objectgroup>
+ <objectgroup name="map">
   <object id="111" x="192" y="21.2727" width="23.2727" height="2.72727">
    <properties>
     <property name="dist" type="float" value="100"/>
@@ -139,7 +140,7 @@
     <property name="type" value="mplatform"/>
    </properties>
   </object>
-  <object id="113" x="272" y="56" width="8" height="8">
+  <object id="113" x="176" y="40" width="8" height="8">
    <properties>
     <property name="targetId" type="int" value="0"/>
     <property name="type" value="sswitch"/>

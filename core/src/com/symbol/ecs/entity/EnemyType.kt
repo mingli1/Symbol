@@ -16,7 +16,8 @@ enum class EnemyType(val typeStr: String) {
     Percent("percent"),
     PercentOrbit("percent_orbit"),
     Nabla("nabla"),
-    CIntegral("cintegral");
+    CIntegral("cintegral"),
+    Because("because");
 
     companion object {
         fun getType(typeStr: String) : EnemyType? {

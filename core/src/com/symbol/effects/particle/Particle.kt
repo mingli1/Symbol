@@ -24,16 +24,16 @@ class Particle(private val rand: Random) : Pool.Poolable {
     private val position = Vector3()
     private val velocity = Vector3()
 
-    private var zNegVxScale: Float = 0f
-    private var zNegVyScale: Float = 0f
-    private var zNegVzScale: Float = 0f
-    private var zPosVzScale: Float = 0f
+    private var zNegVxScale = 0f
+    private var zNegVyScale = 0f
+    private var zNegVzScale = 0f
+    private var zPosVzScale = 0f
 
     private var texture: TextureRegion? = null
 
-    var shouldRemove: Boolean = false
-    private var stateTime: Float = 0f
-    private var lifetime: Float = 0f
+    var shouldRemove = false
+    private var stateTime = 0f
+    private var lifetime = 0f
 
     fun set(res: Resources, hex: String, lifetime: Float) {
         texture = res.getTexture(hex)!!
