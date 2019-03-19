@@ -10,7 +10,7 @@ import com.symbol.util.*
 object EntityFactory {
 
     fun createEnemy(engine: PooledEngine, res: Resources, type: EnemyType, rect: Rectangle, facingRight: Boolean) {
-        val textureStr = "e_${type.typeStr}"
+        val textureStr = if (type == EnemyType.Because) "e_${type.typeStr}0" else "e_${type.typeStr}"
         val texture = res.getTexture(textureStr)!!
         when (type) {
             EnemyType.EConstant -> {
@@ -200,6 +200,21 @@ object EntityFactory {
                         .direction(facingRight)
                         .velocity()
                         .texture(texture, textureStr)
+                        .gravity().remove().build()
+            }
+            EnemyType.Because -> {
+                EntityBuilder.instance(engine)
+                        .enemy(movementType = EnemyMovementType.BackAndForth)
+                        .activation(120f)
+                        .attack(damage = 2, attackTexture = "p_because", projectileSpeed = 60f)
+                        .trap()
+                        .color(EntityColor.BECAUSE_COLOR)
+                        .health(100)
+                        .boundingBox(14f, 12f)
+                        .position(rect.x, rect.y)
+                        .direction(facingRight)
+                        .velocity()
+                        .texture(texture, "e_because")
                         .gravity().remove().build()
             }
             else -> {}

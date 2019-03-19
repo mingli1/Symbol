@@ -13,6 +13,7 @@ import com.badlogic.gdx.utils.Array
 import com.symbol.ecs.EntityBuilder
 import com.symbol.ecs.Mapper
 import com.symbol.ecs.component.*
+import com.symbol.ecs.component.enemy.TrapComponent
 import com.symbol.ecs.component.map.MapEntityComponent
 import com.symbol.ecs.component.map.ToggleTileComponent
 import com.symbol.ecs.entity.MapEntityType
@@ -139,6 +140,9 @@ class ProjectileSystem(private val player: Player, private val res: Resources)
                 if ((pj.enemy && player != null) || (!pj.enemy && player == null)) {
                     val corp = Mapper.CORPOREAL_MAPPER.get(e)
                     if (corp != null && !corp.corporeal) break
+
+                    val trap = Mapper.TRAP_MAPPER.get(e)
+                    if (trap != null) handleTrapEnemy(e)
 
                     if (knockback != null) {
                         prevVelocities[e] = ev.dx
@@ -335,6 +339,15 @@ class ProjectileSystem(private val player: Player, private val res: Resources)
                 attackComp.attackRate -= attackComp.attackRate * scale
             }
         }
+    }
+
+    private fun handleTrapEnemy(entity: Entity?) {
+        val trapComp = Mapper.TRAP_MAPPER.get(entity)
+        val texture = Mapper.TEXTURE_MAPPER.get(entity)
+
+        if (!trapComp.countdown) trapComp.countdown = true
+        trapComp.hits++
+        if (trapComp.hits <= 3) texture.texture = res.getTexture(texture.textureStr + trapComp.hits)
     }
 
 }
