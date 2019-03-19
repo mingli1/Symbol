@@ -34,9 +34,9 @@ private const val ENEMY_FACING_RIGHT = "facingRight"
 class MapManager(batch: Batch, private val cam: OrthographicCamera,
                  private val engine: PooledEngine, private val res: Resources) : Disposable {
 
-    private val mapLoader: TmxMapLoader = TmxMapLoader()
+    private val mapLoader = TmxMapLoader()
     private lateinit var tiledMap: TiledMap
-    private val renderer: OrthogonalTiledMapRenderer = OrthogonalTiledMapRenderer(null, 1f, batch)
+    private val renderer = OrthogonalTiledMapRenderer(null, 1f, batch)
 
     private lateinit var tileLayer: TiledMapTileLayer
     private lateinit var collisionLayer: MapLayer
@@ -44,15 +44,14 @@ class MapManager(batch: Batch, private val cam: OrthographicCamera,
     private var enemyLayer: MapLayer? = null
     private var mapEntityLayer: MapLayer? = null
 
-    var tileSize: Int = 0
+    var tileSize = 0
+        private set
+    var mapWidth = 0
+        private set
+    var mapHeight = 0
         private set
 
-    var mapWidth: Int = 0
-        private set
-    var mapHeight: Int = 0
-        private set
-
-    var playerSpawnPosition: Vector2 = Vector2()
+    var playerSpawnPosition = Vector2()
 
     val mapObjects: Array<MapObject> = Array()
 

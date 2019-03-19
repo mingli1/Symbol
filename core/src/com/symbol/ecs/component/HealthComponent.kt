@@ -5,10 +5,10 @@ import com.badlogic.gdx.utils.Pool
 
 class HealthComponent : Component, Pool.Poolable {
 
-    var hp: Int = 0
-    var maxHp: Int = 0
-    var hpDelta: Int = 0
-    var hpChange: Boolean = false
+    var hp = 0
+    var maxHp = 0
+    var hpDelta = 0
+    var hpChange = false
 
     fun hit(damage: Int) {
         hp -= damage

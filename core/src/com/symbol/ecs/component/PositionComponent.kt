@@ -5,11 +5,11 @@ import com.badlogic.gdx.utils.Pool
 
 class PositionComponent : Component, Pool.Poolable {
 
-    var x: Float = 0f
-    var y: Float = 0f
+    var x = 0f
+    var y = 0f
 
-    var prevX: Float = 0f
-    var prevY: Float = 0f
+    var prevX = 0f
+    var prevY = 0f
 
     fun set(x: Float, y: Float) {
         this.x = x

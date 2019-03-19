@@ -5,24 +5,24 @@ import com.badlogic.gdx.utils.Pool
 
 class ProjectileComponent : Component, Pool.Poolable {
 
-    var lifeTime: Float = 0f
+    var lifeTime = 0f
 
-    var parentFacingRight: Boolean = false
+    var parentFacingRight = false
 
     var textureStr: String? = null
-    var collidesWithTerrain: Boolean = true
-    var collidesWithProjectiles: Boolean = false
-    var enemy: Boolean = false
-    var damage: Int = 0
-    var knockback: Float = 0f
+    var collidesWithTerrain = true
+    var collidesWithProjectiles = false
+    var enemy = false
+    var damage = 0
+    var knockback = 0f
 
-    var detonateTime: Float = 0f
-    var acceleration: Float = 0f
+    var detonateTime = 0f
+    var acceleration = 0f
 
     var movementType = ProjectileMovementType.Normal
 
-    var arcHalf: Boolean = false
-    var waveDir: Direction = Direction.Left
+    var arcHalf = false
+    var waveDir = Direction.Left
 
     override fun reset() {
         lifeTime = 0f

@@ -5,7 +5,7 @@ import com.badlogic.gdx.utils.Pool
 
 class KnockbackComponent : Component, Pool.Poolable {
 
-    var knockingBack: Boolean = false
+    var knockingBack = false
 
     override fun reset() {
         knockingBack = false

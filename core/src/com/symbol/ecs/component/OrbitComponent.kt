@@ -5,13 +5,13 @@ import com.badlogic.gdx.utils.Pool
 
 class OrbitComponent : Component, Pool.Poolable {
 
-    var clockwise: Boolean = true
+    var clockwise = true
 
-    var originX: Float = 0f
-    var originY: Float = 0f
-    var angle: Float = 0f
-    var speed: Float = 0f
-    var radius: Float = 0f
+    var originX = 0f
+    var originY = 0f
+    var angle = 0f
+    var speed = 0f
+    var radius = 0f
 
     fun setOrigin(originX: Float, originY: Float) {
         this.originX = originX

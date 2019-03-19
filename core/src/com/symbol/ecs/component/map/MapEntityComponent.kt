@@ -6,9 +6,9 @@ import com.symbol.ecs.entity.MapEntityType
 
 class MapEntityComponent : Component, Pool.Poolable {
 
-    var mapEntityType: MapEntityType = MapEntityType.None
-    var mapCollidable: Boolean = false
-    var projectileCollidable: Boolean = false
+    var mapEntityType = MapEntityType.None
+    var mapCollidable = false
+    var projectileCollidable = false
 
     override fun reset() {
         mapEntityType = MapEntityType.None

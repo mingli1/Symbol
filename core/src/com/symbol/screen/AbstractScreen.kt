@@ -13,7 +13,7 @@ abstract class AbstractScreen(protected val game: Symbol) : Screen, Disposable {
 
     protected var stage: Stage private set
     protected var viewport: Viewport private set
-    protected var cam: OrthographicCamera = OrthographicCamera()
+    protected var cam = OrthographicCamera()
 
     init {
         cam.setToOrtho(false, Config.V_WIDTH.toFloat(), Config.V_HEIGHT.toFloat())

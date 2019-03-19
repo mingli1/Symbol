@@ -5,7 +5,7 @@ import com.badlogic.gdx.utils.Pool
 
 class RemoveComponent : Component, Pool.Poolable {
 
-    var shouldRemove: Boolean = false
+    var shouldRemove = false
 
     override fun reset() {
         shouldRemove = false

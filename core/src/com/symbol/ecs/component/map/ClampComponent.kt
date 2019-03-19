@@ -6,11 +6,11 @@ import com.badlogic.gdx.utils.Pool
 
 class ClampComponent : Component, Pool.Poolable {
 
-    var right: Boolean = false
-    var rect: Rectangle = Rectangle()
-    var acceleration: Float = 0f
-    var backVelocity: Float = 0f
-    var clamping: Boolean = true
+    var right = false
+    var rect = Rectangle()
+    var acceleration = 0f
+    var backVelocity = 0f
+    var clamping = true
 
     override fun reset() {
         right = false

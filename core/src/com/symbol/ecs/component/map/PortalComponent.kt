@@ -5,9 +5,9 @@ import com.badlogic.gdx.utils.Pool
 
 class PortalComponent : Component, Pool.Poolable {
 
-    var id: Int = 0
-    var target: Int = 0
-    var teleported: Boolean = false
+    var id = 0
+    var target = 0
+    var teleported = false
 
     override fun reset() {
         id = 0

@@ -5,10 +5,10 @@ import com.badlogic.gdx.utils.Pool
 
 class PlayerComponent : Component, Pool.Poolable {
 
-    var canJump: Boolean = false
-    var canDoubleJump: Boolean = false
-    var canShoot: Boolean = true
-    var hasJumpBoost: Boolean = false
+    var canJump = false
+    var canDoubleJump = false
+    var canShoot = true
+    var hasJumpBoost = false
 
     override fun reset() {
         canJump = false

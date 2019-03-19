@@ -6,7 +6,7 @@ import com.badlogic.gdx.utils.Pool
 class ActivationComponent : Component, Pool.Poolable {
 
     var activationRange = -1f
-    var active: Boolean = false
+    var active = false
 
     override fun reset() {
         activationRange = -1f

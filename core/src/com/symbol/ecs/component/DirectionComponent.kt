@@ -5,9 +5,9 @@ import com.badlogic.gdx.utils.Pool
 
 class DirectionComponent : Component, Pool.Poolable {
 
-    var facingRight: Boolean = true
-    var facingUp: Boolean = true
-    var yFlip: Boolean = false
+    var facingRight = true
+    var facingUp = true
+    var yFlip = false
 
     override fun reset() {
         facingRight = true

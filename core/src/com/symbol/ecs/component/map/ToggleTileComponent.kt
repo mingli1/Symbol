@@ -5,8 +5,8 @@ import com.badlogic.gdx.utils.Pool
 
 class ToggleTileComponent : Component, Pool.Poolable {
 
-    var id: Int = 0
-    var toggle: Boolean = true
+    var id = 0
+    var toggle = true
 
     override fun reset() {
         id = 0

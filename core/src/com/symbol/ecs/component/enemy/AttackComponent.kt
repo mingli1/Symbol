@@ -5,14 +5,14 @@ import com.badlogic.gdx.utils.Pool
 
 class AttackComponent : Component, Pool.Poolable {
 
-    var damage: Int = 0
-    var attackRate: Float = 0f
-    var canAttack: Boolean = true
+    var damage = 0
+    var attackRate = 0f
+    var canAttack = true
     var attackTexture: String? = null
-    var projectileSpeed: Float = 0f
-    var projectileAcceleration: Float = 0f
-    var projectileDestroyable: Boolean = false
-    var attackDetonateTime: Float = 0f
+    var projectileSpeed = 0f
+    var projectileAcceleration = 0f
+    var projectileDestroyable = false
+    var attackDetonateTime = 0f
 
     override fun reset() {
         damage = 0

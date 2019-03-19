@@ -5,8 +5,8 @@ import com.badlogic.gdx.utils.Pool
 
 class CorporealComponent : Component, Pool.Poolable {
 
-    var corporeal: Boolean = true
-    var incorporealTime: Float = 0f
+    var corporeal = true
+    var incorporealTime = 0f
 
     override fun reset() {
         corporeal = true

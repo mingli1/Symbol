@@ -5,12 +5,12 @@ import com.badlogic.gdx.utils.Pool
 
 class VelocityComponent : Component, Pool.Poolable {
 
-    var dx: Float = 0f
-    var dy: Float = 0f
+    var dx = 0f
+    var dy = 0f
 
-    var speed: Float = 0f
+    var speed = 0f
 
-    var platformDx: Float = 0f
+    var platformDx = 0f
 
     fun set(dx: Float, dy: Float) {
         this.dx = dx

@@ -8,8 +8,8 @@ import com.symbol.ecs.entity.EnemyMovementType
 
 class EnemyComponent : Component, Pool.Poolable {
 
-    var movementType: EnemyMovementType = EnemyMovementType.None
-    var attackType: EnemyAttackType = EnemyAttackType.None
+    var movementType = EnemyMovementType.None
+    var attackType = EnemyAttackType.None
     var parent: Entity? = null
 
     override fun reset() {

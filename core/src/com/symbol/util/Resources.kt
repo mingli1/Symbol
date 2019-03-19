@@ -28,7 +28,7 @@ private const val BUTTON_DOWN = "_down"
 
 class Resources : Disposable {
 
-    private val assetManager: AssetManager = AssetManager()
+    private val assetManager = AssetManager()
     private val atlas: TextureAtlas
     private val textures: MutableMap<String, TextureRegion> = HashMap()
 

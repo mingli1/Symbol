@@ -5,8 +5,8 @@ import com.badlogic.gdx.utils.Pool
 
 class SquareSwitchComponent : Component, Pool.Poolable {
 
-    var targetId: Int = 0
-    var toggle: Boolean = true
+    var targetId = 0
+    var toggle = true
 
     override fun reset() {
         targetId = 0

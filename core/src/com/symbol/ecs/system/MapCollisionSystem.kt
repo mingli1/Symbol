@@ -28,11 +28,11 @@ class MapCollisionSystem(private val res: Resources) : IteratingSystem(
 ) {
 
     private var mapObjects: Array<MapObject> = Array()
-    private var mapWidth: Int = 0
-    private var mapHeight: Int = 0
+    private var mapWidth = 0
+    private var mapHeight = 0
 
-    private var stepX: Float = 0f
-    private var stepY: Float = 0f
+    private var stepX = 0f
+    private var stepY = 0f
 
     private lateinit var removableEntities: ImmutableArray<Entity>
     private lateinit var movingPlatforms: ImmutableArray<Entity>

@@ -5,7 +5,7 @@ import com.badlogic.gdx.utils.Pool
 
 class HealthPackComponent : Component, Pool.Poolable {
 
-    var regen: Int = 0
+    var regen = 0
 
     override fun reset() {
         regen = 0
