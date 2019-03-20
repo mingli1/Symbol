@@ -40,14 +40,14 @@ public class Hud extends Scene {
         createSettingsButton();
 
         if (Config.DEBUG) {
-            fps = new Label("", new Label.LabelStyle(game.getRes().getFont(), Color.BLACK));
+            fps = new Label("", new Label.LabelStyle(game.res.getFont(), Color.BLACK));
             fps.setPosition(5, 5);
             stage.addActor(fps);
         }
     }
 
     private void createHealthBar() {
-        Label.LabelStyle labelStyle = new Label.LabelStyle(game.getRes().getFont(), Color.BLACK);
+        Label.LabelStyle labelStyle = new Label.LabelStyle(game.res.getFont(), Color.BLACK);
         Label hpPromptLabel = new Label(HP_PROMPT, labelStyle);
         hpPromptLabel.setPosition(HP_PROMPT_POSITION.x, HP_PROMPT_POSITION.y);
 
@@ -55,7 +55,7 @@ public class Hud extends Scene {
     }
 
     private void createSettingsButton() {
-        ImageButton.ImageButtonStyle style = game.getRes().getButtonStyle("settings");
+        ImageButton.ImageButtonStyle style = game.res.getButtonStyle("settings");
         ImageButton settingsButton = new ImageButton(style);
         settingsButton.setPosition(SETTINGS_BUTTON_POSITION.x, SETTINGS_BUTTON_POSITION.y);
 
@@ -84,23 +84,23 @@ public class Hud extends Scene {
 
     @Override
     public void render(float dt) {
-        game.getBatch().setProjectionMatrix(stage.getCamera().combined);
-        game.getBatch().begin();
+        game.batch.setProjectionMatrix(stage.getCamera().combined);
+        game.batch.begin();
 
-        game.getBatch().draw(game.getRes().getTexture("black"), HP_BAR_POSITION.x, HP_BAR_POSITION.y,
+        game.batch.draw(game.res.getTexture("black"), HP_BAR_POSITION.x, HP_BAR_POSITION.y,
                 HP_BAR_WIDTH + 2, HP_BAR_HEIGHT + 2);
-        game.getBatch().draw(game.getRes().getTexture("hp_bar_bg_color"), HP_BAR_POSITION.x + 1, HP_BAR_POSITION.y + 1,
+        game.batch.draw(game.res.getTexture("hp_bar_bg_color"), HP_BAR_POSITION.x + 1, HP_BAR_POSITION.y + 1,
                 HP_BAR_WIDTH, HP_BAR_HEIGHT);
-        game.getBatch().draw(game.getRes().getTexture("hp_bar_green"), HP_BAR_POSITION.x + 1, HP_BAR_POSITION.y + 1,
+        game.batch.draw(game.res.getTexture("hp_bar_green"), HP_BAR_POSITION.x + 1, HP_BAR_POSITION.y + 1,
                 hpBarWidth, HP_BAR_HEIGHT);
 
         if (startHpBarDecay) {
-            game.getBatch().draw(game.getRes().getTexture("hp_bar_color"),
+            game.batch.draw(game.res.getTexture("hp_bar_color"),
                     HP_BAR_POSITION.x + 1 + hpBarWidth, HP_BAR_POSITION.y + 1,
                     decayingHpBarWidth, HP_BAR_HEIGHT);
         }
 
-        game.getBatch().end();
+        game.batch.end();
 
         stage.act(dt);
         stage.draw();

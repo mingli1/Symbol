@@ -12,8 +12,9 @@ import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.utils.Array
 import com.symbol.ecs.EntityBuilder
 import com.symbol.ecs.Mapper
-import com.symbol.ecs.component.*
-import com.symbol.ecs.component.enemy.TrapComponent
+import com.symbol.ecs.component.HealthComponent
+import com.symbol.ecs.component.ProjectileComponent
+import com.symbol.ecs.component.RemoveComponent
 import com.symbol.ecs.component.map.MapEntityComponent
 import com.symbol.ecs.component.map.ToggleTileComponent
 import com.symbol.ecs.entity.MapEntityType
@@ -25,8 +26,6 @@ import com.symbol.effects.particle.ParticleSpawner
 import com.symbol.map.MapObject
 import com.symbol.util.Direction
 import com.symbol.util.Resources
-import com.symbol.util.TOGGLE_OFF
-import com.symbol.util.TOGGLE_ON
 
 const val DIAGONAL_PROJECTILE_SCALING = 0.75f
 private const val KNOCKBACK_TIME = 0.1f
@@ -209,7 +208,7 @@ class ProjectileSystem(private val player: Player, private val res: Resources)
 
                         gravity.reverse = !gravity.reverse
                         meTexture.texture = res.getTexture(meTexture.textureStr +
-                                if (gravity.reverse) TOGGLE_ON else TOGGLE_OFF)
+                                if (gravity.reverse) Resources.TOGGLE_ON else Resources.TOGGLE_OFF)
                     }
                     MapEntityType.SquareSwitch -> {
                         val switch = Mapper.SQUARE_SWITCH_MAPPER.get(mapEntity)
@@ -217,7 +216,7 @@ class ProjectileSystem(private val player: Player, private val res: Resources)
 
                         switch.toggle = !switch.toggle
                         switchTexture.texture = res.getTexture(switchTexture.textureStr +
-                                if (switch.toggle) TOGGLE_ON else TOGGLE_OFF)
+                                if (switch.toggle) Resources.TOGGLE_ON else Resources.TOGGLE_OFF)
 
                         for (tt in toggleTiles) {
                             val tme = Mapper.MAP_ENTITY_MAPPER.get(tt)

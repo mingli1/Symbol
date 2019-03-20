@@ -12,7 +12,6 @@ import com.symbol.ecs.component.VelocityComponent
 import com.symbol.ecs.component.enemy.EnemyComponent
 import com.symbol.ecs.entity.EnemyMovementType
 import com.symbol.ecs.entity.Player
-import com.symbol.util.INCORPOREAL
 import com.symbol.util.Resources
 
 private const val MOVEMENT_FREQUENCY = 0.7f
@@ -53,7 +52,7 @@ class EnemyMovementSystem(private val player: Player, private val res: Resources
 
                 if (!corp.corporeal) {
                     val texture = Mapper.TEXTURE_MAPPER.get(entity)
-                    texture.texture = res.getTexture(texture.textureStr + INCORPOREAL) ?: texture.texture
+                    texture.texture = res.getTexture(texture.textureStr + Resources.INCORPOREAL) ?: texture.texture
                 }
 
                 corporealTimers[entity] = 0f

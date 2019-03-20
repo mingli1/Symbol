@@ -18,7 +18,7 @@ public abstract class Scene implements Disposable {
         this.game = game;
 
         viewport = new StretchViewport(Config.V_WIDTH, Config.V_HEIGHT, new OrthographicCamera());
-        stage = new Stage(viewport, game.getBatch());
+        stage = new Stage(viewport, game.batch);
     }
 
     public abstract void update(float dt);

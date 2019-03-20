@@ -5,7 +5,7 @@ import com.badlogic.gdx.maps.MapProperties
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Rectangle
 import com.symbol.ecs.EntityBuilder
-import com.symbol.util.*
+import com.symbol.util.Resources
 
 object EntityFactory {
 
@@ -167,7 +167,7 @@ object EntityFactory {
                             .boundingBox(6f, 6f)
                             .position(rect.x, rect.y)
                             .velocity()
-                            .texture(res.getTexture("e_${type.typeStr}$ORBIT")!!, "e_${type.typeStr}$ORBIT")
+                            .texture(res.getTexture("e_${type.typeStr}${Resources.ORBIT}")!!, "e_${type.typeStr}${Resources.ORBIT}")
                             .orbit(angle = angle, speed = 2f, radius = 15f)
                             .remove().build()
                 }
@@ -267,8 +267,8 @@ object EntityFactory {
                 val textureKey = (props["texture"] ?: "square_bracket") as String
                 val acceleration = (props["accel"] ?: 144f) as Float
                 val backVelocity = (props["backVel"] ?: 10f) as Float
-                val textureLeft = res.getTexture(textureKey + BRACKET_LEFT)!!
-                val textureRight = res.getTexture(textureKey + BRACKET_RIGHT)!!
+                val textureLeft = res.getTexture(textureKey + Resources.BRACKET_LEFT)!!
+                val textureRight = res.getTexture(textureKey + Resources.BRACKET_RIGHT)!!
 
                 EntityBuilder.instance(engine)
                         .mapEntity(type = type, projectileCollidable = true)
@@ -314,7 +314,7 @@ object EntityFactory {
             }
             MapEntityType.GravitySwitch -> {
                 val textureStr = "updownarrow"
-                val texture = res.getTexture(textureStr + TOGGLE_OFF)!!
+                val texture = res.getTexture(textureStr + Resources.TOGGLE_OFF)!!
 
                 EntityBuilder.instance(engine)
                         .mapEntity(type = type, projectileCollidable = true)
@@ -326,7 +326,7 @@ object EntityFactory {
             }
             MapEntityType.SquareSwitch -> {
                 val textureStr = "square_switch"
-                val texture = res.getTexture(textureStr + TOGGLE_ON)!!
+                val texture = res.getTexture(textureStr + Resources.TOGGLE_ON)!!
                 val targetId = props["targetId"]!! as Int
 
                 EntityBuilder.instance(engine)
