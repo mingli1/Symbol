@@ -24,6 +24,7 @@ import com.symbol.ecs.entity.EntityColor;
 import com.symbol.ecs.entity.Player;
 import com.symbol.ecs.entity.ProjectileMovementType;
 import com.symbol.ecs.system.GravitySystem;
+import com.symbol.ecs.system.ProjectileSystem;
 import com.symbol.effects.particle.Particle;
 import com.symbol.effects.particle.ParticleSpawner;
 import com.symbol.map.camera.CameraShake;
@@ -32,8 +33,6 @@ import com.symbol.util.Resources;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import static com.symbol.ecs.system.ProjectileSystemKt.DIAGONAL_PROJECTILE_SCALING;
 
 public class EnemyAttackSystem extends IteratingSystem {
 
@@ -162,14 +161,14 @@ public class EnemyAttackSystem extends IteratingSystem {
     private void shootFourDiagonal(AttackComponent attackComp, DirectionComponent dir, Rectangle bounds) {
         TextureRegion trTexture = res.getTexture(attackComp.attackTexture + Resources.TOP_RIGHT) == null ?
                 res.getTexture(attackComp.attackTexture) : res.getTexture(attackComp.attackTexture + Resources.TOP_RIGHT);
-        createProjectile(attackComp, dir, bounds, -attackComp.projectileSpeed * DIAGONAL_PROJECTILE_SCALING,
-                attackComp.projectileSpeed * DIAGONAL_PROJECTILE_SCALING, trTexture, ProjectileMovementType.Normal);
-        createProjectile(attackComp, dir, bounds, attackComp.projectileSpeed * DIAGONAL_PROJECTILE_SCALING,
-                attackComp.projectileSpeed * DIAGONAL_PROJECTILE_SCALING, trTexture, ProjectileMovementType.Normal);
-        createProjectile(attackComp, dir, bounds, -attackComp.projectileSpeed * DIAGONAL_PROJECTILE_SCALING,
-                -attackComp.projectileSpeed * DIAGONAL_PROJECTILE_SCALING, trTexture, ProjectileMovementType.Normal);
-        createProjectile(attackComp, dir, bounds, attackComp.projectileSpeed * DIAGONAL_PROJECTILE_SCALING,
-                -attackComp.projectileSpeed * DIAGONAL_PROJECTILE_SCALING, trTexture, ProjectileMovementType.Normal);
+        createProjectile(attackComp, dir, bounds, -attackComp.projectileSpeed * ProjectileSystem.DIAGONAL_PROJECTILE_SCALING,
+                attackComp.projectileSpeed * ProjectileSystem.DIAGONAL_PROJECTILE_SCALING, trTexture, ProjectileMovementType.Normal);
+        createProjectile(attackComp, dir, bounds, attackComp.projectileSpeed * ProjectileSystem.DIAGONAL_PROJECTILE_SCALING,
+                attackComp.projectileSpeed * ProjectileSystem.DIAGONAL_PROJECTILE_SCALING, trTexture, ProjectileMovementType.Normal);
+        createProjectile(attackComp, dir, bounds, -attackComp.projectileSpeed * ProjectileSystem.DIAGONAL_PROJECTILE_SCALING,
+                -attackComp.projectileSpeed * ProjectileSystem.DIAGONAL_PROJECTILE_SCALING, trTexture, ProjectileMovementType.Normal);
+        createProjectile(attackComp, dir, bounds, attackComp.projectileSpeed * ProjectileSystem.DIAGONAL_PROJECTILE_SCALING,
+                -attackComp.projectileSpeed * ProjectileSystem.DIAGONAL_PROJECTILE_SCALING, trTexture, ProjectileMovementType.Normal);
     }
 
     private void shootEight(AttackComponent attackComp, DirectionComponent dir, Rectangle bounds) {
@@ -234,12 +233,12 @@ public class EnemyAttackSystem extends IteratingSystem {
     private void arcTwo(AttackComponent attackComp, Rectangle bounds, DirectionComponent dir) {
         TextureRegion texture = res.getTexture(attackComp.attackTexture + Resources.TOP_RIGHT) == null ?
                 res.getTexture(attackComp.attackTexture) : res.getTexture(attackComp.attackTexture + Resources.TOP_RIGHT);
-        float initialDx = dir.facingRight ? -attackComp.projectileSpeed * DIAGONAL_PROJECTILE_SCALING
-                            : attackComp.projectileSpeed * DIAGONAL_PROJECTILE_SCALING;
+        float initialDx = dir.facingRight ? -attackComp.projectileSpeed * ProjectileSystem.DIAGONAL_PROJECTILE_SCALING
+                            : attackComp.projectileSpeed * ProjectileSystem.DIAGONAL_PROJECTILE_SCALING;
         createProjectile(attackComp, dir, bounds, initialDx,
-                attackComp.projectileSpeed * DIAGONAL_PROJECTILE_SCALING, texture, ProjectileMovementType.Arc);
+                attackComp.projectileSpeed * ProjectileSystem.DIAGONAL_PROJECTILE_SCALING, texture, ProjectileMovementType.Arc);
         createProjectile(attackComp, dir, bounds, initialDx,
-                -attackComp.projectileSpeed * DIAGONAL_PROJECTILE_SCALING, texture, ProjectileMovementType.Arc);
+                -attackComp.projectileSpeed * ProjectileSystem.DIAGONAL_PROJECTILE_SCALING, texture, ProjectileMovementType.Arc);
     }
 
     private void explodeOnDeath(Entity entity, AttackComponent attackComp, DirectionComponent dir, Rectangle bounds) {
