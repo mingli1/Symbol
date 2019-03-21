@@ -56,13 +56,13 @@ class KeyInputSystem(private val res: Resources) : EntitySystem(), KeyInputHandl
             val dir = Mapper.DIR_MAPPER.get(player)
 
             EntityBuilder.instance(engine as PooledEngine)
-                    .projectile(damage = PLAYER_DAMAGE, knockback = PLAYER_PROJECTILE_KNOCKBACK)
+                    .projectile(damage = Player.PLAYER_DAMAGE, knockback = Player.PLAYER_PROJECTILE_KNOCKBACK)
                     .color(EntityColor.DOT_COLOR)
-                    .position(playerPos.x + (PLAYER_WIDTH / 2) - (PLAYER_PROJECTILE_BOUNDS_WIDTH / 2),
-                            playerPos.y + (PLAYER_HEIGHT / 2) - (PLAYER_PROJECTILE_BOUNDS_HEIGHT / 2))
-                    .velocity(dx = if (dir.facingRight) PLAYER_PROJECTILE_SPEED else -PLAYER_PROJECTILE_SPEED)
-                    .boundingBox(PLAYER_PROJECTILE_BOUNDS_WIDTH, PLAYER_PROJECTILE_BOUNDS_HEIGHT)
-                    .texture(res.getTexture(PLAYER_PROJECTILE_RES_KEY)!!)
+                    .position(playerPos.x + (Player.PLAYER_WIDTH / 2) - (Player.PLAYER_PROJECTILE_BOUNDS_WIDTH / 2),
+                            playerPos.y + (Player.PLAYER_HEIGHT / 2) - (Player.PLAYER_PROJECTILE_BOUNDS_HEIGHT / 2))
+                    .velocity(dx = if (dir.facingRight) Player.PLAYER_PROJECTILE_SPEED else -Player.PLAYER_PROJECTILE_SPEED)
+                    .boundingBox(Player.PLAYER_PROJECTILE_BOUNDS_WIDTH, Player.PLAYER_PROJECTILE_BOUNDS_HEIGHT)
+                    .texture(res.getTexture(Player.PLAYER_PROJECTILE_RES_KEY)!!)
                     .direction().remove().build()
 
             playerComp.canShoot = false

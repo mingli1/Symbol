@@ -45,7 +45,7 @@ object EntityFactory {
                 EntityBuilder.instance(engine)
                         .enemy(movementType = EnemyMovementType.Charge)
                         .activation(90f)
-                        .attack(damage = PLAYER_HP)
+                        .attack(damage = Player.PLAYER_HP)
                         .color(EntityColor.EXISTS_COLOR)
                         .health(2)
                         .boundingBox(9f, 13f)
