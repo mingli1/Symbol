@@ -10,8 +10,7 @@ import com.symbol.ecs.component.map.MapEntityComponent
 import com.symbol.ecs.component.map.PortalComponent
 import com.symbol.ecs.entity.MapEntityType
 import com.symbol.ecs.entity.Player
-import com.symbol.effects.particle.DEFAULT_INTESITY
-import com.symbol.effects.particle.DEFAULT_LIFETIME
+import com.symbol.effects.particle.Particle
 import com.symbol.effects.particle.ParticleSpawner
 import com.symbol.util.Resources
 
@@ -137,7 +136,7 @@ class MapEntitySystem(private val player: Player, private val res: Resources) :
             playerHealth.hp = 0
 
             val color = Mapper.COLOR_MAPPER.get(player)
-            ParticleSpawner.spawn(res, color.hex!!, DEFAULT_LIFETIME, DEFAULT_INTESITY + playerHealth.maxHp,
+            ParticleSpawner.spawn(res, color.hex!!, Particle.DEFAULT_LIFETIME, Particle.DEFAULT_INTESITY + playerHealth.maxHp,
                     playerBounds.rect.x + playerBounds.rect.width / 2,
                     playerBounds.rect.y + playerBounds.rect.height / 2)
         }

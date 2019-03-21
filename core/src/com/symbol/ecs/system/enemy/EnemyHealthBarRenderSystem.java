@@ -47,12 +47,12 @@ public class EnemyHealthBarRenderSystem extends IteratingSystem {
 
     @Override
     protected void processEntity(Entity entity, float dt) {
-        PositionComponent pos = Mapper.INSTANCE.getPOS_MAPPER().get(entity);
-        TextureComponent texture = Mapper.INSTANCE.getTEXTURE_MAPPER().get(entity);
+        PositionComponent pos = Mapper.POS_MAPPER.get(entity);
+        TextureComponent texture = Mapper.TEXTURE_MAPPER.get(entity);
         float width = texture.texture.getRegionWidth();
         float height = texture.texture.getRegionHeight();
 
-        HealthComponent health = Mapper.INSTANCE.getHEALTH_MAPPER().get(entity);
+        HealthComponent health = Mapper.HEALTH_MAPPER.get(entity);
         if (health.hpChange && health.hp != 0) {
             startHealthBars.put(entity, true);
             timers.put(entity, 0f);

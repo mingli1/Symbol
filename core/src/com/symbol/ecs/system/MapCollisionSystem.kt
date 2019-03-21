@@ -10,8 +10,7 @@ import com.symbol.ecs.Mapper
 import com.symbol.ecs.component.*
 import com.symbol.ecs.component.map.MapEntityComponent
 import com.symbol.ecs.component.map.MovingPlatformComponent
-import com.symbol.effects.particle.DEFAULT_INTESITY
-import com.symbol.effects.particle.DEFAULT_LIFETIME
+import com.symbol.effects.particle.Particle
 import com.symbol.effects.particle.ParticleSpawner
 import com.symbol.map.MapObject
 import com.symbol.map.MapObjectType
@@ -214,7 +213,7 @@ class MapCollisionSystem(private val res: Resources) : IteratingSystem(
 
         val bounds = Mapper.BOUNDING_BOX_MAPPER.get(entity)
         val color = Mapper.COLOR_MAPPER.get(entity)
-        ParticleSpawner.spawn(res, color.hex!!, DEFAULT_LIFETIME, DEFAULT_INTESITY + health.maxHp,
+        ParticleSpawner.spawn(res, color.hex!!, Particle.DEFAULT_LIFETIME, Particle.DEFAULT_INTESITY + health.maxHp,
                 bounds.rect.x + bounds.rect.width / 2, bounds.rect.y + bounds.rect.height / 2)
     }
 
@@ -226,7 +225,7 @@ class MapCollisionSystem(private val res: Resources) : IteratingSystem(
 
             val bounds = Mapper.BOUNDING_BOX_MAPPER.get(entity)
             val color = Mapper.COLOR_MAPPER.get(entity)
-            ParticleSpawner.spawn(res, color.hex!!, DEFAULT_LIFETIME, DEFAULT_INTESITY + mapObject.damage,
+            ParticleSpawner.spawn(res, color.hex!!, Particle.DEFAULT_LIFETIME, Particle.DEFAULT_INTESITY + mapObject.damage,
                     bounds.rect.x + bounds.rect.width / 2, bounds.rect.y + bounds.rect.height / 2)
         }
     }

@@ -66,7 +66,7 @@ public class Hud extends Scene {
     public void update(float dt) {
         if (Config.DEBUG) fps.setText(Gdx.graphics.getFramesPerSecond() + " FPS");
 
-        HealthComponent health = Mapper.INSTANCE.getHEALTH_MAPPER().get(player);
+        HealthComponent health = Mapper.HEALTH_MAPPER.get(player);
         hpBarWidth = HP_BAR_WIDTH * ((float) health.hp / health.maxHp);
         if (health.hpChange) {
             decayingHpBarWidth = HP_BAR_WIDTH * ((float) health.hpDelta / health.maxHp);

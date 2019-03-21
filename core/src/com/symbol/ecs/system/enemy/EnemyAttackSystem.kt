@@ -17,8 +17,7 @@ import com.symbol.ecs.entity.EntityColor
 import com.symbol.ecs.entity.Player
 import com.symbol.ecs.entity.ProjectileMovementType
 import com.symbol.ecs.system.DIAGONAL_PROJECTILE_SCALING
-import com.symbol.effects.particle.DEFAULT_INTESITY
-import com.symbol.effects.particle.DEFAULT_LIFETIME
+import com.symbol.effects.particle.Particle
 import com.symbol.effects.particle.ParticleSpawner
 import com.symbol.map.camera.CameraShake
 import com.symbol.util.Direction
@@ -56,7 +55,7 @@ class EnemyAttackSystem(private val player: Player, private val res: Resources) 
             remove.shouldRemove = true
 
             val color = Mapper.COLOR_MAPPER.get(entity)
-            ParticleSpawner.spawn(res, color.hex!!, DEFAULT_LIFETIME, DEFAULT_INTESITY + attack.damage,
+            ParticleSpawner.spawn(res, color.hex!!, Particle.DEFAULT_LIFETIME, Particle.DEFAULT_INTESITY + attack.damage,
                     bounds.x + bounds.width / 2, bounds.y + bounds.height / 2)
             return
         }

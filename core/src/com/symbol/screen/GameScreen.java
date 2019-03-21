@@ -59,6 +59,8 @@ public class GameScreen extends AbstractScreen {
         multiplexer.addProcessor(input);
         multiplexer.addProcessor(hud.getStage());
         if (Config.onAndroid()) multiplexer.addProcessor(androidInput.getStage());
+
+        ParticleSpawner.init();
     }
 
     private void initSystems() {
@@ -91,7 +93,7 @@ public class GameScreen extends AbstractScreen {
         Gdx.input.setInputProcessor(multiplexer);
         mm.load("test_map");
 
-        PositionComponent playerPosition = Mapper.INSTANCE.getPOS_MAPPER().get(player);
+        PositionComponent playerPosition = Mapper.POS_MAPPER.get(player);
         playerPosition.set(mm.getPlayerSpawnPosition().x, mm.getPlayerSpawnPosition().y);
 
         resetSystems();
@@ -101,14 +103,14 @@ public class GameScreen extends AbstractScreen {
         updateCamera(dt);
         background.update(dt);
         mm.update();
-        ParticleSpawner.INSTANCE.update(dt);
+        ParticleSpawner.update(dt);
 
         hud.update(dt);
         if (Config.onAndroid()) androidInput.update(dt);
     }
 
     private void updateCamera(float dt) {
-        PositionComponent playerPos = Mapper.INSTANCE.getPOS_MAPPER().get(player);
+        PositionComponent playerPos = Mapper.POS_MAPPER.get(player);
 
         cam.position.x += (playerPos.x + (mm.getTileSize() / 2) - cam.position.x) * CAMERA_LERP * dt;
         cam.position.y += (playerPos.y + (mm.getTileSize() / 2) - cam.position.y) * CAMERA_LERP * dt;
@@ -134,7 +136,7 @@ public class GameScreen extends AbstractScreen {
         background.render(game.batch);
         mm.render();
         engine.update(dt);
-        ParticleSpawner.INSTANCE.render(game.batch);
+        ParticleSpawner.render(game.batch);
 
         game.batch.end();
 
