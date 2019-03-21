@@ -39,8 +39,8 @@ public class KeyInputSystem extends EntitySystem implements KeyInputHandler {
 
     @Override
     public void stop(boolean right) {
-        if (right) if (vel.dx > 0) vel.dx = 0f;
-        else if (vel.dx < 0) vel.dx = 0f;
+        if (right) { if (vel.dx > 0) vel.dx = 0f; }
+        else { if (vel.dx < 0) vel.dx = 0f; }
     }
 
     @Override
