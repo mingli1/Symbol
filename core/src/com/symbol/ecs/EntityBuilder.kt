@@ -11,8 +11,7 @@ import com.symbol.ecs.entity.EnemyAttackType
 import com.symbol.ecs.entity.EnemyMovementType
 import com.symbol.ecs.entity.MapEntityType
 import com.symbol.ecs.entity.ProjectileMovementType
-import com.symbol.ecs.system.GRAVITY
-import com.symbol.ecs.system.TERMINAL_VELOCITY
+import com.symbol.ecs.system.GravitySystem
 
 class EntityBuilder(private val engine: PooledEngine) {
 
@@ -103,8 +102,8 @@ class EntityBuilder(private val engine: PooledEngine) {
         return this
     }
 
-    fun gravity(onGround: Boolean = false, gravity: Float = GRAVITY,
-                terminalVelocity: Float = TERMINAL_VELOCITY, collidable: Boolean = true) : EntityBuilder {
+    fun gravity(onGround: Boolean = false, gravity: Float = GravitySystem.GRAVITY,
+                terminalVelocity: Float = GravitySystem.TERMINAL_VELOCITY, collidable: Boolean = true) : EntityBuilder {
         gravityComponent = engine.createComponent(GravityComponent::class.java)
         gravityComponent?.onGround = onGround
         gravityComponent?.gravity = gravity
