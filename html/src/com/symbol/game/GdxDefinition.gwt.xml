@@ -8,4 +8,6 @@
 	<entry-point class='com.symbol.game.client.HtmlLauncher' />
 	<set-configuration-property name='xsiframe.failIfScriptTag' value='FALSE'/>
 	<set-configuration-property name="gdx.assetpath" value="../android/assets" />
+	<extend-configuration-property name="gdx.reflect.include" value="com.symbol.game.ecs.component" />
+	<extend-configuration-property name="gdx.reflect.include" value="com.badlogic.gdx.maps.objects.RectangleMapObject" />
 </module>
