@@ -29,6 +29,7 @@ import com.symbol.game.ecs.component.enemy.TrapComponent;
 import com.symbol.game.ecs.component.map.MapEntityComponent;
 import com.symbol.game.ecs.component.map.SquareSwitchComponent;
 import com.symbol.game.ecs.component.map.ToggleTileComponent;
+import com.symbol.game.ecs.entity.MapEntityType;
 import com.symbol.game.ecs.entity.Player;
 import com.symbol.game.ecs.entity.ProjectileMovementType;
 import com.symbol.game.effects.particle.Particle;
@@ -226,11 +227,16 @@ public class ProjectileSystem extends IteratingSystem {
                         break;
                     case GravitySwitch:
                         GravityComponent gravity = Mapper.GRAVITY_MAPPER.get(player);
-                        TextureComponent meTexture = Mapper.TEXTURE_MAPPER.get(mapEntity);
 
                         gravity.reverse = !gravity.reverse;
-                        meTexture.texture = res.getTexture(meTexture.textureStr +
-                                (gravity.reverse ? Resources.TOGGLE_ON : Resources.TOGGLE_OFF));
+                        for (Entity gravitySwitch : mapEntities) {
+                            MapEntityComponent gs = Mapper.MAP_ENTITY_MAPPER.get(gravitySwitch);
+                            if (gs.mapEntityType == MapEntityType.GravitySwitch) {
+                                TextureComponent gsTexture = Mapper.TEXTURE_MAPPER.get(gravitySwitch);
+                                gsTexture.texture = res.getTexture(gsTexture.textureStr +
+                                        (gravity.reverse ? Resources.TOGGLE_ON : Resources.TOGGLE_OFF));
+                            }
+                        }
                         break;
                     case SquareSwitch:
                         SquareSwitchComponent sw = Mapper.SQUARE_SWITCH_MAPPER.get(mapEntity);

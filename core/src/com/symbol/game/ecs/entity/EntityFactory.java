@@ -115,9 +115,9 @@ public class EntityFactory {
                 break;
             case NaturalJoin:
                 EntityBuilder.instance(engine)
-                        .enemy(EnemyMovementType.BackAndForth, EnemyAttackType.None, null)
+                        .enemy(EnemyMovementType.BackAndForth, EnemyAttackType.TwoHorizontalWave, null)
                         .activation(100f)
-                        .attack(2, 0f, "p_ltimes", 45f, 0f, false, 0f)
+                        .attack(2, 1.5f, "p_ltimes", 45f, 60f, false, 0f)
                         .explode()
                         .color(EntityColor.NATURAL_JOIN_COLOR)
                         .health(4)
