@@ -303,7 +303,7 @@ public class EnemyAttackSystem extends IteratingSystem {
                                  ProjectileMovementType movementType) {
         float bw = texture.getRegionWidth() - 1;
         float bh = texture.getRegionHeight() - 1;
-        return EntityBuilder.Companion.instance((PooledEngine) getEngine())
+        return EntityBuilder.instance((PooledEngine) getEngine())
                 .projectile(movementType, dir.facingRight, false, attackComp.projectileDestroyable,
                         attackComp.attackTexture, true,
                         attackComp.damage, 0f, attackComp.attackDetonateTime, attackComp.projectileAcceleration)
@@ -319,7 +319,7 @@ public class EnemyAttackSystem extends IteratingSystem {
                                         float dx, float dy, TextureRegion texture) {
         float bw = texture.getRegionWidth() - 1;
         float bh = texture.getRegionHeight() - 1;
-        return EntityBuilder.Companion.instance((PooledEngine) getEngine())
+        return EntityBuilder.instance((PooledEngine) getEngine())
                 .projectile(ProjectileMovementType.Normal, false, false, attackComp.projectileDestroyable,
                         attackComp.attackTexture, true, attackComp.damage, 0f, 0f, 0f)
                 .color(EntityColor.getProjectileColor(attackComp.attackTexture))

@@ -326,7 +326,7 @@ public class ProjectileSystem extends IteratingSystem {
                                  float dx, float dy, TextureRegion texture) {
         float bw = texture.getRegionWidth() - 1;
         float bh = texture.getRegionHeight() - 1;
-        EntityBuilder.Companion.instance((PooledEngine) getEngine())
+        EntityBuilder.instance((PooledEngine) getEngine())
                 .projectile(ProjectileMovementType.Normal, false, false, false, null, true, pj.damage, 0f, 0f, 0f)
                 .position(bounds.x + (bounds.width / 2) - (bw / 2), bounds.y + (bounds.height / 2) - (bh / 2))
                 .velocity(dx, dy, 0f)

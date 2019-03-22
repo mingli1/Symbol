@@ -68,7 +68,7 @@ public class KeyInputSystem extends EntitySystem implements KeyInputHandler {
             PositionComponent playerPos = Mapper.POS_MAPPER.get(player);
             DirectionComponent dir = Mapper.DIR_MAPPER.get(player);
 
-            EntityBuilder.Companion.instance((PooledEngine) getEngine())
+            EntityBuilder.instance((PooledEngine) getEngine())
                     .projectile(ProjectileMovementType.Normal,
                             false, true, false, null, false,
                             Player.PLAYER_DAMAGE, Player.PLAYER_PROJECTILE_KNOCKBACK, 0f, 0f)

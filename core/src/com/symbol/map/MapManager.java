@@ -112,7 +112,7 @@ public class MapManager implements Disposable {
             EnemyType enemyObjectType = typeProp == null ? EnemyType.None : EnemyType.getType(typeProp);
             boolean facingRight = facingRightProp == null ? true : (Boolean) facingRightProp;
 
-            EntityFactory.INSTANCE.createEnemy(engine, res, enemyObjectType, enemyObjectRect, facingRight);
+            EntityFactory.createEnemy(engine, res, enemyObjectType, enemyObjectRect, facingRight);
         }
     }
 
@@ -123,7 +123,7 @@ public class MapManager implements Disposable {
             String typeProp = mapEntityObject.getProperties().get(TYPE, String.class);
             MapEntityType mapEntityType = typeProp == null ? MapEntityType.None : MapEntityType.getType(typeProp);
 
-            EntityFactory.INSTANCE.createMapEntity(engine, res, mapEntityObject.getProperties(), mapEntityType, mapEntityRect);
+            EntityFactory.createMapEntity(engine, res, mapEntityObject.getProperties(), mapEntityType, mapEntityRect);
         }
     }
 
