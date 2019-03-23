@@ -1,0 +1,64 @@
+package com.symbol.game.ecs.entity
+
+enum class EnemyType(val typeStr: String) {
+
+    None(""),
+    EConstant("e"),
+    SquareRoot("sqrt"),
+    Exists("exists"),
+    Summation("sum"),
+    BigPi("big_pi"),
+    In("in"),
+    Theta("theta"),
+    BigOmega("big_omega"),
+    NaturalJoin("njoin"),
+    BigPhi("big_phi"),
+    Percent("percent"),
+    PercentOrbit("percent_orbit"),
+    Nabla("nabla"),
+    CIntegral("cintegral"),
+    Because("because");
+
+    companion object {
+        fun getType(typeStr: String) : EnemyType? {
+            for (type in EnemyType.values()) {
+                if (type.typeStr == typeStr) return type
+            }
+            return null
+        }
+    }
+
+}
+
+enum class EnemyAttackType {
+
+    None,
+    ShootOne,
+    ShootTwoHorizontal,
+    ShootTwoVertical,
+    ShootFour,
+    ShootFourDiagonal,
+    ShootEight,
+    ShootAtPlayer,
+    SprayThree,
+    ShootAndQuake,
+    Random,
+    ArcTwo,
+    HorizontalWave,
+    VerticalWave,
+    TwoHorizontalWave,
+    TwoVerticalWave,
+    FourWave
+
+}
+
+enum class EnemyMovementType {
+
+    None,
+    BackAndForth,
+    Charge,
+    Random,
+    RandomWithJump,
+    Orbit
+
+}

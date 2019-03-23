@@ -4,8 +4,8 @@ import com.badlogic.gdx.Game
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
-import com.symbol.screen.GameScreen
-import com.symbol.util.Resources
+import com.symbol.game.screen.GameScreen
+import com.symbol.game.util.Resources
 
 class Symbol : Game() {
 
