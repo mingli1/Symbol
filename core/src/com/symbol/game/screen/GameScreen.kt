@@ -119,6 +119,7 @@ class GameScreen(game: Symbol) : AbstractScreen(game) {
     }
 
     override fun render(dt: Float) {
+        if (gameState == GameState.Pause) return
         update(dt)
 
         Gdx.gl.glClearColor(1f, 1f, 1f, 1f)

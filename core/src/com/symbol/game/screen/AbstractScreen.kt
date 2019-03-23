@@ -14,6 +14,7 @@ abstract class AbstractScreen(protected val game: Symbol) : Screen, Disposable {
     protected var stage: Stage private set
     protected var viewport: Viewport private set
     protected var cam = OrthographicCamera()
+    protected var gameState = GameState.Resume
 
     init {
         cam.setToOrtho(false, Config.V_WIDTH.toFloat(), Config.V_HEIGHT.toFloat())
@@ -37,6 +38,14 @@ abstract class AbstractScreen(protected val game: Symbol) : Screen, Disposable {
 
     override fun dispose() {
         stage.dispose()
+    }
+
+    fun notifyGameState(state: GameState) {
+        gameState = state
+    }
+
+    enum class GameState {
+        Resume, Pause
     }
 
 }
