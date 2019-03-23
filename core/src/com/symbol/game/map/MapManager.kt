@@ -17,6 +17,8 @@ import com.symbol.game.ecs.entity.EntityFactory
 import com.symbol.game.ecs.entity.MapEntityType
 import com.symbol.game.util.Resources
 
+const val TILE_SIZE = 8
+
 private const val DIR = "map/"
 
 private const val PLAYER_SPAWN_LAYER = "player"
@@ -44,8 +46,6 @@ class MapManager(batch: Batch, private val cam: OrthographicCamera,
     private var enemyLayer: MapLayer? = null
     private var mapEntityLayer: MapLayer? = null
 
-    var tileSize = 0
-        private set
     var mapWidth = 0
         private set
     var mapHeight = 0
@@ -64,7 +64,6 @@ class MapManager(batch: Batch, private val cam: OrthographicCamera,
         enemyLayer = tiledMap.layers.get(ENEMY_LAYER)
         mapEntityLayer = tiledMap.layers.get(MAP_ENTITY_LAYER)
 
-        tileSize = tileLayer.tileWidth.toInt()
         mapWidth = tileLayer.width
         mapHeight = tileLayer.height
 

@@ -19,6 +19,7 @@ import com.symbol.game.input.AndroidInput
 import com.symbol.game.input.KeyInput
 import com.symbol.game.input.KeyInputSystem
 import com.symbol.game.map.MapManager
+import com.symbol.game.map.TILE_SIZE
 import com.symbol.game.map.camera.Background
 import com.symbol.game.map.camera.CameraShake
 import com.symbol.game.scene.Hud
@@ -76,7 +77,7 @@ class GameScreen(game: Symbol) : AbstractScreen(game) {
 
     private fun resetSystems() {
         engine.getSystem(MapCollisionSystem::class.java).setMapData(mm.mapObjects,
-                mm.mapWidth * mm.tileSize, mm.mapHeight * mm.tileSize)
+                mm.mapWidth * TILE_SIZE, mm.mapHeight * TILE_SIZE)
         engine.getSystem(ProjectileSystem::class.java).setMapData(mm.mapObjects)
         engine.getSystem(EnemyAttackSystem::class.java).reset()
         engine.getSystem(EnemyMovementSystem::class.java).reset()
@@ -106,8 +107,8 @@ class GameScreen(game: Symbol) : AbstractScreen(game) {
     private fun updateCamera(dt: Float) {
         val playerPos = Mapper.POS_MAPPER.get(player)
 
-        cam.position.x += (playerPos.x + (mm.tileSize / 2) - cam.position.x) * CAMERA_LERP * dt
-        cam.position.y += (playerPos.y + (mm.tileSize / 2) - cam.position.y) * CAMERA_LERP * dt
+        cam.position.x += (playerPos.x + (TILE_SIZE / 2) - cam.position.x) * CAMERA_LERP * dt
+        cam.position.y += (playerPos.y + (TILE_SIZE / 2) - cam.position.y) * CAMERA_LERP * dt
 
         if (CameraShake.time > 0 || CameraShake.toggle) {
             CameraShake.update(dt)
