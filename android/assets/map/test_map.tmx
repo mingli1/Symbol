@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.0.1" orientation="orthogonal" renderorder="right-down" width="50" height="20" tilewidth="8" tileheight="8" nextobjectid="122">
+<map version="1.0" tiledversion="1.0.1" orientation="orthogonal" renderorder="right-down" width="50" height="20" tilewidth="8" tileheight="8" nextobjectid="124">
  <tileset firstgid="1" name="set" tilewidth="8" tileheight="8" tilecount="64" columns="8">
   <image source="tileset.png" width="64" height="64"/>
  </tileset>
@@ -168,6 +168,16 @@
    <properties>
     <property name="id" type="int" value="0"/>
     <property name="type" value="toggle"/>
+   </properties>
+  </object>
+  <object id="122" x="264" y="56" width="8" height="8">
+   <properties>
+    <property name="type" value="gswitch"/>
+   </properties>
+  </object>
+  <object id="123" x="301.25" y="20.75" width="8" height="8">
+   <properties>
+    <property name="type" value="gswitch"/>
    </properties>
   </object>
  </objectgroup>

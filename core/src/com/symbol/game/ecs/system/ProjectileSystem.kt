@@ -202,11 +202,16 @@ class ProjectileSystem(private val player: Player, private val res: Resources)
                     }
                     MapEntityType.GravitySwitch -> {
                         val gravity = Mapper.GRAVITY_MAPPER.get(player)
-                        val meTexture = Mapper.TEXTURE_MAPPER.get(mapEntity)
 
                         gravity.reverse = !gravity.reverse
-                        meTexture.texture = res.getTexture(meTexture.textureStr +
-                                if (gravity.reverse) TOGGLE_ON else TOGGLE_OFF)
+                        for (gravitySwitch in mapEntities) {
+                            val gme = Mapper.MAP_ENTITY_MAPPER.get(gravitySwitch)
+                            if (gme.mapEntityType == MapEntityType.GravitySwitch) {
+                                val meTexture = Mapper.TEXTURE_MAPPER.get(gravitySwitch)
+                                meTexture.texture = res.getTexture(meTexture.textureStr +
+                                        if (gravity.reverse) TOGGLE_ON else TOGGLE_OFF)
+                            }
+                        }
                     }
                     MapEntityType.SquareSwitch -> {
                         val switch = Mapper.SQUARE_SWITCH_MAPPER.get(mapEntity)
