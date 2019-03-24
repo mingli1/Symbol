@@ -67,6 +67,7 @@ class KeyInputSystem(private val res: Resources) : EntitySystem(), KeyInputHandl
     override fun startCharge() {
         if (playerComp.canShoot) {
             charging = true
+            playerComp.canShoot = false
         }
     }
 
@@ -89,7 +90,6 @@ class KeyInputSystem(private val res: Resources) : EntitySystem(), KeyInputHandl
                     .texture(texture)
                     .direction().remove().build()
 
-            playerComp.canShoot = false
             charging = false
             playerComp.chargeTime = 0f
         }
