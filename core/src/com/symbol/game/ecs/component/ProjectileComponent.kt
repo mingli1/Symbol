@@ -8,6 +8,7 @@ class ProjectileComponent : Component, Pool.Poolable {
     var lifeTime = 0f
 
     var parentFacingRight = false
+    var sub = false
 
     var textureStr: String? = null
     var collidesWithTerrain = true
@@ -15,6 +16,7 @@ class ProjectileComponent : Component, Pool.Poolable {
     var enemy = false
     var damage = 0
     var knockback = 0f
+    var playerType = 0
 
     var detonateTime = 0f
     var acceleration = 0f
@@ -27,12 +29,14 @@ class ProjectileComponent : Component, Pool.Poolable {
     override fun reset() {
         lifeTime = 0f
         parentFacingRight = false
+        sub = false
         textureStr = null
         collidesWithTerrain = true
         collidesWithProjectiles = false
         enemy = false
         damage = 0
         knockback = 0f
+        playerType = 0
         detonateTime = 0f
         acceleration = 0f
         movementType = ProjectileMovementType.Normal

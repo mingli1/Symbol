@@ -61,23 +61,27 @@ class EntityBuilder(private val engine: PooledEngine) {
 
     fun projectile(movementType: ProjectileMovementType = ProjectileMovementType.Normal,
                    parentFacingRight: Boolean = false,
+                   sub: Boolean = false,
                    collidesWithTerrain: Boolean = true,
                    collidesWithProjectiles: Boolean = false,
                    textureStr: String? = null,
                    enemy: Boolean = false,
                    damage: Int = 0,
                    knockback: Float = 0f,
+                   playerType: Int = 0,
                    detonateTime: Float = 0f,
                    acceleration: Float = 0f) : EntityBuilder {
         projectileComponent = engine.createComponent(ProjectileComponent::class.java)
         projectileComponent?.movementType = movementType
         projectileComponent?.parentFacingRight = parentFacingRight
+        projectileComponent?.sub = sub
         projectileComponent?.collidesWithTerrain = collidesWithTerrain
         projectileComponent?.collidesWithProjectiles = collidesWithProjectiles
         projectileComponent?.textureStr = textureStr
         projectileComponent?.enemy = enemy
         projectileComponent?.damage = damage
         projectileComponent?.knockback = knockback
+        projectileComponent?.playerType = playerType
         projectileComponent?.detonateTime = detonateTime
         projectileComponent?.acceleration = acceleration
         return this

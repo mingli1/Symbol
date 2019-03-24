@@ -169,6 +169,7 @@ class Resources : Disposable {
 
     fun getSubProjectileTextureFor(key: String) : TextureRegion? {
         if (key == "p_xor") return getTexture("p_dot_xor")
+        if (key == "p_dot4") return getTexture("p_dot")
         return null
     }
 

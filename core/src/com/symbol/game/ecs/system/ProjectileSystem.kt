@@ -15,6 +15,7 @@ import com.symbol.game.ecs.Mapper
 import com.symbol.game.ecs.component.*
 import com.symbol.game.ecs.component.map.MapEntityComponent
 import com.symbol.game.ecs.component.map.ToggleTileComponent
+import com.symbol.game.ecs.entity.EntityColor
 import com.symbol.game.ecs.entity.MapEntityType
 import com.symbol.game.ecs.entity.Player
 import com.symbol.game.effects.particle.DEFAULT_INTESITY
@@ -104,6 +105,7 @@ class ProjectileSystem(private val player: Player, private val res: Resources)
         if (pj.collidesWithTerrain) {
             for (mapObject in mapObjects) {
                 if (bb.rect.overlaps(mapObject.bounds)) {
+                    if (pj.playerType != 0) handlePlayerProjectile(entity, pj, bb.rect)
                     remove.shouldRemove = true
                     ParticleSpawner.spawn(res, color.hex!!,
                             DEFAULT_LIFETIME, DEFAULT_INTESITY + pj.damage,
@@ -120,6 +122,7 @@ class ProjectileSystem(private val player: Player, private val res: Resources)
             if (entity!! != projectile && projectileComp.collidesWithProjectiles) {
                 val bounds = Mapper.BOUNDING_BOX_MAPPER.get(projectile)
                 if (bb.rect.overlaps(bounds.rect)) {
+                    if (pj.playerType != 0) handlePlayerProjectile(entity, pj, bb.rect)
                     remove.shouldRemove = true
                     val projectileRemove = Mapper.REMOVE_MAPPER.get(projectile)
                     projectileRemove.shouldRemove = true
@@ -150,6 +153,8 @@ class ProjectileSystem(private val player: Player, private val res: Resources)
                         knockback.knockingBack = true
                     }
                     hit(e, pj.damage)
+
+                    if (pj.playerType != 0) handlePlayerProjectile(entity, pj, bb.rect)
 
                     val entityColor = Mapper.COLOR_MAPPER.get(e)
                     ParticleSpawner.spawn(res, entityColor.hex!!,
@@ -194,7 +199,7 @@ class ProjectileSystem(private val player: Player, private val res: Resources)
             val me = Mapper.MAP_ENTITY_MAPPER.get(mapEntity)
             val bounds = Mapper.BOUNDING_BOX_MAPPER.get(mapEntity)
 
-            if (!pj.enemy && bb.rect.overlaps(bounds.rect)) {
+            if (!pj.enemy && !pj.sub && bb.rect.overlaps(bounds.rect)) {
                 when (me.mapEntityType) {
                     MapEntityType.Mirror -> {
                         pj.enemy = true
@@ -240,6 +245,7 @@ class ProjectileSystem(private val player: Player, private val res: Resources)
 
             if (me.projectileCollidable) {
                 if (bb.rect.overlaps(bounds.rect)) {
+                    if (pj.playerType != 0) handlePlayerProjectile(entity, pj, bb.rect)
                     ParticleSpawner.spawn(res, color.hex!!,
                             DEFAULT_LIFETIME, DEFAULT_INTESITY + pj.damage,
                             position.x + width / 2,
@@ -258,17 +264,38 @@ class ProjectileSystem(private val player: Player, private val res: Resources)
                 val speed = if (vel.dx != 0f) Math.abs(vel.dx) else Math.abs(vel.dy)
                 val texture = res.getSubProjectileTextureFor(pj.textureStr!!)!!
 
-                createSubProjectile(pj, bounds, speed, 0f, texture)
-                createSubProjectile(pj, bounds, speed * DIAGONAL_PROJECTILE_SCALING, -speed * DIAGONAL_PROJECTILE_SCALING, texture)
-                createSubProjectile(pj, bounds, 0f, -speed, texture)
-                createSubProjectile(pj, bounds, -speed * DIAGONAL_PROJECTILE_SCALING, -speed * DIAGONAL_PROJECTILE_SCALING, texture)
-                createSubProjectile(pj, bounds, -speed, 0f, texture)
-                createSubProjectile(pj, bounds, -speed * DIAGONAL_PROJECTILE_SCALING, speed * DIAGONAL_PROJECTILE_SCALING, texture)
-                createSubProjectile(pj, bounds, 0f, speed, texture)
-                createSubProjectile(pj, bounds, speed * DIAGONAL_PROJECTILE_SCALING, speed * DIAGONAL_PROJECTILE_SCALING, texture)
+                createSubProjectile(pj.damage, bounds, speed, 0f, texture)
+                createSubProjectile(pj.damage, bounds, speed * DIAGONAL_PROJECTILE_SCALING, -speed * DIAGONAL_PROJECTILE_SCALING, texture)
+                createSubProjectile(pj.damage, bounds, 0f, -speed, texture)
+                createSubProjectile(pj.damage, bounds, -speed * DIAGONAL_PROJECTILE_SCALING, -speed * DIAGONAL_PROJECTILE_SCALING, texture)
+                createSubProjectile(pj.damage, bounds, -speed, 0f, texture)
+                createSubProjectile(pj.damage, bounds, -speed * DIAGONAL_PROJECTILE_SCALING, speed * DIAGONAL_PROJECTILE_SCALING, texture)
+                createSubProjectile(pj.damage, bounds, 0f, speed, texture)
+                createSubProjectile(pj.damage, bounds, speed * DIAGONAL_PROJECTILE_SCALING, speed * DIAGONAL_PROJECTILE_SCALING, texture)
 
                 remove.shouldRemove = true
             }
+        }
+    }
+
+    private fun handlePlayerProjectile(entity: Entity?, pj: ProjectileComponent, bounds: Rectangle) {
+        if (pj.playerType == 4) {
+            val vel = Mapper.VEL_MAPPER.get(entity)
+            val speed = if (vel.dx != 0f) Math.abs(vel.dx) else Math.abs(vel.dy)
+            val texture = res.getSubProjectileTextureFor(pj.textureStr!!)!!
+
+            createSubProjectile(1, bounds, speed, 0f, texture, false, true, EntityColor.DOT_COLOR)
+            createSubProjectile(1, bounds, 0f, -speed, texture, false, true, EntityColor.DOT_COLOR)
+            createSubProjectile(1, bounds, -speed, 0f, texture, false, true, EntityColor.DOT_COLOR)
+            createSubProjectile(1, bounds, 0f, speed, texture, false, true, EntityColor.DOT_COLOR)
+            createSubProjectile(1, bounds, speed * DIAGONAL_PROJECTILE_SCALING,
+                    -speed * DIAGONAL_PROJECTILE_SCALING, texture, false, true, EntityColor.DOT_COLOR)
+            createSubProjectile(1, bounds, -speed * DIAGONAL_PROJECTILE_SCALING,
+                    -speed * DIAGONAL_PROJECTILE_SCALING, texture, false, true, EntityColor.DOT_COLOR)
+            createSubProjectile(1, bounds, -speed * DIAGONAL_PROJECTILE_SCALING,
+                    speed * DIAGONAL_PROJECTILE_SCALING, texture, false, true, EntityColor.DOT_COLOR)
+            createSubProjectile(1, bounds, speed * DIAGONAL_PROJECTILE_SCALING,
+                    speed * DIAGONAL_PROJECTILE_SCALING, texture, false, true, EntityColor.DOT_COLOR)
         }
     }
 
@@ -306,12 +333,16 @@ class ProjectileSystem(private val player: Player, private val res: Resources)
         }
     }
 
-    private fun createSubProjectile(pj: ProjectileComponent, bounds: Rectangle,
-                                 dx: Float = 0f, dy: Float = 0f, texture: TextureRegion) {
+    private fun createSubProjectile(damage: Int, bounds: Rectangle,
+                                    dx: Float = 0f, dy: Float = 0f, texture: TextureRegion,
+                                    enemy: Boolean = true,
+                                    collidesWithTerrain: Boolean = false,
+                                    hex: String? = null) {
         val bw = texture.regionWidth - 1
         val bh = texture.regionHeight - 1
         EntityBuilder.instance(engine as PooledEngine)
-                .projectile(collidesWithTerrain = false, enemy = true, damage = pj.damage)
+                .projectile(sub = true, collidesWithTerrain = collidesWithTerrain, enemy = enemy, damage = damage)
+                .color(hex!!)
                 .position(bounds.x + (bounds.width / 2) - (bw / 2), bounds.y + (bounds.height / 2) - (bh / 2))
                 .velocity(dx = dx, dy = dy)
                 .boundingBox(bw.toFloat(), bh.toFloat())
