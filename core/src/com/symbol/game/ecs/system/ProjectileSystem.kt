@@ -340,14 +340,15 @@ class ProjectileSystem(private val player: Player, private val res: Resources)
                                     hex: String? = null) {
         val bw = texture.regionWidth - 1
         val bh = texture.regionHeight - 1
-        EntityBuilder.instance(engine as PooledEngine)
+        val builder = EntityBuilder.instance(engine as PooledEngine)
                 .projectile(sub = true, collidesWithTerrain = collidesWithTerrain, enemy = enemy, damage = damage)
-                .color(hex!!)
                 .position(bounds.x + (bounds.width / 2) - (bw / 2), bounds.y + (bounds.height / 2) - (bh / 2))
                 .velocity(dx = dx, dy = dy)
                 .boundingBox(bw.toFloat(), bh.toFloat())
                 .texture(texture)
-                .direction(yFlip = true).remove().build()
+                .direction(yFlip = true).remove()
+        if (hex != null) builder.color(hex)
+        builder.build()
     }
 
     private fun handleTeleportation(entity: Entity?) {
