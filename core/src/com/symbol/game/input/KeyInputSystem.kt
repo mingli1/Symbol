@@ -4,6 +4,7 @@ import com.badlogic.ashley.core.*
 import com.symbol.game.ecs.EntityBuilder
 import com.symbol.game.ecs.Mapper
 import com.symbol.game.ecs.component.PlayerComponent
+import com.symbol.game.ecs.component.StatusEffect
 import com.symbol.game.ecs.component.VelocityComponent
 import com.symbol.game.ecs.entity.*
 import com.symbol.game.ecs.system.MAP_OBJECT_JUMP_BOOST_PERCENTAGE
@@ -80,7 +81,7 @@ class KeyInputSystem(private val res: Resources) : EntitySystem(), KeyInputHandl
             val width = texture.regionWidth.toFloat()
             val height = texture.regionHeight.toFloat()
 
-            EntityBuilder.instance(engine as PooledEngine)
+            val builder = EntityBuilder.instance(engine as PooledEngine)
                     .projectile(damage = playerComp.damage, knockback = PLAYER_PROJECTILE_KNOCKBACK,
                             playerType = playerComp.damage, textureStr = key)
                     .color(EntityColor.getProjectileColor(key)!!)
@@ -89,7 +90,12 @@ class KeyInputSystem(private val res: Resources) : EntitySystem(), KeyInputHandl
                     .velocity(dx = if (dir.facingRight) PLAYER_PROJECTILE_SPEED else -PLAYER_PROJECTILE_SPEED)
                     .boundingBox(width, height)
                     .texture(texture, key)
-                    .direction().remove().build()
+                    .direction().remove()
+
+            if (playerComp.damage == 2) builder.statusEffect(apply = StatusEffect.Snare, duration = PLAYER_SNARE_DURATION)
+            if (playerComp.damage == 3) builder.statusEffect(apply = StatusEffect.Stun, duration = PLAYER_STUN_DURATION)
+
+            builder.build()
 
             charging = false
             playerComp.chargeTime = 0f
