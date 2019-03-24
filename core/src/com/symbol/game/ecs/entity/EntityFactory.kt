@@ -16,6 +16,7 @@ object EntityFactory {
             EnemyType.EConstant -> {
                 EntityBuilder.instance(engine)
                         .enemy(movementType = EnemyMovementType.BackAndForth)
+                        .statusEffect()
                         .activation(150f)
                         .attack(damage = 2)
                         .color(EntityColor.E_COLOR)
@@ -30,6 +31,7 @@ object EntityFactory {
             EnemyType.SquareRoot -> {
                 EntityBuilder.instance(engine)
                         .enemy(movementType = EnemyMovementType.Charge)
+                        .statusEffect()
                         .activation(75f)
                         .attack(damage = 3)
                         .color(EntityColor.SQRT_COLOR)
@@ -44,6 +46,7 @@ object EntityFactory {
             EnemyType.Exists -> {
                 EntityBuilder.instance(engine)
                         .enemy(movementType = EnemyMovementType.Charge)
+                        .statusEffect()
                         .activation(90f)
                         .attack(damage = PLAYER_HP)
                         .color(EntityColor.EXISTS_COLOR)
@@ -58,6 +61,7 @@ object EntityFactory {
             EnemyType.Summation -> {
                 EntityBuilder.instance(engine)
                         .enemy(attackType = EnemyAttackType.ShootOne)
+                        .statusEffect()
                         .activation(120f)
                         .attack(damage = 2, attackTexture = "p_large_triangle", attackRate = 1.4f, projectileSpeed = 45f)
                         .color(EntityColor.SUM_COLOR)
@@ -72,6 +76,7 @@ object EntityFactory {
             EnemyType.BigPi -> {
                 EntityBuilder.instance(engine)
                         .enemy(attackType = EnemyAttackType.ShootOne)
+                        .statusEffect()
                         .activation(120f)
                         .attack(damage = 4, attackTexture = "p_big_ll", attackRate = 1.4f, projectileSpeed = 45f)
                         .color(EntityColor.BIG_PI_COLOR)
@@ -86,6 +91,7 @@ object EntityFactory {
             EnemyType.In -> {
                 EntityBuilder.instance(engine)
                         .enemy(attackType = EnemyAttackType.ShootOne)
+                        .statusEffect()
                         .activation(100f)
                         .attack(damage = 1, attackTexture = "p_xor", attackRate = 2f, projectileSpeed = 45f, attackDetonateTime = 2f)
                         .color(EntityColor.IN_COLOR)
@@ -100,6 +106,7 @@ object EntityFactory {
             EnemyType.BigOmega -> {
                 EntityBuilder.instance(engine)
                         .enemy(attackType = EnemyAttackType.SprayThree)
+                        .statusEffect()
                         .activation(150f)
                         .attack(damage = 2, attackTexture = "p_cup", attackRate = 2.5f, projectileSpeed = 200f)
                         .color(EntityColor.BIG_OMEGA_COLOR)
@@ -113,6 +120,7 @@ object EntityFactory {
             EnemyType.NaturalJoin -> {
                 EntityBuilder.instance(engine)
                         .enemy(movementType = EnemyMovementType.BackAndForth)
+                        .statusEffect()
                         .activation(100f)
                         .attack(damage = 2, attackTexture = "p_ltimes", projectileSpeed = 45f)
                         .explode()
@@ -128,6 +136,7 @@ object EntityFactory {
             EnemyType.BigPhi -> {
                 EntityBuilder.instance(engine)
                         .enemy(attackType = EnemyAttackType.ShootAndQuake)
+                        .statusEffect()
                         .activation(200f)
                         .attack(damage = 4, attackTexture = "p_alpha", attackRate = 1.5f, projectileSpeed = 60f)
                         .explode()
@@ -144,6 +153,7 @@ object EntityFactory {
             EnemyType.Percent -> {
                 val parent = EntityBuilder.instance(engine)
                         .enemy(movementType = EnemyMovementType.BackAndForth)
+                        .statusEffect()
                         .activation(120f)
                         .attack(damage = 1)
                         .color(EntityColor.PERCENT_COLOR)
@@ -189,6 +199,7 @@ object EntityFactory {
             EnemyType.CIntegral -> {
                 EntityBuilder.instance(engine)
                         .enemy(attackType = EnemyAttackType.ArcTwo)
+                        .statusEffect()
                         .activation(120f)
                         .attack(damage = 4, attackTexture = "p_succ", attackRate = 2f,
                                 projectileSpeed = 80f, projectileAcceleration = 80f)
@@ -205,6 +216,7 @@ object EntityFactory {
             EnemyType.Because -> {
                 EntityBuilder.instance(engine)
                         .enemy(movementType = EnemyMovementType.BackAndForth)
+                        .statusEffect()
                         .activation(120f)
                         .attack(damage = 2, attackTexture = "p_because", projectileSpeed = 60f)
                         .trap()
@@ -213,7 +225,7 @@ object EntityFactory {
                         .boundingBox(14f, 12f)
                         .position(rect.x, rect.y)
                         .direction(facingRight)
-                        .velocity()
+                        .velocity(speed = 20f)
                         .texture(texture, "e_because")
                         .gravity().remove().build()
             }

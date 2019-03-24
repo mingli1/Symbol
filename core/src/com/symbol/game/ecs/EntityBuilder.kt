@@ -30,6 +30,7 @@ class EntityBuilder(private val engine: PooledEngine) {
     private var velocityComponent: VelocityComponent? = null
     private var orbitComponent: OrbitComponent? = null
     private var colorComponent: ColorComponent? = null
+    private var statusEffectComponent: StatusEffectComponent? = null
 
     private var enemyComponent: EnemyComponent? = null
     private var activationComponent: ActivationComponent? = null
@@ -173,6 +174,16 @@ class EntityBuilder(private val engine: PooledEngine) {
         return this
     }
 
+    fun statusEffect(type: StatusEffect = StatusEffect.None, apply: StatusEffect = StatusEffect.None,
+                     duration: Float = 0f, value: Float = 0f) : EntityBuilder {
+        statusEffectComponent = engine.createComponent(StatusEffectComponent::class.java)
+        statusEffectComponent?.type = type
+        statusEffectComponent?.apply = apply
+        statusEffectComponent?.duration = duration
+        statusEffectComponent?.value = value
+        return this
+    }
+
     fun enemy(movementType: EnemyMovementType = EnemyMovementType.None,
               attackType: EnemyAttackType = EnemyAttackType.None,
               parent: Entity? = null) : EntityBuilder {
@@ -302,6 +313,7 @@ class EntityBuilder(private val engine: PooledEngine) {
         if (textureComponent != null) entity.add(textureComponent)
         if (velocityComponent != null) entity.add(velocityComponent)
         if (orbitComponent != null) entity.add(orbitComponent)
+        if (statusEffectComponent != null) entity.add(statusEffectComponent)
 
         if (enemyComponent != null) entity.add(enemyComponent)
         if (activationComponent != null) entity.add(activationComponent)

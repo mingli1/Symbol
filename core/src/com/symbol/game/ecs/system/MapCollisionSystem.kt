@@ -120,11 +120,15 @@ class MapCollisionSystem(private val res: Resources) : IteratingSystem(
                             gravity.onGround = true
                             gravity.platform.set(mapObject.bounds)
 
-                            handleGroundedMapObject(mapObject, player)
-                            handleSlowMapObject(mapObject, velocity)
-                            handlePushRightMapObject(mapObject, velocity)
-                            handlePushLeftMapObject(mapObject, velocity)
-                            handleJumpBoostMapObject(mapObject, player)
+                            val se = Mapper.STATUS_EFFECT_MAPPER.get(entity)
+
+                            if (!se!!.entityApplied && se.type != StatusEffect.None) se.finish()
+
+                            handleGroundedMapObject(mapObject, player, se)
+                            handleSlowMapObject(mapObject, velocity, se)
+                            handlePushRightMapObject(mapObject, velocity, se)
+                            handlePushLeftMapObject(mapObject, velocity, se)
+                            handleJumpBoostMapObject(mapObject, player, se)
                         }
                         velocity.dy = 0f
                     }
@@ -231,16 +235,23 @@ class MapCollisionSystem(private val res: Resources) : IteratingSystem(
         }
     }
 
-    private fun handleGroundedMapObject(mapObject: MapObject, player: PlayerComponent?) {
+    private fun handleGroundedMapObject(mapObject: MapObject, player: PlayerComponent?, se: StatusEffectComponent?) {
         val grounded = mapObject.type == MapObjectType.Grounded
-        player?.canJump = !grounded
-        if (grounded) player?.canDoubleJump = false
+        if (player != null) {
+            player.canJump = !grounded
+            if (grounded) {
+                player.canDoubleJump = false
+                se!!.apply(StatusEffect.Grounded)
+            }
+        }
     }
 
-    private fun handleSlowMapObject(mapObject: MapObject, velocity: VelocityComponent) {
+    private fun handleSlowMapObject(mapObject: MapObject, velocity: VelocityComponent, se: StatusEffectComponent?) {
         if (mapObject.type == MapObjectType.Slow) {
             if (velocity.dx > 0) velocity.dx = velocity.speed * MAP_OBJECT_SLOW_PERCENTAGE
             else if (velocity.dx < 0) velocity.dx = -velocity.speed * MAP_OBJECT_SLOW_PERCENTAGE
+
+            se!!.apply(StatusEffect.Slow)
         }
         else {
             if (velocity.dx != 0f && Math.abs(velocity.dx) == velocity.speed * MAP_OBJECT_SLOW_PERCENTAGE) {
@@ -250,22 +261,27 @@ class MapCollisionSystem(private val res: Resources) : IteratingSystem(
         }
     }
 
-    private fun handlePushRightMapObject(mapObject: MapObject, velocity: VelocityComponent) {
+    private fun handlePushRightMapObject(mapObject: MapObject, velocity: VelocityComponent, se: StatusEffectComponent?) {
         if (mapObject.type == MapObjectType.PushRight) {
             if (velocity.dx > 0 && velocity.dx == velocity.speed) velocity.dx += MAP_OBJECT_PUSH
+            se!!.apply(StatusEffect.SpeedBoostRight)
         }
         else if (velocity.dx > 0 && velocity.dx == velocity.speed + MAP_OBJECT_PUSH) velocity.dx = velocity.speed
     }
 
-    private fun handlePushLeftMapObject(mapObject: MapObject, velocity: VelocityComponent) {
+    private fun handlePushLeftMapObject(mapObject: MapObject, velocity: VelocityComponent, se: StatusEffectComponent?) {
         if (mapObject.type == MapObjectType.PushLeft) {
             if (velocity.dx < 0 && velocity.dx == -velocity.speed) velocity.dx -= MAP_OBJECT_PUSH
+            se!!.apply(StatusEffect.SpeedBoostLeft)
         }
         else if (velocity.dx < 0 && velocity.dx == -velocity.speed - MAP_OBJECT_PUSH) velocity.dx = -velocity.speed
     }
 
-    private fun handleJumpBoostMapObject(mapObject: MapObject, player: PlayerComponent?) {
+    private fun handleJumpBoostMapObject(mapObject: MapObject, player: PlayerComponent?, se: StatusEffectComponent?) {
         player?.hasJumpBoost = mapObject.type == MapObjectType.JumpBoost
+        if (player != null && mapObject.type == MapObjectType.JumpBoost) {
+            se!!.apply(StatusEffect.JumpBoost)
+        }
     }
 
     private fun savePreviousPosition(position: PositionComponent) {

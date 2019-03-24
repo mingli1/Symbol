@@ -15,6 +15,7 @@ const val TOP_RIGHT ="_tr"
 const val ORBIT = "_orbit"
 
 const val INCORPOREAL = "_ic"
+const val STATUS_EFFECT = "se_"
 
 const val TOGGLE_ON = "_on"
 const val TOGGLE_OFF = "_off"
@@ -48,6 +49,7 @@ class Resources : Disposable {
         loadPlayerAndEnemies()
         loadMapEntities()
         loadProjectiles()
+        loadStatusEffects()
         loadBrackets()
         loadToggles()
         loadColors()
@@ -99,6 +101,16 @@ class Resources : Disposable {
         loadProjectile("p_alpha")
         loadProjectile("p_succ")
         loadProjectile("p_because")
+    }
+
+    private fun loadStatusEffects() {
+        load(STATUS_EFFECT + "stun")
+        load(STATUS_EFFECT + "snare")
+        load(STATUS_EFFECT + "slow")
+        load(STATUS_EFFECT + "grounded")
+        load(STATUS_EFFECT + "speed_boost_right")
+        load(STATUS_EFFECT + "speed_boost_left")
+        load(STATUS_EFFECT + "jump_boost")
     }
 
     private fun loadBrackets() {

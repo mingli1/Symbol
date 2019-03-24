@@ -20,6 +20,7 @@ object Mapper {
     val HEALTH_MAPPER: ComponentMapper<HealthComponent> = ComponentMapper.getFor(HealthComponent::class.java)
     val KNOCKBACK_MAPPER: ComponentMapper<KnockbackComponent> = ComponentMapper.getFor(KnockbackComponent::class.java)
     val ORBIT_MAPPER: ComponentMapper<OrbitComponent> = ComponentMapper.getFor(OrbitComponent::class.java)
+    val STATUS_EFFECT_MAPPER: ComponentMapper<StatusEffectComponent> = ComponentMapper.getFor(StatusEffectComponent::class.java)
 
     val ENEMY_MAPPER: ComponentMapper<EnemyComponent> = ComponentMapper.getFor(EnemyComponent::class.java)
     val ACTIVATION_MAPPER: ComponentMapper<ActivationComponent> = ComponentMapper.getFor(ActivationComponent::class.java)

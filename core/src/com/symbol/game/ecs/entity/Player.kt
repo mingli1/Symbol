@@ -45,6 +45,7 @@ class Player(res: Resources) : Entity() {
         add(PositionComponent())
         add(GravityComponent())
         add(DirectionComponent())
+        add(StatusEffectComponent())
         add(color)
         add(bounds)
         add(texture)
