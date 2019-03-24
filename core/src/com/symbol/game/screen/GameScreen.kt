@@ -69,6 +69,7 @@ class GameScreen(game: Symbol) : AbstractScreen(game) {
         engine.addSystem(EnemyMovementSystem(player, game.res))
         engine.addSystem(DirectionSystem())
         engine.addSystem(GravitySystem())
+        engine.addSystem(StatusEffectSystem())
         engine.addSystem(RenderSystem(game.batch))
         engine.addSystem(StatusRenderSystem(game.batch, game.res))
         engine.addSystem(RemoveSystem())
@@ -81,6 +82,7 @@ class GameScreen(game: Symbol) : AbstractScreen(game) {
         engine.getSystem(EnemyAttackSystem::class.java).reset()
         engine.getSystem(EnemyMovementSystem::class.java).reset()
         engine.getSystem(StatusRenderSystem::class.java).reset()
+        engine.getSystem(StatusEffectSystem::class.java).reset()
     }
 
     override fun show() {

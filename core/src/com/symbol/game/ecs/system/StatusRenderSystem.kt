@@ -6,6 +6,7 @@ import com.badlogic.ashley.systems.IteratingSystem
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.symbol.game.ecs.Mapper
 import com.symbol.game.ecs.component.HealthComponent
+import com.symbol.game.ecs.component.ProjectileComponent
 import com.symbol.game.ecs.component.StatusEffect
 import com.symbol.game.ecs.component.StatusEffectComponent
 import com.symbol.game.util.Resources
@@ -14,7 +15,7 @@ import com.symbol.game.util.STATUS_EFFECT
 import java.util.HashMap
 
 private const val HP_BAR_VISIBLE_DURATION = 2f
-private const val HP_BAR_VISIBLE_DURATION_WITH_SE = 0.5f
+private const val HP_BAR_VISIBLE_DURATION_WITH_SE = 0.4f
 private const val HEALTH_BAR_HEIGHT = 1
 private const val HP_BAR_X_OFFSET = 2
 private const val HP_BAR_Y_OFFSET = 3
@@ -23,7 +24,7 @@ private const val SE_SIZE = 5f
 private const val SE_Y_OFFSET = 2
 
 class StatusRenderSystem(private val batch: Batch, private val res: Resources)
-    : IteratingSystem(Family.one(StatusEffectComponent::class.java, HealthComponent::class.java).get()) {
+    : IteratingSystem(Family.one(StatusEffectComponent::class.java, HealthComponent::class.java).exclude(ProjectileComponent::class.java).get()) {
 
     private val timers: MutableMap<Entity, Float> = HashMap()
     private val startHealthBars: MutableMap<Entity, Boolean> = HashMap()

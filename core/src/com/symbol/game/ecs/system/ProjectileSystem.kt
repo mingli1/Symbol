@@ -154,6 +154,10 @@ class ProjectileSystem(private val player: Player, private val res: Resources)
                     }
                     hit(e, pj.damage)
 
+                    val se = Mapper.STATUS_EFFECT_MAPPER.get(entity)
+                    val target = Mapper.STATUS_EFFECT_MAPPER.get(e)
+                    if (se != null && target != null) target.apply(se.apply, se.duration, se.value)
+
                     if (pj.playerType != 0) handlePlayerProjectile(entity, pj, bb.rect)
 
                     val entityColor = Mapper.COLOR_MAPPER.get(e)
@@ -373,6 +377,11 @@ class ProjectileSystem(private val player: Player, private val res: Resources)
                 val health = Mapper.HEALTH_MAPPER.get(entity)
                 val scale = 1f / health.maxHp
                 attackComp.attackRate -= attackComp.attackRate * scale
+
+                /* @TODO Add last stand icon
+                val se = Mapper.STATUS_EFFECT_MAPPER.get(entity)
+                se?.apply(StatusEffect.LastStand)
+                */
             }
         }
     }

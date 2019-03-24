@@ -30,11 +30,7 @@
  <objectgroup name="collision">
   <object id="5" x="8" y="56" width="40" height="8"/>
   <object id="6" x="88" y="64" width="144" height="8"/>
-  <object id="21" x="112" y="40" width="56" height="8">
-   <properties>
-    <property name="type" value="slow"/>
-   </properties>
-  </object>
+  <object id="21" x="112" y="40" width="56" height="8"/>
   <object id="36" x="168.688" y="57.25" width="21.625" height="6.5625">
    <properties>
     <property name="type" value="lethal"/>
@@ -186,6 +182,6 @@
   </object>
  </objectgroup>
  <objectgroup name="player">
-  <object id="10" x="112" y="56" width="8" height="7.09091"/>
+  <object id="10" x="176" y="29.75" width="8" height="7.09091"/>
  </objectgroup>
 </map>
