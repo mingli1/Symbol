@@ -84,6 +84,7 @@ class Resources : Disposable {
 
     private fun loadProjectiles() {
         loadProjectile("p_dot")
+        for (i in 2..4) loadProjectile("p_dot$i")
         loadProjectile("p_dot_xor")
         loadProjectile("p_angle_bracket")
         loadProjectile("p_xor")
@@ -142,6 +143,9 @@ class Resources : Disposable {
         load(EntityColor.SUCC_COLOR)
         load(EntityColor.BECAUSE_COLOR)
         load(EntityColor.BECAUSE_PROJ_COLOR)
+        load(EntityColor.DOT2_COLOR)
+        load(EntityColor.DOT3_COLOR)
+        load(EntityColor.DOT4_COLOR)
     }
 
     private fun loadButtons() {

@@ -10,11 +10,16 @@ class PlayerComponent : Component, Pool.Poolable {
     var canShoot = true
     var hasJumpBoost = false
 
+    var chargeTime = 0f
+    var damage = 1
+
     override fun reset() {
         canJump = false
         canDoubleJump = false
         canShoot = true
         hasJumpBoost = false
+        chargeTime = 0f
+        damage = 1
     }
 
 }

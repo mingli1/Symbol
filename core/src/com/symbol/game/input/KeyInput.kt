@@ -10,7 +10,7 @@ class KeyInput(private val handler: KeyInputHandler) : InputProcessor {
             Input.Keys.RIGHT -> handler.move(true)
             Input.Keys.LEFT -> handler.move(false)
             Input.Keys.Z -> handler.jump()
-            Input.Keys.X -> handler.shoot()
+            Input.Keys.X -> handler.startCharge()
         }
         return true
     }
@@ -19,6 +19,7 @@ class KeyInput(private val handler: KeyInputHandler) : InputProcessor {
         when (keycode) {
             Input.Keys.RIGHT -> handler.stop(true)
             Input.Keys.LEFT -> handler.stop(false)
+            Input.Keys.X -> handler.endCharge()
         }
         return true
     }

@@ -35,6 +35,9 @@ object EntityColor {
     const val SUCC_COLOR = "b5ffdeff"
     const val BECAUSE_COLOR = "59d177ff"
     const val BECAUSE_PROJ_COLOR = "b1d1b9ff"
+    const val DOT2_COLOR = "ef73d2ff"
+    const val DOT3_COLOR = "db67cbff"
+    const val DOT4_COLOR = "b345d8ff"
 
     fun getProjectileColor(key: String?) : String? {
         return when (key) {
@@ -51,6 +54,10 @@ object EntityColor {
             "p_alpha" -> ALPHA_COLOR
             "p_succ" -> SUCC_COLOR
             "p_because" -> BECAUSE_PROJ_COLOR
+            "p_dot" -> DOT_COLOR
+            "p_dot2" -> DOT2_COLOR
+            "p_dot3" -> DOT3_COLOR
+            "p_dot4" -> DOT4_COLOR
             else -> null
         }
     }

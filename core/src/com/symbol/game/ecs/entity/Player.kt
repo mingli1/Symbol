@@ -7,15 +7,16 @@ import com.symbol.game.util.Resources
 const val PLAYER_WIDTH = 8f
 const val PLAYER_HEIGHT = 8f
 
-const val PLAYER_PROJECTILE_SHOOT_DELAY = 0.1f
+const val PLAYER_PROJECTILE_SHOOT_DELAY = 0.15f
 const val PLAYER_PROJECTILE_SPEED = 80f
-const val PLAYER_PROJECTILE_BOUNDS_WIDTH = 4f
-const val PLAYER_PROJECTILE_BOUNDS_HEIGHT = 4f
 const val PLAYER_PROJECTILE_RES_KEY = "p_dot"
 const val PLAYER_PROJECTILE_KNOCKBACK = 75f
 
 const val PLAYER_HP = 8
-const val PLAYER_DAMAGE = 1
+
+const val PLAYER_TIER_ONE_ATTACK_TIME = 0.6
+const val PLAYER_TIER_TWO_ATTACK_TIME = 1.2
+const val PLAYER_TIER_THREE_ATTACK_TIME = 1.8
 
 private const val PLAYER_SPEED = 35f
 private const val PLAYER_JUMP_IMPULSE = 160f

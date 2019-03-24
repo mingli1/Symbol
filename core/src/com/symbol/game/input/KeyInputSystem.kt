@@ -15,10 +15,24 @@ class KeyInputSystem(private val res: Resources) : EntitySystem(), KeyInputHandl
     private lateinit var playerComp: PlayerComponent
     private lateinit var vel: VelocityComponent
 
+    private var charging = false
+
     override fun addedToEngine(engine: Engine?) {
         player = engine!!.getEntitiesFor(Family.all(PlayerComponent::class.java).get()).get(0)
         playerComp = Mapper.PLAYER_MAPPER.get(player)
         vel = Mapper.VEL_MAPPER.get(player)
+    }
+
+    override fun update(dt: Float) {
+        if (charging) {
+            playerComp.chargeTime += dt
+            playerComp.damage = when {
+                playerComp.chargeTime < PLAYER_TIER_ONE_ATTACK_TIME -> 1
+                playerComp.chargeTime < PLAYER_TIER_TWO_ATTACK_TIME -> 2
+                playerComp.chargeTime < PLAYER_TIER_THREE_ATTACK_TIME -> 3
+                else -> 4
+            }
+        }
     }
 
     override fun move(right: Boolean) {
@@ -50,22 +64,34 @@ class KeyInputSystem(private val res: Resources) : EntitySystem(), KeyInputHandl
         }
     }
 
-    override fun shoot() {
+    override fun startCharge() {
         if (playerComp.canShoot) {
+            charging = true
+        }
+    }
+
+    override fun endCharge() {
+        if (charging) {
             val playerPos = Mapper.POS_MAPPER.get(player)
             val dir = Mapper.DIR_MAPPER.get(player)
+            val key = PLAYER_PROJECTILE_RES_KEY + if (playerComp.damage > 1) playerComp.damage else ""
+            val texture = res.getTexture(key)!!
+            val width = texture.regionWidth.toFloat()
+            val height = texture.regionHeight.toFloat()
 
             EntityBuilder.instance(engine as PooledEngine)
-                    .projectile(damage = PLAYER_DAMAGE, knockback = PLAYER_PROJECTILE_KNOCKBACK)
-                    .color(EntityColor.DOT_COLOR)
-                    .position(playerPos.x + (PLAYER_WIDTH / 2) - (PLAYER_PROJECTILE_BOUNDS_WIDTH / 2),
-                            playerPos.y + (PLAYER_HEIGHT / 2) - (PLAYER_PROJECTILE_BOUNDS_HEIGHT / 2))
+                    .projectile(damage = playerComp.damage, knockback = PLAYER_PROJECTILE_KNOCKBACK)
+                    .color(EntityColor.getProjectileColor(key)!!)
+                    .position(playerPos.x + (PLAYER_WIDTH / 2) - (width / 2),
+                            playerPos.y + (PLAYER_HEIGHT / 2) - (height / 2))
                     .velocity(dx = if (dir.facingRight) PLAYER_PROJECTILE_SPEED else -PLAYER_PROJECTILE_SPEED)
-                    .boundingBox(PLAYER_PROJECTILE_BOUNDS_WIDTH, PLAYER_PROJECTILE_BOUNDS_HEIGHT)
-                    .texture(res.getTexture(PLAYER_PROJECTILE_RES_KEY)!!)
+                    .boundingBox(width, height)
+                    .texture(texture)
                     .direction().remove().build()
 
             playerComp.canShoot = false
+            charging = false
+            playerComp.chargeTime = 0f
         }
     }
 
