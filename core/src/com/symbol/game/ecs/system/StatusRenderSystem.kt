@@ -14,6 +14,7 @@ import com.symbol.game.util.STATUS_EFFECT
 import java.util.HashMap
 
 private const val HP_BAR_VISIBLE_DURATION = 2f
+private const val HP_BAR_VISIBLE_DURATION_WITH_SE = 0.5f
 private const val HEALTH_BAR_HEIGHT = 1
 private const val HP_BAR_X_OFFSET = 2
 private const val HP_BAR_Y_OFFSET = 3
@@ -65,13 +66,14 @@ class StatusRenderSystem(private val batch: Batch, private val res: Resources)
             batch.draw(res.getTexture("hp_bar_color"), pos.x - HP_BAR_X_OFFSET + 1, pos.y + height + HP_BAR_Y_OFFSET.toFloat() + 1f,
                     hpBarWidth, HEALTH_BAR_HEIGHT.toFloat())
 
-            if (timers[entity]!! >= HP_BAR_VISIBLE_DURATION) {
+            val duration = if (hasStatusEffect) HP_BAR_VISIBLE_DURATION_WITH_SE else HP_BAR_VISIBLE_DURATION
+
+            if (timers[entity]!! >= duration) {
                 startHealthBars[entity] = false
                 timers[entity] = 0f
             }
         }
-
-        if (hasStatusEffect) {
+        else if (hasStatusEffect) {
             batch.draw(res.getTexture(STATUS_EFFECT + se.type.typeStr),
                     pos.x + (width - SE_SIZE) / 2,
                     pos.y + height + SE_Y_OFFSET)
