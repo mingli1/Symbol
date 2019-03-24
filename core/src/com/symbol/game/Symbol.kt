@@ -46,6 +46,7 @@ class Symbol : Game() {
     override fun dispose() {
         batch.dispose()
         res.dispose()
+        gameScreen.dispose()
     }
 
 }
