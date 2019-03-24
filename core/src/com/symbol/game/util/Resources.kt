@@ -159,6 +159,8 @@ class Resources : Disposable {
 
     private fun loadImages() {
         load("player_hp_icon")
+        load("charge_bar_icon")
+        for (i in 2..4) load("charge_bar_icon$i")
     }
 
     fun getTexture(key: String): TextureRegion? {
