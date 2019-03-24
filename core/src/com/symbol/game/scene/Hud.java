@@ -4,6 +4,7 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.symbol.game.ecs.Mapper;
@@ -13,8 +14,7 @@ import com.symbol.game.Symbol;
 
 public class Hud extends Scene {
 
-    private static final String HP_PROMPT = "HP";
-    private static final Vector2 HP_PROMPT_POSITION = new Vector2(5, 108);
+    private static final Vector2 HP_ICON_POSITION = new Vector2(5, 107.3f);
 
     private static final Vector2 HP_BAR_POSITION = new Vector2(16, 108.3f);
     private static final float HP_BAR_WIDTH = 44f;
@@ -47,11 +47,10 @@ public class Hud extends Scene {
     }
 
     private void createHealthBar() {
-        Label.LabelStyle labelStyle = new Label.LabelStyle(game.getRes().getFont(), Color.BLACK);
-        Label hpPromptLabel = new Label(HP_PROMPT, labelStyle);
-        hpPromptLabel.setPosition(HP_PROMPT_POSITION.x, HP_PROMPT_POSITION.y);
+        Image hpBarIcon = new Image(game.getRes().getTexture("player_hp_icon"));
+        hpBarIcon.setPosition(HP_ICON_POSITION.x, HP_ICON_POSITION.y);
 
-        stage.addActor(hpPromptLabel);
+        stage.addActor(hpBarIcon);
     }
 
     private void createSettingsButton() {

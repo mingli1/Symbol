@@ -52,6 +52,7 @@ class Resources : Disposable {
         loadToggles()
         loadColors()
         loadButtons()
+        loadImages()
     }
 
     private fun loadPlayerAndEnemies() {
@@ -154,6 +155,10 @@ class Resources : Disposable {
         loadButton("right")
         loadButton("jump")
         loadButton("shoot")
+    }
+
+    private fun loadImages() {
+        load("player_hp_icon")
     }
 
     fun getTexture(key: String): TextureRegion? {

@@ -6,14 +6,14 @@ filter: Nearest,Nearest
 repeat: none
 3d40ffff
   rotate: false
-  xy: 625, 107
+  xy: 26, 22
   size: 1, 1
   orig: 1, 1
   offset: 0, 0
   index: -1
 40aa00ff
   rotate: false
-  xy: 654, 122
+  xy: 23, 19
   size: 1, 1
   orig: 1, 1
   offset: 0, 0
@@ -27,14 +27,14 @@ repeat: none
   index: -1
 5fd0d8ff
   rotate: false
-  xy: 578, 93
+  xy: 566, 81
   size: 1, 1
   orig: 1, 1
   offset: 0, 0
   index: -1
 69dbe5ff
   rotate: false
-  xy: 231, 114
+  xy: 654, 125
   size: 1, 1
   orig: 1, 1
   offset: 0, 0
@@ -48,7 +48,7 @@ repeat: none
   index: -1
 8ace8bff
   rotate: false
-  xy: 625, 110
+  xy: 544, 55
   size: 1, 1
   orig: 1, 1
   offset: 0, 0
@@ -76,7 +76,7 @@ a477ffff
   index: -1
 aa0fffff
   rotate: false
-  xy: 544, 52
+  xy: 628, 110
   size: 1, 1
   orig: 1, 1
   offset: 0, 0
@@ -90,28 +90,28 @@ approx
   index: -1
 b1d1b9ff
   rotate: false
-  xy: 234, 114
+  xy: 614, 104
   size: 1, 1
   orig: 1, 1
   offset: 0, 0
   index: -1
 b2bdffff
   rotate: false
-  xy: 628, 110
+  xy: 625, 107
   size: 1, 1
   orig: 1, 1
   offset: 0, 0
   index: -1
 b345d8ff
   rotate: false
-  xy: 231, 111
+  xy: 611, 101
   size: 1, 1
   orig: 1, 1
   offset: 0, 0
   index: -1
 b5ef51ff
   rotate: false
-  xy: 547, 55
+  xy: 544, 52
   size: 1, 1
   orig: 1, 1
   offset: 0, 0
@@ -139,7 +139,7 @@ background
   index: -1
 bc49ffff
   rotate: false
-  xy: 65, 70
+  xy: 550, 57
   size: 1, 1
   orig: 1, 1
   offset: 0, 0
@@ -251,7 +251,7 @@ db67cbff
   index: -1
 dcc9ffff
   rotate: false
-  xy: 550, 57
+  xy: 547, 55
   size: 1, 1
   orig: 1, 1
   offset: 0, 0
@@ -356,7 +356,7 @@ e_percent
   index: -1
 e_percent_orbit
   rotate: false
-  xy: 602, 99
+  xy: 119, 95
   size: 6, 6
   orig: 6, 6
   offset: 0, 0
@@ -384,14 +384,14 @@ e_theta
   index: -1
 ef73d2ff
   rotate: false
-  xy: 557, 65
+  xy: 238, 114
   size: 1, 1
   orig: 1, 1
   offset: 0, 0
   index: -1
 ff4f7dff
   rotate: false
-  xy: 544, 55
+  xy: 557, 65
   size: 1, 1
   orig: 1, 1
   offset: 0, 0
@@ -419,35 +419,35 @@ ff8795ff
   index: -1
 ff9151ff
   rotate: false
-  xy: 654, 125
+  xy: 625, 110
   size: 1, 1
   orig: 1, 1
   offset: 0, 0
   index: -1
 ff954fff
   rotate: false
-  xy: 610, 104
+  xy: 23, 22
   size: 1, 1
   orig: 1, 1
   offset: 0, 0
   index: -1
 ffbd26ff
   rotate: false
-  xy: 657, 125
+  xy: 65, 70
   size: 1, 1
   orig: 1, 1
   offset: 0, 0
   index: -1
 ffd700ff
   rotate: false
-  xy: 23, 23
+  xy: 611, 104
   size: 1, 1
   orig: 1, 1
   offset: 0, 0
   index: -1
 fff050ff
   rotate: false
-  xy: 610, 101
+  xy: 654, 122
   size: 1, 1
   orig: 1, 1
   offset: 0, 0
@@ -468,21 +468,21 @@ health_pack
   index: -1
 hp_bar_bg_color
   rotate: false
-  xy: 572, 87
+  xy: 578, 93
   size: 1, 1
   orig: 1, 1
   offset: 0, 0
   index: -1
 hp_bar_color
   rotate: false
-  xy: 613, 104
+  xy: 657, 125
   size: 1, 1
   orig: 1, 1
   offset: 0, 0
   index: -1
 hp_bar_green
   rotate: false
-  xy: 566, 81
+  xy: 572, 87
   size: 1, 1
   orig: 1, 1
   offset: 0, 0
@@ -545,7 +545,7 @@ p_angle_bracket_t
   index: -1
 p_angle_bracket_tr
   rotate: false
-  xy: 23, 33
+  xy: 223, 109
   size: 6, 6
   orig: 6, 6
   offset: 0, 0
@@ -594,7 +594,7 @@ p_cup
   index: -1
 p_cup_t
   rotate: false
-  xy: 593, 97
+  xy: 110, 93
   size: 7, 8
   orig: 7, 8
   offset: 0, 0
@@ -615,7 +615,7 @@ p_dot
   index: -1
 p_dot2
   rotate: false
-  xy: 23, 26
+  xy: 231, 110
   size: 5, 5
   orig: 5, 5
   offset: 0, 0
@@ -629,7 +629,7 @@ p_dot3
   index: -1
 p_dot4
   rotate: false
-  xy: 110, 94
+  xy: 23, 32
   size: 7, 7
   orig: 7, 7
   offset: 0, 0
@@ -685,14 +685,14 @@ p_ldots_t
   index: -1
 p_ldots_tr
   rotate: false
-  xy: 2, 22
+  xy: 101, 103
   size: 12, 12
   orig: 12, 12
   offset: 0, 0
   index: -1
 p_ltimes
   rotate: false
-  xy: 119, 96
+  xy: 23, 25
   size: 6, 5
   orig: 6, 5
   offset: 0, 0
@@ -706,7 +706,7 @@ p_ltimes_t
   index: -1
 p_ltimes_tr
   rotate: false
-  xy: 223, 109
+  xy: 603, 99
   size: 6, 6
   orig: 6, 6
   offset: 0, 0
@@ -727,7 +727,7 @@ p_succ_t
   index: -1
 p_succ_tr
   rotate: false
-  xy: 101, 103
+  xy: 2, 22
   size: 12, 12
   orig: 12, 12
   offset: 0, 0
@@ -742,6 +742,13 @@ p_xor
 player
   rotate: false
   xy: 23, 41
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: -1
+player_hp_icon
+  rotate: false
+  xy: 593, 97
   size: 8, 8
   orig: 8, 8
   offset: 0, 0
