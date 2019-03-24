@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.0.1" orientation="orthogonal" renderorder="right-down" width="50" height="20" tilewidth="8" tileheight="8" nextobjectid="124">
+<map version="1.0" tiledversion="1.0.1" orientation="orthogonal" renderorder="right-down" width="50" height="20" tilewidth="8" tileheight="8" nextobjectid="140">
  <tileset firstgid="1" name="set" tilewidth="8" tileheight="8" tilecount="64" columns="8">
   <image source="tileset.png" width="64" height="64"/>
  </tileset>
@@ -8,12 +8,12 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,2,2,2,2,2,2,2,2,2,2,2,2,2,3,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,34,35,36,1,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,2,2,2,2,2,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,17,0,0,0,0,0,25,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,1,2,2,2,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,10,10,10,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,50,51,52,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,0,0,0,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,0,0,
+1,2,2,2,2,2,2,2,3,0,1,2,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+1,3,18,20,4,26,27,28,4,34,35,36,4,50,51,52,2,2,2,2,2,2,2,2,2,2,2,2,3,0,0,0,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,5,0,0,0,0,0,0,0,0,
@@ -28,44 +28,42 @@
 </data>
  </layer>
  <objectgroup name="collision">
-  <object id="5" x="8" y="56" width="40" height="8"/>
-  <object id="6" x="88" y="64" width="144" height="8"/>
-  <object id="21" x="112" y="40" width="56" height="8"/>
-  <object id="36" x="168.688" y="57.25" width="21.625" height="6.5625">
-   <properties>
-    <property name="type" value="lethal"/>
-   </properties>
-  </object>
-  <object id="51" x="48" y="48" width="8" height="8">
-   <properties>
-    <property name="type" value="grounded"/>
-   </properties>
-  </object>
-  <object id="54" x="64" y="64" width="24" height="8">
-   <properties>
-    <property name="type" value="jump_boost"/>
-   </properties>
-  </object>
-  <object id="55" x="96" y="48" width="8" height="8">
-   <properties>
-    <property name="type" value="slow"/>
-   </properties>
-  </object>
-  <object id="56" x="32" y="32" width="8" height="8"/>
-  <object id="57" x="56" y="24" width="24" height="8">
-   <properties>
-    <property name="type" value="push_right"/>
-   </properties>
-  </object>
-  <object id="64" x="80" y="24" width="16" height="8"/>
   <object id="66" x="256" y="64" width="128" height="8"/>
   <object id="86" x="16" y="88" width="8" height="64"/>
   <object id="88" x="328" y="88" width="8" height="64"/>
   <object id="89" x="24" y="144" width="304" height="8"/>
   <object id="107" x="192" y="0" width="120" height="8"/>
+  <object id="124" x="0" y="64" width="16" height="8"/>
+  <object id="125" x="32" y="64" width="8" height="8"/>
+  <object id="126" x="64" y="64" width="8" height="8"/>
+  <object id="127" x="96" y="64" width="8" height="8"/>
+  <object id="128" x="128" y="64" width="104" height="8"/>
+  <object id="131" x="16" y="64" width="16" height="8">
+   <properties>
+    <property name="type" value="grounded"/>
+   </properties>
+  </object>
+  <object id="133" x="40" y="64" width="24" height="8">
+   <properties>
+    <property name="type" value="slow"/>
+   </properties>
+  </object>
+  <object id="134" x="72" y="64" width="24" height="8">
+   <properties>
+    <property name="type" value="push_right"/>
+   </properties>
+  </object>
+  <object id="136" x="104" y="64" width="24" height="8">
+   <properties>
+    <property name="type" value="jump_boost"/>
+   </properties>
+  </object>
+  <object id="137" x="64" y="56" width="8" height="8"/>
+  <object id="138" x="80" y="24" width="24" height="8"/>
+  <object id="139" x="0" y="24" width="72" height="8"/>
  </objectgroup>
  <objectgroup name="enemy">
-  <object id="90" x="30.1818" y="134" width="7.27273" height="7.45455">
+  <object id="90" x="32" y="16" width="7.27273" height="7.45455">
    <properties>
     <property name="type" value="e"/>
    </properties>
@@ -90,11 +88,6 @@
     <property name="type" value="big_pi"/>
    </properties>
   </object>
-  <object id="95" x="97.8182" y="134.909" width="7.27273" height="7.27273">
-   <properties>
-    <property name="type" value="in"/>
-   </properties>
-  </object>
   <object id="96" x="112.727" y="134.909" width="7.27273" height="7.27273">
    <properties>
     <property name="type" value="big_omega"/>
@@ -115,20 +108,9 @@
     <property name="type" value="nabla"/>
    </properties>
   </object>
-  <object id="102" x="136.545" y="33.4545" width="6.90909" height="5.81818">
-   <properties>
-    <property name="type" value="njoin"/>
-   </properties>
-  </object>
   <object id="120" x="192" y="136.909" width="8.18182" height="6.36364">
    <properties>
     <property name="type" value="cintegral"/>
-   </properties>
-  </object>
-  <object id="121" x="304" y="56" width="8" height="8">
-   <properties>
-    <property name="facingRight" type="bool" value="false"/>
-    <property name="type" value="because"/>
    </properties>
   </object>
  </objectgroup>
@@ -140,7 +122,7 @@
     <property name="type" value="mplatform"/>
    </properties>
   </object>
-  <object id="113" x="176" y="40" width="8" height="8">
+  <object id="113" x="280.25" y="55.5" width="8" height="8">
    <properties>
     <property name="targetId" type="int" value="0"/>
     <property name="type" value="sswitch"/>
@@ -164,24 +146,13 @@
     <property name="type" value="toggle"/>
    </properties>
   </object>
-  <object id="119" x="192" y="56" width="8" height="8">
-   <properties>
-    <property name="id" type="int" value="0"/>
-    <property name="type" value="toggle"/>
-   </properties>
-  </object>
-  <object id="122" x="264" y="56" width="8" height="8">
+  <object id="122" x="184" y="56" width="8" height="8">
    <properties>
     <property name="type" value="mirror"/>
    </properties>
   </object>
-  <object id="123" x="301.25" y="20.75" width="8" height="8">
-   <properties>
-    <property name="type" value="gswitch"/>
-   </properties>
-  </object>
  </objectgroup>
  <objectgroup name="player">
-  <object id="10" x="176" y="29.75" width="8" height="7.09091"/>
+  <object id="10" x="3.75" y="55.25" width="8" height="7.09091"/>
  </objectgroup>
 </map>

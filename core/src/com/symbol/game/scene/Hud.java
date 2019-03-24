@@ -109,7 +109,7 @@ public class Hud extends Scene {
         PlayerComponent playerComp = Mapper.INSTANCE.getPLAYER_MAPPER().get(player);
         if (playerComp.getChargeTime() >= CHARGE_BAR_ACTIVATION_TIME) {
             if (!chargeBarIcon.isVisible()) chargeBarIcon.setVisible(true);
-            chargeBarWidth = CHARGE_BAR_WIDTH * (playerComp.getChargeTime() / 1.8f);
+            chargeBarWidth = CHARGE_BAR_WIDTH * (playerComp.getChargeTime() / 2.4f);
             if (chargeBarWidth > CHARGE_BAR_WIDTH) chargeBarWidth = CHARGE_BAR_WIDTH;
             chargeBarIcon.setDrawable(chargeBarTiers[playerComp.getDamage() - 1]);
         }
