@@ -32,6 +32,10 @@ class StatusEffectSystem : IteratingSystem(Family.all(StatusEffectComponent::cla
         }
 
         if (startEffect[entity]!!) {
+            if (se.statusChange) {
+                durationTimers[entity!!] = 0f
+                se.statusChange = false
+            }
             durationTimers[entity!!] = durationTimers[entity]?.plus(dt)!!
 
             when (se.type) {
@@ -59,6 +63,8 @@ class StatusEffectSystem : IteratingSystem(Family.all(StatusEffectComponent::cla
 
         val player = Mapper.PLAYER_MAPPER.get(entity)
         player?.canShoot = false
+        player?.canJump = false
+        player?.canDoubleJump = false
         val attack = Mapper.ATTACK_MAPPER.get(entity)
         attack?.canAttack = false
     }

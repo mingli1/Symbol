@@ -241,7 +241,7 @@ class MapCollisionSystem(private val res: Resources) : IteratingSystem(
             player.canJump = !grounded
             if (grounded) {
                 player.canDoubleJump = false
-                se!!.apply(StatusEffect.Grounded)
+                if (!se!!.entityApplied) se.apply(StatusEffect.Grounded)
             }
         }
     }
@@ -251,7 +251,7 @@ class MapCollisionSystem(private val res: Resources) : IteratingSystem(
             if (velocity.dx > 0) velocity.dx = velocity.speed * MAP_OBJECT_SLOW_PERCENTAGE
             else if (velocity.dx < 0) velocity.dx = -velocity.speed * MAP_OBJECT_SLOW_PERCENTAGE
 
-            se!!.apply(StatusEffect.Slow)
+            if (!se!!.entityApplied) se.apply(StatusEffect.Slow)
         }
         else {
             if (velocity.dx != 0f && Math.abs(velocity.dx) == velocity.speed * MAP_OBJECT_SLOW_PERCENTAGE) {
@@ -264,7 +264,7 @@ class MapCollisionSystem(private val res: Resources) : IteratingSystem(
     private fun handlePushRightMapObject(mapObject: MapObject, velocity: VelocityComponent, se: StatusEffectComponent?) {
         if (mapObject.type == MapObjectType.PushRight) {
             if (velocity.dx > 0 && velocity.dx == velocity.speed) velocity.dx += MAP_OBJECT_PUSH
-            se!!.apply(StatusEffect.SpeedBoostRight)
+            if (!se!!.entityApplied) se.apply(StatusEffect.SpeedBoostRight)
         }
         else if (velocity.dx > 0 && velocity.dx == velocity.speed + MAP_OBJECT_PUSH) velocity.dx = velocity.speed
     }
@@ -272,7 +272,7 @@ class MapCollisionSystem(private val res: Resources) : IteratingSystem(
     private fun handlePushLeftMapObject(mapObject: MapObject, velocity: VelocityComponent, se: StatusEffectComponent?) {
         if (mapObject.type == MapObjectType.PushLeft) {
             if (velocity.dx < 0 && velocity.dx == -velocity.speed) velocity.dx -= MAP_OBJECT_PUSH
-            se!!.apply(StatusEffect.SpeedBoostLeft)
+            if (!se!!.entityApplied) se.apply(StatusEffect.SpeedBoostLeft)
         }
         else if (velocity.dx < 0 && velocity.dx == -velocity.speed - MAP_OBJECT_PUSH) velocity.dx = -velocity.speed
     }
@@ -280,7 +280,7 @@ class MapCollisionSystem(private val res: Resources) : IteratingSystem(
     private fun handleJumpBoostMapObject(mapObject: MapObject, player: PlayerComponent?, se: StatusEffectComponent?) {
         player?.hasJumpBoost = mapObject.type == MapObjectType.JumpBoost
         if (player != null && mapObject.type == MapObjectType.JumpBoost) {
-            se!!.apply(StatusEffect.JumpBoost)
+            if (!se!!.entityApplied) se.apply(StatusEffect.JumpBoost)
         }
     }
 

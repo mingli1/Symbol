@@ -10,8 +10,10 @@ class StatusEffectComponent : Component, Pool.Poolable {
     var duration = 0f
     var value = 0f
     var entityApplied = false
+    var statusChange = false
 
     fun apply(type: StatusEffect, duration: Float = 0f, value: Float = 0f) {
+        if (this.type != StatusEffect.None) statusChange = true
         this.type = type
         this.duration = duration
         this.value = value
