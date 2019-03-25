@@ -37,7 +37,13 @@ class KeyInputSystem(private val res: Resources) : EntitySystem(), KeyInputHandl
     }
 
     override fun move(right: Boolean) {
-        vel.move(right)
+        val se = Mapper.STATUS_EFFECT_MAPPER.get(player)
+        if (se.type != StatusEffect.Stun && se.type != StatusEffect.Snare) vel.move(right)
+
+        if (se.type == StatusEffect.Snare) {
+            val dir = Mapper.DIR_MAPPER.get(player)
+            dir.facingRight = right
+        }
     }
 
     override fun stop(right: Boolean) {
