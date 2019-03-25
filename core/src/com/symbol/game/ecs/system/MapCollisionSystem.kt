@@ -121,8 +121,7 @@ class MapCollisionSystem(private val res: Resources) : IteratingSystem(
                             gravity.platform.set(mapObject.bounds)
 
                             val se = Mapper.STATUS_EFFECT_MAPPER.get(entity)
-
-                            if (!se!!.entityApplied && se.type != StatusEffect.None) se.finish()
+                            if (se != null && !se.entityApplied && se.type != StatusEffect.None) se.finish()
 
                             handleGroundedMapObject(mapObject, player, se)
                             handleSlowMapObject(mapObject, velocity, se)
