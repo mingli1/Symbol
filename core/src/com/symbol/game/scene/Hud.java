@@ -3,6 +3,7 @@ package com.symbol.game.scene;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
@@ -35,11 +36,16 @@ public class Hud extends Scene {
     private static final float BAR_ONE_OFFSET = CHARGE_BAR_WIDTH * (0.6f / MAX_CHARGE);
     private static final float BAR_TWO_OFFSET = CHARGE_BAR_WIDTH * (1.3f / MAX_CHARGE);
 
+    private static final float HP_BAR_YELLOW_THRESHOLD = 0.5f;
+    private static final float HP_BAR_ORANGE_THRESHOLD = 0.3f;
+    private static final float HP_BAR_RED_THRESHOLD = 0.15f;
+
     private Entity player;
 
     private float hpBarWidth;
     private float decayingHpBarWidth;
     private boolean startHpBarDecay = false;
+    private TextureRegion hpBarColor;
 
     private float chargeBarWidth;
     private Image chargeBarIcon;
@@ -50,6 +56,8 @@ public class Hud extends Scene {
     public Hud(final Symbol game, Entity player) {
         super(game);
         this.player = player;
+
+        hpBarColor = game.getRes().getTexture("hp_bar_green");
 
         createHealthBar();
         createSettingsButton();
@@ -95,7 +103,8 @@ public class Hud extends Scene {
         if (Config.DEBUG) fps.setText(Gdx.graphics.getFramesPerSecond() + " FPS");
 
         HealthComponent health = Mapper.INSTANCE.getHEALTH_MAPPER().get(player);
-        hpBarWidth = HP_BAR_WIDTH * ((float) health.getHp() / health.getMaxHp());
+        float hpPercentage = (float) health.getHp() / health.getMaxHp();
+        hpBarWidth = HP_BAR_WIDTH * hpPercentage;
         if (health.getHpChange()) {
             decayingHpBarWidth = HP_BAR_WIDTH * ((float) health.getHpDelta() / health.getMaxHp());
             startHpBarDecay = true;
@@ -108,6 +117,11 @@ public class Hud extends Scene {
                 startHpBarDecay = false;
             }
         }
+
+        if (hpPercentage <= HP_BAR_RED_THRESHOLD) hpBarColor = game.getRes().getTexture("hp_bar_color");
+        else if (hpPercentage <= HP_BAR_ORANGE_THRESHOLD) hpBarColor = game.getRes().getTexture("hp_bar_orange");
+        else if (hpPercentage <= HP_BAR_YELLOW_THRESHOLD) hpBarColor = game.getRes().getTexture("hp_bar_yellow");
+        else hpBarColor = game.getRes().getTexture("hp_bar_green");
 
         PlayerComponent playerComp = Mapper.INSTANCE.getPLAYER_MAPPER().get(player);
         if (playerComp.getChargeTime() >= CHARGE_BAR_ACTIVATION_TIME) {
@@ -129,11 +143,21 @@ public class Hud extends Scene {
         game.getBatch().setProjectionMatrix(stage.getCamera().combined);
         game.getBatch().begin();
 
+        renderHpBar();
+        renderChargeBar();
+
+        game.getBatch().end();
+
+        stage.act(dt);
+        stage.draw();
+    }
+
+    private void renderHpBar() {
         game.getBatch().draw(game.getRes().getTexture("black"), HP_BAR_POSITION.x, HP_BAR_POSITION.y,
                 HP_BAR_WIDTH + 2, HP_BAR_HEIGHT + 2);
         game.getBatch().draw(game.getRes().getTexture("hp_bar_bg_color"), HP_BAR_POSITION.x + 1, HP_BAR_POSITION.y + 1,
                 HP_BAR_WIDTH, HP_BAR_HEIGHT);
-        game.getBatch().draw(game.getRes().getTexture("hp_bar_green"), HP_BAR_POSITION.x + 1, HP_BAR_POSITION.y + 1,
+        game.getBatch().draw(hpBarColor, HP_BAR_POSITION.x + 1, HP_BAR_POSITION.y + 1,
                 hpBarWidth, HP_BAR_HEIGHT);
 
         if (startHpBarDecay) {
@@ -141,7 +165,9 @@ public class Hud extends Scene {
                     HP_BAR_POSITION.x + 1 + hpBarWidth, HP_BAR_POSITION.y + 1,
                     decayingHpBarWidth, HP_BAR_HEIGHT);
         }
+    }
 
+    private void renderChargeBar() {
         PlayerComponent playerComp = Mapper.INSTANCE.getPLAYER_MAPPER().get(player);
         if (playerComp.getChargeTime() >= CHARGE_BAR_ACTIVATION_TIME) {
             game.getBatch().draw(game.getRes().getTexture("black"), CHARGE_BAR_POSITION.x, CHARGE_BAR_POSITION.y,
@@ -159,11 +185,6 @@ public class Hud extends Scene {
             game.getBatch().draw(game.getRes().getTexture("black"),
                     CHARGE_BAR_POSITION.x + 1 + BAR_TWO_OFFSET, CHARGE_BAR_POSITION.y + 1, 1, CHARGE_BAR_HEIGHT);
         }
-
-        game.getBatch().end();
-
-        stage.act(dt);
-        stage.draw();
     }
 
 }

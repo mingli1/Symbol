@@ -127,6 +127,8 @@ class Resources : Disposable {
         load("hp_bar_color")
         load("hp_bar_bg_color")
         load("hp_bar_green")
+        load("hp_bar_yellow")
+        load("hp_bar_orange")
 
         load(EntityColor.PLAYER_COLOR)
         load(EntityColor.BETWEEN_COLOR)
