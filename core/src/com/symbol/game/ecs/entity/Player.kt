@@ -17,7 +17,8 @@ const val PLAYER_HP = 8
 const val PLAYER_TIER_ONE_ATTACK_TIME = 0.6f
 const val PLAYER_TIER_TWO_ATTACK_TIME = 1.3f
 const val PLAYER_TIER_THREE_ATTACK_TIME = 2.0f
-const val PLAYER_SNARE_DURATION = 2f
+const val PLAYER_SLOW_PERCENTAGE = 0.4f
+const val PLAYER_SLOW_DURATION = 2f
 const val PLAYER_STUN_DURATION = 2f
 
 private const val PLAYER_SPEED = 35f

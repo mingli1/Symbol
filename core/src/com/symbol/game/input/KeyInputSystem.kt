@@ -98,7 +98,8 @@ class KeyInputSystem(private val res: Resources) : EntitySystem(), KeyInputHandl
                     .texture(texture, key)
                     .direction().remove()
 
-            if (playerComp.damage == 2) builder.statusEffect(apply = StatusEffect.Snare, duration = PLAYER_SNARE_DURATION)
+            if (playerComp.damage == 2) builder.statusEffect(apply = StatusEffect.Slow,
+                    duration = PLAYER_SLOW_DURATION, value = PLAYER_SLOW_PERCENTAGE)
             if (playerComp.damage == 3) builder.statusEffect(apply = StatusEffect.Stun, duration = PLAYER_STUN_DURATION)
 
             builder.build()
