@@ -36,8 +36,8 @@ object EntityColor {
     const val BECAUSE_COLOR = "59d177ff"
     const val BECAUSE_PROJ_COLOR = "b1d1b9ff"
     const val DOT2_COLOR = "ef73d2ff"
-    const val DOT3_COLOR = "db67cbff"
-    const val DOT4_COLOR = "b345d8ff"
+    const val DOT3_COLOR = "ce59e0ff"
+    const val DOT4_COLOR = "9361ddff"
 
     fun getProjectileColor(key: String?) : String? {
         return when (key) {

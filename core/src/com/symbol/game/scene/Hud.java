@@ -31,7 +31,9 @@ public class Hud extends Scene {
 
     private static final float HP_BAR_DECAY_RATE = 18.f;
     private static final float CHARGE_BAR_ACTIVATION_TIME = 0.6f;
-    private static final float MAX_CHARGE = 2.5f - CHARGE_BAR_ACTIVATION_TIME;
+    private static final float MAX_CHARGE = 2.6f - CHARGE_BAR_ACTIVATION_TIME;
+    private static final float BAR_ONE_OFFSET = CHARGE_BAR_WIDTH * (0.6f / MAX_CHARGE);
+    private static final float BAR_TWO_OFFSET = CHARGE_BAR_WIDTH * (1.3f / MAX_CHARGE);
 
     private Entity player;
 
@@ -146,10 +148,16 @@ public class Hud extends Scene {
                     CHARGE_BAR_WIDTH + 2, CHARGE_BAR_HEIGHT + 2);
             game.getBatch().draw(game.getRes().getTexture("hp_bar_bg_color"), CHARGE_BAR_POSITION.x + 1, CHARGE_BAR_POSITION.y + 1,
                     CHARGE_BAR_WIDTH, CHARGE_BAR_HEIGHT);
+
             String hex = playerComp.getDamage() == 1 ? EntityColor.INSTANCE.getProjectileColor("p_dot")
                     : EntityColor.INSTANCE.getProjectileColor("p_dot" + playerComp.getDamage());
             game.getBatch().draw(game.getRes().getTexture(hex), CHARGE_BAR_POSITION.x + 1, CHARGE_BAR_POSITION.y + 1,
                     chargeBarWidth, CHARGE_BAR_HEIGHT);
+
+            game.getBatch().draw(game.getRes().getTexture("black"),
+                    CHARGE_BAR_POSITION.x + 1 + BAR_ONE_OFFSET, CHARGE_BAR_POSITION.y + 1, 1, CHARGE_BAR_HEIGHT);
+            game.getBatch().draw(game.getRes().getTexture("black"),
+                    CHARGE_BAR_POSITION.x + 1 + BAR_TWO_OFFSET, CHARGE_BAR_POSITION.y + 1, 1, CHARGE_BAR_HEIGHT);
         }
 
         game.getBatch().end();
