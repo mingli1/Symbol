@@ -30,7 +30,8 @@ public class Hud extends Scene {
     private static final Vector2 SETTINGS_BUTTON_POSITION = new Vector2(183, 105);
 
     private static final float HP_BAR_DECAY_RATE = 18.f;
-    private static final float CHARGE_BAR_ACTIVATION_TIME = 0.3f;
+    private static final float CHARGE_BAR_ACTIVATION_TIME = 0.6f;
+    private static final float MAX_CHARGE = 2.5f - CHARGE_BAR_ACTIVATION_TIME;
 
     private Entity player;
 
@@ -109,12 +110,15 @@ public class Hud extends Scene {
         PlayerComponent playerComp = Mapper.INSTANCE.getPLAYER_MAPPER().get(player);
         if (playerComp.getChargeTime() >= CHARGE_BAR_ACTIVATION_TIME) {
             if (!chargeBarIcon.isVisible()) chargeBarIcon.setVisible(true);
-            chargeBarWidth = CHARGE_BAR_WIDTH * (playerComp.getChargeTime() / 2.4f);
+            float currentCharge = playerComp.getChargeTime() - CHARGE_BAR_ACTIVATION_TIME;
+            chargeBarWidth = CHARGE_BAR_WIDTH * (currentCharge / MAX_CHARGE);
+
             if (chargeBarWidth > CHARGE_BAR_WIDTH) chargeBarWidth = CHARGE_BAR_WIDTH;
             chargeBarIcon.setDrawable(chargeBarTiers[playerComp.getDamage() - 1]);
         }
         else {
             if (chargeBarIcon.isVisible()) chargeBarIcon.setVisible(false);
+            if (chargeBarWidth != 0f) chargeBarWidth = 0f;
         }
     }
 
