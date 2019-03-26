@@ -46,6 +46,11 @@ public class Hud extends Scene {
     private float decayingHpBarWidth;
     private boolean startHpBarDecay = false;
     private TextureRegion hpBarColor;
+    private Image hpBarIcon;
+    private TextureRegionDrawable hpBarIconGreen;
+    private TextureRegionDrawable hpBarIconYellow;
+    private TextureRegionDrawable hpBarIconOrange;
+    private TextureRegionDrawable hpBarIconRed;
 
     private float chargeBarWidth;
     private Image chargeBarIcon;
@@ -71,7 +76,12 @@ public class Hud extends Scene {
     }
 
     private void createHealthBar() {
-        Image hpBarIcon = new Image(game.getRes().getTexture("player_hp_icon"));
+        hpBarIconGreen = new TextureRegionDrawable(game.getRes().getTexture("player_hp_icon"));
+        hpBarIconYellow = new TextureRegionDrawable(game.getRes().getTexture("player_hp_icon_yellow"));
+        hpBarIconOrange = new TextureRegionDrawable(game.getRes().getTexture("player_hp_icon_orange"));
+        hpBarIconRed = new TextureRegionDrawable(game.getRes().getTexture("player_hp_icon_red"));
+
+        hpBarIcon = new Image(hpBarIconGreen);
         hpBarIcon.setPosition(HP_ICON_POSITION.x, HP_ICON_POSITION.y);
 
         stage.addActor(hpBarIcon);
@@ -118,10 +128,22 @@ public class Hud extends Scene {
             }
         }
 
-        if (hpPercentage <= HP_BAR_RED_THRESHOLD) hpBarColor = game.getRes().getTexture("hp_bar_color");
-        else if (hpPercentage <= HP_BAR_ORANGE_THRESHOLD) hpBarColor = game.getRes().getTexture("hp_bar_orange");
-        else if (hpPercentage <= HP_BAR_YELLOW_THRESHOLD) hpBarColor = game.getRes().getTexture("hp_bar_yellow");
-        else hpBarColor = game.getRes().getTexture("hp_bar_green");
+        if (hpPercentage <= HP_BAR_RED_THRESHOLD) {
+            hpBarColor = game.getRes().getTexture("hp_bar_color");
+            hpBarIcon.setDrawable(hpBarIconRed);
+        }
+        else if (hpPercentage <= HP_BAR_ORANGE_THRESHOLD) {
+            hpBarColor = game.getRes().getTexture("hp_bar_orange");
+            hpBarIcon.setDrawable(hpBarIconOrange);
+        }
+        else if (hpPercentage <= HP_BAR_YELLOW_THRESHOLD) {
+            hpBarColor = game.getRes().getTexture("hp_bar_yellow");
+            hpBarIcon.setDrawable(hpBarIconYellow);
+        }
+        else {
+            hpBarColor = game.getRes().getTexture("hp_bar_green");
+            hpBarIcon.setDrawable(hpBarIconGreen);
+        }
 
         PlayerComponent playerComp = Mapper.INSTANCE.getPLAYER_MAPPER().get(player);
         if (playerComp.getChargeTime() >= CHARGE_BAR_ACTIVATION_TIME) {

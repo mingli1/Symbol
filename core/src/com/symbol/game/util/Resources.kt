@@ -173,6 +173,9 @@ class Resources : Disposable {
 
     private fun loadImages() {
         load("player_hp_icon")
+        load("player_hp_icon_yellow")
+        load("player_hp_icon_orange")
+        load("player_hp_icon_red")
         load("charge_bar_icon")
         for (i in 2..4) load("charge_bar_icon$i")
     }
