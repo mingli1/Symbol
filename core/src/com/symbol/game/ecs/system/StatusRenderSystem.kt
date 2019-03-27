@@ -11,8 +11,7 @@ import com.symbol.game.ecs.component.StatusEffect
 import com.symbol.game.ecs.component.StatusEffectComponent
 import com.symbol.game.util.Resources
 import com.symbol.game.util.STATUS_EFFECT
-
-import java.util.HashMap
+import java.util.*
 
 private const val HP_BAR_VISIBLE_DURATION = 2f
 private const val HP_BAR_VISIBLE_DURATION_WITH_SE = 0.4f

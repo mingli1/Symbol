@@ -5,6 +5,8 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.InputMultiplexer
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.math.Vector2
+import com.symbol.game.Config
+import com.symbol.game.Symbol
 import com.symbol.game.ecs.Mapper
 import com.symbol.game.ecs.entity.Player
 import com.symbol.game.ecs.system.*
@@ -12,8 +14,6 @@ import com.symbol.game.ecs.system.enemy.EnemyActivationSystem
 import com.symbol.game.ecs.system.enemy.EnemyAttackSystem
 import com.symbol.game.ecs.system.enemy.EnemyMovementSystem
 import com.symbol.game.effects.particle.ParticleSpawner
-import com.symbol.game.Config
-import com.symbol.game.Symbol
 import com.symbol.game.input.AndroidInput
 import com.symbol.game.input.KeyInput
 import com.symbol.game.input.KeyInputSystem

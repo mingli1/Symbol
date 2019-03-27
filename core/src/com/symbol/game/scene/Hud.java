@@ -9,10 +9,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.symbol.game.ecs.Mapper;
-import com.symbol.game.ecs.component.HealthComponent;
 import com.symbol.game.Config;
 import com.symbol.game.Symbol;
+import com.symbol.game.ecs.Mapper;
+import com.symbol.game.ecs.component.HealthComponent;
 import com.symbol.game.ecs.component.PlayerComponent;
 import com.symbol.game.ecs.entity.EntityColor;
 
