@@ -20,7 +20,7 @@ import com.symbol.game.util.Resources
 private const val NUM_SUB_STEPS = 30
 private const val MAP_OBJECT_DAMAGE_RATE = 1f
 private const val MAP_OBJECT_SLOW_PERCENTAGE = 0.4f
-private const val MAP_OBJECT_PUSH = 45f
+private const val MAP_OBJECT_SPEED_BOOST = 45f
 const val MAP_OBJECT_JUMP_BOOST_PERCENTAGE = 1.5f
 
 class MapCollisionSystem(private val res: Resources) : IteratingSystem(
@@ -262,18 +262,18 @@ class MapCollisionSystem(private val res: Resources) : IteratingSystem(
 
     private fun handlePushRightMapObject(mapObject: MapObject, velocity: VelocityComponent, se: StatusEffectComponent?) {
         if (mapObject.type == MapObjectType.PushRight) {
-            if (velocity.dx > 0 && velocity.dx == velocity.speed) velocity.dx += MAP_OBJECT_PUSH
+            if (velocity.dx > 0 && velocity.dx == velocity.speed) velocity.dx += MAP_OBJECT_SPEED_BOOST
             if (!se!!.entityApplied) se.apply(StatusEffect.SpeedBoostRight)
         }
-        else if (velocity.dx > 0 && velocity.dx == velocity.speed + MAP_OBJECT_PUSH) velocity.dx = velocity.speed
+        else if (velocity.dx > 0 && velocity.dx == velocity.speed + MAP_OBJECT_SPEED_BOOST) velocity.dx = velocity.speed
     }
 
     private fun handlePushLeftMapObject(mapObject: MapObject, velocity: VelocityComponent, se: StatusEffectComponent?) {
         if (mapObject.type == MapObjectType.PushLeft) {
-            if (velocity.dx < 0 && velocity.dx == -velocity.speed) velocity.dx -= MAP_OBJECT_PUSH
+            if (velocity.dx < 0 && velocity.dx == -velocity.speed) velocity.dx -= MAP_OBJECT_SPEED_BOOST
             if (!se!!.entityApplied) se.apply(StatusEffect.SpeedBoostLeft)
         }
-        else if (velocity.dx < 0 && velocity.dx == -velocity.speed - MAP_OBJECT_PUSH) velocity.dx = -velocity.speed
+        else if (velocity.dx < 0 && velocity.dx == -velocity.speed - MAP_OBJECT_SPEED_BOOST) velocity.dx = -velocity.speed
     }
 
     private fun handleJumpBoostMapObject(mapObject: MapObject, player: PlayerComponent?, se: StatusEffectComponent?) {
