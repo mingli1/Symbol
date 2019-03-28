@@ -19,6 +19,7 @@ class EntityBuilder(private val engine: PooledEngine) {
     private var projectileComponent: ProjectileComponent? = null
 
     private var boundingBoxComponent: BoundingBoxComponent? = null
+    private var boundingCircleComponent: BoundingCircleComponent? = null
     private var directionComponent: DirectionComponent? = null
     private var gravityComponent: GravityComponent? = null
     private var jumpComponent: JumpComponent? = null
@@ -48,6 +49,7 @@ class EntityBuilder(private val engine: PooledEngine) {
     private var healthPackComponent: HealthPackComponent? = null
     private var squareSwitchComponent: SquareSwitchComponent? = null
     private var toggleTileComponent: ToggleTileComponent? = null
+    private var forceFieldComponent: ForceFieldComponent? = null
 
     companion object {
         fun instance(engine: PooledEngine) : EntityBuilder = EntityBuilder(engine)
@@ -97,6 +99,12 @@ class EntityBuilder(private val engine: PooledEngine) {
     fun boundingBox(bx: Float, by: Float, x: Float = 0f, y: Float = 0f) : EntityBuilder {
         boundingBoxComponent = engine.createComponent(BoundingBoxComponent::class.java)
         boundingBoxComponent?.rect?.set(x, y, bx, by)
+        return this
+    }
+
+    fun boundingCircle(x: Float = 0f, y: Float = 0f, radius: Float = 0f) : EntityBuilder {
+        boundingCircleComponent = engine.createComponent(BoundingCircleComponent::class.java)
+        boundingCircleComponent?.circle?.set(x, y, radius)
         return this
     }
 
@@ -295,6 +303,12 @@ class EntityBuilder(private val engine: PooledEngine) {
         return this
     }
 
+    fun forceField(duration: Float = 0f) : EntityBuilder {
+        forceFieldComponent = engine.createComponent(ForceFieldComponent::class.java)
+        forceFieldComponent?.duration = duration
+        return this
+    }
+
     fun build() : Entity {
         val entity = engine.createEntity()
 
@@ -303,6 +317,7 @@ class EntityBuilder(private val engine: PooledEngine) {
 
         if (colorComponent != null) entity.add(colorComponent)
         if (boundingBoxComponent != null) entity.add(boundingBoxComponent)
+        if (boundingCircleComponent != null) entity.add(boundingCircleComponent)
         if (directionComponent != null) entity.add(directionComponent)
         if (gravityComponent != null) entity.add(gravityComponent)
         if (jumpComponent != null) entity.add(jumpComponent)
@@ -331,6 +346,7 @@ class EntityBuilder(private val engine: PooledEngine) {
         if (healthPackComponent != null) entity.add(healthPackComponent)
         if (squareSwitchComponent != null) entity.add(squareSwitchComponent)
         if (toggleTileComponent != null) entity.add(toggleTileComponent)
+        if (forceFieldComponent != null) entity.add(forceFieldComponent)
 
         engine.addEntity(entity)
         return entity

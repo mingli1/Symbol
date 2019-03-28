@@ -11,6 +11,7 @@ object Mapper {
     val VEL_MAPPER: ComponentMapper<VelocityComponent> = ComponentMapper.getFor(VelocityComponent::class.java)
     val TEXTURE_MAPPER: ComponentMapper<TextureComponent> = ComponentMapper.getFor(TextureComponent::class.java)
     val BOUNDING_BOX_MAPPER: ComponentMapper<BoundingBoxComponent> = ComponentMapper.getFor(BoundingBoxComponent::class.java)
+    val BOUNDING_CIRCLE_MAPPER: ComponentMapper<BoundingCircleComponent> = ComponentMapper.getFor(BoundingCircleComponent::class.java)
     val GRAVITY_MAPPER: ComponentMapper<GravityComponent> = ComponentMapper.getFor(GravityComponent::class.java)
     val JUMP_MAPPER: ComponentMapper<JumpComponent> = ComponentMapper.getFor(JumpComponent::class.java)
     val DIR_MAPPER: ComponentMapper<DirectionComponent> = ComponentMapper.getFor(DirectionComponent::class.java)
@@ -39,5 +40,6 @@ object Mapper {
     val COLOR_MAPPER: ComponentMapper<ColorComponent> = ComponentMapper.getFor(ColorComponent::class.java)
     val SQUARE_SWITCH_MAPPER: ComponentMapper<SquareSwitchComponent> = ComponentMapper.getFor(SquareSwitchComponent::class.java)
     val TOGGLE_TILE_MAPPER: ComponentMapper<ToggleTileComponent> = ComponentMapper.getFor(ToggleTileComponent::class.java)
+    val FORCE_FIELD_MAPPER: ComponentMapper<ForceFieldComponent> = ComponentMapper.getFor(ForceFieldComponent::class.java)
 
 }
