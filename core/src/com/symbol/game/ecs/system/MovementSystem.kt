@@ -25,7 +25,7 @@ class MovementSystem : IteratingSystem(
         val width = texture.texture!!.regionWidth
         val height = texture.texture!!.regionHeight
 
-        bounds.rect.setPosition(position.x + (width - bounds.rect.width) / 2, position.y + (height - bounds.rect.height) / 2)
+        bounds?.rect?.setPosition(position.x + (width - bounds.rect.width) / 2, position.y + (height - bounds.rect.height) / 2)
 
         if (orbit != null) {
             orbit.angle += if (!orbit.clockwise) orbit.speed * dt else -orbit.speed * dt

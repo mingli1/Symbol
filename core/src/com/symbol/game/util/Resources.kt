@@ -83,6 +83,7 @@ class Resources : Disposable {
         load("health_pack")
         load("between")
         load("toggle_square")
+        for (i in 1..3) load("forcefield$i")
     }
 
     private fun loadProjectiles() {

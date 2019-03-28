@@ -7,6 +7,7 @@ import com.badlogic.ashley.core.PooledEngine
 import com.badlogic.ashley.systems.IteratingSystem
 import com.badlogic.ashley.utils.ImmutableArray
 import com.badlogic.gdx.graphics.g2d.TextureRegion
+import com.badlogic.gdx.math.Intersector
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.utils.Array
@@ -106,11 +107,7 @@ class ProjectileSystem(private val player: Player, private val res: Resources)
             for (mapObject in mapObjects) {
                 if (bb.rect.overlaps(mapObject.bounds)) {
                     if (pj.playerType != 0) handlePlayerProjectile(entity, pj, bb.rect)
-                    remove.shouldRemove = true
-                    ParticleSpawner.spawn(res, color.hex!!,
-                            DEFAULT_LIFETIME, DEFAULT_INTESITY + pj.damage,
-                            position.x + width / 2,
-                            position.y + height / 2)
+                    removeAndSpawnParticles(color, pj, position, width, height, remove)
                     break
                 }
             }
@@ -181,6 +178,16 @@ class ProjectileSystem(private val player: Player, private val res: Resources)
         handleDetonation(entity, pj, bb.rect, remove)
     }
 
+    private fun removeAndSpawnParticles(color: ColorComponent, pj: ProjectileComponent,
+                                        position: PositionComponent, width: Int, height: Int,
+                                        remove: RemoveComponent) {
+        ParticleSpawner.spawn(res, color.hex!!,
+                DEFAULT_LIFETIME, DEFAULT_INTESITY + pj.damage,
+                position.x + width / 2,
+                position.y + height / 2)
+        remove.shouldRemove = true
+    }
+
     private fun hit(entity: Entity, damage: Int) {
         val health = Mapper.HEALTH_MAPPER.get(entity)
         health.hit(damage)
@@ -202,8 +209,12 @@ class ProjectileSystem(private val player: Player, private val res: Resources)
         for (mapEntity in mapEntities) {
             val me = Mapper.MAP_ENTITY_MAPPER.get(mapEntity)
             val bounds = Mapper.BOUNDING_BOX_MAPPER.get(mapEntity)
+            val boundsCircle = Mapper.BOUNDING_CIRCLE_MAPPER.get(mapEntity)
 
-            if (!pj.enemy && !pj.sub && bb.rect.overlaps(bounds.rect)) {
+            val overlap = if (boundsCircle == null) bb.rect.overlaps(bounds.rect) else
+                Intersector.overlaps(boundsCircle.circle, bb.rect)
+
+            if (!pj.enemy && !pj.sub && overlap) {
                 when (me.mapEntityType) {
                     MapEntityType.Mirror -> {
                         pj.enemy = true
@@ -243,18 +254,34 @@ class ProjectileSystem(private val player: Player, private val res: Resources)
                             }
                         }
                     }
+                    MapEntityType.ForceField -> {
+                        val ff = Mapper.FORCE_FIELD_MAPPER.get(mapEntity)
+                        val playerBounds = Mapper.BOUNDING_BOX_MAPPER.get(player)
+                        val circleContainsPlayer = boundsCircle.circle.contains(playerBounds.rect.x, playerBounds.rect.y) &&
+                                boundsCircle.circle.contains(playerBounds.rect.x + playerBounds.rect.width,
+                                        playerBounds.rect.y) &&
+                                boundsCircle.circle.contains(playerBounds.rect.x,
+                                        playerBounds.rect.y + playerBounds.rect.height) &&
+                                boundsCircle.circle.contains(playerBounds.rect.x + playerBounds.rect.width,
+                                        playerBounds.rect.y + playerBounds.rect.height)
+
+                        if (!circleContainsPlayer && ff.activated)
+                            removeAndSpawnParticles(color, pj, position, width, height, remove)
+                    }
                     else -> {}
                 }
             }
 
+            if (boundsCircle != null && !pj.enemy && !pj.sub && !overlap) {
+                if (boundsCircle.circle.contains(pj.originX, pj.originY)) {
+                    removeAndSpawnParticles(color, pj, position, width, height, remove)
+                }
+            }
+
             if (me.projectileCollidable) {
-                if (bb.rect.overlaps(bounds.rect)) {
+                if (overlap) {
                     if (pj.playerType != 0) handlePlayerProjectile(entity, pj, bb.rect)
-                    ParticleSpawner.spawn(res, color.hex!!,
-                            DEFAULT_LIFETIME, DEFAULT_INTESITY + pj.damage,
-                            position.x + width / 2,
-                            position.y + height / 2)
-                    remove.shouldRemove = true
+                    removeAndSpawnParticles(color, pj, position, width, height, remove)
                     break
                 }
             }

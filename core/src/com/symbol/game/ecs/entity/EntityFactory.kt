@@ -363,6 +363,19 @@ object EntityFactory {
                         .texture(texture, "toggle_square")
                         .build()
             }
+            MapEntityType.ForceField -> {
+                val duration = (props["duration"] ?: 0f) as Float
+                val textureStr = "forcefield${MathUtils.floor((rect.width - 32f) / 16f) + 1}"
+                val texture = res.getTexture(textureStr)!!
+
+                EntityBuilder.instance(engine)
+                        .mapEntity(type = type)
+                        .forceField(duration = duration)
+                        .boundingCircle(rect.x + rect.width / 2, rect.y + rect.height / 2, rect.width / 2)
+                        .position(rect.x, rect.y)
+                        .texture(texture, textureStr)
+                        .build()
+            }
             else -> {}
         }
     }

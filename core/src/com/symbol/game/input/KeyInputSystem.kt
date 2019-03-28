@@ -86,13 +86,15 @@ class KeyInputSystem(private val res: Resources) : EntitySystem(), KeyInputHandl
             val texture = res.getTexture(key)!!
             val width = texture.regionWidth.toFloat()
             val height = texture.regionHeight.toFloat()
+            val x = playerPos.x + (PLAYER_WIDTH / 2) - (width / 2)
+            val y = playerPos.y + (PLAYER_HEIGHT / 2) - (height / 2)
 
             val builder = EntityBuilder.instance(engine as PooledEngine)
-                    .projectile(damage = playerComp.damage, knockback = PLAYER_PROJECTILE_KNOCKBACK,
+                    .projectile(originX = x, originY = y, damage = playerComp.damage,
+                            knockback = PLAYER_PROJECTILE_KNOCKBACK,
                             playerType = playerComp.damage, textureStr = key)
                     .color(EntityColor.getProjectileColor(key)!!)
-                    .position(playerPos.x + (PLAYER_WIDTH / 2) - (width / 2),
-                            playerPos.y + (PLAYER_HEIGHT / 2) - (height / 2))
+                    .position(x, y)
                     .velocity(dx = if (dir.facingRight) PLAYER_PROJECTILE_SPEED else -PLAYER_PROJECTILE_SPEED)
                     .boundingBox(width, height)
                     .texture(texture, key)

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.0.1" orientation="orthogonal" renderorder="right-down" width="50" height="20" tilewidth="8" tileheight="8" nextobjectid="140">
+<map version="1.0" tiledversion="1.0.1" orientation="orthogonal" renderorder="right-down" width="50" height="20" tilewidth="8" tileheight="8" nextobjectid="155">
  <tileset firstgid="1" name="set" tilewidth="8" tileheight="8" tilecount="64" columns="8">
   <image source="tileset.png" width="64" height="64"/>
  </tileset>
@@ -88,11 +88,6 @@
     <property name="type" value="big_pi"/>
    </properties>
   </object>
-  <object id="96" x="112.727" y="134.909" width="7.27273" height="7.27273">
-   <properties>
-    <property name="type" value="big_omega"/>
-   </properties>
-  </object>
   <object id="97" x="126.909" y="134.909" width="7.27273" height="7.27273">
    <properties>
     <property name="type" value="njoin"/>
@@ -109,6 +104,11 @@
    </properties>
   </object>
   <object id="120" x="192" y="136.909" width="8.18182" height="6.36364">
+   <properties>
+    <property name="type" value="cintegral"/>
+   </properties>
+  </object>
+  <object id="154" x="176" y="56" width="8.18182" height="6.36364">
    <properties>
     <property name="type" value="cintegral"/>
    </properties>
@@ -146,13 +146,13 @@
     <property name="type" value="toggle"/>
    </properties>
   </object>
-  <object id="122" x="184" y="56" width="8" height="8">
+  <object id="153" x="148" y="27" width="64" height="64">
    <properties>
-    <property name="type" value="mirror"/>
+    <property name="type" value="force_field"/>
    </properties>
   </object>
  </objectgroup>
  <objectgroup name="player">
-  <object id="10" x="3.75" y="55.25" width="8" height="7.09091"/>
+  <object id="10" x="95.25" y="12.75" width="8" height="7.09091"/>
  </objectgroup>
 </map>

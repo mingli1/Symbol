@@ -33,6 +33,7 @@ class MapEntitySystem(private val player: Player, private val res: Resources) :
             MapEntityType.Portal -> handlePortal(entity)
             MapEntityType.Clamp -> handleClamp(entity, dt)
             MapEntityType.HealthPack -> handleHealthPack(entity)
+            MapEntityType.ForceField -> handleForceField(entity, dt)
             else -> {}
         }
     }
@@ -153,6 +154,20 @@ class MapEntitySystem(private val player: Player, private val res: Resources) :
             val playerHealth = Mapper.HEALTH_MAPPER.get(player)
             playerHealth.hp += healthPack.regen
             remove.shouldRemove = true
+        }
+    }
+
+    private fun handleForceField(entity: Entity?, dt: Float) {
+        val ff = Mapper.FORCE_FIELD_MAPPER.get(entity)
+        val texture = Mapper.TEXTURE_MAPPER.get(entity)
+
+        if (ff.duration != 0f) {
+            ff.timer += dt
+            if (ff.timer >= ff.duration) {
+                ff.activated = !ff.activated
+                texture.texture = if (ff.activated) res.getTexture(texture.textureStr!!) else null
+                ff.timer = 0f
+            }
         }
     }
 

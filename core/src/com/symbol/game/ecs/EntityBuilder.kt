@@ -65,6 +65,7 @@ class EntityBuilder(private val engine: PooledEngine) {
     fun projectile(movementType: ProjectileMovementType = ProjectileMovementType.Normal,
                    parentFacingRight: Boolean = false,
                    sub: Boolean = false,
+                   originX: Float = 0f, originY: Float = 0f,
                    collidesWithTerrain: Boolean = true,
                    collidesWithProjectiles: Boolean = false,
                    textureStr: String? = null,
@@ -78,6 +79,8 @@ class EntityBuilder(private val engine: PooledEngine) {
         projectileComponent?.movementType = movementType
         projectileComponent?.parentFacingRight = parentFacingRight
         projectileComponent?.sub = sub
+        projectileComponent?.originX = originX
+        projectileComponent?.originY = originY
         projectileComponent?.collidesWithTerrain = collidesWithTerrain
         projectileComponent?.collidesWithProjectiles = collidesWithProjectiles
         projectileComponent?.textureStr = textureStr
