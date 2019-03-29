@@ -11,11 +11,13 @@ class EnemyComponent : Component, Pool.Poolable {
     var movementType = EnemyMovementType.None
     var attackType = EnemyAttackType.None
     var parent: Entity? = null
+    var movementTimer = 0f
 
     override fun reset() {
         movementType = EnemyMovementType.None
         attackType = EnemyAttackType.None
         parent = null
+        movementTimer = 0f
     }
 
 }

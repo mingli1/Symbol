@@ -34,15 +34,6 @@ private const val TRAP_EXPLODE_TIME = 2f
 class EnemyAttackSystem(private val player: Player, private val res: Resources) :
         IteratingSystem(Family.all(EnemyComponent::class.java).get()) {
 
-    private var attackTimers: MutableMap<Entity, Float> = HashMap()
-
-    fun reset() {
-        attackTimers.clear()
-        for (entity in entities) {
-            attackTimers[entity] = 0f
-        }
-    }
-
     override fun processEntity(entity: Entity?, dt: Float) {
         val enemyComponent = Mapper.ENEMY_MAPPER.get(entity)
         val activation = Mapper.ACTIVATION_MAPPER.get(entity)
@@ -110,9 +101,9 @@ class EnemyAttackSystem(private val player: Player, private val res: Resources) 
         }
 
         if (!attack.canAttack) {
-            attackTimers[entity!!] = attackTimers[entity]?.plus(dt)!!
-            if (attackTimers[entity]!! >= attack.attackRate) {
-                attackTimers[entity] = 0f
+            attack.timer += dt
+            if (attack.timer >= attack.attackRate) {
+                attack.timer = 0f
                 attack.canAttack = true
             }
         }

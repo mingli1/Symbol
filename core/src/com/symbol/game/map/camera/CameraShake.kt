@@ -5,16 +5,16 @@ import com.badlogic.gdx.math.Vector3
 
 object CameraShake {
 
-    var time: Float = 0f
+    var time = 0f
         private set
-    var toggle: Boolean = false
+    var toggle = false
         private set
 
-    private var currentTime: Float = 0f
-    private var power: Float = 0f
-    private var currentPower: Float = 0f
+    private var currentTime = 0f
+    private var power = 0f
+    private var currentPower = 0f
 
-    val position: Vector3 = Vector3()
+    val position = Vector3()
 
     fun shake(power: Float) {
         this.power = power

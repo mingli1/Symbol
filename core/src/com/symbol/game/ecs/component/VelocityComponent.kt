@@ -7,8 +7,9 @@ class VelocityComponent : Component, Pool.Poolable {
 
     var dx = 0f
     var dy = 0f
-
     var speed = 0f
+
+    var prevVel = 0f
 
     var platformDx = 0f
 
@@ -20,6 +21,7 @@ class VelocityComponent : Component, Pool.Poolable {
     override fun reset() {
         dx = 0f
         dy = 0f
+        prevVel = 0f
         speed = 0f
         platformDx = 0f
     }

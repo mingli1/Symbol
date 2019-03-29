@@ -7,6 +7,7 @@ class AttackComponent : Component, Pool.Poolable {
 
     var damage = 0
     var attackRate = 0f
+    var timer = 0f
     var canAttack = true
     var attackTexture: String? = null
     var projectileSpeed = 0f
@@ -17,6 +18,7 @@ class AttackComponent : Component, Pool.Poolable {
     override fun reset() {
         damage = 0
         attackRate = 0f
+        timer = 0f
         canAttack = true
         attackTexture = null
         projectileSpeed = 0f

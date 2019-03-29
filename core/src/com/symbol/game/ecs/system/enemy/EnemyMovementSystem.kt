@@ -21,21 +21,6 @@ private const val JUMP_FREQUENCY = 1.2f
 class EnemyMovementSystem(private val player: Player, private val res: Resources)
     : IteratingSystem(Family.all(EnemyComponent::class.java).get()) {
 
-    private var movementTimers: MutableMap<Entity, Float> = HashMap()
-    private var jumpTimers: MutableMap<Entity, Float> = HashMap()
-    private var corporealTimers: MutableMap<Entity, Float> = HashMap()
-
-    fun reset() {
-        movementTimers.clear()
-        jumpTimers.clear()
-        corporealTimers.clear()
-        for (entity in entities) {
-            movementTimers[entity] = 0f
-            jumpTimers[entity] = 0f
-            corporealTimers[entity] = 0f
-        }
-    }
-
     override fun processEntity(entity: Entity?, dt: Float) {
         val enemyComponent = Mapper.ENEMY_MAPPER.get(entity)
         val activation = Mapper.ACTIVATION_MAPPER.get(entity)
@@ -47,8 +32,8 @@ class EnemyMovementSystem(private val player: Player, private val res: Resources
         val jump = Mapper.JUMP_MAPPER.get(entity)
 
         if (corp != null && corp.incorporealTime != 0f) {
-            corporealTimers[entity!!] = corporealTimers[entity]?.plus(dt)!!
-            if (corporealTimers[entity]!! >= corp.incorporealTime) {
+            corp.timer += dt
+            if (corp.timer >= corp.incorporealTime) {
                 corp.corporeal = !corp.corporeal
 
                 if (!corp.corporeal) {
@@ -56,7 +41,7 @@ class EnemyMovementSystem(private val player: Player, private val res: Resources
                     texture.texture = res.getTexture(texture.textureStr + INCORPOREAL) ?: texture.texture
                 }
 
-                corporealTimers[entity] = 0f
+                corp.timer = 0f
             }
         }
 
@@ -96,6 +81,7 @@ class EnemyMovementSystem(private val player: Player, private val res: Resources
     }
 
     private fun random(entity: Entity?, dt: Float, p: PositionComponent, v: VelocityComponent, g: GravityComponent) {
+        val enemy = Mapper.ENEMY_MAPPER.get(entity)
         val bounds = Mapper.BOUNDING_BOX_MAPPER.get(entity)
         if (p.x < g.platform.x) {
             v.dx = v.speed
@@ -106,15 +92,15 @@ class EnemyMovementSystem(private val player: Player, private val res: Resources
             return
         }
 
-        movementTimers[entity!!] = movementTimers[entity]?.plus(dt)!!
-        if (movementTimers[entity]!! >= MOVEMENT_FREQUENCY) {
+        enemy.movementTimer += dt
+        if (enemy.movementTimer >= MOVEMENT_FREQUENCY) {
             val action = MathUtils.random(2)
             when (action) {
                 1 -> v.dx = -v.speed
                 2 -> v.dx = v.speed
                 else -> v.dx = 0f
             }
-            movementTimers[entity] = 0f
+            enemy.movementTimer = 0f
         }
     }
 
@@ -122,12 +108,12 @@ class EnemyMovementSystem(private val player: Player, private val res: Resources
                                v: VelocityComponent, g: GravityComponent) {
         random(entity, dt, p, v, g)
         val jump = Mapper.JUMP_MAPPER.get(entity)
-        jumpTimers[entity!!] = jumpTimers[entity]?.plus(dt)!!
-        if (jumpTimers[entity]!! >= JUMP_FREQUENCY) {
+        jump.timer += dt
+        if (jump.timer >= JUMP_FREQUENCY) {
             if (jump.impulse != 0f && MathUtils.randomBoolean()) {
                 v.dy = jump.impulse
             }
-            jumpTimers[entity] = 0f
+            jump.timer = 0f
         }
     }
 

@@ -11,7 +11,6 @@ import com.symbol.game.ecs.component.StatusEffect
 import com.symbol.game.ecs.component.StatusEffectComponent
 import com.symbol.game.util.Resources
 import com.symbol.game.util.STATUS_EFFECT
-import java.util.*
 
 private const val HP_BAR_VISIBLE_DURATION = 2f
 private const val HP_BAR_VISIBLE_DURATION_WITH_SE = 0.4f
@@ -25,18 +24,6 @@ private const val SE_Y_OFFSET = 2
 class StatusRenderSystem(private val batch: Batch, private val res: Resources)
     : IteratingSystem(Family.one(StatusEffectComponent::class.java, HealthComponent::class.java).exclude(ProjectileComponent::class.java).get()) {
 
-    private val timers: MutableMap<Entity, Float> = HashMap()
-    private val startHealthBars: MutableMap<Entity, Boolean> = HashMap()
-
-    fun reset() {
-        timers.clear()
-        startHealthBars.clear()
-        for (entity in entities) {
-            timers[entity] = 0f
-            startHealthBars[entity] = false
-        }
-    }
-
     override fun processEntity(entity: Entity, dt: Float) {
         val pos = Mapper.POS_MAPPER.get(entity)
         val texture = Mapper.TEXTURE_MAPPER.get(entity)
@@ -48,13 +35,13 @@ class StatusRenderSystem(private val batch: Batch, private val res: Resources)
 
         val health = Mapper.HEALTH_MAPPER.get(entity)
         if (health.hpChange && health.hp > 0 && Mapper.PLAYER_MAPPER.get(entity) == null) {
-            startHealthBars[entity] = true
-            timers[entity] = 0f
+            se.startHealthBar = true
+            se.renderTimer = 0f
             health.hpChange = false
         }
 
-        if (startHealthBars[entity]!!) {
-            timers[entity] = timers[entity]?.plus(dt)!!
+        if (se != null && se.startHealthBar) {
+            se.renderTimer += dt
 
             val maxHpBarWidth = width + HP_BAR_X_OFFSET * 2 - 2
             val hpBarWidth = maxHpBarWidth * (health.hp.toFloat() / health.maxHp)
@@ -68,9 +55,9 @@ class StatusRenderSystem(private val batch: Batch, private val res: Resources)
 
             val duration = if (hasStatusEffect) HP_BAR_VISIBLE_DURATION_WITH_SE else HP_BAR_VISIBLE_DURATION
 
-            if (timers[entity]!! >= duration) {
-                startHealthBars[entity] = false
-                timers[entity] = 0f
+            if (se.renderTimer >= duration) {
+                se.startHealthBar = false
+                se.renderTimer = 0f
             }
         }
         else if (hasStatusEffect) {

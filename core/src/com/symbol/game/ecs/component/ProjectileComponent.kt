@@ -10,8 +10,8 @@ class ProjectileComponent : Component, Pool.Poolable {
     var parentFacingRight = false
     var sub = false
 
-    var originX: Float = 0f
-    var originY: Float = 0f
+    var originX = 0f
+    var originY = 0f
 
     var textureStr: String? = null
     var collidesWithTerrain = true
@@ -28,6 +28,7 @@ class ProjectileComponent : Component, Pool.Poolable {
 
     var arcHalf = false
     var waveDir = Direction.Left
+    var waveTimer = 0f
 
     override fun reset() {
         lifeTime = 0f
@@ -48,6 +49,7 @@ class ProjectileComponent : Component, Pool.Poolable {
 
         arcHalf = false
         waveDir = Direction.Left
+        waveTimer = 0f
     }
 }
 

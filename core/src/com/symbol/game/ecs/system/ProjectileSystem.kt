@@ -39,12 +39,6 @@ class ProjectileSystem(private val player: Player, private val res: Resources)
     private lateinit var mapEntities: ImmutableArray<Entity>
     private lateinit var toggleTiles: ImmutableArray<Entity>
 
-    private var knockbackTimes: MutableMap<Entity, Float> = HashMap()
-    private var prevVelocities: MutableMap<Entity, Float> = HashMap()
-    private var startKnockback: MutableMap<Entity, Boolean> = HashMap()
-
-    private var waveTimers: MutableMap<Entity, Float> = HashMap()
-
     override fun addedToEngine(engine: Engine?) {
         super.addedToEngine(engine)
         allEntities = engine!!.getEntitiesFor(Family.all(HealthComponent::class.java).get())
@@ -55,16 +49,6 @@ class ProjectileSystem(private val player: Player, private val res: Resources)
     fun setMapData(mapObjects: Array<MapObject>) {
         this.mapObjects.clear()
         this.mapObjects.addAll(mapObjects)
-
-        knockbackTimes.clear()
-        prevVelocities.clear()
-        startKnockback.clear()
-        waveTimers.clear()
-        for (entity in allEntities) {
-            knockbackTimes[entity] = 0f
-            prevVelocities[entity] = 0f
-            startKnockback[entity] = false
-        }
     }
 
     override fun update(dt: Float) {
@@ -72,13 +56,12 @@ class ProjectileSystem(private val player: Player, private val res: Resources)
 
         for (e in allEntities) {
             val vel = Mapper.VEL_MAPPER.get(e)
-            if (startKnockback[e]!!) {
-                val knockback = Mapper.KNOCKBACK_MAPPER.get(e)
-                knockbackTimes[e] = knockbackTimes[e]?.plus(dt)!!
-                if (knockbackTimes[e]!! > KNOCKBACK_TIME) {
-                    vel.dx = prevVelocities[e]!!
-                    knockbackTimes[e] = 0f
-                    startKnockback[e] = false
+            val knockback = Mapper.KNOCKBACK_MAPPER.get(e)
+            if (knockback != null && knockback.knockingBack) {
+                knockback.timer += dt
+                if (knockback.timer > KNOCKBACK_TIME) {
+                    vel.dx = vel.prevVel
+                    knockback.timer = 0f
                     knockback.knockingBack = false
                 }
             }
@@ -144,9 +127,8 @@ class ProjectileSystem(private val player: Player, private val res: Resources)
                     if (trap != null) handleTrapEnemy(e)
 
                     if (knockback != null) {
-                        prevVelocities[e] = ev.dx
+                        ev.prevVel = ev.dx
                         ev.dx = if (bb.rect.x < ebb.rect.x + ebb.rect.width / 2) pj.knockback else -pj.knockback
-                        startKnockback[e] = true
                         knockback.knockingBack = true
                     }
                     hit(e, pj.damage)
@@ -351,10 +333,9 @@ class ProjectileSystem(private val player: Player, private val res: Resources)
     }
 
     private fun handleWaveMovement(entity: Entity?, dt: Float, pj: ProjectileComponent) {
-        if (waveTimers[entity] == null) waveTimers[entity!!] = 0f
-        waveTimers[entity!!] = waveTimers[entity]?.plus(dt * (pj.acceleration / 10f))!!
-        if (waveTimers[entity]!! >= MathUtils.PI2) waveTimers[entity] = 0f
-        val offset = MathUtils.sin(waveTimers[entity]!!) * pj.acceleration
+        pj.waveTimer += dt * (pj.acceleration / 10f)
+        if (pj.waveTimer >= MathUtils.PI2) pj.waveTimer = 0f
+        val offset = MathUtils.sin(pj.waveTimer) * pj.acceleration
 
         val velocity = Mapper.VEL_MAPPER.get(entity)
 

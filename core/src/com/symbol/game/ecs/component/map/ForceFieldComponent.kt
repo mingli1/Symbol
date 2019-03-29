@@ -5,9 +5,9 @@ import com.badlogic.gdx.utils.Pool
 
 class ForceFieldComponent : Component, Pool.Poolable {
 
-    var timer: Float = 0f
-    var duration: Float = 0f
-    var activated: Boolean = true
+    var timer = 0f
+    var duration = 0f
+    var activated = true
 
     override fun reset() {
         timer = 0f

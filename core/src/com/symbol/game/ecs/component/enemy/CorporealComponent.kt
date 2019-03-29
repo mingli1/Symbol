@@ -7,10 +7,12 @@ class CorporealComponent : Component, Pool.Poolable {
 
     var corporeal = true
     var incorporealTime = 0f
+    var timer = 0f
 
     override fun reset() {
         corporeal = true
         incorporealTime = 0f
+        timer = 0f
     }
 
 }

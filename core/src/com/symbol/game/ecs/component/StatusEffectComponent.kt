@@ -12,6 +12,12 @@ class StatusEffectComponent : Component, Pool.Poolable {
     var entityApplied = false
     var statusChange = false
 
+    var renderTimer = 0f
+    var startHealthBar = false
+
+    var durationTimer = 0f
+    var startEffect = false
+
     fun apply(type: StatusEffect, duration: Float = 0f, value: Float = 0f) {
         if (this.type != StatusEffect.None) statusChange = true
         this.type = type
@@ -29,6 +35,10 @@ class StatusEffectComponent : Component, Pool.Poolable {
         finish()
         apply = StatusEffect.None
         entityApplied = false
+        renderTimer = 0f
+        startHealthBar = false
+        durationTimer = 0f
+        startEffect = false
     }
 
 }

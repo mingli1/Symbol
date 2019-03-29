@@ -11,32 +11,20 @@ import com.symbol.game.ecs.component.StatusEffectComponent
 class StatusEffectSystem : IteratingSystem(Family.all(StatusEffectComponent::class.java)
         .exclude(ProjectileComponent::class.java).get()) {
 
-    private var durationTimers: MutableMap<Entity, Float> = HashMap()
-    private var startEffect: MutableMap<Entity, Boolean> = HashMap()
-
-    fun reset() {
-        durationTimers.clear()
-        startEffect.clear()
-        for (entity in entities) {
-            durationTimers[entity] = 0f
-            startEffect[entity] = false
-        }
-    }
-
     override fun processEntity(entity: Entity?, dt: Float) {
         val se = Mapper.STATUS_EFFECT_MAPPER.get(entity)
 
-        if (se.type != StatusEffect.None && se.duration != 0f && !startEffect[entity]!!) {
-            startEffect[entity!!] = true
+        if (se.type != StatusEffect.None && se.duration != 0f && !se.startEffect) {
+            se.startEffect = true
             se.entityApplied = true
         }
 
-        if (startEffect[entity]!!) {
+        if (se.startEffect) {
             if (se.statusChange) {
-                durationTimers[entity!!] = 0f
+                se.durationTimer = 0f
                 se.statusChange = false
             }
-            durationTimers[entity!!] = durationTimers[entity]?.plus(dt)!!
+            se.durationTimer += dt
 
             when (se.type) {
                 StatusEffect.Stun -> handleStun(entity)
@@ -49,9 +37,9 @@ class StatusEffectSystem : IteratingSystem(Family.all(StatusEffectComponent::cla
                 else -> {}
             }
 
-            if (durationTimers[entity]!! >= se.duration) {
-                startEffect[entity] = false
-                durationTimers[entity] = 0f
+            if (se.durationTimer >= se.duration) {
+                se.startEffect = false
+                se.durationTimer = 0f
                 se.entityApplied = false
                 se.finish()
             }
