@@ -15,6 +15,7 @@ import com.symbol.game.ecs.Mapper;
 import com.symbol.game.ecs.component.HealthComponent;
 import com.symbol.game.ecs.component.PlayerComponent;
 import com.symbol.game.ecs.entity.EntityColor;
+import static com.symbol.game.ecs.entity.PlayerKt.*;
 
 public class Hud extends Scene {
 
@@ -31,10 +32,10 @@ public class Hud extends Scene {
     private static final Vector2 SETTINGS_BUTTON_POSITION = new Vector2(183, 105);
 
     private static final float HP_BAR_DECAY_RATE = 18.f;
-    private static final float CHARGE_BAR_ACTIVATION_TIME = 0.6f;
-    private static final float MAX_CHARGE = 2.6f - CHARGE_BAR_ACTIVATION_TIME;
-    private static final float BAR_ONE_OFFSET = CHARGE_BAR_WIDTH * (0.6f / MAX_CHARGE);
-    private static final float BAR_TWO_OFFSET = CHARGE_BAR_WIDTH * (1.3f / MAX_CHARGE);
+    private static final float CHARGE_BAR_ACTIVATION_TIME = PLAYER_TIER_ONE_ATTACK_TIME;
+    private static final float MAX_CHARGE = PLAYER_TIER_THREE_ATTACK_TIME;
+    private static final float BAR_ONE_OFFSET = CHARGE_BAR_WIDTH * (PLAYER_TIER_ONE_ATTACK_TIME / MAX_CHARGE);
+    private static final float BAR_TWO_OFFSET = CHARGE_BAR_WIDTH * (PLAYER_TIER_TWO_ATTACK_TIME / MAX_CHARGE);
 
     private static final float HP_BAR_YELLOW_THRESHOLD = 0.5f;
     private static final float HP_BAR_ORANGE_THRESHOLD = 0.3f;
