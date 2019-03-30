@@ -413,10 +413,13 @@ class ProjectileSystem(private val player: Player, private val res: Resources)
                 val scale = 1f / health.maxHp
                 attackComp.attackRate -= attackComp.attackRate * scale
 
-                /* @TODO Add last stand icon
                 val se = Mapper.STATUS_EFFECT_MAPPER.get(entity)
-                se?.apply(StatusEffect.LastStand)
-                */
+                if (se != null) {
+                    if (se.type != StatusEffect.LastStand && health.hp.toFloat() / health.maxHp.toFloat() <= 0.5f) {
+                        se.apply(StatusEffect.LastStand)
+                        se.entityApplied = true
+                    }
+                }
             }
         }
     }

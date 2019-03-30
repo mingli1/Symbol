@@ -6,6 +6,8 @@ import com.badlogic.gdx.utils.Pool
 class StatusEffectComponent : Component, Pool.Poolable {
 
     var type = StatusEffect.None
+    var prevEffect = StatusEffect.None
+
     var apply = StatusEffect.None
     var duration = 0f
     var value = 0f
@@ -19,7 +21,10 @@ class StatusEffectComponent : Component, Pool.Poolable {
     var startEffect = false
 
     fun apply(type: StatusEffect, duration: Float = 0f, value: Float = 0f) {
-        if (this.type != StatusEffect.None) statusChange = true
+        if (this.type != StatusEffect.None) {
+            statusChange = true
+            prevEffect = this.type
+        }
         this.type = type
         this.duration = duration
         this.value = value
@@ -34,6 +39,7 @@ class StatusEffectComponent : Component, Pool.Poolable {
     override fun reset() {
         finish()
         apply = StatusEffect.None
+        prevEffect = StatusEffect.None
         entityApplied = false
         renderTimer = 0f
         startHealthBar = false

@@ -112,6 +112,7 @@ class Resources : Disposable {
         load(STATUS_EFFECT + "speed_boost_right")
         load(STATUS_EFFECT + "speed_boost_left")
         load(STATUS_EFFECT + "jump_boost")
+        load(STATUS_EFFECT + "last_stand")
     }
 
     private fun loadBrackets() {

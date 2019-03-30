@@ -3,6 +3,7 @@ package com.symbol.game.ecs.system
 import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.core.Family
 import com.badlogic.ashley.systems.IteratingSystem
+import com.sun.org.apache.xpath.internal.operations.Bool
 import com.symbol.game.ecs.Mapper
 import com.symbol.game.ecs.component.ProjectileComponent
 import com.symbol.game.ecs.component.StatusEffect
@@ -42,7 +43,18 @@ class StatusEffectSystem : IteratingSystem(Family.all(StatusEffectComponent::cla
                 se.durationTimer = 0f
                 se.entityApplied = false
                 se.finish()
+                handleLingeringEffects(se)
             }
+        }
+    }
+
+    private fun handleLingeringEffects(se: StatusEffectComponent) {
+        when (se.prevEffect) {
+            StatusEffect.LastStand -> {
+                se.entityApplied = true
+                se.apply(StatusEffect.LastStand)
+            }
+            else -> {}
         }
     }
 

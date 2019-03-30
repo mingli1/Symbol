@@ -15,12 +15,13 @@ object EntityFactory {
         when (type) {
             EnemyType.EConstant -> {
                 EntityBuilder.instance(engine)
-                        .enemy(movementType = EnemyMovementType.BackAndForth)
+                        .enemy(movementType = EnemyMovementType.BackAndForth, attackType = EnemyAttackType.ShootOne)
+                        .lastStand()
                         .statusEffect()
                         .activation(150f)
-                        .attack(damage = 2)
+                        .attack(damage = 2, projectileSpeed = 45f, attackTexture = "p_cup", attackRate = 1.5f)
                         .color(EntityColor.E_COLOR)
-                        .health(2)
+                        .health(10)
                         .boundingBox(7f, 7f)
                         .position(rect.x, rect.y)
                         .velocity(speed = 25f)
