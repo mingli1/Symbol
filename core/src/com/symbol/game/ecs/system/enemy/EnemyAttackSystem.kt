@@ -80,6 +80,7 @@ class EnemyAttackSystem(private val player: Player, private val res: Resources) 
                     EnemyAttackType.TwoHorizontalWave -> twoHorizontalWave(attack, bounds, dir)
                     EnemyAttackType.TwoVerticalWave -> twoVerticalWave(attack, bounds, dir)
                     EnemyAttackType.FourWave -> fourWave(attack, bounds, dir)
+                    EnemyAttackType.ShootBoomerang -> shootBoomerang(attack, bounds, dir)
                 }
                 attack.canAttack = false
             }
@@ -109,10 +110,11 @@ class EnemyAttackSystem(private val player: Player, private val res: Resources) 
         }
     }
 
-    private fun shootOne(attackComp: AttackComponent, dir: DirectionComponent, bounds: Rectangle) {
+    private fun shootOne(attackComp: AttackComponent, dir: DirectionComponent, bounds: Rectangle,
+                         movementType: ProjectileMovementType = ProjectileMovementType.Normal) {
         val texture = res.getTexture(attackComp.attackTexture!!)!!
         createProjectile(attackComp, dir, bounds,
-                if (dir.facingRight) attackComp.projectileSpeed else -attackComp.projectileSpeed, 0f, texture)
+                if (dir.facingRight) attackComp.projectileSpeed else -attackComp.projectileSpeed, 0f, texture, movementType)
     }
 
     private fun shootTwoHorizontal(attackComp: AttackComponent, dir: DirectionComponent, bounds: Rectangle) {
@@ -262,19 +264,26 @@ class EnemyAttackSystem(private val player: Player, private val res: Resources) 
         twoVerticalWave(attackComp, bounds, dir)
     }
 
+    private fun shootBoomerang(attackComp: AttackComponent, bounds: Rectangle, dir: DirectionComponent) {
+        shootOne(attackComp, dir, bounds, ProjectileMovementType.Boomerang)
+    }
+
     private fun createProjectile(attackComp: AttackComponent, dir: DirectionComponent, bounds: Rectangle,
                                  dx: Float = 0f, dy: Float = 0f, texture: TextureRegion,
                                  movementType: ProjectileMovementType = ProjectileMovementType.Normal) : Entity? {
         val bw = texture.regionWidth - 1
         val bh = texture.regionHeight - 1
+        val originX = bounds.x + (bounds.width / 2) - (bw / 2)
+        val originY = bounds.y + (bounds.height / 2) - (bh / 2)
+
         return EntityBuilder.instance(engine as PooledEngine)
-                .projectile(movementType = movementType,
+                .projectile(originX = originX, originY = originY, movementType = movementType,
                         parentFacingRight = dir.facingRight,
                         collidesWithTerrain = false, collidesWithProjectiles = attackComp.projectileDestroyable,
                         textureStr = attackComp.attackTexture, enemy = true,
                         damage = attackComp.damage, detonateTime = attackComp.attackDetonateTime, acceleration = attackComp.projectileAcceleration)
                 .color(EntityColor.getProjectileColor(attackComp.attackTexture)!!)
-                .position(bounds.x + (bounds.width / 2) - (bw / 2), bounds.y + (bounds.height / 2) - (bh / 2))
+                .position(originX, originY)
                 .velocity(dx = dx, dy = dy)
                 .boundingBox(bw.toFloat(), bh.toFloat())
                 .texture(texture)
@@ -285,11 +294,15 @@ class EnemyAttackSystem(private val player: Player, private val res: Resources) 
                                         dx: Float, dy: Float, texture: TextureRegion) : Entity? {
         val bw = texture.regionWidth - 1
         val bh = texture.regionHeight - 1
+        val originX = bounds.x + (bounds.width / 2) - (bw / 2)
+        val originY = bounds.y + (bounds.height / 2) - (bh / 2)
+
         return EntityBuilder.instance(engine as PooledEngine)
-                .projectile(collidesWithTerrain = false, collidesWithProjectiles = attackComp.projectileDestroyable,
+                .projectile(originX = originX, originY = originY,
+                        collidesWithTerrain = false, collidesWithProjectiles = attackComp.projectileDestroyable,
                         textureStr = attackComp.attackTexture, enemy = true, damage = attackComp.damage)
                 .color(EntityColor.getProjectileColor(attackComp.attackTexture)!!)
-                .position(bounds.x + (bounds.width / 2) - (bw / 2), bounds.y + (bounds.height / 2) - (bh / 2))
+                .position(originX, originY)
                 .velocity(dx = dx, dy = dy)
                 .boundingBox(bw.toFloat(), bh.toFloat())
                 .texture(texture)

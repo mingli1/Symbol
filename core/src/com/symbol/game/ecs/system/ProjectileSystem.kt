@@ -81,9 +81,31 @@ class ProjectileSystem(private val player: Player, private val res: Resources)
 
         pj.lifeTime += dt
 
-        if (pj.acceleration != 0f && pj.movementType == ProjectileMovementType.Normal) {
-            if (velocity.dx != 0f) velocity.dx += if (velocity.dx > 0f) pj.acceleration * dt else -pj.acceleration * dt
-            if (velocity.dy != 0f) velocity.dy += if (velocity.dy > 0f) pj.acceleration * dt else -pj.acceleration * dt
+        if (pj.acceleration != 0f) {
+            when (pj.movementType) {
+                ProjectileMovementType.Normal -> applyAcceleration(pj, velocity, dt)
+                ProjectileMovementType.Boomerang -> {
+                    if (!pj.half) {
+                        applyAcceleration(pj, velocity, dt)
+
+                        val dirChangeX = (pj.acceleration < 0 && velocity.dx < 0) || (pj.acceleration > 0 && velocity.dx > 0)
+                        val dirChangeY = (pj.acceleration < 0 && velocity.dy < 0) || (pj.acceleration > 0 && velocity.dy > 0)
+                        pj.half = dirChangeX || dirChangeY
+                    }
+                    else {
+                        if (velocity.dx != 0f) velocity.dx += pj.acceleration * dt
+                        if (velocity.dy != 0f) velocity.dy += pj.acceleration * dt
+                    }
+
+                    val passOriginX = (pj.acceleration < 0 && bb.rect.x < pj.originX) || (pj.acceleration > 0 && bb.rect.x > pj.originX)
+                    val passOriginY = (pj.acceleration < 0 && bb.rect.y < pj.originY) || (pj.acceleration > 0 && bb.rect.y > pj.originY)
+
+                    if (passOriginX || passOriginY) {
+                        remove.shouldRemove = true
+                    }
+                }
+                else -> {}
+            }
         }
 
         if (pj.collidesWithTerrain) {
@@ -168,6 +190,11 @@ class ProjectileSystem(private val player: Player, private val res: Resources)
                 position.x + width / 2,
                 position.y + height / 2)
         remove.shouldRemove = true
+    }
+
+    private fun applyAcceleration(pj: ProjectileComponent, vel: VelocityComponent, dt: Float) {
+        if (vel.dx != 0f) vel.dx += if (vel.dx > 0f) pj.acceleration * dt else -pj.acceleration * dt
+        if (vel.dy != 0f) vel.dy += if (vel.dy > 0f) pj.acceleration * dt else -pj.acceleration * dt
     }
 
     private fun hit(entity: Entity, damage: Int) {
@@ -317,13 +344,13 @@ class ProjectileSystem(private val player: Player, private val res: Resources)
         val ay = (pj.acceleration / 1.5f) * dt
         vel.dx += if (pj.parentFacingRight) pj.acceleration * dt else -pj.acceleration * dt
 
-        if (!pj.arcHalf) {
+        if (!pj.half) {
             if (vel.dy > 0) {
                 vel.dy -= ay
-                if (vel.dy < 0) pj.arcHalf = true
+                if (vel.dy < 0) pj.half = true
             } else if (vel.dy < 0) {
                 vel.dy += ay
-                if (vel.dy > 0) pj.arcHalf = true
+                if (vel.dy > 0) pj.half = true
             }
         }
         else {

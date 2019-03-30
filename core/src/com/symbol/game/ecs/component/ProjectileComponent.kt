@@ -26,7 +26,7 @@ class ProjectileComponent : Component, Pool.Poolable {
 
     var movementType = ProjectileMovementType.Normal
 
-    var arcHalf = false
+    var half = false
     var waveDir = Direction.Left
     var waveTimer = 0f
 
@@ -47,7 +47,7 @@ class ProjectileComponent : Component, Pool.Poolable {
         acceleration = 0f
         movementType = ProjectileMovementType.Normal
 
-        arcHalf = false
+        half = false
         waveDir = Direction.Left
         waveTimer = 0f
     }
@@ -57,6 +57,7 @@ enum class ProjectileMovementType {
 
     Normal,
     Arc,
-    Wave
+    Wave,
+    Boomerang
 
 }
