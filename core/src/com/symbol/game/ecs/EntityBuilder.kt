@@ -50,6 +50,7 @@ class EntityBuilder(private val engine: PooledEngine) {
     private var squareSwitchComponent: SquareSwitchComponent? = null
     private var toggleTileComponent: ToggleTileComponent? = null
     private var forceFieldComponent: ForceFieldComponent? = null
+    private var damageBoostComponent: DamageBoostComponent? = null
 
     companion object {
         fun instance(engine: PooledEngine) : EntityBuilder = EntityBuilder(engine)
@@ -312,6 +313,13 @@ class EntityBuilder(private val engine: PooledEngine) {
         return this
     }
 
+    fun damageBoost(damageBoost: Int = 0, duration: Float = 0f) : EntityBuilder {
+        damageBoostComponent = engine.createComponent(DamageBoostComponent::class.java)
+        damageBoostComponent?.damageBoost = damageBoost
+        damageBoostComponent?.duration = duration
+        return this
+    }
+
     fun build() : Entity {
         val entity = engine.createEntity()
 
@@ -350,6 +358,7 @@ class EntityBuilder(private val engine: PooledEngine) {
         if (squareSwitchComponent != null) entity.add(squareSwitchComponent)
         if (toggleTileComponent != null) entity.add(toggleTileComponent)
         if (forceFieldComponent != null) entity.add(forceFieldComponent)
+        if (damageBoostComponent != null) entity.add(damageBoostComponent)
 
         engine.addEntity(entity)
         return entity

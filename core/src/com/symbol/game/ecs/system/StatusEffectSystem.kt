@@ -3,7 +3,6 @@ package com.symbol.game.ecs.system
 import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.core.Family
 import com.badlogic.ashley.systems.IteratingSystem
-import com.sun.org.apache.xpath.internal.operations.Bool
 import com.symbol.game.ecs.Mapper
 import com.symbol.game.ecs.component.ProjectileComponent
 import com.symbol.game.ecs.component.StatusEffect
@@ -27,24 +26,37 @@ class StatusEffectSystem : IteratingSystem(Family.all(StatusEffectComponent::cla
             }
             se.durationTimer += dt
 
-            when (se.type) {
-                StatusEffect.Stun -> handleStun(entity)
-                StatusEffect.Snare -> handleSnare(entity)
-                StatusEffect.Slow -> handleSlow(entity, se)
-                StatusEffect.Grounded -> handleGrounded(entity)
-                StatusEffect.SpeedBoostRight -> handleSpeedBoostRight(entity, se)
-                StatusEffect.SpeedBoostLeft -> handleSpeedBoostLeft(entity, se)
-                StatusEffect.JumpBoost -> handleJumpBoost(entity)
-                else -> {}
-            }
+            onEffectDuration(se, entity)
 
             if (se.durationTimer >= se.duration) {
+                onEffectEnd(se, entity)
+
                 se.startEffect = false
                 se.durationTimer = 0f
                 se.entityApplied = false
                 se.finish()
                 handleLingeringEffects(se)
             }
+        }
+    }
+
+    private fun onEffectDuration(se: StatusEffectComponent, entity: Entity?) {
+        when (se.type) {
+            StatusEffect.Stun -> handleStun(entity)
+            StatusEffect.Snare -> handleSnare(entity)
+            StatusEffect.Slow -> handleSlow(entity, se)
+            StatusEffect.Grounded -> handleGrounded(entity)
+            StatusEffect.SpeedBoostRight -> handleSpeedBoostRight(entity, se)
+            StatusEffect.SpeedBoostLeft -> handleSpeedBoostLeft(entity, se)
+            StatusEffect.JumpBoost -> handleJumpBoost(entity)
+            else -> {}
+        }
+    }
+
+    private fun onEffectEnd(se: StatusEffectComponent, entity: Entity?) {
+        when (se.type) {
+            StatusEffect.DamageBoost -> handleDamageBoost(entity)
+            else -> {}
         }
     }
 
@@ -98,6 +110,10 @@ class StatusEffectSystem : IteratingSystem(Family.all(StatusEffectComponent::cla
 
     private fun handleJumpBoost(entity: Entity?) {
         Mapper.PLAYER_MAPPER.get(entity)?.hasJumpBoost = true
+    }
+
+    private fun handleDamageBoost(entity: Entity?) {
+        Mapper.PLAYER_MAPPER.get(entity)?.damageBoost = 0
     }
 
 }

@@ -12,7 +12,8 @@ enum class MapEntityType(val typeStr: String) {
     GravitySwitch("gswitch"),
     SquareSwitch("sswitch"),
     ToggleTile("toggle"),
-    ForceField("force_field");
+    ForceField("force_field"),
+    DamageBoost("damage_boost");
 
     companion object {
         fun getType(typeStr: String) : MapEntityType? {

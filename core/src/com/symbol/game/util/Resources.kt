@@ -84,6 +84,7 @@ class Resources : Disposable {
         load("between")
         load("toggle_square")
         for (i in 1..3) load("forcefield$i")
+        load("damage_boost")
     }
 
     private fun loadProjectiles() {
@@ -113,6 +114,7 @@ class Resources : Disposable {
         load(STATUS_EFFECT + "speed_boost_left")
         load(STATUS_EFFECT + "jump_boost")
         load(STATUS_EFFECT + "last_stand")
+        load(STATUS_EFFECT + "damage_boost")
     }
 
     private fun loadBrackets() {

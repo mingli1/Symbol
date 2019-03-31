@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.0.1" orientation="orthogonal" renderorder="right-down" width="50" height="20" tilewidth="8" tileheight="8" nextobjectid="155">
+<map version="1.0" tiledversion="1.0.1" orientation="orthogonal" renderorder="right-down" width="50" height="20" tilewidth="8" tileheight="8" nextobjectid="156">
  <tileset firstgid="1" name="set" tilewidth="8" tileheight="8" tilecount="64" columns="8">
   <image source="tileset.png" width="64" height="64"/>
  </tileset>
@@ -108,11 +108,6 @@
     <property name="type" value="cintegral"/>
    </properties>
   </object>
-  <object id="154" x="176" y="56" width="8.18182" height="6.36364">
-   <properties>
-    <property name="type" value="cintegral"/>
-   </properties>
-  </object>
  </objectgroup>
  <objectgroup name="map">
   <object id="111" x="192" y="21.2727" width="23.2727" height="2.72727">
@@ -146,9 +141,11 @@
     <property name="type" value="toggle"/>
    </properties>
   </object>
-  <object id="153" x="148" y="27" width="64" height="64">
+  <object id="155" x="80" y="16" width="8" height="8">
    <properties>
-    <property name="type" value="force_field"/>
+    <property name="damage" type="int" value="2"/>
+    <property name="duration" type="float" value="5"/>
+    <property name="type" value="damage_boost"/>
    </properties>
   </object>
  </objectgroup>

@@ -27,7 +27,7 @@ class KeyInputSystem(private val res: Resources) : EntitySystem(), KeyInputHandl
     override fun update(dt: Float) {
         if (charging) {
             playerComp.chargeTime += dt
-            playerComp.damage = when {
+            playerComp.chargeIndex = when {
                 playerComp.chargeTime < PLAYER_TIER_ONE_ATTACK_TIME -> 1
                 playerComp.chargeTime < PLAYER_TIER_TWO_ATTACK_TIME -> 2
                 playerComp.chargeTime < PLAYER_TIER_THREE_ATTACK_TIME -> 3
@@ -82,17 +82,21 @@ class KeyInputSystem(private val res: Resources) : EntitySystem(), KeyInputHandl
         if (charging) {
             val playerPos = Mapper.POS_MAPPER.get(player)
             val dir = Mapper.DIR_MAPPER.get(player)
-            val key = PLAYER_PROJECTILE_RES_KEY + if (playerComp.damage > 1) playerComp.damage else ""
+            val key = PLAYER_PROJECTILE_RES_KEY + if (playerComp.chargeIndex > 1) playerComp.chargeIndex else ""
             val texture = res.getTexture(key)!!
             val width = texture.regionWidth.toFloat()
             val height = texture.regionHeight.toFloat()
             val x = playerPos.x + (PLAYER_WIDTH / 2) - (width / 2)
             val y = playerPos.y + (PLAYER_HEIGHT / 2) - (height / 2)
 
+            playerComp.damage = playerComp.damageBoost
+            playerComp.damage += playerComp.chargeIndex
+            println("damage: ${playerComp.damage} boost: ${playerComp.damageBoost}")
+
             val builder = EntityBuilder.instance(engine as PooledEngine)
                     .projectile(originX = x, originY = y, damage = playerComp.damage,
                             knockback = PLAYER_PROJECTILE_KNOCKBACK,
-                            playerType = playerComp.damage, textureStr = key)
+                            playerType = playerComp.chargeIndex, textureStr = key)
                     .color(EntityColor.getProjectileColor(key)!!)
                     .position(x, y)
                     .velocity(dx = if (dir.facingRight) PLAYER_PROJECTILE_SPEED else -PLAYER_PROJECTILE_SPEED)
@@ -100,9 +104,9 @@ class KeyInputSystem(private val res: Resources) : EntitySystem(), KeyInputHandl
                     .texture(texture, key)
                     .direction().remove()
 
-            if (playerComp.damage == 2) builder.statusEffect(apply = StatusEffect.Slow,
+            if (playerComp.chargeIndex == 2) builder.statusEffect(apply = StatusEffect.Slow,
                     duration = PLAYER_SLOW_DURATION, value = PLAYER_SLOW_PERCENTAGE)
-            if (playerComp.damage == 3) builder.statusEffect(apply = StatusEffect.Stun, duration = PLAYER_STUN_DURATION)
+            if (playerComp.chargeIndex == 3) builder.statusEffect(apply = StatusEffect.Stun, duration = PLAYER_STUN_DURATION)
 
             builder.build()
 

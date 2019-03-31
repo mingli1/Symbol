@@ -1,10 +1,10 @@
-package com.symbol.game.ecs.entity
+package com.symbol.game.ecs
 
 import com.badlogic.ashley.core.PooledEngine
 import com.badlogic.gdx.maps.MapProperties
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Rectangle
-import com.symbol.game.ecs.EntityBuilder
+import com.symbol.game.ecs.entity.*
 import com.symbol.game.util.*
 
 object EntityFactory {
@@ -376,6 +376,21 @@ object EntityFactory {
                         .position(rect.x, rect.y)
                         .texture(texture, textureStr)
                         .build()
+            }
+            MapEntityType.DamageBoost -> {
+                val duration = (props["duration"] ?: 5f) as Float
+                val damageBoost = (props["damage"] ?: 0) as Int
+                val textureStr = "damage_boost"
+                val texture = res.getTexture(textureStr)!!
+
+                EntityBuilder.instance(engine)
+                        .mapEntity(type = type)
+                        .damageBoost(damageBoost = damageBoost, duration = duration)
+                        .boundingBox(texture.regionWidth.toFloat(), texture.regionHeight.toFloat())
+                        .position(rect.x, rect.y)
+                        .velocity()
+                        .texture(texture, textureStr)
+                        .remove().build()
             }
             else -> {}
         }

@@ -59,6 +59,7 @@ enum class StatusEffect(val typeStr: String) {
     SpeedBoostRight("speed_boost_right"),
     SpeedBoostLeft("speed_boost_left"),
     JumpBoost("jump_boost"),
+    DamageBoost("damage_boost"),
     LastStand("last_stand")
 
 }

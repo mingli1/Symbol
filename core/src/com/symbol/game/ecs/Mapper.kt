@@ -41,5 +41,6 @@ object Mapper {
     val SQUARE_SWITCH_MAPPER: ComponentMapper<SquareSwitchComponent> = ComponentMapper.getFor(SquareSwitchComponent::class.java)
     val TOGGLE_TILE_MAPPER: ComponentMapper<ToggleTileComponent> = ComponentMapper.getFor(ToggleTileComponent::class.java)
     val FORCE_FIELD_MAPPER: ComponentMapper<ForceFieldComponent> = ComponentMapper.getFor(ForceFieldComponent::class.java)
+    val DAMAGE_BOOST_MAPPER: ComponentMapper<DamageBoostComponent> = ComponentMapper.getFor(DamageBoostComponent::class.java)
 
 }

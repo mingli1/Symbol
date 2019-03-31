@@ -153,7 +153,7 @@ public class Hud extends Scene {
             chargeBarWidth = CHARGE_BAR_WIDTH * (currentCharge / MAX_CHARGE);
 
             if (chargeBarWidth > CHARGE_BAR_WIDTH) chargeBarWidth = CHARGE_BAR_WIDTH;
-            chargeBarIcon.setDrawable(chargeBarTiers[playerComp.getDamage() - 1]);
+            chargeBarIcon.setDrawable(chargeBarTiers[playerComp.getChargeIndex() - 1]);
         }
         else {
             if (chargeBarIcon.isVisible()) chargeBarIcon.setVisible(false);
@@ -198,8 +198,8 @@ public class Hud extends Scene {
             game.getBatch().draw(game.getRes().getTexture("hp_bar_bg_color"), CHARGE_BAR_POSITION.x + 1, CHARGE_BAR_POSITION.y + 1,
                     CHARGE_BAR_WIDTH, CHARGE_BAR_HEIGHT);
 
-            String hex = playerComp.getDamage() == 1 ? EntityColor.INSTANCE.getProjectileColor("p_dot")
-                    : EntityColor.INSTANCE.getProjectileColor("p_dot" + playerComp.getDamage());
+            String hex = playerComp.getChargeIndex() == 1 ? EntityColor.INSTANCE.getProjectileColor("p_dot")
+                    : EntityColor.INSTANCE.getProjectileColor("p_dot" + playerComp.getChargeIndex());
             game.getBatch().draw(game.getRes().getTexture(hex), CHARGE_BAR_POSITION.x + 1, CHARGE_BAR_POSITION.y + 1,
                     chargeBarWidth, CHARGE_BAR_HEIGHT);
 

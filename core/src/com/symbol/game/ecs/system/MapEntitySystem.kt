@@ -6,6 +6,7 @@ import com.badlogic.ashley.core.Family
 import com.badlogic.ashley.systems.IteratingSystem
 import com.badlogic.ashley.utils.ImmutableArray
 import com.symbol.game.ecs.Mapper
+import com.symbol.game.ecs.component.StatusEffect
 import com.symbol.game.ecs.component.map.MapEntityComponent
 import com.symbol.game.ecs.component.map.PortalComponent
 import com.symbol.game.ecs.entity.MapEntityType
@@ -34,6 +35,7 @@ class MapEntitySystem(private val player: Player, private val res: Resources) :
             MapEntityType.Clamp -> handleClamp(entity, dt)
             MapEntityType.HealthPack -> handleHealthPack(entity)
             MapEntityType.ForceField -> handleForceField(entity, dt)
+            MapEntityType.DamageBoost -> handleDamageBoost(entity)
             else -> {}
         }
     }
@@ -168,6 +170,23 @@ class MapEntitySystem(private val player: Player, private val res: Resources) :
                 texture.texture = if (ff.activated) res.getTexture(texture.textureStr!!) else null
                 ff.timer = 0f
             }
+        }
+    }
+
+    private fun handleDamageBoost(entity: Entity?) {
+        val boost = Mapper.DAMAGE_BOOST_MAPPER.get(entity)
+        val bounds = Mapper.BOUNDING_BOX_MAPPER.get(entity)
+        val playerBounds = Mapper.BOUNDING_BOX_MAPPER.get(player)
+        val remove = Mapper.REMOVE_MAPPER.get(entity)
+
+        if (playerBounds.rect.overlaps(bounds.rect)) {
+            val playerComp = Mapper.PLAYER_MAPPER.get(player)
+            val se = Mapper.STATUS_EFFECT_MAPPER.get(player)
+
+            playerComp.damageBoost = boost.damageBoost
+            se.apply(StatusEffect.DamageBoost, boost.duration)
+
+            remove.shouldRemove = true
         }
     }
 
