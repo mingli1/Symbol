@@ -49,7 +49,7 @@ class EnemyAttackSystem(private val player: Player, private val res: Resources) 
             remove.shouldRemove = true
 
             val color = Mapper.COLOR_MAPPER.get(entity)
-            ParticleSpawner.spawn(res, color.hex!!, DEFAULT_LIFETIME, DEFAULT_INTESITY + attack.damage,
+            ParticleSpawner.spawn(res, color.hex!!, DEFAULT_LIFETIME, (DEFAULT_INTESITY + attack.damage) * 2,
                     bounds.x + bounds.width / 2, bounds.y + bounds.height / 2)
             return
         }

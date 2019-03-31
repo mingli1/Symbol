@@ -161,12 +161,6 @@ class ProjectileSystem(private val player: Player, private val res: Resources)
 
                     if (pj.playerType != 0) handlePlayerProjectile(entity, pj, bb.rect)
 
-                    val entityColor = Mapper.COLOR_MAPPER.get(e)
-                    ParticleSpawner.spawn(res, entityColor.hex!!,
-                            DEFAULT_LIFETIME, DEFAULT_INTESITY + pj.damage,
-                            ebb.rect.x + ebb.rect.width / 2,
-                            ebb.rect.y + ebb.rect.height / 2)
-
                     remove.shouldRemove = true
                     break
                 }
@@ -198,8 +192,18 @@ class ProjectileSystem(private val player: Player, private val res: Resources)
     }
 
     private fun hit(entity: Entity, damage: Int) {
+        val ebb = Mapper.BOUNDING_BOX_MAPPER.get(entity)
         val health = Mapper.HEALTH_MAPPER.get(entity)
+        var intensity = DEFAULT_INTESITY + damage
+
         health.hit(damage)
+        if (health.hp <= 0) intensity *= 2
+
+        val entityColor = Mapper.COLOR_MAPPER.get(entity)
+        ParticleSpawner.spawn(res, entityColor.hex!!,
+                DEFAULT_LIFETIME, intensity,
+                ebb.rect.x + ebb.rect.width / 2,
+                ebb.rect.y + ebb.rect.height / 2)
 
         handleTeleportation(entity)
         handleLastStand(entity)

@@ -229,7 +229,8 @@ class MapCollisionSystem(private val res: Resources) : IteratingSystem(
 
             val bounds = Mapper.BOUNDING_BOX_MAPPER.get(entity)
             val color = Mapper.COLOR_MAPPER.get(entity)
-            ParticleSpawner.spawn(res, color.hex!!, DEFAULT_LIFETIME, DEFAULT_INTESITY + mapObject.damage,
+            ParticleSpawner.spawn(res, color.hex!!, DEFAULT_LIFETIME,
+                    (DEFAULT_INTESITY + mapObject.damage) * 2,
                     bounds.rect.x + bounds.rect.width / 2, bounds.rect.y + bounds.rect.height / 2)
         }
     }

@@ -140,7 +140,8 @@ class MapEntitySystem(private val player: Player, private val res: Resources) :
             playerHealth.hp = 0
 
             val color = Mapper.COLOR_MAPPER.get(player)
-            ParticleSpawner.spawn(res, color.hex!!, DEFAULT_LIFETIME, DEFAULT_INTESITY + playerHealth.maxHp,
+            ParticleSpawner.spawn(res, color.hex!!, DEFAULT_LIFETIME,
+                    (DEFAULT_INTESITY + playerHealth.maxHp) * 2,
                     playerBounds.rect.x + playerBounds.rect.width / 2,
                     playerBounds.rect.y + playerBounds.rect.height / 2)
         }
