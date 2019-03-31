@@ -304,10 +304,11 @@ object EntityFactory {
             MapEntityType.HealthPack -> {
                 val texture = res.getTexture("health_pack")!!
                 val regen = (props["regen"] ?: 0) as Int
+                val regenTime = (props["time"] ?: 0f) as Float
 
                 EntityBuilder.instance(engine)
                         .mapEntity(type = type)
-                        .healthPack(regen)
+                        .healthPack(regen, regenTime)
                         .boundingBox(texture.regionWidth.toFloat(), texture.regionHeight.toFloat())
                         .position(rect.x, rect.y)
                         .velocity()

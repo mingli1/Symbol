@@ -154,8 +154,14 @@ class MapEntitySystem(private val player: Player, private val res: Resources) :
         val remove = Mapper.REMOVE_MAPPER.get(entity)
 
         if (playerBounds.rect.overlaps(bounds.rect)) {
-            val playerHealth = Mapper.HEALTH_MAPPER.get(player)
-            playerHealth.hp += healthPack.regen
+            val playerComp = Mapper.PLAYER_MAPPER.get(player)
+            val se = Mapper.STATUS_EFFECT_MAPPER.get(player)
+
+            playerComp.startHealing = true
+            playerComp.healing = healthPack.regen
+            playerComp.healTime = healthPack.regenTime
+            se.apply(StatusEffect.Healing, healthPack.regenTime)
+
             remove.shouldRemove = true
         }
     }

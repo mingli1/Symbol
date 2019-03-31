@@ -16,6 +16,10 @@ class PlayerComponent : Component, Pool.Poolable {
     var chargeTime = 0f
     var chargeIndex = 1
 
+    var startHealing = false
+    var healing = 0
+    var healTime = 0f
+
     override fun reset() {
         damage = 0
         damageBoost = 0
@@ -25,6 +29,9 @@ class PlayerComponent : Component, Pool.Poolable {
         hasJumpBoost = false
         chargeTime = 0f
         chargeIndex = 1
+        startHealing = false
+        healing = 0
+        healTime = 0f
     }
 
 }

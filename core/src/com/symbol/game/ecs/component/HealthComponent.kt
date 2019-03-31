@@ -17,6 +17,13 @@ class HealthComponent : Component, Pool.Poolable {
         hpChange = true
     }
 
+    fun heal(healing: Int) {
+        hp += healing
+        if (hp > maxHp) hp = maxHp
+        hpDelta = if (healing > maxHp) -maxHp else -healing
+        hpChange = true
+    }
+
     override fun reset() {
         hp = 0
         maxHp = 0

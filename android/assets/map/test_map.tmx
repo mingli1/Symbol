@@ -143,9 +143,9 @@
   </object>
   <object id="155" x="80" y="16" width="8" height="8">
    <properties>
-    <property name="damage" type="int" value="2"/>
-    <property name="duration" type="float" value="5"/>
-    <property name="type" value="damage_boost"/>
+    <property name="regen" type="int" value="4"/>
+    <property name="time" type="float" value="4"/>
+    <property name="type" value="hp_pack"/>
    </properties>
   </object>
  </objectgroup>

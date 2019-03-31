@@ -289,9 +289,10 @@ class EntityBuilder(private val engine: PooledEngine) {
         return this
     }
 
-    fun healthPack(regen: Int = 0) : EntityBuilder {
+    fun healthPack(regen: Int = 0, regenTime: Float = 0f) : EntityBuilder {
         healthPackComponent = engine.createComponent(HealthPackComponent::class.java)
         healthPackComponent?.regen = regen
+        healthPackComponent?.regenTime = regenTime
         return this
     }
 
