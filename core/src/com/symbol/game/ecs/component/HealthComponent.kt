@@ -11,6 +11,7 @@ class HealthComponent : Component, Pool.Poolable {
     var hpChange = false
 
     fun hit(damage: Int) {
+        if (hp == 0) return
         hp -= damage
         if (hp < 0) hp = 0
         hpDelta = if (damage > maxHp) -maxHp else -damage
@@ -18,6 +19,7 @@ class HealthComponent : Component, Pool.Poolable {
     }
 
     fun heal(healing: Int) {
+        if (hp == maxHp) return
         hp += healing
         if (hp > maxHp) hp = maxHp
         hpDelta = if (healing > maxHp) maxHp else healing

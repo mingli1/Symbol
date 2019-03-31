@@ -230,6 +230,22 @@ object EntityFactory {
                         .texture(texture, "e_because")
                         .gravity().remove().build()
             }
+            EnemyType.Block -> {
+                EntityBuilder.instance(engine)
+                        .enemy()
+                        .statusEffect()
+                        .attack()
+                        .activation()
+                        .block()
+                        .color(EntityColor.BLOCK_COLOR)
+                        .health(15)
+                        .boundingBox(8f, 8f)
+                        .position(rect.x, rect.y)
+                        .direction(facingRight)
+                        .velocity()
+                        .texture(texture, "e_block")
+                        .remove().build()
+            }
             else -> {}
         }
     }

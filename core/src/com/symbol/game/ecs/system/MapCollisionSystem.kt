@@ -8,6 +8,7 @@ import com.badlogic.ashley.utils.ImmutableArray
 import com.badlogic.gdx.utils.Array
 import com.symbol.game.ecs.Mapper
 import com.symbol.game.ecs.component.*
+import com.symbol.game.ecs.component.enemy.BlockComponent
 import com.symbol.game.ecs.component.map.MapEntityComponent
 import com.symbol.game.ecs.component.map.MovingPlatformComponent
 import com.symbol.game.effects.particle.DEFAULT_INTESITY
@@ -37,7 +38,7 @@ class MapCollisionSystem(private val res: Resources) : IteratingSystem(
 
     private lateinit var removableEntities: ImmutableArray<Entity>
     private lateinit var movingPlatforms: ImmutableArray<Entity>
-    private lateinit var mapEntities: ImmutableArray<Entity>
+    private lateinit var collidableEntities: ImmutableArray<Entity>
 
     private var damageTimes: MutableMap<Entity, Float> = HashMap()
     private var startDamage: MutableMap<Entity, Boolean> = HashMap()
@@ -46,7 +47,8 @@ class MapCollisionSystem(private val res: Resources) : IteratingSystem(
         super.addedToEngine(engine)
         removableEntities = engine!!.getEntitiesFor(Family.all(RemoveComponent::class.java).get())
         movingPlatforms = engine.getEntitiesFor(Family.all(MovingPlatformComponent::class.java).get())
-        mapEntities = engine.getEntitiesFor(Family.all(MapEntityComponent::class.java).exclude(MovingPlatformComponent::class.java).get())
+        collidableEntities = engine.getEntitiesFor(Family.one(MapEntityComponent::class.java, BlockComponent::class.java)
+                .exclude(MovingPlatformComponent::class.java).get())
     }
 
     override fun update(dt: Float) {
@@ -84,11 +86,15 @@ class MapCollisionSystem(private val res: Resources) : IteratingSystem(
                         revertCurrentPosition(position)
                     }
                 }
-                for (mapEntity in mapEntities) {
-                    val comp = Mapper.MAP_ENTITY_MAPPER.get(mapEntity)
-                    val bounds = Mapper.BOUNDING_BOX_MAPPER.get(mapEntity)
-                    if (comp.mapCollidable && bb.rect.overlaps(bounds.rect)) {
-                        revertCurrentPosition(position)
+                for (cEntity in collidableEntities) {
+                    val bounds = Mapper.BOUNDING_BOX_MAPPER.get(cEntity)
+                    val mapEntityComp = Mapper.MAP_ENTITY_MAPPER.get(cEntity)
+
+                    if (bb.rect.overlaps(bounds.rect)) {
+                        if ((mapEntityComp != null && mapEntityComp.mapCollidable) ||
+                                Mapper.BLOCK_MAPPER.get(cEntity) != null) {
+                            revertCurrentPosition(position)
+                        }
                     }
                 }
                 for (mplatform in movingPlatforms) {
@@ -133,17 +139,21 @@ class MapCollisionSystem(private val res: Resources) : IteratingSystem(
                         velocity.dy = 0f
                     }
                 }
-                for (mapEntity in mapEntities) {
-                    val comp = Mapper.MAP_ENTITY_MAPPER.get(mapEntity)
-                    val bounds = Mapper.BOUNDING_BOX_MAPPER.get(mapEntity)
-                    if (comp.mapCollidable && bb.rect.overlaps(bounds.rect)) {
-                        revertCurrentPosition(position)
-                        if (velocity.dy < 0 || (gravity.reverse && velocity.dy > 0 )) {
-                            gravity.onGround = true
-                            gravity.platform.set(bounds.rect)
-                            player?.canJump = true
+                for (cEntity in collidableEntities) {
+                    val bounds = Mapper.BOUNDING_BOX_MAPPER.get(cEntity)
+                    val mapEntityComp = Mapper.MAP_ENTITY_MAPPER.get(cEntity)
+
+                    if (bb.rect.overlaps(bounds.rect)) {
+                        if ((mapEntityComp != null && mapEntityComp.mapCollidable) ||
+                                Mapper.BLOCK_MAPPER.get(cEntity) != null) {
+                            revertCurrentPosition(position)
+                            if (velocity.dy < 0 || (gravity.reverse && velocity.dy > 0 )) {
+                                gravity.onGround = true
+                                gravity.platform.set(bounds.rect)
+                                player?.canJump = true
+                            }
+                            velocity.dy = 0f
                         }
-                        velocity.dy = 0f
                     }
                 }
                 for (mplatform in movingPlatforms) {

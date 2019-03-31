@@ -44,7 +44,7 @@ class EnemyAttackSystem(private val player: Player, private val res: Resources) 
         val playerBounds = Mapper.BOUNDING_BOX_MAPPER.get(player).rect
         val dir = Mapper.DIR_MAPPER.get(entity)
 
-        if (bounds.overlaps(playerBounds)) {
+        if (bounds.overlaps(playerBounds) && Mapper.BLOCK_MAPPER.get(entity) == null) {
             val playerHealth = Mapper.HEALTH_MAPPER.get(player)
             playerHealth.hit(attack.damage)
             remove.shouldRemove = true
