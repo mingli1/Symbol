@@ -13,14 +13,14 @@ class HealthComponent : Component, Pool.Poolable {
     fun hit(damage: Int) {
         hp -= damage
         if (hp < 0) hp = 0
-        hpDelta = if (damage > maxHp) maxHp else damage
+        hpDelta = if (damage > maxHp) -maxHp else -damage
         hpChange = true
     }
 
     fun heal(healing: Int) {
         hp += healing
         if (hp > maxHp) hp = maxHp
-        hpDelta = if (healing > maxHp) -maxHp else -healing
+        hpDelta = if (healing > maxHp) maxHp else healing
         hpChange = true
     }
 

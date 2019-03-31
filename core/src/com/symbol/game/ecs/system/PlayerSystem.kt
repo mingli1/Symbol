@@ -28,14 +28,15 @@ class PlayerSystem(private val player: Player) : EntitySystem() {
                 healTime += dt
                 totalHealTime += dt
 
-                if (healTime >= oneHealTime) {
-                    Mapper.HEALTH_MAPPER.get(player).heal(1)
-                    healTime = 0f
-                }
                 if (totalHealTime >= playerComp.healTime) {
+                    Mapper.HEALTH_MAPPER.get(player).heal(1)
                     healTime = 0f
                     totalHealTime = 0f
                     playerComp.startHealing = false
+                }
+                else if (healTime >= oneHealTime) {
+                    Mapper.HEALTH_MAPPER.get(player).heal(1)
+                    healTime = 0f
                 }
             }
         }

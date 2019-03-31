@@ -143,7 +143,7 @@
   </object>
   <object id="155" x="80" y="16" width="8" height="8">
    <properties>
-    <property name="regen" type="int" value="4"/>
+    <property name="regen" type="int" value="8"/>
     <property name="time" type="float" value="4"/>
     <property name="type" value="hp_pack"/>
    </properties>

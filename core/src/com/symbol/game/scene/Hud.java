@@ -45,7 +45,9 @@ public class Hud extends Scene {
 
     private float hpBarWidth;
     private float decayingHpBarWidth;
+    private float maxDecayingHpBarWidth;
     private boolean startHpBarDecay = false;
+    private boolean damaged = true;
     private TextureRegion hpBarColor;
     private Image hpBarIcon;
     private TextureRegionDrawable hpBarIconGreen;
@@ -117,8 +119,10 @@ public class Hud extends Scene {
         float hpPercentage = (float) health.getHp() / health.getMaxHp();
         hpBarWidth = HP_BAR_WIDTH * hpPercentage;
         if (health.getHpChange()) {
-            decayingHpBarWidth = HP_BAR_WIDTH * ((float) health.getHpDelta() / health.getMaxHp());
+            maxDecayingHpBarWidth = HP_BAR_WIDTH * ((float) Math.abs(health.getHpDelta()) / health.getMaxHp());
+            decayingHpBarWidth = maxDecayingHpBarWidth;
             startHpBarDecay = true;
+            damaged = health.getHpDelta() < 0;
             health.setHpChange(false);
         }
         if (startHpBarDecay) {
@@ -184,9 +188,16 @@ public class Hud extends Scene {
                 hpBarWidth, HP_BAR_HEIGHT);
 
         if (startHpBarDecay) {
-            game.getBatch().draw(game.getRes().getTexture("hp_bar_color"),
-                    HP_BAR_POSITION.x + 1 + hpBarWidth, HP_BAR_POSITION.y + 1,
-                    decayingHpBarWidth, HP_BAR_HEIGHT);
+            if (damaged) {
+                game.getBatch().draw(game.getRes().getTexture("hp_bar_color"),
+                        HP_BAR_POSITION.x + 1 + hpBarWidth, HP_BAR_POSITION.y + 1,
+                        decayingHpBarWidth, HP_BAR_HEIGHT);
+            }
+            else {
+                game.getBatch().draw(game.getRes().getTexture("hp_bar_heal_color"),
+                        HP_BAR_POSITION.x + 1 + hpBarWidth - decayingHpBarWidth,
+                        HP_BAR_POSITION.y + 1, decayingHpBarWidth, HP_BAR_HEIGHT);
+            }
         }
     }
 
