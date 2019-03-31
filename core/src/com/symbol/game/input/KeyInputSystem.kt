@@ -91,7 +91,6 @@ class KeyInputSystem(private val res: Resources) : EntitySystem(), KeyInputHandl
 
             playerComp.damage = playerComp.damageBoost
             playerComp.damage += playerComp.chargeIndex
-            println("damage: ${playerComp.damage} boost: ${playerComp.damageBoost}")
 
             val builder = EntityBuilder.instance(engine as PooledEngine)
                     .projectile(originX = x, originY = y, damage = playerComp.damage,
