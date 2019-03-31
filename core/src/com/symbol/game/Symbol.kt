@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.symbol.game.screen.AbstractScreen
 import com.symbol.game.screen.GameScreen
 import com.symbol.game.util.Resources
+import kotlin.math.min
 
 class Symbol : Game() {
 
@@ -40,7 +41,7 @@ class Symbol : Game() {
     }
 
     override fun render() {
-        screen?.render(Math.min(Config.DELTA_TIME_BOUND, Gdx.graphics.deltaTime))
+        screen?.render(min(Config.DELTA_TIME_BOUND, Gdx.graphics.deltaTime))
     }
 
     override fun dispose() {

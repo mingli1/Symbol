@@ -16,6 +16,7 @@ import com.symbol.game.effects.particle.ParticleSpawner
 import com.symbol.game.map.MapObject
 import com.symbol.game.map.MapObjectType
 import com.symbol.game.util.Resources
+import kotlin.math.abs
 
 private const val NUM_SUB_STEPS = 30
 private const val MAP_OBJECT_DAMAGE_RATE = 1f
@@ -254,7 +255,7 @@ class MapCollisionSystem(private val res: Resources) : IteratingSystem(
             if (!se!!.entityApplied) se.apply(StatusEffect.Slow)
         }
         else {
-            if (velocity.dx != 0f && Math.abs(velocity.dx) == velocity.speed * MAP_OBJECT_SLOW_PERCENTAGE) {
+            if (velocity.dx != 0f && abs(velocity.dx) == velocity.speed * MAP_OBJECT_SLOW_PERCENTAGE) {
                 if (velocity.dx > 0) velocity.dx = velocity.speed
                 else if (velocity.dx < 0) velocity.dx = -velocity.speed
             }

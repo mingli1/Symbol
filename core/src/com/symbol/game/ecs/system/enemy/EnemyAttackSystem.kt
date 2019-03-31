@@ -25,6 +25,7 @@ import com.symbol.game.map.camera.CameraShake
 import com.symbol.game.util.Resources
 import com.symbol.game.util.TOP
 import com.symbol.game.util.TOP_RIGHT
+import kotlin.math.abs
 
 private const val CAMERA_SHAKE_POWER = 3f
 private const val CAMERA_SHAKE_DURATION = 0.7f
@@ -155,7 +156,7 @@ class EnemyAttackSystem(private val player: Player, private val res: Resources) 
         val topTexture = res.getTexture(attackComp.attackTexture + TOP) ?: res.getTexture(attackComp.attackTexture!!)!!
         val texture = res.getTexture(attackComp.attackTexture!!)!!
 
-        val xBiased = Math.abs(bounds.x - playerBounds.x) > Math.abs(bounds.y - playerBounds.y)
+        val xBiased = abs(bounds.x - playerBounds.x) > abs(bounds.y - playerBounds.y)
         val xCenter = playerBounds.x + playerBounds.width / 2
         val yCenter = playerBounds.y + playerBounds.height / 2
 
