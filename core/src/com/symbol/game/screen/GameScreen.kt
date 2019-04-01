@@ -40,7 +40,7 @@ class GameScreen(game: Symbol) : AbstractScreen(game) {
     private val background = Background(game.res.getTexture("background")!!,
             cam, Vector2(PARALLAX_SCALING, PARALLAX_SCALING))
 
-    private val hud = Hud(game, player)
+    private val hud = Hud(game, player, stage, viewport)
 
     init {
         engine.addEntity(player)
@@ -48,14 +48,13 @@ class GameScreen(game: Symbol) : AbstractScreen(game) {
 
         val keyInputSystem = KeyInputSystem(game.res)
         input = KeyInput(keyInputSystem)
-        androidInput = AndroidInput(game, keyInputSystem)
+        androidInput = AndroidInput(game, keyInputSystem, stage, viewport)
 
         engine.addSystem(keyInputSystem)
         engine.addSystem(PlayerSystem(player))
 
+        multiplexer.addProcessor(stage)
         multiplexer.addProcessor(input)
-        multiplexer.addProcessor(hud.stage)
-        if (Config.onAndroid()) multiplexer.addProcessor(androidInput.stage)
     }
 
     private fun initSystems() {
@@ -98,7 +97,6 @@ class GameScreen(game: Symbol) : AbstractScreen(game) {
         ParticleSpawner.update(dt)
 
         hud.update(dt)
-        if (Config.onAndroid()) androidInput.update(dt)
     }
 
     private fun updateCamera(dt: Float) {
@@ -130,10 +128,14 @@ class GameScreen(game: Symbol) : AbstractScreen(game) {
         engine.update(dt)
         ParticleSpawner.render(game.batch)
 
-        game.batch.end()
+        game.batch.projectionMatrix = stage.camera.combined
 
         hud.render(dt)
-        if (Config.onAndroid()) androidInput.render(dt)
+
+        game.batch.end()
+
+        stage.act(dt)
+        stage.draw()
     }
 
     override fun dispose() {

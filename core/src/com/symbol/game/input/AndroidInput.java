@@ -4,8 +4,11 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.viewport.Viewport;
+import com.symbol.game.Config;
 import com.symbol.game.Symbol;
 import com.symbol.game.scene.Scene;
 
@@ -21,12 +24,14 @@ public class AndroidInput extends Scene {
 
     private KeyInputHandler keyInputHandler;
 
-    public AndroidInput(final Symbol game, KeyInputHandler keyInputHandler) {
-        super(game);
+    public AndroidInput(final Symbol game, KeyInputHandler keyInputHandler, Stage stage, Viewport viewport) {
+        super(game, stage, viewport);
         this.keyInputHandler = keyInputHandler;
 
-        createDirectionalButtons();
-        createActionButtons();
+        if (Config.INSTANCE.onAndroid()) {
+            createDirectionalButtons();
+            createActionButtons();
+        }
     }
 
     private void createDirectionalButtons() {
@@ -117,9 +122,6 @@ public class AndroidInput extends Scene {
     public void update(float dt) {}
 
     @Override
-    public void render(float dt) {
-        stage.act(dt);
-        stage.draw();
-    }
+    public void render(float dt) {}
 
 }

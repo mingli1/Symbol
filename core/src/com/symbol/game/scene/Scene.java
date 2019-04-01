@@ -21,6 +21,12 @@ public abstract class Scene implements Disposable {
         stage = new Stage(viewport, game.getBatch());
     }
 
+    public Scene(final Symbol game, Stage stage, Viewport viewport) {
+        this.game = game;
+        this.stage = stage;
+        this.viewport = viewport;
+    }
+
     public abstract void update(float dt);
 
     public abstract void render(float dt);

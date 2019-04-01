@@ -5,10 +5,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import com.symbol.game.Config;
 import com.symbol.game.Symbol;
 import com.symbol.game.ecs.Mapper;
@@ -45,7 +47,6 @@ public class Hud extends Scene {
 
     private float hpBarWidth;
     private float decayingHpBarWidth;
-    private float maxDecayingHpBarWidth;
     private boolean startHpBarDecay = false;
     private boolean damaged = true;
     private TextureRegion hpBarColor;
@@ -61,8 +62,8 @@ public class Hud extends Scene {
 
     private Label fps;
 
-    public Hud(final Symbol game, Entity player) {
-        super(game);
+    public Hud(final Symbol game, Entity player, Stage stage, Viewport viewport) {
+        super(game, stage, viewport);
         this.player = player;
 
         hpBarColor = game.getRes().getTexture("hp_bar_green");
@@ -119,8 +120,7 @@ public class Hud extends Scene {
         float hpPercentage = (float) health.getHp() / health.getMaxHp();
         hpBarWidth = HP_BAR_WIDTH * hpPercentage;
         if (health.getHpChange()) {
-            maxDecayingHpBarWidth = HP_BAR_WIDTH * ((float) Math.abs(health.getHpDelta()) / health.getMaxHp());
-            decayingHpBarWidth = maxDecayingHpBarWidth;
+            decayingHpBarWidth = HP_BAR_WIDTH * ((float) Math.abs(health.getHpDelta()) / health.getMaxHp());
             startHpBarDecay = true;
             damaged = health.getHpDelta() < 0;
             health.setHpChange(false);
@@ -167,16 +167,8 @@ public class Hud extends Scene {
 
     @Override
     public void render(float dt) {
-        game.getBatch().setProjectionMatrix(stage.getCamera().combined);
-        game.getBatch().begin();
-
         renderHpBar();
         renderChargeBar();
-
-        game.getBatch().end();
-
-        stage.act(dt);
-        stage.draw();
     }
 
     private void renderHpBar() {
