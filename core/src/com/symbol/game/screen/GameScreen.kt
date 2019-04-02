@@ -5,7 +5,6 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.InputMultiplexer
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.math.Vector2
-import com.symbol.game.Config
 import com.symbol.game.Symbol
 import com.symbol.game.ecs.Mapper
 import com.symbol.game.ecs.entity.Player

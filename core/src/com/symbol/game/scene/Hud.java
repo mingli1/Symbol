@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.symbol.game.Config;
@@ -21,17 +22,13 @@ import static com.symbol.game.ecs.entity.PlayerKt.*;
 
 public class Hud extends Scene {
 
-    private static final Vector2 HP_ICON_POSITION = new Vector2(5, 107.3f);
-    private static final Vector2 HP_BAR_POSITION = new Vector2(16, 108.3f);
+    private static final Vector2 HP_BAR_POSITION = new Vector2(16, 109f);
     private static final float HP_BAR_WIDTH = 44f;
     private static final float HP_BAR_HEIGHT = 4;
 
-    private static final Vector2 CHARGE_ICON_POSITION = new Vector2(5.5f, 98);
-    private static final Vector2 CHARGE_BAR_POSITION = new Vector2(16, 99.3f);
+    private static final Vector2 CHARGE_BAR_POSITION = new Vector2(16, 99.5f);
     private static final float CHARGE_BAR_WIDTH = HP_BAR_WIDTH;
     private static final float CHARGE_BAR_HEIGHT = 2;
-
-    private static final Vector2 SETTINGS_BUTTON_POSITION = new Vector2(183, 105);
 
     private static final float HP_BAR_DECAY_RATE = 18.f;
     private static final float CHARGE_BAR_ACTIVATION_TIME = PLAYER_TIER_ONE_ATTACK_TIME;
@@ -44,6 +41,8 @@ public class Hud extends Scene {
     private static final float HP_BAR_RED_THRESHOLD = 0.15f;
 
     private Entity player;
+
+    private Table root;
 
     private float hpBarWidth;
     private float decayingHpBarWidth;
@@ -66,6 +65,12 @@ public class Hud extends Scene {
         super(game, stage, viewport);
         this.player = player;
 
+        root = new Table();
+        root.setFillParent(true);
+        root.setRound(false);
+        root.left().top();
+        stage.addActor(root);
+
         hpBarColor = game.getRes().getTexture("hp_bar_green");
 
         createHealthBar();
@@ -86,17 +91,13 @@ public class Hud extends Scene {
         hpBarIconRed = new TextureRegionDrawable(game.getRes().getTexture("player_hp_icon_red"));
 
         hpBarIcon = new Image(hpBarIconGreen);
-        hpBarIcon.setPosition(HP_ICON_POSITION.x, HP_ICON_POSITION.y);
-
-        stage.addActor(hpBarIcon);
+        root.add(hpBarIcon).pad(4f, 4f, 3f, 4f);
     }
 
     private void createSettingsButton() {
         ImageButton.ImageButtonStyle style = game.getRes().getButtonStyle("settings");
         ImageButton settingsButton = new ImageButton(style);
-        settingsButton.setPosition(SETTINGS_BUTTON_POSITION.x, SETTINGS_BUTTON_POSITION.y);
-
-        stage.addActor(settingsButton);
+        root.add(settingsButton).expandX().right().padRight(4f).padTop(1f);
     }
 
     private void createChargeBar() {
@@ -106,10 +107,8 @@ public class Hud extends Scene {
         }
 
         chargeBarIcon = new Image(chargeBarTiers[0]);
-        chargeBarIcon.setPosition(CHARGE_ICON_POSITION.x, CHARGE_ICON_POSITION.y);
-        chargeBarIcon.setVisible(false);
-
-        stage.addActor(chargeBarIcon);
+        root.row();
+        root.add(chargeBarIcon);
     }
 
     @Override
