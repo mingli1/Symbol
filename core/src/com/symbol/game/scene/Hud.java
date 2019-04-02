@@ -68,7 +68,7 @@ public class Hud extends Scene {
         root = new Table();
         root.setFillParent(true);
         root.setRound(false);
-        root.left().top();
+        root.top();
         stage.addActor(root);
 
         hpBarColor = game.getRes().getTexture("hp_bar_green");

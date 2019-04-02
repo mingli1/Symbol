@@ -135,6 +135,8 @@ class GameScreen(game: Symbol) : AbstractScreen(game) {
 
         stage.act(dt)
         stage.draw()
+
+        game.profile("GameScreen")
     }
 
     override fun dispose() {
