@@ -3,12 +3,12 @@ package com.symbol.game.map
 import com.badlogic.ashley.core.PooledEngine
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.Batch
+import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.maps.MapLayer
 import com.badlogic.gdx.maps.objects.RectangleMapObject
 import com.badlogic.gdx.maps.tiled.TiledMap
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer
 import com.badlogic.gdx.maps.tiled.TmxMapLoader
-import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.utils.Array
 import com.badlogic.gdx.utils.Disposable
@@ -33,13 +33,15 @@ private const val MAP_OBJECT_DAMAGE = "damage"
 private const val TYPE = "type"
 private const val ENEMY_FACING_RIGHT = "facingRight"
 
-class MapManager(batch: Batch, private val cam: OrthographicCamera,
-                 private val engine: PooledEngine, private val res: Resources) : Disposable {
+private const val X_HALF = 13
+private const val Y_HALF = 9
+
+class MapManager(private val engine: PooledEngine, private val res: Resources) : Disposable {
 
     private val mapLoader = TmxMapLoader()
     private lateinit var tiledMap: TiledMap
-    private val renderer = OrthogonalTiledMapRenderer(null, 1f, batch)
 
+    private val textureMap = Array<Array<TextureRegion>>()
     private lateinit var tileLayer: TiledMapTileLayer
     private lateinit var collisionLayer: MapLayer
     private lateinit var playerSpawnLayer: MapLayer
@@ -75,7 +77,27 @@ class MapManager(batch: Batch, private val cam: OrthographicCamera,
         if (enemyLayer != null) loadEnemies()
         if (mapEntityLayer != null) loadMapEntities()
 
-        renderer.map = tiledMap
+        val tileset = res.getTexture("tileset")!!.split(TILE_SIZE, TILE_SIZE)
+
+        for (row in 0 until mapHeight) {
+            val inner = Array<TextureRegion>()
+            for (col in 0 until mapWidth) {
+                val cell = tileLayer.getCell(col, row)
+
+                if (cell != null) {
+                    val id = cell.tile.id - 1
+
+                    val x = id % tileset[0].size
+                    val y = id / tileset[0].size
+
+                    inner.add(tileset[y][x])
+                }
+                else {
+                    inner.add(null)
+                }
+            }
+            textureMap.add(inner)
+        }
     }
 
     private fun loadMapObjects() {
@@ -118,16 +140,32 @@ class MapManager(batch: Batch, private val cam: OrthographicCamera,
         }
     }
 
-    fun update() {
-        renderer.setView(cam)
+    fun render(batch: Batch, cam: OrthographicCamera) {
+        for (row in 0 until mapHeight) {
+            for (col in 0 until mapWidth) {
+                val texture = textureMap[row][col]
+                val x = col * TILE_SIZE
+                val y = row * TILE_SIZE
+
+                if (tileWithinCamera(x, y, cam)) {
+                    if (texture != null) {
+                        batch.draw(texture, x.toFloat(), y.toFloat())
+                    }
+                }
+            }
+        }
     }
 
-    fun render() {
-        renderer.renderTileLayer(tileLayer)
+    private fun tileWithinCamera(x: Int, y: Int, cam: OrthographicCamera) : Boolean {
+        val xOffset = TILE_SIZE * X_HALF
+        val yOffset = TILE_SIZE * Y_HALF
+        return x >= cam.position.x - xOffset - TILE_SIZE &&
+                x <= cam.position.x + xOffset &&
+                y >= cam.position.y - yOffset &&
+                y <= cam.position.y + yOffset
     }
 
     override fun dispose() {
-        renderer.dispose()
         tiledMap.dispose()
     }
 

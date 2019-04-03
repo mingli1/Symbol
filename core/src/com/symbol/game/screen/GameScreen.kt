@@ -33,7 +33,7 @@ class GameScreen(game: Symbol) : AbstractScreen(game) {
     private val input: KeyInput
     private val androidInput: AndroidInput
 
-    private val mm = MapManager(game.batch, cam, engine, game.res)
+    private val mm = MapManager(engine, game.res)
 
     private var player = Player(game.res)
     private val background = Background(game.res.getTexture("background")!!,
@@ -92,7 +92,6 @@ class GameScreen(game: Symbol) : AbstractScreen(game) {
     private fun update(dt: Float) {
         updateCamera(dt)
         background.update(dt)
-        mm.update()
         ParticleSpawner.update(dt)
 
         hud.update(dt)
@@ -123,7 +122,7 @@ class GameScreen(game: Symbol) : AbstractScreen(game) {
         game.batch.begin()
 
         background.render(game.batch)
-        mm.render()
+        mm.render(game.batch, cam)
         engine.update(dt)
         ParticleSpawner.render(game.batch)
 

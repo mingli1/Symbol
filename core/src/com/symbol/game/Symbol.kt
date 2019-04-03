@@ -32,6 +32,8 @@ class Symbol : Game() {
     }
 
     fun profile(className: String) {
+        if (Config.onAndroid()) return
+
         val vertexCount = "{\n" +
                 "\t\ttotal: ${profiler.vertexCount.total}\n" +
                 "\t\taverage: ${profiler.vertexCount.average}\n" +
