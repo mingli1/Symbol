@@ -18,7 +18,10 @@ import com.symbol.game.ecs.Mapper;
 import com.symbol.game.ecs.component.HealthComponent;
 import com.symbol.game.ecs.component.PlayerComponent;
 import com.symbol.game.ecs.entity.EntityColor;
-import static com.symbol.game.ecs.entity.PlayerKt.*;
+
+import static com.symbol.game.ecs.entity.PlayerKt.PLAYER_TIER_ONE_ATTACK_TIME;
+import static com.symbol.game.ecs.entity.PlayerKt.PLAYER_TIER_THREE_ATTACK_TIME;
+import static com.symbol.game.ecs.entity.PlayerKt.PLAYER_TIER_TWO_ATTACK_TIME;
 
 public class Hud extends Scene {
 
