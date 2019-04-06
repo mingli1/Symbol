@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton
+import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import com.badlogic.gdx.utils.Disposable
 
@@ -31,6 +32,7 @@ class Resources : Disposable {
     private val assetManager = AssetManager()
     private val atlas: TextureAtlas
 
+    val skin: Skin
     val font: BitmapFont
 
     init {
@@ -41,6 +43,10 @@ class Resources : Disposable {
 
         font = BitmapFont(Gdx.files.internal("font/font.fnt"), atlas.findRegion("font"), false)
         font.setUseIntegerPositions(false)
+
+        skin = Skin(atlas)
+        skin.add("default-font", font)
+        skin.load(Gdx.files.internal("textures/skin.json"))
     }
 
     fun getTexture(key: String): TextureRegion? {
