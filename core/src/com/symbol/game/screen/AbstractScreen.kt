@@ -40,7 +40,7 @@ abstract class AbstractScreen(protected val game: Symbol) : Screen, Disposable {
         stage.dispose()
     }
 
-    fun notifyGameState(state: GameState) {
+    open fun notifyGameState(state: GameState) {
         gameState = state
     }
 

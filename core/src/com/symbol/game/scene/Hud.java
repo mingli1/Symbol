@@ -5,11 +5,14 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.symbol.game.Config;
@@ -18,6 +21,7 @@ import com.symbol.game.ecs.Mapper;
 import com.symbol.game.ecs.component.HealthComponent;
 import com.symbol.game.ecs.component.PlayerComponent;
 import com.symbol.game.ecs.entity.EntityColor;
+import com.symbol.game.scene.dialog.PauseDialog;
 
 import static com.symbol.game.ecs.entity.PlayerKt.PLAYER_TIER_ONE_ATTACK_TIME;
 import static com.symbol.game.ecs.entity.PlayerKt.PLAYER_TIER_THREE_ATTACK_TIME;
@@ -64,6 +68,8 @@ public class Hud extends Scene {
 
     private Label fps;
 
+    private PauseDialog pauseDialog;
+
     public Hud(final Symbol game, Entity player, Stage stage, Viewport viewport) {
         super(game, stage, viewport);
         this.player = player;
@@ -75,6 +81,8 @@ public class Hud extends Scene {
         stage.addActor(root);
 
         hpBarColor = game.getRes().getTexture("hp_bar_green");
+
+        pauseDialog = new PauseDialog(game);
 
         createHealthBar();
         createSettingsButton();
@@ -101,6 +109,13 @@ public class Hud extends Scene {
         ImageButton.ImageButtonStyle style = game.getRes().getButtonStyle("settings");
         ImageButton settingsButton = new ImageButton(style);
         root.add(settingsButton).expandX().right().padRight(4f).padTop(1f);
+
+        settingsButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                pauseDialog.show(stage);
+            }
+        });
     }
 
     private void createChargeBar() {
@@ -171,6 +186,10 @@ public class Hud extends Scene {
     public void render(float dt) {
         renderHpBar();
         renderChargeBar();
+    }
+
+    public Dialog getPauseDialog() {
+        return pauseDialog;
     }
 
     private void renderHpBar() {

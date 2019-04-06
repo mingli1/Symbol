@@ -112,30 +112,39 @@ class GameScreen(game: Symbol) : AbstractScreen(game) {
     }
 
     override fun render(dt: Float) {
-        if (gameState == GameState.Pause) return
-        update(dt)
+        if (gameState != GameState.Pause) {
+            update(dt)
 
-        Gdx.gl.glClearColor(1f, 1f, 1f, 1f)
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
+            Gdx.gl.glClearColor(1f, 1f, 1f, 1f)
+            Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
 
-        game.batch.projectionMatrix = cam.combined
-        game.batch.begin()
+            game.batch.projectionMatrix = cam.combined
+            game.batch.begin()
+            game.batch.setColor(1f, 1f, 1f, 1f)
 
-        background.render(game.batch)
-        mm.render(game.batch, cam)
-        engine.update(dt)
-        ParticleSpawner.render(game.batch)
+            background.render(game.batch)
+            mm.render(game.batch, cam)
+            engine.update(dt)
+            ParticleSpawner.render(game.batch)
 
-        game.batch.projectionMatrix = stage.camera.combined
+            game.batch.projectionMatrix = stage.camera.combined
 
-        hud.render(dt)
+            hud.render(dt)
 
-        game.batch.end()
+            game.batch.end()
+        }
 
         stage.act(dt)
         stage.draw()
 
         game.profile("GameScreen")
+    }
+
+    override fun notifyGameState(state: GameState) {
+        super.notifyGameState(state)
+        if (state == GameState.Pause && !stage.actors.contains(hud.pauseDialog)) {
+            hud.pauseDialog.show(stage)
+        }
     }
 
     override fun dispose() {
