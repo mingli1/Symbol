@@ -36,7 +36,7 @@ public class PauseDialog extends Dialog {
 
     @Override
     protected void result(Object object) {
-
+        game.gameScreen.notifyResume();
     }
 
 }

@@ -40,8 +40,12 @@ abstract class AbstractScreen(protected val game: Symbol) : Screen, Disposable {
         stage.dispose()
     }
 
-    open fun notifyGameState(state: GameState) {
-        gameState = state
+    open fun notifyResume() {
+        gameState = GameState.Resume
+    }
+
+    open fun notifyPause() {
+        gameState = GameState.Pause
     }
 
     enum class GameState {

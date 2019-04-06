@@ -111,28 +111,34 @@ class GameScreen(game: Symbol) : AbstractScreen(game) {
         cam.update()
     }
 
-    override fun render(dt: Float) {
-        if (gameState != GameState.Pause) {
-            update(dt)
-
-            Gdx.gl.glClearColor(1f, 1f, 1f, 1f)
-            Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
-
-            game.batch.projectionMatrix = cam.combined
-            game.batch.begin()
-            game.batch.setColor(1f, 1f, 1f, 1f)
-
-            background.render(game.batch)
-            mm.render(game.batch, cam)
-            engine.update(dt)
-            ParticleSpawner.render(game.batch)
-
-            game.batch.projectionMatrix = stage.camera.combined
-
-            hud.render(dt)
-
-            game.batch.end()
+    private fun updateEngine(dt: Float) {
+        if (gameState == GameState.Pause) {
+            engine.getSystem(RenderSystem::class.java).update(dt)
+            engine.getSystem(StatusRenderSystem::class.java).update(dt)
         }
+        else engine.update(dt)
+    }
+
+    override fun render(dt: Float) {
+        if (gameState != GameState.Pause) update(dt)
+
+        Gdx.gl.glClearColor(1f, 1f, 1f, 1f)
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
+
+        game.batch.projectionMatrix = cam.combined
+        game.batch.begin()
+        game.batch.setColor(1f, 1f, 1f, 1f)
+
+        background.render(game.batch)
+        mm.render(game.batch, cam)
+        updateEngine(dt)
+        ParticleSpawner.render(game.batch)
+
+        game.batch.projectionMatrix = stage.camera.combined
+
+        hud.render(dt)
+
+        game.batch.end()
 
         stage.act(dt)
         stage.draw()
@@ -140,9 +146,9 @@ class GameScreen(game: Symbol) : AbstractScreen(game) {
         game.profile("GameScreen")
     }
 
-    override fun notifyGameState(state: GameState) {
-        super.notifyGameState(state)
-        if (state == GameState.Pause && !stage.actors.contains(hud.pauseDialog)) {
+    override fun notifyPause() {
+        super.notifyPause()
+        if (!stage.actors.contains(hud.pauseDialog)) {
             hud.pauseDialog.show(stage)
         }
     }

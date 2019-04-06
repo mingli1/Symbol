@@ -114,6 +114,7 @@ public class Hud extends Scene {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 pauseDialog.show(stage);
+                game.gameScreen.notifyPause();
             }
         });
     }

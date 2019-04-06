@@ -56,11 +56,7 @@ class Symbol : Game() {
     }
 
     override fun pause() {
-        currentScreen?.notifyGameState(AbstractScreen.GameState.Pause)
-    }
-
-    override fun resume() {
-        currentScreen?.notifyGameState(AbstractScreen.GameState.Resume)
+        currentScreen?.notifyPause()
     }
 
     override fun render() {
