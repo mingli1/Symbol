@@ -124,4 +124,7 @@ public class AndroidInput extends Scene {
     @Override
     public void render(float dt) {}
 
+    @Override
+    public void dispose() {}
+
 }

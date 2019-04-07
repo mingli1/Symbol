@@ -235,4 +235,7 @@ public class Hud extends Scene {
         }
     }
 
+    @Override
+    public void dispose() {}
+
 }
