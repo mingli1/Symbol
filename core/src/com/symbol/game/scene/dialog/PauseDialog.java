@@ -1,13 +1,12 @@
 package com.symbol.game.scene.dialog;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.Align;
 import com.symbol.game.Symbol;
 import com.symbol.game.ecs.entity.EntityColor;
 
-public class PauseDialog extends Dialog {
+public class PauseDialog extends BaseModalDialog {
 
     private static final String TITLE = "PAUSED";
     private static final String RESUME_TAG = "Resume";
@@ -24,7 +23,7 @@ public class PauseDialog extends Dialog {
     private final Symbol game;
 
     public PauseDialog(final Symbol game) {
-        super(TITLE, game.getRes().getSkin());
+        super(TITLE, game.getRes().getSkin(), game);
         this.game = game;
 
         getBackground().setMinHeight(WINDOW_MIN_HEIGHT);
