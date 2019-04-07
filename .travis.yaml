@@ -1,0 +1,20 @@
+language: android
+android:
+  components:
+    - build-tools-28.0.3
+    - android-28
+jdk: oraclejdk8
+
+cache:
+  directories:
+  - $HOME/.gradle/wrapper
+  - $HOME/.gradle/caches/modules-2/files-2.1
+
+before_install:
+  - chmod +x gradlew
+
+script:
+  - ./gradlew desktop:dist
+  - mv desktop/build/libs/desktop-1.0.jar desktop/build/libs/{PROJECT_NAME}-$TRAVIS_TAG.jar
+  - ./gradlew android:assembleRelease
+  - mv android/build/outputs/apk/android-release-unsigned.apk android/build/outputs/apk/{PROJECT_NAME}-$TRAVIS_TAG-unaligned.apk
