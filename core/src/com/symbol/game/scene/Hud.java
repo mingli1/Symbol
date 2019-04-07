@@ -29,11 +29,11 @@ import static com.symbol.game.ecs.entity.PlayerKt.PLAYER_TIER_TWO_ATTACK_TIME;
 
 public class Hud extends Scene {
 
-    private static final Vector2 HP_BAR_POSITION = new Vector2(16, 109f);
+    private static final Vector2 HP_BAR_POSITION = new Vector2(16, 107f);
     private static final float HP_BAR_WIDTH = 44f;
     private static final float HP_BAR_HEIGHT = 4;
 
-    private static final Vector2 CHARGE_BAR_POSITION = new Vector2(16, 99.5f);
+    private static final Vector2 CHARGE_BAR_POSITION = new Vector2(16, 97.5f);
     private static final float CHARGE_BAR_WIDTH = HP_BAR_WIDTH;
     private static final float CHARGE_BAR_HEIGHT = 2;
 
@@ -102,13 +102,13 @@ public class Hud extends Scene {
         hpBarIconRed = new TextureRegionDrawable(game.getRes().getTexture("player_hp_icon_red"));
 
         hpBarIcon = new Image(hpBarIconGreen);
-        root.add(hpBarIcon).pad(4f, 4f, 3f, 4f);
+        root.add(hpBarIcon).pad(6f, 4f, 3f, 4f);
     }
 
     private void createSettingsButton() {
         ImageButton.ImageButtonStyle style = game.getRes().getButtonStyle("settings");
         ImageButton settingsButton = new ImageButton(style);
-        root.add(settingsButton).expandX().right().padRight(4f).padTop(1f);
+        root.add(settingsButton).expandX().right().padRight(4f).padTop(3f);
 
         settingsButton.addListener(new ClickListener() {
             @Override
