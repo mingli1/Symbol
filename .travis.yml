@@ -15,6 +15,4 @@ before_install:
 
 script:
   - ./gradlew desktop:dist
-  - mv desktop/build/libs/desktop-1.0.jar desktop/build/libs/{PROJECT_NAME}-$TRAVIS_TAG.jar
   - ./gradlew android:assembleRelease
-  - mv android/build/outputs/apk/release/android-release-unsigned.apk android/build/outputs/apk/release/{PROJECT_NAME}-$TRAVIS_TAG-unaligned.apk
