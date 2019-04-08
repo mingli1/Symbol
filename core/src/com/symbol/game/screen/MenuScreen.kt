@@ -56,7 +56,7 @@ class MenuScreen(game: Symbol) : AbstractScreen(game) {
 
         for (i in 0 until NUM_BUTTONS) {
             buttonTable.add(blockImages[i]).padRight(TILE_SIZE.toFloat())
-            val button = TextButton(buttonTexts[i], game.res.skin)
+            val button = TextButton(buttonTexts[i], game.res.getTextButtonStyle("menu"))
             buttonTable.add(button).padBottom(TILE_SIZE.toFloat()).width(BUTTON_WIDTH).height(TILE_SIZE * 2f).row()
 
             button.addListener(object: InputListener() {

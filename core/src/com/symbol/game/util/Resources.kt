@@ -2,11 +2,13 @@ package com.symbol.game.util
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.assets.AssetManager
+import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import com.badlogic.gdx.utils.Disposable
 
@@ -59,10 +61,19 @@ class Resources : Disposable {
         return null
     }
 
-    fun getButtonStyle(key: String) : ImageButton.ImageButtonStyle {
+    fun getImageButtonStyle(key: String) : ImageButton.ImageButtonStyle {
         val style = ImageButton.ImageButtonStyle()
         style.imageUp = TextureRegionDrawable(getTexture(BUTTON + key + BUTTON_UP))
         style.imageDown = TextureRegionDrawable(getTexture(BUTTON + key + BUTTON_DOWN))
+        return style
+    }
+
+    fun getTextButtonStyle(key: String, color: Color = Color.WHITE) : TextButton.TextButtonStyle {
+        val style = TextButton.TextButtonStyle()
+        style.up = TextureRegionDrawable(getTexture(BUTTON + key + BUTTON_UP))
+        style.over = TextureRegionDrawable(getTexture(BUTTON + key + BUTTON_DOWN))
+        style.font = font
+        style.fontColor = color
         return style
     }
 

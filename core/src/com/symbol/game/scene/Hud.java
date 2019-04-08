@@ -106,7 +106,7 @@ public class Hud extends Scene {
     }
 
     private void createSettingsButton() {
-        ImageButton.ImageButtonStyle style = game.getRes().getButtonStyle("settings");
+        ImageButton.ImageButtonStyle style = game.getRes().getImageButtonStyle("settings");
         ImageButton settingsButton = new ImageButton(style);
         root.add(settingsButton).expandX().right().padRight(4f).padTop(3f);
 
