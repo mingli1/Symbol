@@ -14,6 +14,7 @@ import com.symbol.game.Symbol
 import com.symbol.game.input.MultiTouchDisabler
 import com.symbol.game.map.TILE_SIZE
 import com.symbol.game.map.camera.Background
+import com.symbol.game.scene.MovingImage
 
 private const val BACKGROUND_VELOCITY = -40f
 private const val BACKGROUND_SCALE = 0.4f
@@ -34,6 +35,11 @@ class MenuScreen(game: Symbol) : AbstractScreen(game) {
 
     private val buttonTable = Table()
 
+    private val logoChars = "symbol".toCharArray()
+    private val letters = Array(6) {
+        MovingImage(game.res.getTexture("logo_${logoChars[it]}")!!, Vector2(), Vector2(), 0f)
+    }
+
     init {
         buttonTable.setFillParent(true)
         buttonTable.bottom().padRight(TILE_SIZE * 2f)
@@ -41,6 +47,8 @@ class MenuScreen(game: Symbol) : AbstractScreen(game) {
         stage.addActor(buttonTable)
 
         createButtons()
+        createTitle()
+        resetTitleAnimation()
 
         multiplexer.addProcessor(MultiTouchDisabler())
         multiplexer.addProcessor(stage)
@@ -65,6 +73,16 @@ class MenuScreen(game: Symbol) : AbstractScreen(game) {
                 }
             })
         }
+    }
+
+    private fun createTitle() {
+        for (letter in letters) {
+            stage.addActor(letter)
+        }
+    }
+
+    private fun resetTitleAnimation() {
+
     }
 
     override fun show() {
@@ -92,7 +110,7 @@ class MenuScreen(game: Symbol) : AbstractScreen(game) {
         stage.act(dt)
         stage.draw()
 
-        //game.profile("MenuScreen")
+        game.profile("MenuScreen")
     }
 
 }
