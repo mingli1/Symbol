@@ -21,8 +21,8 @@ const val PLAYER_SLOW_PERCENTAGE = 0.4f
 const val PLAYER_SLOW_DURATION = 2f
 const val PLAYER_STUN_DURATION = 2f
 
+const val PLAYER_JUMP_IMPULSE = 160f
 private const val PLAYER_SPEED = 35f
-private const val PLAYER_JUMP_IMPULSE = 160f
 private const val PLAYER_BOUNDS_WIDTH = 7f
 private const val PLAYER_BOUNDS_HEIGHT = 7f
 

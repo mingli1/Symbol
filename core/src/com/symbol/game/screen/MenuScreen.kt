@@ -11,11 +11,14 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.symbol.game.Symbol
+import com.symbol.game.ecs.entity.PLAYER_JUMP_IMPULSE
+import com.symbol.game.ecs.system.GRAVITY
 import com.symbol.game.input.MultiTouchDisabler
 import com.symbol.game.map.TILE_SIZE
 import com.symbol.game.map.camera.Background
-import com.symbol.game.scene.MovingImage
+import com.symbol.game.scene.DynamicImage
 
 private const val BACKGROUND_VELOCITY = -40f
 private const val BACKGROUND_SCALE = 0.4f
@@ -35,11 +38,11 @@ class MenuScreen(game: Symbol) : AbstractScreen(game) {
             cam, Vector2(BACKGROUND_SCALE, 0f), Vector2(BACKGROUND_VELOCITY, 0f))
 
     private val buttonTable = Table()
-    private lateinit var playerImage: Image
+    private lateinit var playerImage: DynamicImage
 
     private val logoChars = "symbol".toCharArray()
     private val letters = Array(6) {
-        MovingImage(game.res.getTexture("logo_${logoChars[it]}")!!, Vector2(), Vector2(), 150f)
+        DynamicImage(game.res.getTexture("logo_${logoChars[it]}")!!)
     }
     private val letterPositions = arrayOf(Vector2(40f, 91f), Vector2(63f, 83f), Vector2(86f, 91f),
             Vector2(110f, 91f), Vector2(133f, 91f), Vector2(156f, 91f))
@@ -63,7 +66,7 @@ class MenuScreen(game: Symbol) : AbstractScreen(game) {
         val blockImages = Array(NUM_BUTTONS) { Image(blockTexture) }
         val buttonTexts = arrayOf(PLAY_TAG, HELP_TAG, SETTINGS_TAG)
 
-        playerImage = Image(game.res.getTexture("player"))
+        playerImage = DynamicImage(game.res.getTexture("player")!!)
         playerImage.setPosition(34f, 64f)
         stage.addActor(playerImage)
 
@@ -74,7 +77,13 @@ class MenuScreen(game: Symbol) : AbstractScreen(game) {
 
             button.addListener(object: InputListener() {
                 override fun enter(event: InputEvent?, x: Float, y: Float, pointer: Int, fromActor: Actor?) {
-                    playerImage.setPosition(34f, 64f - i * 24f)
+                    if (!playerImage.moving()) playerImage.setPosition(34f, 64f - i * 24f)
+                }
+            })
+
+            button.addListener(object: ClickListener() {
+                override fun clicked(event: InputEvent?, x: Float, y: Float) {
+                    playerImage.applyJump(-GRAVITY, PLAYER_JUMP_IMPULSE - 45f)
                 }
             })
         }
@@ -82,6 +91,11 @@ class MenuScreen(game: Symbol) : AbstractScreen(game) {
 
     private fun createTitle() {
         for (letter in letters) {
+            letter.addListener(object: InputListener() {
+                override fun enter(event: InputEvent?, x: Float, y: Float, pointer: Int, fromActor: Actor?) {
+                    letter.applyJump(-GRAVITY, 60f)
+                }
+            })
             stage.addActor(letter)
         }
     }
@@ -92,12 +106,10 @@ class MenuScreen(game: Symbol) : AbstractScreen(game) {
             val origin = letterOrigins[i]
             val target = letterPositions[i]
 
-            letter.setOrigin(origin.x, origin.y)
-            letter.target.set(target)
+            letter.applyLinearMovement(origin, target, if (i > 0) 300f else 150f)
             if (i < 5) letter.link(letters[i + 1])
-            if (i > 0) letter.speed = 300f
         }
-        letters[0].start()
+        letters[0].startLinearMovement()
     }
 
     override fun show() {
@@ -110,6 +122,7 @@ class MenuScreen(game: Symbol) : AbstractScreen(game) {
 
     private fun update(dt: Float) {
         background.update(dt)
+        playerImage.update(dt)
 
         for (letter in letters) {
             letter.update(dt)
@@ -133,7 +146,7 @@ class MenuScreen(game: Symbol) : AbstractScreen(game) {
         stage.act(dt)
         stage.draw()
 
-        game.profile("MenuScreen")
+        //game.profile("MenuScreen")
     }
 
 }
