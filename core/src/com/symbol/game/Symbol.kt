@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.profiling.GLProfiler
 import com.symbol.game.screen.AbstractScreen
 import com.symbol.game.screen.GameScreen
+import com.symbol.game.screen.MenuScreen
 import com.symbol.game.util.Resources
 import kotlin.math.min
 
@@ -18,7 +19,8 @@ class Symbol : Game() {
 
     private var currentScreen: AbstractScreen? = null
 
-    lateinit var gameScreen: GameScreen
+    lateinit var menuScreen: MenuScreen private set
+    lateinit var gameScreen: GameScreen private set
 
     override fun create() {
         batch = SpriteBatch()
@@ -26,9 +28,10 @@ class Symbol : Game() {
         profiler = GLProfiler(Gdx.graphics)
         if (Config.DEBUG) profiler.enable()
 
+        menuScreen = MenuScreen(this)
         gameScreen = GameScreen(this)
 
-        this.setScreen(gameScreen)
+        this.setScreen(menuScreen)
     }
 
     fun profile(className: String) {

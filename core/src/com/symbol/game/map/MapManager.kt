@@ -39,7 +39,7 @@ private const val Y_HALF = 9
 class MapManager(private val engine: PooledEngine, private val res: Resources) : Disposable {
 
     private val mapLoader = TmxMapLoader()
-    private lateinit var tiledMap: TiledMap
+    private var tiledMap: TiledMap? = null
 
     private val textureMap = Array<Array<TextureRegion>>()
     private lateinit var tileLayer: TiledMapTileLayer
@@ -60,11 +60,11 @@ class MapManager(private val engine: PooledEngine, private val res: Resources) :
     fun load(mapName: String) {
         tiledMap = mapLoader.load("$DIR$mapName.tmx")
 
-        tileLayer = tiledMap.layers.get(TILE_LAYER) as TiledMapTileLayer
-        collisionLayer = tiledMap.layers.get(COLLISION_LAYER)
-        playerSpawnLayer = tiledMap.layers.get(PLAYER_SPAWN_LAYER)
-        enemyLayer = tiledMap.layers.get(ENEMY_LAYER)
-        mapEntityLayer = tiledMap.layers.get(MAP_ENTITY_LAYER)
+        tileLayer = tiledMap!!.layers.get(TILE_LAYER) as TiledMapTileLayer
+        collisionLayer = tiledMap!!.layers.get(COLLISION_LAYER)
+        playerSpawnLayer = tiledMap!!.layers.get(PLAYER_SPAWN_LAYER)
+        enemyLayer = tiledMap!!.layers.get(ENEMY_LAYER)
+        mapEntityLayer = tiledMap!!.layers.get(MAP_ENTITY_LAYER)
 
         mapWidth = tileLayer.width
         mapHeight = tileLayer.height
@@ -166,7 +166,7 @@ class MapManager(private val engine: PooledEngine, private val res: Resources) :
     }
 
     override fun dispose() {
-        tiledMap.dispose()
+        tiledMap?.dispose()
     }
 
 }

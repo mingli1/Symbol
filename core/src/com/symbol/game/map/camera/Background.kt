@@ -6,10 +6,10 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.math.Vector2
 import com.symbol.game.Config
 
-class Background(private val bgTexture: TextureRegion, private val cam: OrthographicCamera, private val scale: Vector2) {
+class Background(private val bgTexture: TextureRegion, private val cam: OrthographicCamera,
+                 private val scale: Vector2, private val velocity: Vector2 = Vector2()) {
 
     private var position = Vector2()
-    private var velocity = Vector2()
 
     private var numDrawX = 0
     private var numDrawY = 0
