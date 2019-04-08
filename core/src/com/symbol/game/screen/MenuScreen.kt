@@ -7,6 +7,7 @@ import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.InputListener
+import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
@@ -34,11 +35,16 @@ class MenuScreen(game: Symbol) : AbstractScreen(game) {
             cam, Vector2(BACKGROUND_SCALE, 0f), Vector2(BACKGROUND_VELOCITY, 0f))
 
     private val buttonTable = Table()
+    private lateinit var playerImage: Image
 
     private val logoChars = "symbol".toCharArray()
     private val letters = Array(6) {
-        MovingImage(game.res.getTexture("logo_${logoChars[it]}")!!, Vector2(), Vector2(), 0f)
+        MovingImage(game.res.getTexture("logo_${logoChars[it]}")!!, Vector2(), Vector2(), 150f)
     }
+    private val letterPositions = arrayOf(Vector2(40f, 91f), Vector2(63f, 83f), Vector2(86f, 91f),
+            Vector2(110f, 91f), Vector2(133f, 91f), Vector2(156f, 91f))
+    private val letterOrigins = arrayOf(Vector2(-15f, 91f), Vector2(220f, 83f), Vector2(216f, 91f),
+            Vector2(222f, 91f), Vector2(215f, 91f), Vector2(222f, 91f))
 
     init {
         buttonTable.setFillParent(true)
@@ -48,7 +54,6 @@ class MenuScreen(game: Symbol) : AbstractScreen(game) {
 
         createButtons()
         createTitle()
-        resetTitleAnimation()
 
         multiplexer.addProcessor(MultiTouchDisabler())
         multiplexer.addProcessor(stage)
@@ -58,7 +63,7 @@ class MenuScreen(game: Symbol) : AbstractScreen(game) {
         val blockImages = Array(NUM_BUTTONS) { Image(blockTexture) }
         val buttonTexts = arrayOf(PLAY_TAG, HELP_TAG, SETTINGS_TAG)
 
-        val playerImage = Image(game.res.getTexture("player"))
+        playerImage = Image(game.res.getTexture("player"))
         playerImage.setPosition(34f, 64f)
         stage.addActor(playerImage)
 
@@ -82,19 +87,37 @@ class MenuScreen(game: Symbol) : AbstractScreen(game) {
     }
 
     private fun resetTitleAnimation() {
+        for (i in 0..5) {
+            val letter = letters[i]
+            val origin = letterOrigins[i]
+            val target = letterPositions[i]
 
+            letter.setOrigin(origin.x, origin.y)
+            letter.target.set(target)
+            if (i < 5) letter.link(letters[i + 1])
+            if (i > 0) letter.speed = 300f
+        }
+        letters[0].start()
     }
 
     override fun show() {
         Gdx.input.inputProcessor = multiplexer
+        resetTitleAnimation()
+
+        playerImage.addAction(Actions.sequence(Actions.alpha(0f), Actions.fadeIn(1f)))
+        buttonTable.addAction(Actions.sequence(Actions.alpha(0f), Actions.fadeIn(1f)))
     }
 
     private fun update(dt: Float) {
         background.update(dt)
+
+        for (letter in letters) {
+            letter.update(dt)
+        }
     }
 
     override fun render(dt: Float) {
-        if (gameState != GameState.Pause) update(dt)
+        update(dt)
 
         Gdx.gl.glClearColor(1f, 1f, 1f, 1f)
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
