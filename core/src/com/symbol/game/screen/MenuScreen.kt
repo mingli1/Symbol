@@ -24,7 +24,7 @@ import com.symbol.game.scene.DynamicImage
 private const val BACKGROUND_VELOCITY = -40f
 private const val BACKGROUND_SCALE = 0.4f
 
-private const val FADE_DURATION = 1.5f
+private const val FADE_DURATION = 1f
 
 private const val NUM_BUTTONS = 3
 private const val BUTTON_WIDTH = 100f
@@ -53,6 +53,8 @@ class MenuScreen(game: Symbol) : AbstractScreen(game) {
     private val letterOrigins = arrayOf(Vector2(-15f, 89f), Vector2(220f, 79f), Vector2(216f, 89f),
             Vector2(222f, 89f), Vector2(215f, 89f), Vector2(222f, 89f))
 
+    private var transition = false
+    private var nextScreen: AbstractScreen? = null
     init {
         buttonTable.setFillParent(true)
         buttonTable.bottom().padRight(TILE_SIZE * 2f)
@@ -89,6 +91,11 @@ class MenuScreen(game: Symbol) : AbstractScreen(game) {
             button.addListener(object: ClickListener() {
                 override fun clicked(event: InputEvent?, x: Float, y: Float) {
                     playerImage.applyJump(-GRAVITY, PLAYER_JUMP_IMPULSE - 45f)
+                    transition = true
+                    nextScreen = when (i) {
+                        0 -> game.gameScreen
+                        else -> null
+                    }
                 }
             })
         }
@@ -125,6 +132,8 @@ class MenuScreen(game: Symbol) : AbstractScreen(game) {
 
     override fun show() {
         Gdx.input.inputProcessor = multiplexer
+        transition = false
+        nextScreen = null
         resetTitleAnimation()
 
         playerImage.addAction(Actions.sequence(Actions.alpha(0f), Actions.fadeIn(FADE_DURATION)))
@@ -138,6 +147,11 @@ class MenuScreen(game: Symbol) : AbstractScreen(game) {
 
         for (letter in letters) {
             letter.update(dt)
+        }
+
+        if (transition && !playerImage.moving()) {
+            transition = false
+            if (nextScreen != null) fadeToScreen(nextScreen!!)
         }
     }
 

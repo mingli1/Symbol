@@ -53,7 +53,7 @@ class Symbol : Game() {
         profiler.reset()
     }
 
-    private fun setScreen(screen: AbstractScreen?) {
+    fun setScreen(screen: AbstractScreen?) {
         super.setScreen(screen)
         currentScreen = screen
     }
