@@ -65,6 +65,7 @@ class Resources : Disposable {
         val style = ImageButton.ImageButtonStyle()
         style.imageUp = TextureRegionDrawable(getTexture(BUTTON + key + BUTTON_UP))
         style.imageDown = TextureRegionDrawable(getTexture(BUTTON + key + BUTTON_DOWN))
+        style.imageOver = TextureRegionDrawable(getTexture(BUTTON + key + BUTTON_DOWN))
         return style
     }
 
