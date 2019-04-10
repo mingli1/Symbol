@@ -15,6 +15,7 @@ import com.badlogic.gdx.utils.Disposable
 import com.symbol.game.ecs.EntityFactory
 import com.symbol.game.ecs.entity.EnemyType
 import com.symbol.game.ecs.entity.MapEntityType
+import com.symbol.game.map.camera.CameraUtil
 import com.symbol.game.util.Resources
 
 const val TILE_SIZE = 8
@@ -32,9 +33,6 @@ private const val MAP_OBJECT_DAMAGE = "damage"
 
 private const val TYPE = "type"
 private const val ENEMY_FACING_RIGHT = "facingRight"
-
-private const val X_HALF = 13
-private const val Y_HALF = 9
 
 class MapManager(private val engine: PooledEngine, private val res: Resources) : Disposable {
 
@@ -147,22 +145,13 @@ class MapManager(private val engine: PooledEngine, private val res: Resources) :
                 val x = col * TILE_SIZE
                 val y = row * TILE_SIZE
 
-                if (tileWithinCamera(x, y, cam)) {
+                if (CameraUtil.withinCamera(x.toFloat(), y.toFloat(), cam)) {
                     if (texture != null) {
                         batch.draw(texture, x.toFloat(), y.toFloat())
                     }
                 }
             }
         }
-    }
-
-    private fun tileWithinCamera(x: Int, y: Int, cam: OrthographicCamera) : Boolean {
-        val xOffset = TILE_SIZE * X_HALF
-        val yOffset = TILE_SIZE * Y_HALF
-        return x >= cam.position.x - xOffset - TILE_SIZE &&
-                x <= cam.position.x + xOffset &&
-                y >= cam.position.y - yOffset &&
-                y <= cam.position.y + yOffset
     }
 
     override fun dispose() {

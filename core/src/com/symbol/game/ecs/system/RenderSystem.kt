@@ -3,11 +3,14 @@ package com.symbol.game.ecs.system
 import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.core.Family
 import com.badlogic.ashley.systems.IteratingSystem
+import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.symbol.game.ecs.Mapper
 import com.symbol.game.ecs.component.TextureComponent
+import com.symbol.game.map.camera.CameraUtil
 
-class RenderSystem(private val batch: Batch) : IteratingSystem(Family.all(TextureComponent::class.java).get()) {
+class RenderSystem(private val batch: Batch, private val cam: OrthographicCamera) :
+        IteratingSystem(Family.all(TextureComponent::class.java).get()) {
 
     override fun processEntity(entity: Entity?, dt: Float) {
         val texture = Mapper.TEXTURE_MAPPER.get(entity)
@@ -36,7 +39,9 @@ class RenderSystem(private val batch: Batch) : IteratingSystem(Family.all(Textur
             }
         }
 
-        batch.draw(texture.texture, position.x + xOffset, position.y + yOffset, fWidth, fHeight)
+        if (CameraUtil.withinCamera(position.x + xOffset, position.y + yOffset, cam)) {
+            batch.draw(texture.texture, position.x + xOffset, position.y + yOffset, fWidth, fHeight)
+        }
     }
 
 }

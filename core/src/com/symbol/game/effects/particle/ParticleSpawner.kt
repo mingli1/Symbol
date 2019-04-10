@@ -1,8 +1,10 @@
 package com.symbol.game.effects.particle
 
+import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.utils.Array
 import com.badlogic.gdx.utils.Pool
+import com.symbol.game.map.camera.CameraUtil
 import com.symbol.game.util.Resources
 import java.util.*
 
@@ -47,9 +49,11 @@ object ParticleSpawner {
         }
     }
 
-    fun render(batch: Batch) {
+    fun render(batch: Batch, cam: OrthographicCamera) {
         for (particle in particles) {
-            particle.render(batch)
+            if (CameraUtil.withinCamera(particle.position.x, particle.position.y, cam)) {
+                particle.render(batch)
+            }
         }
     }
 

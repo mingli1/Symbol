@@ -68,8 +68,8 @@ class GameScreen(game: Symbol) : AbstractScreen(game) {
         engine.addSystem(DirectionSystem())
         engine.addSystem(GravitySystem())
         engine.addSystem(StatusEffectSystem())
-        engine.addSystem(RenderSystem(game.batch))
-        engine.addSystem(StatusRenderSystem(game.batch, game.res))
+        engine.addSystem(RenderSystem(game.batch, cam))
+        engine.addSystem(StatusRenderSystem(game.batch, game.res, cam))
         engine.addSystem(RemoveSystem())
     }
 
@@ -137,7 +137,7 @@ class GameScreen(game: Symbol) : AbstractScreen(game) {
         background.render(game.batch)
         mm.render(game.batch, cam)
         updateEngine(dt)
-        ParticleSpawner.render(game.batch)
+        ParticleSpawner.render(game.batch, cam)
 
         game.batch.projectionMatrix = stage.camera.combined
 

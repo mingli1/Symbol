@@ -21,7 +21,7 @@ const val DEFAULT_Z_POS_VZ_SCALING = 0.15f
 
 class Particle(private val rand: Random) : Pool.Poolable {
 
-    private val position = Vector3()
+    val position = Vector3()
     private val velocity = Vector3()
 
     private var zNegVxScale = 0f
