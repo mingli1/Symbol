@@ -1,5 +1,6 @@
 package com.symbol.game.desktop;
 
+import com.badlogic.gdx.Files;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.symbol.game.Config;
@@ -17,6 +18,9 @@ public class DesktopLauncher {
         config.foregroundFPS = Config.FG_FPS;
         config.vSyncEnabled = Config.V_SYNC;
         config.resizable = Config.RESIZABLE;
+        config.addIcon("textures/desktop_icon128.png", Files.FileType.Internal);
+        config.addIcon("textures/desktop_icon32.png", Files.FileType.Internal);
+        config.addIcon("textures/desktop_icon16.png", Files.FileType.Internal);
 
         new LwjglApplication(new Symbol(), config);
     }
