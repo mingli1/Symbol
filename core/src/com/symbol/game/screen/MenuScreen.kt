@@ -90,12 +90,12 @@ class MenuScreen(game: Symbol) : AbstractScreen(game) {
             button.addListener(object: ClickListener() {
                 override fun clicked(event: InputEvent?, x: Float, y: Float) {
                     playerImage.applyJump(-GRAVITY, PLAYER_JUMP_IMPULSE - 45f)
-                    // @TODO disable other buttons when one is clicked
                     transition = true
                     nextScreen = when (i) {
                         0 -> game.gameScreen
                         else -> null
                     }
+                    Gdx.input.inputProcessor = null
                 }
             })
         }
