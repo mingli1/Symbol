@@ -7,7 +7,6 @@ import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.InputListener
-import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton
 import com.badlogic.gdx.scenes.scene2d.ui.Table
@@ -91,6 +90,7 @@ class MenuScreen(game: Symbol) : AbstractScreen(game) {
             button.addListener(object: ClickListener() {
                 override fun clicked(event: InputEvent?, x: Float, y: Float) {
                     playerImage.applyJump(-GRAVITY, PLAYER_JUMP_IMPULSE - 45f)
+                    // @TODO disable other buttons when one is clicked
                     transition = true
                     nextScreen = when (i) {
                         0 -> game.gameScreen
@@ -134,11 +134,9 @@ class MenuScreen(game: Symbol) : AbstractScreen(game) {
         Gdx.input.inputProcessor = multiplexer
         transition = false
         nextScreen = null
-        resetTitleAnimation()
 
-        playerImage.addAction(Actions.sequence(Actions.alpha(0f), Actions.fadeIn(FADE_DURATION)))
-        aboutButton.addAction(Actions.sequence(Actions.alpha(0f), Actions.fadeIn(FADE_DURATION)))
-        buttonTable.addAction(Actions.sequence(Actions.alpha(0f), Actions.fadeIn(FADE_DURATION)))
+        resetTitleAnimation()
+        fadeIn(FADE_DURATION)
     }
 
     private fun update(dt: Float) {

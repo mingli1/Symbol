@@ -47,6 +47,12 @@ abstract class AbstractScreen(protected val game: Symbol) : Screen, Disposable {
                 Actions.run { game.setScreen(screen) }))
     }
 
+    protected fun fadeIn(duration: Float = 0.3f, onEnd: () -> Unit = {}) {
+        stage.addAction(Actions.sequence(Actions.alpha(0f),
+                Actions.fadeIn(duration),
+                Actions.run { onEnd() }))
+    }
+
     open fun notifyResume() {
         gameState = GameState.Resume
     }

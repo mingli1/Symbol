@@ -26,24 +26,16 @@ private const val PLAYER_SPEED = 35f
 private const val PLAYER_BOUNDS_WIDTH = 7f
 private const val PLAYER_BOUNDS_HEIGHT = 7f
 
-class Player(res: Resources) : Entity() {
+class Player(private val res: Resources) : Entity() {
+
+    private val color = ColorComponent()
+    private val bounds = BoundingBoxComponent()
+    private val texture = TextureComponent()
+    private val velocity = VelocityComponent()
+    private val health = HealthComponent()
+    private val jump = JumpComponent()
 
     init {
-        val color = ColorComponent()
-        val bounds = BoundingBoxComponent()
-        val texture = TextureComponent()
-        val velocity = VelocityComponent()
-        val health = HealthComponent()
-        val jump = JumpComponent()
-
-        color.hex = EntityColor.PLAYER_COLOR
-        bounds.rect.setSize(PLAYER_BOUNDS_WIDTH, PLAYER_BOUNDS_HEIGHT)
-        texture.texture = res.getTexture("player")
-        velocity.speed = PLAYER_SPEED
-        health.hp = PLAYER_HP
-        health.maxHp = PLAYER_HP
-        jump.impulse = PLAYER_JUMP_IMPULSE
-
         add(PlayerComponent())
         add(PositionComponent())
         add(GravityComponent())
@@ -55,6 +47,16 @@ class Player(res: Resources) : Entity() {
         add(velocity)
         add(health)
         add(jump)
+    }
+
+    fun reset() {
+        color.hex = EntityColor.PLAYER_COLOR
+        bounds.rect.setSize(PLAYER_BOUNDS_WIDTH, PLAYER_BOUNDS_HEIGHT)
+        texture.texture = res.getTexture("player")
+        velocity.speed = PLAYER_SPEED
+        health.hp = PLAYER_HP
+        health.maxHp = PLAYER_HP
+        jump.impulse = PLAYER_JUMP_IMPULSE
     }
 
 }

@@ -51,7 +51,10 @@ public class PauseDialog extends BaseModalDialog {
 
     @Override
     protected void result(Object object) {
-        game.getGameScreen().notifyResume();
+        hide(null);
+        if (object.equals(EXIT_TAG)) {
+            game.setScreen(game.getMenuScreen());
+        }
     }
 
 }

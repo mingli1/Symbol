@@ -81,6 +81,11 @@ class GameScreen(game: Symbol) : AbstractScreen(game) {
 
     override fun show() {
         Gdx.input.inputProcessor = multiplexer
+        gameState = GameState.Resume
+
+        engine.removeAllEntities()
+        engine.addEntity(player)
+        player.reset()
         mm.load("test_map")
 
         val playerPosition = Mapper.POS_MAPPER.get(player)
