@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.profiling.GLProfiler
+import com.symbol.game.input.MouseCursor
 import com.symbol.game.screen.AbstractScreen
 import com.symbol.game.screen.GameScreen
 import com.symbol.game.screen.MenuScreen
@@ -15,6 +16,7 @@ class Symbol : Game() {
 
     lateinit var batch: Batch private set
     lateinit var res: Resources private set
+    private var mouseCursor: MouseCursor? = null
     private lateinit var profiler: GLProfiler
 
     private var currentScreen: AbstractScreen? = null
@@ -25,8 +27,14 @@ class Symbol : Game() {
     override fun create() {
         batch = SpriteBatch()
         res = Resources()
+
+        if (!Config.onAndroid()) {
+            mouseCursor = MouseCursor()
+            mouseCursor?.createCursor()
+        }
+
         profiler = GLProfiler(Gdx.graphics)
-        if (Config.DEBUG) profiler.enable()
+        profiler.enable()
 
         menuScreen = MenuScreen(this)
         gameScreen = GameScreen(this)
@@ -64,11 +72,13 @@ class Symbol : Game() {
 
     override fun render() {
         screen?.render(min(Config.DELTA_TIME_BOUND, Gdx.graphics.deltaTime))
+        mouseCursor?.update(Gdx.graphics.deltaTime)
     }
 
     override fun dispose() {
         batch.dispose()
         res.dispose()
+        mouseCursor?.dispose()
         gameScreen.dispose()
     }
 
