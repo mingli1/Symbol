@@ -22,6 +22,7 @@ object Mapper {
     val KNOCKBACK_MAPPER = ComponentMapper.getFor(KnockbackComponent::class.java)!!
     val ORBIT_MAPPER = ComponentMapper.getFor(OrbitComponent::class.java)!!
     val STATUS_EFFECT_MAPPER = ComponentMapper.getFor(StatusEffectComponent::class.java)!!
+    val AFFECT_ALL_MAPPER = ComponentMapper.getFor(AffectAllComponent::class.java)!!
 
     val ENEMY_MAPPER = ComponentMapper.getFor(EnemyComponent::class.java)!!
     val ACTIVATION_MAPPER = ComponentMapper.getFor(ActivationComponent::class.java)!!
@@ -43,5 +44,6 @@ object Mapper {
     val TOGGLE_TILE_MAPPER = ComponentMapper.getFor(ToggleTileComponent::class.java)!!
     val FORCE_FIELD_MAPPER = ComponentMapper.getFor(ForceFieldComponent::class.java)!!
     val DAMAGE_BOOST_MAPPER = ComponentMapper.getFor(DamageBoostComponent::class.java)!!
+    val MIRROR_MAPPER = ComponentMapper.getFor(MirrorComponent::class.java)!!
 
 }

@@ -281,7 +281,7 @@ class EnemyAttackSystem(private val player: Player, private val res: Resources) 
                 .projectile(originX = originX, originY = originY, movementType = movementType,
                         parentFacingRight = dir.facingRight,
                         collidesWithTerrain = false, collidesWithProjectiles = attackComp.projectileDestroyable,
-                        textureStr = attackComp.attackTexture, enemy = true,
+                        textureStr = attackComp.attackTexture,
                         damage = attackComp.damage, detonateTime = attackComp.attackDetonateTime, acceleration = attackComp.projectileAcceleration)
                 .color(EntityColor.getProjectileColor(attackComp.attackTexture)!!)
                 .position(originX, originY)
@@ -301,7 +301,7 @@ class EnemyAttackSystem(private val player: Player, private val res: Resources) 
         return EntityBuilder.instance(engine as PooledEngine)
                 .projectile(originX = originX, originY = originY,
                         collidesWithTerrain = false, collidesWithProjectiles = attackComp.projectileDestroyable,
-                        textureStr = attackComp.attackTexture, enemy = true, damage = attackComp.damage)
+                        textureStr = attackComp.attackTexture, damage = attackComp.damage)
                 .color(EntityColor.getProjectileColor(attackComp.attackTexture)!!)
                 .position(originX, originY)
                 .velocity(dx = dx, dy = dy)

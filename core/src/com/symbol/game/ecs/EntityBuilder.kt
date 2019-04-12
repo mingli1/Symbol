@@ -32,6 +32,7 @@ class EntityBuilder(private val engine: PooledEngine) {
     private var orbitComponent: OrbitComponent? = null
     private var colorComponent: ColorComponent? = null
     private var statusEffectComponent: StatusEffectComponent? = null
+    private var affectAllComponent: AffectAllComponent? = null
 
     private var enemyComponent: EnemyComponent? = null
     private var activationComponent: ActivationComponent? = null
@@ -52,6 +53,7 @@ class EntityBuilder(private val engine: PooledEngine) {
     private var toggleTileComponent: ToggleTileComponent? = null
     private var forceFieldComponent: ForceFieldComponent? = null
     private var damageBoostComponent: DamageBoostComponent? = null
+    private var mirrorComponent: MirrorComponent? = null
 
     companion object {
         fun instance(engine: PooledEngine) : EntityBuilder = EntityBuilder(engine)
@@ -71,7 +73,6 @@ class EntityBuilder(private val engine: PooledEngine) {
                    collidesWithTerrain: Boolean = true,
                    collidesWithProjectiles: Boolean = false,
                    textureStr: String? = null,
-                   enemy: Boolean = false,
                    damage: Int = 0,
                    knockback: Float = 0f,
                    playerType: Int = 0,
@@ -86,7 +87,6 @@ class EntityBuilder(private val engine: PooledEngine) {
         projectileComponent?.collidesWithTerrain = collidesWithTerrain
         projectileComponent?.collidesWithProjectiles = collidesWithProjectiles
         projectileComponent?.textureStr = textureStr
-        projectileComponent?.enemy = enemy
         projectileComponent?.damage = damage
         projectileComponent?.knockback = knockback
         projectileComponent?.playerType = playerType
@@ -194,6 +194,11 @@ class EntityBuilder(private val engine: PooledEngine) {
         statusEffectComponent?.apply = apply
         statusEffectComponent?.duration = duration
         statusEffectComponent?.value = value
+        return this
+    }
+
+    fun affectAll() : EntityBuilder {
+        affectAllComponent = engine.createComponent(AffectAllComponent::class.java)
         return this
     }
 
@@ -327,6 +332,12 @@ class EntityBuilder(private val engine: PooledEngine) {
         return this
     }
 
+    fun mirror(orientation: String) : EntityBuilder {
+        mirrorComponent = engine.createComponent(MirrorComponent::class.java)
+        mirrorComponent?.orientation = MirrorComponent.Orientation.getType(orientation)!!
+        return this
+    }
+
     fun build() : Entity {
         val entity = engine.createEntity()
 
@@ -347,6 +358,7 @@ class EntityBuilder(private val engine: PooledEngine) {
         if (velocityComponent != null) entity.add(velocityComponent)
         if (orbitComponent != null) entity.add(orbitComponent)
         if (statusEffectComponent != null) entity.add(statusEffectComponent)
+        if (affectAllComponent != null) entity.add(affectAllComponent)
 
         if (enemyComponent != null) entity.add(enemyComponent)
         if (activationComponent != null) entity.add(activationComponent)
@@ -367,6 +379,7 @@ class EntityBuilder(private val engine: PooledEngine) {
         if (toggleTileComponent != null) entity.add(toggleTileComponent)
         if (forceFieldComponent != null) entity.add(forceFieldComponent)
         if (damageBoostComponent != null) entity.add(damageBoostComponent)
+        if (mirrorComponent != null) entity.add(mirrorComponent)
 
         engine.addEntity(entity)
         return entity

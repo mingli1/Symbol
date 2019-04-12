@@ -332,14 +332,17 @@ object EntityFactory {
                         .remove().build()
             }
             MapEntityType.Mirror -> {
-                val texture = res.getTexture("between_v")!!
+                val orientation = (props["or"] ?: "v") as String
+                val textureStr = "between_$orientation"
+                val texture = res.getTexture(textureStr)!!
 
                 EntityBuilder.instance(engine)
                         .mapEntity(type = type)
+                        .mirror(orientation)
                         .boundingBox(texture.regionWidth.toFloat(), texture.regionHeight.toFloat())
                         .position(rect.x, rect.y)
                         .velocity()
-                        .texture(texture, "between_v")
+                        .texture(texture, textureStr)
                         .build()
             }
             MapEntityType.GravitySwitch -> {

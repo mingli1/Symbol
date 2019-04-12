@@ -21,7 +21,7 @@ enum class EnemyType(val typeStr: String) {
     Block("block");
 
     companion object {
-        fun getType(typeStr: String) : EnemyType? = EnemyType.values().find { it.typeStr == typeStr }
+        fun getType(typeStr: String) : EnemyType? = values().find { it.typeStr == typeStr }
     }
 
 }

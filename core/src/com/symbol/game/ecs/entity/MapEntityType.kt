@@ -16,7 +16,7 @@ enum class MapEntityType(val typeStr: String) {
     DamageBoost("damage_boost");
 
     companion object {
-        fun getType(typeStr: String) : MapEntityType? = MapEntityType.values().find { it.typeStr == typeStr }
+        fun getType(typeStr: String) : MapEntityType? = values().find { it.typeStr == typeStr }
     }
 
 }

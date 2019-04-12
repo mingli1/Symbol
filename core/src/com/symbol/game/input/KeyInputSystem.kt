@@ -96,6 +96,7 @@ class KeyInputSystem(private val res: Resources) : EntitySystem(), KeyInputHandl
                     .projectile(originX = x, originY = y, damage = playerComp.damage,
                             knockback = PLAYER_PROJECTILE_KNOCKBACK,
                             playerType = playerComp.chargeIndex, textureStr = key)
+                    .player()
                     .color(EntityColor.getProjectileColor(key)!!)
                     .position(x, y)
                     .velocity(dx = if (dir.facingRight) PLAYER_PROJECTILE_SPEED else -PLAYER_PROJECTILE_SPEED)

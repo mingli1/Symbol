@@ -141,7 +141,9 @@ class ProjectileSystem(private val player: Player, private val res: Resources)
                 val knockback = Mapper.KNOCKBACK_MAPPER.get(e)
                 val player = Mapper.PLAYER_MAPPER.get(e)
 
-                if ((pj.enemy && player != null) || (!pj.enemy && player == null)) {
+                if (Mapper.AFFECT_ALL_MAPPER.get(entity) != null ||
+                        (Mapper.PLAYER_MAPPER.get(entity) == null && player != null) ||
+                        (Mapper.PLAYER_MAPPER.get(entity) != null && player == null)) {
                     val corp = Mapper.CORPOREAL_MAPPER.get(e)
                     if (corp != null && !corp.corporeal) break
 
@@ -214,7 +216,6 @@ class ProjectileSystem(private val player: Player, private val res: Resources)
         val color = Mapper.COLOR_MAPPER.get(entity)
         val bb = Mapper.BOUNDING_BOX_MAPPER.get(entity)
         val position = Mapper.POS_MAPPER.get(entity)
-        val velocity = Mapper.VEL_MAPPER.get(entity)
         val width = Mapper.TEXTURE_MAPPER.get(entity).texture!!.regionWidth
         val height = Mapper.TEXTURE_MAPPER.get(entity).texture!!.regionHeight
         val remove = Mapper.REMOVE_MAPPER.get(entity)
@@ -226,66 +227,20 @@ class ProjectileSystem(private val player: Player, private val res: Resources)
 
             val overlap = if (boundsCircle == null) bb.rect.overlaps(bounds.rect) else
                 Intersector.overlaps(boundsCircle.circle, bb.rect)
+            val affectAllOrFromPlayer = Mapper.AFFECT_ALL_MAPPER.get(entity) != null ||
+                    Mapper.PLAYER_MAPPER.get(entity) != null
 
-            if (!pj.enemy && !pj.sub && overlap) {
+            if (affectAllOrFromPlayer && !pj.sub && overlap) {
                 when (me.mapEntityType) {
-                    MapEntityType.Mirror -> {
-                        pj.enemy = true
-                        velocity.dx = -velocity.dx
-                    }
-                    MapEntityType.GravitySwitch -> {
-                        val gravity = Mapper.GRAVITY_MAPPER.get(player)
-
-                        gravity.reverse = !gravity.reverse
-                        for (gravitySwitch in mapEntities) {
-                            val gme = Mapper.MAP_ENTITY_MAPPER.get(gravitySwitch)
-                            if (gme.mapEntityType == MapEntityType.GravitySwitch) {
-                                val meTexture = Mapper.TEXTURE_MAPPER.get(gravitySwitch)
-                                meTexture.texture = res.getTexture(meTexture.textureStr +
-                                        if (gravity.reverse) TOGGLE_ON else TOGGLE_OFF)
-                            }
-                        }
-                    }
-                    MapEntityType.SquareSwitch -> {
-                        val switch = Mapper.SQUARE_SWITCH_MAPPER.get(mapEntity)
-                        val switchTexture = Mapper.TEXTURE_MAPPER.get(mapEntity)
-
-                        switch.toggle = !switch.toggle
-                        switchTexture.texture = res.getTexture(switchTexture.textureStr +
-                                if (switch.toggle) TOGGLE_ON else TOGGLE_OFF)
-
-                        for (tt in toggleTiles) {
-                            val tme = Mapper.MAP_ENTITY_MAPPER.get(tt)
-                            val toggleComp = Mapper.TOGGLE_TILE_MAPPER.get(tt)
-                            val toggleTexture = Mapper.TEXTURE_MAPPER.get(tt)
-
-                            if (switch.targetId == toggleComp.id) {
-                                toggleComp.toggle = !toggleComp.toggle
-                                toggleTexture.texture = if (toggleComp.toggle) res.getTexture(toggleTexture.textureStr!!) else null
-                                tme.mapCollidable = toggleComp.toggle
-                                tme.projectileCollidable = toggleComp.toggle
-                            }
-                        }
-                    }
-                    MapEntityType.ForceField -> {
-                        val ff = Mapper.FORCE_FIELD_MAPPER.get(mapEntity)
-                        val playerBounds = Mapper.BOUNDING_BOX_MAPPER.get(player)
-                        val circleContainsPlayer = boundsCircle.circle.contains(playerBounds.rect.x, playerBounds.rect.y) &&
-                                boundsCircle.circle.contains(playerBounds.rect.x + playerBounds.rect.width,
-                                        playerBounds.rect.y) &&
-                                boundsCircle.circle.contains(playerBounds.rect.x,
-                                        playerBounds.rect.y + playerBounds.rect.height) &&
-                                boundsCircle.circle.contains(playerBounds.rect.x + playerBounds.rect.width,
-                                        playerBounds.rect.y + playerBounds.rect.height)
-
-                        if (!circleContainsPlayer && ff.activated)
-                            removeAndSpawnParticles(color, pj, position, width, height, remove)
-                    }
+                    MapEntityType.Mirror -> handleMirror(entity, mapEntity, pj)
+                    MapEntityType.GravitySwitch -> handleGravitySwitch()
+                    MapEntityType.SquareSwitch -> handleSquareSwitch(mapEntity)
+                    MapEntityType.ForceField -> handleForceField(entity, mapEntity, boundsCircle)
                     else -> {}
                 }
             }
 
-            if (boundsCircle != null && !pj.enemy && !pj.sub && !overlap) {
+            if (boundsCircle != null && affectAllOrFromPlayer && !pj.sub && !overlap) {
                 if (boundsCircle.circle.contains(pj.originX, pj.originY)) {
                     removeAndSpawnParticles(color, pj, position, width, height, remove)
                 }
@@ -302,7 +257,7 @@ class ProjectileSystem(private val player: Player, private val res: Resources)
     }
 
     private fun handleDetonation(entity: Entity?, pj: ProjectileComponent, bounds: Rectangle, remove: RemoveComponent) {
-        if (pj.enemy && !pj.collidesWithTerrain && pj.detonateTime != 0f) {
+        if (Mapper.PLAYER_MAPPER.get(entity) == null && !pj.collidesWithTerrain && pj.detonateTime != 0f) {
             if (pj.lifeTime >= pj.detonateTime) {
                 val vel = Mapper.VEL_MAPPER.get(entity)
                 val speed = if (vel.dx != 0f) Math.abs(vel.dx) else Math.abs(vel.dy)
@@ -384,12 +339,13 @@ class ProjectileSystem(private val player: Player, private val res: Resources)
         val bw = texture.regionWidth - 1
         val bh = texture.regionHeight - 1
         val builder = EntityBuilder.instance(engine as PooledEngine)
-                .projectile(sub = true, collidesWithTerrain = collidesWithTerrain, enemy = enemy, damage = damage)
+                .projectile(sub = true, collidesWithTerrain = collidesWithTerrain, damage = damage)
                 .position(bounds.x + (bounds.width / 2) - (bw / 2), bounds.y + (bounds.height / 2) - (bh / 2))
                 .velocity(dx = dx, dy = dy)
                 .boundingBox(bw.toFloat(), bh.toFloat())
                 .texture(texture)
                 .direction(yFlip = true).remove()
+        if (!enemy) builder.player()
         if (hex != null) builder.color(hex)
         builder.build()
     }
@@ -435,6 +391,70 @@ class ProjectileSystem(private val player: Player, private val res: Resources)
         if (!trapComp.countdown) trapComp.countdown = true
         trapComp.hits++
         if (trapComp.hits <= 3) texture.texture = res.getTexture(texture.textureStr + trapComp.hits)
+    }
+
+    private fun handleMirror(entity: Entity?, mapEntity: Entity?, pj: ProjectileComponent) {
+        val mirror = Mapper.MIRROR_MAPPER.get(mapEntity)
+        val velocity = Mapper.VEL_MAPPER.get(entity)
+        velocity.dx = -velocity.dx
+    }
+
+    private fun handleGravitySwitch() {
+        val gravity = Mapper.GRAVITY_MAPPER.get(player)
+
+        gravity.reverse = !gravity.reverse
+        for (gravitySwitch in mapEntities) {
+            val gme = Mapper.MAP_ENTITY_MAPPER.get(gravitySwitch)
+            if (gme.mapEntityType == MapEntityType.GravitySwitch) {
+                val meTexture = Mapper.TEXTURE_MAPPER.get(gravitySwitch)
+                meTexture.texture = res.getTexture(meTexture.textureStr +
+                        if (gravity.reverse) TOGGLE_ON else TOGGLE_OFF)
+            }
+        }
+    }
+
+    private fun handleSquareSwitch(mapEntity: Entity?) {
+        val switch = Mapper.SQUARE_SWITCH_MAPPER.get(mapEntity)
+        val switchTexture = Mapper.TEXTURE_MAPPER.get(mapEntity)
+
+        switch.toggle = !switch.toggle
+        switchTexture.texture = res.getTexture(switchTexture.textureStr +
+                if (switch.toggle) TOGGLE_ON else TOGGLE_OFF)
+
+        for (tt in toggleTiles) {
+            val tme = Mapper.MAP_ENTITY_MAPPER.get(tt)
+            val toggleComp = Mapper.TOGGLE_TILE_MAPPER.get(tt)
+            val toggleTexture = Mapper.TEXTURE_MAPPER.get(tt)
+
+            if (switch.targetId == toggleComp.id) {
+                toggleComp.toggle = !toggleComp.toggle
+                toggleTexture.texture = if (toggleComp.toggle) res.getTexture(toggleTexture.textureStr!!) else null
+                tme.mapCollidable = toggleComp.toggle
+                tme.projectileCollidable = toggleComp.toggle
+            }
+        }
+    }
+
+    private fun handleForceField(entity: Entity?, mapEntity: Entity?, boundsCircle: BoundingCircleComponent) {
+        val color = Mapper.COLOR_MAPPER.get(entity)
+        val pj = Mapper.PROJ_MAPPER.get(entity)
+        val position = Mapper.POS_MAPPER.get(entity)
+        val remove = Mapper.REMOVE_MAPPER.get(entity)
+        val width = Mapper.TEXTURE_MAPPER.get(entity).texture!!.regionWidth
+        val height = Mapper.TEXTURE_MAPPER.get(entity).texture!!.regionHeight
+        val ff = Mapper.FORCE_FIELD_MAPPER.get(mapEntity)
+        val playerBounds = Mapper.BOUNDING_BOX_MAPPER.get(player)
+
+        val circleContainsPlayer = boundsCircle.circle.contains(playerBounds.rect.x, playerBounds.rect.y) &&
+                boundsCircle.circle.contains(playerBounds.rect.x + playerBounds.rect.width,
+                        playerBounds.rect.y) &&
+                boundsCircle.circle.contains(playerBounds.rect.x,
+                        playerBounds.rect.y + playerBounds.rect.height) &&
+                boundsCircle.circle.contains(playerBounds.rect.x + playerBounds.rect.width,
+                        playerBounds.rect.y + playerBounds.rect.height)
+
+        if (!circleContainsPlayer && ff.activated)
+            removeAndSpawnParticles(color, pj, position, width, height, remove)
     }
 
 }

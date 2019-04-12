@@ -5,6 +5,8 @@ import com.badlogic.gdx.utils.Pool
 
 class MirrorComponent : Component, Pool.Poolable {
 
+    var orientation = Orientation.Vertical
+
     enum class Orientation(val typeStr: String) {
         Horizontal("h"),
         Vertical("v"),
@@ -18,7 +20,7 @@ class MirrorComponent : Component, Pool.Poolable {
     }
 
     override fun reset() {
-
+        orientation = Orientation.Vertical
     }
 
 }

@@ -16,7 +16,6 @@ class ProjectileComponent : Component, Pool.Poolable {
     var textureStr: String? = null
     var collidesWithTerrain = true
     var collidesWithProjectiles = false
-    var enemy = false
     var damage = 0
     var knockback = 0f
     var playerType = 0
@@ -39,7 +38,6 @@ class ProjectileComponent : Component, Pool.Poolable {
         textureStr = null
         collidesWithTerrain = true
         collidesWithProjectiles = false
-        enemy = false
         damage = 0
         knockback = 0f
         playerType = 0
