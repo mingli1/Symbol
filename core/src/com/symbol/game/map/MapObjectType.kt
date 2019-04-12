@@ -12,12 +12,7 @@ enum class MapObjectType(val typeStr: String, val solid: Boolean) {
     JumpBoost("jump_boost", true);
 
     companion object {
-        fun getType(typeStr: String) : MapObjectType? {
-            for (type in MapObjectType.values()) {
-                if (type.typeStr == typeStr) return type
-            }
-            return null
-        }
+        fun getType(typeStr: String) : MapObjectType? = MapObjectType.values().find { it.typeStr == typeStr }
     }
 
 }
