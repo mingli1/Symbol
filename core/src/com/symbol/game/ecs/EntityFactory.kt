@@ -21,7 +21,7 @@ object EntityFactory {
                         .activation(150f)
                         .attack(damage = 1, projectileSpeed = 45f, attackTexture = "p_dot", attackRate = 1.5f)
                         .color(EntityColor.E_COLOR)
-                        .health(100)
+                        .health(1000)
                         .boundingBox(7f, 7f)
                         .position(rect.x, rect.y)
                         .velocity(speed = 25f)
@@ -337,7 +337,7 @@ object EntityFactory {
                 val texture = res.getTexture(textureStr)!!
 
                 EntityBuilder.instance(engine)
-                        .mapEntity(type = type, mapCollidable = true)
+                        .mapEntity(type = type)
                         .mirror(orientation)
                         .boundingBox(texture.regionWidth.toFloat(), texture.regionHeight.toFloat())
                         .position(rect.x, rect.y)

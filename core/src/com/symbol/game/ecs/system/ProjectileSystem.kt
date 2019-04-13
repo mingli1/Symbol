@@ -444,7 +444,30 @@ class ProjectileSystem(private val player: Player, private val res: Resources)
                     }
                 }
                 MirrorComponent.Orientation.LeftDiagonal -> {
-
+                    if ((pRight && px >= mBounds.rect.x + mBounds.rect.width - py + mBounds.rect.y) ||
+                            (pLeft && px <= mBounds.rect.x + mBounds.rect.width - py + mBounds.rect.y)) {
+                        velocity.dy = -velocity.dx
+                        velocity.dx = 0f
+                        applyMirror(entity, mapEntity, pj)
+                    }
+                    else if ((pDown && py <= mBounds.rect.y + mBounds.rect.height - px + mBounds.rect.x) ||
+                            (pUp && py >= mBounds.rect.y + mBounds.rect.height - px + mBounds.rect.x)) {
+                        velocity.dx = -velocity.dy
+                        velocity.dy = 0f
+                        applyMirror(entity, mapEntity, pj)
+                    }
+                    else if ((pDownLeft && Intersector.isPointInTriangle(px, py,
+                                    mBounds.rect.x, mBounds.rect.y,
+                                    mBounds.rect.x + mBounds.rect.width, mBounds.rect.y,
+                                    mBounds.rect.x, mBounds.rect.y + mBounds.rect.height)) ||
+                            (pUpRight && Intersector.isPointInTriangle(px, py,
+                                    mBounds.rect.x + mBounds.rect.width, mBounds.rect.y + mBounds.rect.height,
+                                    mBounds.rect.x + mBounds.rect.width, mBounds.rect.y,
+                                    mBounds.rect.x, mBounds.rect.y + mBounds.rect.height))) {
+                        velocity.dx = -velocity.dx
+                        velocity.dy = -velocity.dy
+                        applyMirror(entity, mapEntity, pj)
+                    }
                 }
                 MirrorComponent.Orientation.RightDiagonal -> {
                     if ((pRight && px >= mBounds.rect.x + py - mBounds.rect.y) ||
@@ -457,6 +480,18 @@ class ProjectileSystem(private val player: Player, private val res: Resources)
                             (pUp && py >= mBounds.rect.y + px - mBounds.rect.x)) {
                         velocity.dx = velocity.dy
                         velocity.dy = 0f
+                        applyMirror(entity, mapEntity, pj)
+                    }
+                    else if ((pDownRight && Intersector.isPointInTriangle(px, py,
+                                    mBounds.rect.x, mBounds.rect.y,
+                                    mBounds.rect.x + mBounds.rect.width, mBounds.rect.y,
+                                    mBounds.rect.x + mBounds.rect.width, mBounds.rect.y + mBounds.rect.height)) ||
+                            (pUpLeft && Intersector.isPointInTriangle(px, py,
+                                    mBounds.rect.x, mBounds.rect.y,
+                                    mBounds.rect.x, mBounds.rect.y + mBounds.rect.height,
+                                    mBounds.rect.x + mBounds.rect.width, mBounds.rect.y + mBounds.rect.height))) {
+                        velocity.dx = -velocity.dx
+                        velocity.dy = -velocity.dy
                         applyMirror(entity, mapEntity, pj)
                     }
                 }
