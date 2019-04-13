@@ -15,13 +15,13 @@ object EntityFactory {
         when (type) {
             EnemyType.EConstant -> {
                 EntityBuilder.instance(engine)
-                        .enemy(movementType = EnemyMovementType.BackAndForth, attackType = EnemyAttackType.ShootOne)
+                        .enemy(movementType = EnemyMovementType.None, attackType = EnemyAttackType.ShootEight)
                         .lastStand()
                         .statusEffect()
                         .activation(150f)
-                        .attack(damage = 2, projectileSpeed = 45f, attackTexture = "p_cup", attackRate = 1.5f)
+                        .attack(damage = 1, projectileSpeed = 45f, attackTexture = "p_dot", attackRate = 1.5f)
                         .color(EntityColor.E_COLOR)
-                        .health(10)
+                        .health(100)
                         .boundingBox(7f, 7f)
                         .position(rect.x, rect.y)
                         .velocity(speed = 25f)
@@ -337,7 +337,7 @@ object EntityFactory {
                 val texture = res.getTexture(textureStr)!!
 
                 EntityBuilder.instance(engine)
-                        .mapEntity(type = type)
+                        .mapEntity(type = type, mapCollidable = true)
                         .mirror(orientation)
                         .boundingBox(texture.regionWidth.toFloat(), texture.regionHeight.toFloat())
                         .position(rect.x, rect.y)

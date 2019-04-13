@@ -23,6 +23,7 @@ object Mapper {
     val ORBIT_MAPPER = ComponentMapper.getFor(OrbitComponent::class.java)!!
     val STATUS_EFFECT_MAPPER = ComponentMapper.getFor(StatusEffectComponent::class.java)!!
     val AFFECT_ALL_MAPPER = ComponentMapper.getFor(AffectAllComponent::class.java)!!
+    val LAST_ENTITY_MAPPER = ComponentMapper.getFor(LastEntityComponent::class.java)!!
 
     val ENEMY_MAPPER = ComponentMapper.getFor(EnemyComponent::class.java)!!
     val ACTIVATION_MAPPER = ComponentMapper.getFor(ActivationComponent::class.java)!!

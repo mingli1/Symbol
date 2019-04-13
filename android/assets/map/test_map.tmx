@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.0.1" orientation="orthogonal" renderorder="right-down" width="50" height="20" tilewidth="8" tileheight="8" nextobjectid="159">
+<map version="1.0" tiledversion="1.0.1" orientation="orthogonal" renderorder="right-down" width="50" height="20" tilewidth="8" tileheight="8" nextobjectid="174">
  <tileset firstgid="1" name="tileset" tilewidth="8" tileheight="8" tilecount="64" columns="8">
   <image source="tileset.png" width="64" height="64"/>
  </tileset>
@@ -61,9 +61,10 @@
   <object id="137" x="64" y="56" width="8" height="8"/>
   <object id="138" x="80" y="24" width="24" height="8"/>
   <object id="139" x="0" y="24" width="72" height="8"/>
+  <object id="162" x="176" y="32" width="24" height="8"/>
  </objectgroup>
  <objectgroup name="enemy">
-  <object id="90" x="32" y="16" width="7.27273" height="7.45455">
+  <object id="90" x="184" y="24" width="7.27273" height="7.45455">
    <properties>
     <property name="type" value="e"/>
    </properties>
@@ -108,30 +109,8 @@
     <property name="type" value="cintegral"/>
    </properties>
   </object>
-  <object id="156" x="168" y="56" width="8" height="8">
-   <properties>
-    <property name="type" value="block"/>
-   </properties>
-  </object>
-  <object id="157" x="168" y="48" width="8" height="8">
-   <properties>
-    <property name="type" value="block"/>
-   </properties>
-  </object>
-  <object id="158" x="168" y="40" width="8" height="8">
-   <properties>
-    <property name="type" value="block"/>
-   </properties>
-  </object>
  </objectgroup>
  <objectgroup name="map">
-  <object id="111" x="192" y="21.2727" width="23.2727" height="2.72727">
-   <properties>
-    <property name="dist" type="float" value="100"/>
-    <property name="dx" type="float" value="15"/>
-    <property name="type" value="mplatform"/>
-   </properties>
-  </object>
   <object id="113" x="280.25" y="55.5" width="8" height="8">
    <properties>
     <property name="targetId" type="int" value="0"/>
@@ -163,8 +142,20 @@
     <property name="type" value="hp_pack"/>
    </properties>
   </object>
+  <object id="159" x="181" y="56" width="8" height="8">
+   <properties>
+    <property name="or" value="rd"/>
+    <property name="type" value="mirror"/>
+   </properties>
+  </object>
+  <object id="161" x="256" y="56" width="8" height="8">
+   <properties>
+    <property name="or" value="v"/>
+    <property name="type" value="mirror"/>
+   </properties>
+  </object>
  </objectgroup>
  <objectgroup name="player">
-  <object id="10" x="95.25" y="12.75" width="8" height="7.09091"/>
+  <object id="10" x="117.25" y="53" width="8" height="7.09091"/>
  </objectgroup>
 </map>

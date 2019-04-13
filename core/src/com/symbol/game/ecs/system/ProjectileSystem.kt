@@ -15,6 +15,7 @@ import com.symbol.game.ecs.EntityBuilder
 import com.symbol.game.ecs.Mapper
 import com.symbol.game.ecs.component.*
 import com.symbol.game.ecs.component.map.MapEntityComponent
+import com.symbol.game.ecs.component.map.MirrorComponent
 import com.symbol.game.ecs.component.map.ToggleTileComponent
 import com.symbol.game.ecs.entity.EntityColor
 import com.symbol.game.ecs.entity.MapEntityType
@@ -116,8 +117,9 @@ class ProjectileSystem(private val player: Player, private val res: Resources)
                     break
                 }
             }
-            handleMapEntityCollisions(entity)
         }
+
+        handleMapEntityCollisions(entity)
 
         for (projectile in entities) {
             val projectileComp = Mapper.PROJ_MAPPER.get(projectile)
@@ -230,9 +232,12 @@ class ProjectileSystem(private val player: Player, private val res: Resources)
             val affectAllOrFromPlayer = Mapper.AFFECT_ALL_MAPPER.get(entity) != null ||
                     Mapper.PLAYER_MAPPER.get(entity) != null
 
+            if (!pj.sub && overlap) {
+                if (me.mapEntityType == MapEntityType.Mirror) handleMirror(entity, mapEntity, pj)
+            }
+
             if (affectAllOrFromPlayer && !pj.sub && overlap) {
                 when (me.mapEntityType) {
-                    MapEntityType.Mirror -> handleMirror(entity, mapEntity, pj)
                     MapEntityType.GravitySwitch -> handleGravitySwitch()
                     MapEntityType.SquareSwitch -> handleSquareSwitch(mapEntity)
                     MapEntityType.ForceField -> handleForceField(entity, mapEntity, boundsCircle)
@@ -247,12 +252,18 @@ class ProjectileSystem(private val player: Player, private val res: Resources)
             }
 
             if (me.projectileCollidable) {
-                if (overlap) {
+                if (overlap && affectAllOrFromPlayer) {
                     if (pj.playerType != 0) handlePlayerProjectile(entity, pj, bb.rect)
                     removeAndSpawnParticles(color, pj, position, width, height, remove)
                     break
                 }
             }
+        }
+
+        val lastEntity = Mapper.LAST_ENTITY_MAPPER.get(entity)
+        if (lastEntity?.entity != null) {
+            val leBounds = Mapper.BOUNDING_BOX_MAPPER.get(lastEntity.entity)
+            if (!bb.rect.overlaps(leBounds.rect)) pj.withinMirror = false
         }
     }
 
@@ -395,8 +406,73 @@ class ProjectileSystem(private val player: Player, private val res: Resources)
 
     private fun handleMirror(entity: Entity?, mapEntity: Entity?, pj: ProjectileComponent) {
         val mirror = Mapper.MIRROR_MAPPER.get(mapEntity)
+        val pBounds = Mapper.BOUNDING_BOX_MAPPER.get(entity)
+        val mBounds = Mapper.BOUNDING_BOX_MAPPER.get(mapEntity)
         val velocity = Mapper.VEL_MAPPER.get(entity)
-        velocity.dx = -velocity.dx
+        entity?.add((engine as PooledEngine).createComponent(AffectAllComponent::class.java))
+
+        val pRight = velocity.dx > 0 && velocity.dy == 0f
+        val pLeft = velocity.dx < 0 && velocity.dy == 0f
+        val pUp = velocity.dy > 0 && velocity.dx == 0f
+        val pDown = velocity.dy < 0 && velocity.dx == 0f
+        val pUpLeft = velocity.dx < 0 && velocity.dy > 0
+        val pUpRight = velocity.dx > 0 && velocity.dy > 0
+        val pDownLeft = velocity.dx < 0 && velocity.dy < 0
+        val pDownRight = velocity.dx > 0 && velocity.dy < 0
+
+        val px = pBounds.rect.x + pBounds.rect.width / 2
+        val py = pBounds.rect.y + pBounds.rect.height / 2
+
+        if (!pj.withinMirror) {
+            when (mirror.orientation) {
+                MirrorComponent.Orientation.Vertical -> {
+                    val xHalf = mBounds.rect.x + mBounds.rect.width / 2
+                    if ((pRight && px >= xHalf) || (pLeft && px <= xHalf) ||
+                            (pDownRight && px >= xHalf) || (pDownLeft && px <= xHalf) ||
+                            (pUpRight && px >= xHalf) || (pUpLeft && px <= xHalf)) {
+                        velocity.dx = -velocity.dx
+                        applyMirror(entity, mapEntity, pj)
+                    }
+                }
+                MirrorComponent.Orientation.Horizontal -> {
+                    val yHalf = mBounds.rect.y + mBounds.rect.height / 2
+                    if ((pUp && py >= yHalf) || (pDown && py <= yHalf) ||
+                            (pDownRight && py <= yHalf) || (pDownLeft && py <= yHalf) ||
+                            (pUpRight && py >= yHalf) || (pUpLeft && py <= yHalf)) {
+                        velocity.dy = -velocity.dy
+                        applyMirror(entity, mapEntity, pj)
+                    }
+                }
+                MirrorComponent.Orientation.LeftDiagonal -> {
+
+                }
+                MirrorComponent.Orientation.RightDiagonal -> {
+                    if ((pRight && px >= mBounds.rect.x + py - mBounds.rect.y) ||
+                            (pLeft && px <= mBounds.rect.x + py - mBounds.rect.y)) {
+                        velocity.dy = velocity.dx
+                        velocity.dx = 0f
+                        applyMirror(entity, mapEntity, pj)
+                    }
+                    else if ((pDown && py <= mBounds.rect.y + px - mBounds.rect.x) ||
+                            (pUp && py >= mBounds.rect.y + px - mBounds.rect.x)) {
+                        velocity.dx = velocity.dy
+                        velocity.dy = 0f
+                        applyMirror(entity, mapEntity, pj)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun applyMirror(entity: Entity?, mapEntity: Entity?, pj: ProjectileComponent) {
+        pj.withinMirror = true
+        val lastEntity = Mapper.LAST_ENTITY_MAPPER.get(entity)
+        if (lastEntity == null) {
+            entity?.add((engine as PooledEngine).createComponent(LastEntityComponent::class.java))
+            Mapper.LAST_ENTITY_MAPPER.get(entity).entity = mapEntity
+        } else {
+            lastEntity.entity = mapEntity
+        }
     }
 
     private fun handleGravitySwitch() {

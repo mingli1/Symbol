@@ -29,6 +29,8 @@ class ProjectileComponent : Component, Pool.Poolable {
     var waveDir = Direction.Left
     var waveTimer = 0f
 
+    var withinMirror = false
+
     override fun reset() {
         lifeTime = 0f
         parentFacingRight = false
@@ -48,6 +50,8 @@ class ProjectileComponent : Component, Pool.Poolable {
         half = false
         waveDir = Direction.Left
         waveTimer = 0f
+
+        withinMirror = false
     }
 }
 
