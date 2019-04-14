@@ -69,7 +69,6 @@ class EntityBuilder(private val engine: PooledEngine) {
     fun projectile(movementType: ProjectileMovementType = ProjectileMovementType.Normal,
                    parentFacingRight: Boolean = false,
                    sub: Boolean = false,
-                   originX: Float = 0f, originY: Float = 0f,
                    collidesWithTerrain: Boolean = true,
                    collidesWithProjectiles: Boolean = false,
                    textureStr: String? = null,
@@ -82,8 +81,6 @@ class EntityBuilder(private val engine: PooledEngine) {
         projectileComponent?.movementType = movementType
         projectileComponent?.parentFacingRight = parentFacingRight
         projectileComponent?.sub = sub
-        projectileComponent?.originX = originX
-        projectileComponent?.originY = originY
         projectileComponent?.collidesWithTerrain = collidesWithTerrain
         projectileComponent?.collidesWithProjectiles = collidesWithProjectiles
         projectileComponent?.textureStr = textureStr
@@ -152,6 +149,8 @@ class EntityBuilder(private val engine: PooledEngine) {
         positionComponent = engine.createComponent(PositionComponent::class.java)
         positionComponent?.x = x
         positionComponent?.y = y
+        positionComponent?.originX = x
+        positionComponent?.originY = y
         return this
     }
 
@@ -175,12 +174,10 @@ class EntityBuilder(private val engine: PooledEngine) {
         return this
     }
 
-    fun orbit(clockwise: Boolean = true, originX: Float = 0f, originY: Float = 0f,
-              angle: Float = 0f, speed: Float = 0f, radius: Float = 0f) : EntityBuilder {
+    fun orbit(clockwise: Boolean = true, angle: Float = 0f,
+              speed: Float = 0f, radius: Float = 0f) : EntityBuilder {
         orbitComponent = engine.createComponent(OrbitComponent::class.java)
         orbitComponent?.clockwise = clockwise
-        orbitComponent?.originX = originX
-        orbitComponent?.originY = originY
         orbitComponent?.angle = angle
         orbitComponent?.speed = speed
         orbitComponent?.radius = radius
@@ -245,8 +242,10 @@ class EntityBuilder(private val engine: PooledEngine) {
         return this
     }
 
-    fun teleport() : EntityBuilder {
+    fun teleport(range: Float = 0f, freq: Float = 0f) : EntityBuilder {
         teleportComponent = engine.createComponent(TeleportComponent::class.java)
+        teleportComponent?.range = range
+        teleportComponent?.freq = freq
         return this
     }
 
@@ -275,11 +274,9 @@ class EntityBuilder(private val engine: PooledEngine) {
         return this
     }
 
-    fun movingPlatform(distance: Float = 0f, originX: Float = 0f, originY: Float = 0f, positive: Boolean = true) : EntityBuilder {
+    fun movingPlatform(distance: Float = 0f, positive: Boolean = true) : EntityBuilder {
         movingPlatformComponent = engine.createComponent(MovingPlatformComponent::class.java)
         movingPlatformComponent?.distance = distance
-        movingPlatformComponent?.originX = originX
-        movingPlatformComponent?.originY = originY
         movingPlatformComponent?.positive = positive
         return this
     }

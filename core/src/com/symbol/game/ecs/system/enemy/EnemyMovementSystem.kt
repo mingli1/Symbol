@@ -59,6 +59,7 @@ class EnemyMovementSystem(private val player: Player, private val res: Resources
                 EnemyMovementType.Random -> random(entity, dt, position, velocity, gravity)
                 EnemyMovementType.RandomWithJump -> randomWithJump(entity, dt, position, velocity, gravity)
                 EnemyMovementType.Orbit -> orbit(entity, enemyComponent)
+                EnemyMovementType.TeleportTriangle -> teleportTriangle(entity, dt, position)
             }
         }
     }
@@ -123,14 +124,32 @@ class EnemyMovementSystem(private val player: Player, private val res: Resources
         val parentRemove = Mapper.REMOVE_MAPPER.get(enemyComponent.parent)
 
         if (parentRemove != null && !parentRemove.shouldRemove) {
+            val position = Mapper.POS_MAPPER.get(entity)
             val bounds = Mapper.BOUNDING_BOX_MAPPER.get(enemyComponent.parent)
             val originX = bounds.rect.x + bounds.rect.width / 2
             val originY = bounds.rect.y + bounds.rect.height / 2
 
-            orbit?.setOrigin(originX, originY)
+            position.originX = originX
+            position.originY = originY
         }
         else {
             remove.shouldRemove = true
+        }
+    }
+
+    private fun teleportTriangle(entity: Entity?, dt: Float, position: PositionComponent) {
+        val enemy = Mapper.ENEMY_MAPPER.get(entity)
+        val teleport = Mapper.TELEPORT_MAPPER.get(entity)
+
+        enemy.movementTimer += dt
+        if (enemy.movementTimer >= teleport.freq) {
+            enemy.movementTimer = 0f
+            teleport.pos++
+            if (teleport.pos > 2) teleport.pos = 0
+        }
+
+        when (teleport.pos) {
+            0 -> {}
         }
     }
 

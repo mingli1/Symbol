@@ -56,6 +56,8 @@ enum class EnemyMovementType {
     Charge,
     Random,
     RandomWithJump,
-    Orbit
+    Orbit,
+    TeleportTriangle,
+    TeleportSquare
 
 }

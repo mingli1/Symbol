@@ -10,9 +10,6 @@ class ProjectileComponent : Component, Pool.Poolable {
     var parentFacingRight = false
     var sub = false
 
-    var originX = 0f
-    var originY = 0f
-
     var textureStr: String? = null
     var collidesWithTerrain = true
     var collidesWithProjectiles = false
@@ -35,8 +32,6 @@ class ProjectileComponent : Component, Pool.Poolable {
         lifeTime = 0f
         parentFacingRight = false
         sub = false
-        originX = 0f
-        originY = 0f
         textureStr = null
         collidesWithTerrain = true
         collidesWithProjectiles = false

@@ -98,8 +98,10 @@ class ProjectileSystem(private val player: Player, private val res: Resources)
                         if (velocity.dy != 0f) velocity.dy += pj.acceleration * dt
                     }
 
-                    val passOriginX = (pj.acceleration < 0 && bb.rect.x < pj.originX) || (pj.acceleration > 0 && bb.rect.x > pj.originX)
-                    val passOriginY = (pj.acceleration < 0 && bb.rect.y < pj.originY) || (pj.acceleration > 0 && bb.rect.y > pj.originY)
+                    val passOriginX = (pj.acceleration < 0 && bb.rect.x < position.originX) ||
+                            (pj.acceleration > 0 && bb.rect.x > position.originX)
+                    val passOriginY = (pj.acceleration < 0 && bb.rect.y < position.originY) ||
+                            (pj.acceleration > 0 && bb.rect.y > position.originY)
 
                     if (passOriginX || passOriginY) {
                         remove.shouldRemove = true
@@ -246,7 +248,7 @@ class ProjectileSystem(private val player: Player, private val res: Resources)
             }
 
             if (boundsCircle != null && affectAllOrFromPlayer && !pj.sub && !overlap) {
-                if (boundsCircle.circle.contains(pj.originX, pj.originY)) {
+                if (boundsCircle.circle.contains(position.originX, position.originY)) {
                     removeAndSpawnParticles(color, pj, position, width, height, remove)
                 }
             }
@@ -365,7 +367,8 @@ class ProjectileSystem(private val player: Player, private val res: Resources)
     }
 
     private fun handleTeleportation(entity: Entity?) {
-        if (Mapper.TELEPORT_MAPPER.get(entity) != null) {
+        val teleport = Mapper.TELEPORT_MAPPER.get(entity)
+        if (teleport?.range == 0f) {
             val bounds = Mapper.BOUNDING_BOX_MAPPER.get(entity)
             val position = Mapper.POS_MAPPER.get(entity)
             val velocity = Mapper.VEL_MAPPER.get(entity)

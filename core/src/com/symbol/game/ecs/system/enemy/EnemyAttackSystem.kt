@@ -313,7 +313,7 @@ class EnemyAttackSystem(private val player: Player, private val res: Resources) 
         val originY = bounds.y + (bounds.height / 2) - (bh / 2)
 
         return EntityBuilder.instance(engine as PooledEngine)
-                .projectile(originX = originX, originY = originY, movementType = movementType,
+                .projectile(movementType = movementType,
                         parentFacingRight = dir.facingRight,
                         collidesWithTerrain = false, collidesWithProjectiles = attackComp.projectileDestroyable,
                         textureStr = attackComp.attackTexture,
@@ -334,8 +334,7 @@ class EnemyAttackSystem(private val player: Player, private val res: Resources) 
         val originY = bounds.y + (bounds.height / 2) - (bh / 2)
 
         return EntityBuilder.instance(engine as PooledEngine)
-                .projectile(originX = originX, originY = originY,
-                        collidesWithTerrain = false, collidesWithProjectiles = attackComp.projectileDestroyable,
+                .projectile(collidesWithTerrain = false, collidesWithProjectiles = attackComp.projectileDestroyable,
                         textureStr = attackComp.attackTexture, damage = attackComp.damage)
                 .color(EntityColor.getProjectileColor(attackComp.attackTexture)!!)
                 .position(originX, originY)

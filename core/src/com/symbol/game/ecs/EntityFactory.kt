@@ -260,7 +260,7 @@ object EntityFactory {
 
                 EntityBuilder.instance(engine)
                         .mapEntity(type = type, projectileCollidable = true)
-                        .movingPlatform(distance = dist, originX = rect.x, originY = rect.y, positive = dx > 0)
+                        .movingPlatform(distance = dist, positive = dx > 0)
                         .boundingBox(texture.regionWidth.toFloat(), texture.regionHeight.toFloat())
                         .position(rect.x, rect.y)
                         .velocity(dx = dx)

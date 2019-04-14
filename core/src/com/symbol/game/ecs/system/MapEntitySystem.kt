@@ -57,14 +57,14 @@ class MapEntitySystem(private val player: Player, private val res: Resources) :
         if (velocity.dx != 0f) {
             if (mp.positive) {
                 val trueX = position.x + bounds.rect.width
-                if ((velocity.dx > 0 && trueX - mp.originX >= mp.distance) ||
-                        (velocity.dx < 0 && position.x <= mp.originX)) {
+                if ((velocity.dx > 0 && trueX - position.originX >= mp.distance) ||
+                        (velocity.dx < 0 && position.x <= position.originX)) {
                     velocity.dx = -velocity.dx
                 }
             }
             else {
-                if ((velocity.dx < 0 && mp.originX - position.x >= mp.distance) ||
-                        (velocity.dx > 0 && position.x >= mp.originX)) {
+                if ((velocity.dx < 0 && position.originX - position.x >= mp.distance) ||
+                        (velocity.dx > 0 && position.x >= position.originX)) {
                     velocity.dx = -velocity.dx
                 }
             }

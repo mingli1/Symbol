@@ -93,7 +93,7 @@ class KeyInputSystem(private val res: Resources) : EntitySystem(), KeyInputHandl
             playerComp.damage += playerComp.chargeIndex
 
             val builder = EntityBuilder.instance(engine as PooledEngine)
-                    .projectile(originX = x, originY = y, damage = playerComp.damage,
+                    .projectile(damage = playerComp.damage,
                             knockback = PLAYER_PROJECTILE_KNOCKBACK,
                             playerType = playerComp.chargeIndex, textureStr = key)
                     .player()
