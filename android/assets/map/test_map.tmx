@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.0.1" orientation="orthogonal" renderorder="right-down" width="50" height="20" tilewidth="8" tileheight="8" nextobjectid="197">
+<map version="1.0" tiledversion="1.0.1" orientation="orthogonal" renderorder="right-down" width="50" height="20" tilewidth="8" tileheight="8" nextobjectid="199">
  <tileset firstgid="1" name="tileset" tilewidth="8" tileheight="8" tilecount="64" columns="8">
   <image source="tileset.png" width="64" height="64"/>
  </tileset>
@@ -84,7 +84,7 @@
     <property name="type" value="toggle"/>
    </properties>
   </object>
-  <object id="155" x="27.75" y="15.5" width="8" height="8">
+  <object id="155" x="0" y="16" width="8" height="8">
    <properties>
     <property name="regen" type="int" value="8"/>
     <property name="time" type="float" value="4"/>
@@ -109,7 +109,7 @@
     <property name="type" value="mirror"/>
    </properties>
   </object>
-  <object id="176" x="68.25" y="36.25" width="8" height="8">
+  <object id="176" x="59" y="45.75" width="8" height="8">
    <properties>
     <property name="or" value="ld"/>
     <property name="type" value="mirror"/>
@@ -212,6 +212,20 @@
    <properties>
     <property name="id" type="int" value="3"/>
     <property name="target" type="int" value="2"/>
+    <property name="type" value="portal"/>
+   </properties>
+  </object>
+  <object id="197" x="296" y="56" width="8" height="8">
+   <properties>
+    <property name="id" type="int" value="4"/>
+    <property name="target" type="int" value="5"/>
+    <property name="type" value="portal"/>
+   </properties>
+  </object>
+  <object id="198" x="40" y="16" width="8" height="8">
+   <properties>
+    <property name="id" type="int" value="5"/>
+    <property name="target" type="int" value="4"/>
     <property name="type" value="portal"/>
    </properties>
   </object>

@@ -23,8 +23,6 @@ import com.symbol.game.effects.particle.DEFAULT_LIFETIME
 import com.symbol.game.effects.particle.ParticleSpawner
 import com.symbol.game.map.camera.CameraShake
 import com.symbol.game.util.Resources
-import com.symbol.game.util.TOP
-import com.symbol.game.util.TOP_RIGHT
 import kotlin.math.abs
 
 private const val CAMERA_SHAKE_POWER = 3f
@@ -125,9 +123,9 @@ class EnemyAttackSystem(private val player: Player, private val res: Resources) 
     }
 
     private fun shootTwoVertical(attackComp: AttackComponent, dir: DirectionComponent, bounds: Rectangle) {
-        val topTexture = res.getTexture(attackComp.attackTexture + TOP) ?: res.getTexture(attackComp.attackTexture!!)!!
-        createProjectile(attackComp, dir, bounds, 0f, attackComp.projectileSpeed, topTexture)
-        createProjectile(attackComp, dir, bounds, 0f, -attackComp.projectileSpeed, topTexture)
+        val texture = res.getTexture(attackComp.attackTexture!!)!!
+        createProjectile(attackComp, dir, bounds, 0f, attackComp.projectileSpeed, texture)
+        createProjectile(attackComp, dir, bounds, 0f, -attackComp.projectileSpeed, texture)
     }
 
     private fun shootFour(attackComp: AttackComponent, dir: DirectionComponent, bounds: Rectangle) {
@@ -136,15 +134,15 @@ class EnemyAttackSystem(private val player: Player, private val res: Resources) 
     }
 
     private fun shootFourDiagonal(attackComp: AttackComponent, dir: DirectionComponent, bounds: Rectangle) {
-        val trTexture = res.getTexture(attackComp.attackTexture + TOP_RIGHT) ?: res.getTexture(attackComp.attackTexture!!)!!
+        val texture = res.getTexture(attackComp.attackTexture!!)!!
         createProjectile(attackComp, dir, bounds, -attackComp.projectileSpeed * DIAGONAL_PROJECTILE_SCALING,
-                attackComp.projectileSpeed * DIAGONAL_PROJECTILE_SCALING, trTexture)
+                attackComp.projectileSpeed * DIAGONAL_PROJECTILE_SCALING, texture)
         createProjectile(attackComp, dir, bounds, attackComp.projectileSpeed * DIAGONAL_PROJECTILE_SCALING,
-                attackComp.projectileSpeed * DIAGONAL_PROJECTILE_SCALING, trTexture)
+                attackComp.projectileSpeed * DIAGONAL_PROJECTILE_SCALING, texture)
         createProjectile(attackComp, dir, bounds, -attackComp.projectileSpeed * DIAGONAL_PROJECTILE_SCALING,
-                -attackComp.projectileSpeed * DIAGONAL_PROJECTILE_SCALING, trTexture)
+                -attackComp.projectileSpeed * DIAGONAL_PROJECTILE_SCALING, texture)
         createProjectile(attackComp, dir, bounds, attackComp.projectileSpeed * DIAGONAL_PROJECTILE_SCALING,
-                -attackComp.projectileSpeed * DIAGONAL_PROJECTILE_SCALING, trTexture)
+                -attackComp.projectileSpeed * DIAGONAL_PROJECTILE_SCALING, texture)
     }
 
     private fun shootEight(attackComp: AttackComponent, dir: DirectionComponent, bounds: Rectangle) {
@@ -153,7 +151,6 @@ class EnemyAttackSystem(private val player: Player, private val res: Resources) 
     }
 
     private fun shootAtPlayer(attackComp: AttackComponent, dir: DirectionComponent, bounds: Rectangle, playerBounds: Rectangle) {
-        val topTexture = res.getTexture(attackComp.attackTexture + TOP) ?: res.getTexture(attackComp.attackTexture!!)!!
         val texture = res.getTexture(attackComp.attackTexture!!)!!
 
         val xBiased = abs(bounds.x - playerBounds.x) > abs(bounds.y - playerBounds.y)
@@ -167,23 +164,21 @@ class EnemyAttackSystem(private val player: Player, private val res: Resources) 
         if (bounds.x >= xCenter && xBiased)
             createProjectile(attackComp, dir, bounds, -attackComp.projectileSpeed, 0f, texture)
         if (bounds.y < yCenter && !xBiased)
-            createProjectile(attackComp, dir, bounds, 0f, attackComp.projectileSpeed, topTexture)
+            createProjectile(attackComp, dir, bounds, 0f, attackComp.projectileSpeed, texture)
         if (bounds.y >= yCenter && !xBiased)
-            createProjectile(attackComp, dir, bounds, 0f, -attackComp.projectileSpeed, topTexture)
+            createProjectile(attackComp, dir, bounds, 0f, -attackComp.projectileSpeed, texture)
     }
 
     private fun sprayThree(attackComp: AttackComponent, bounds: Rectangle) {
-        val topTexture = res.getTexture(attackComp.attackTexture + TOP) ?: res.getTexture(attackComp.attackTexture!!)!!
-        val side = res.getTexture(attackComp.attackTexture + TOP_RIGHT) ?: res.getTexture(attackComp.attackTexture!!)!!
-        createGravityProjectile(attackComp, bounds, 0f, attackComp.projectileSpeed, topTexture)
-        createGravityProjectile(attackComp, bounds, -attackComp.projectileSpeed / 4, attackComp.projectileSpeed, side)
-        createGravityProjectile(attackComp, bounds, attackComp.projectileSpeed / 4, attackComp.projectileSpeed, side)
+        val texture = res.getTexture(attackComp.attackTexture!!)!!
+        createGravityProjectile(attackComp, bounds, 0f, attackComp.projectileSpeed, texture)
+        createGravityProjectile(attackComp, bounds, -attackComp.projectileSpeed / 4, attackComp.projectileSpeed, texture)
+        createGravityProjectile(attackComp, bounds, attackComp.projectileSpeed / 4, attackComp.projectileSpeed, texture)
     }
 
     private fun random(attackComp: AttackComponent, bounds: Rectangle, dir: DirectionComponent) {
         val action = MathUtils.random(3)
         val texture = res.getTexture(attackComp.attackTexture!!)!!
-        val topTexture = res.getTexture(attackComp.attackTexture + TOP) ?: res.getTexture(attackComp.attackTexture!!)!!
         when (action) {
             0 -> {
                 dir.facingRight = true
@@ -194,16 +189,16 @@ class EnemyAttackSystem(private val player: Player, private val res: Resources) 
                 createProjectile(attackComp, dir, bounds, -attackComp.projectileSpeed, 0f, texture)
             }
             2 -> {
-                createProjectile(attackComp, dir, bounds, 0f, attackComp.projectileSpeed, topTexture)
+                createProjectile(attackComp, dir, bounds, 0f, attackComp.projectileSpeed, texture)
             }
             3 -> {
-                createProjectile(attackComp, dir, bounds, 0f, -attackComp.projectileSpeed, topTexture)
+                createProjectile(attackComp, dir, bounds, 0f, -attackComp.projectileSpeed, texture)
             }
         }
     }
 
     private fun arcTwo(attackComp: AttackComponent, bounds: Rectangle, dir: DirectionComponent) {
-        val texture = res.getTexture(attackComp.attackTexture + TOP_RIGHT) ?: res.getTexture(attackComp.attackTexture!!)!!
+        val texture = res.getTexture(attackComp.attackTexture!!)!!
         val initialDx = if (dir.facingRight) -attackComp.projectileSpeed * DIAGONAL_PROJECTILE_SCALING
                             else attackComp.projectileSpeed * DIAGONAL_PROJECTILE_SCALING
         createProjectile(attackComp, dir, bounds, initialDx,
@@ -220,7 +215,7 @@ class EnemyAttackSystem(private val player: Player, private val res: Resources) 
     }
 
     private fun horizontalWave(attackComp: AttackComponent, bounds: Rectangle, dir: DirectionComponent) {
-        val texture = res.getTexture(attackComp.attackTexture + TOP_RIGHT) ?: res.getTexture(attackComp.attackTexture!!)!!
+        val texture = res.getTexture(attackComp.attackTexture!!)!!
         val proj = createProjectile(attackComp, dir, bounds, if (dir.facingRight) attackComp.projectileSpeed else -attackComp.projectileSpeed,
                 0f, texture, ProjectileMovementType.Wave)
         val projComp = Mapper.PROJ_MAPPER.get(proj)
@@ -228,7 +223,7 @@ class EnemyAttackSystem(private val player: Player, private val res: Resources) 
     }
 
     private fun verticalWave(attackComp: AttackComponent, bounds: Rectangle, dir: DirectionComponent) {
-        val texture = res.getTexture(attackComp.attackTexture + TOP_RIGHT) ?: res.getTexture(attackComp.attackTexture!!)!!
+        val texture = res.getTexture(attackComp.attackTexture!!)!!
         val proj = createProjectile(attackComp, dir, bounds, 0f,
                 if (MathUtils.randomBoolean()) attackComp.projectileSpeed else -attackComp.projectileSpeed,
                 texture, ProjectileMovementType.Wave)
@@ -237,7 +232,7 @@ class EnemyAttackSystem(private val player: Player, private val res: Resources) 
     }
 
     private fun twoHorizontalWave(attackComp: AttackComponent, bounds: Rectangle, dir: DirectionComponent) {
-        val texture = res.getTexture(attackComp.attackTexture + TOP_RIGHT) ?: res.getTexture(attackComp.attackTexture!!)!!
+        val texture = res.getTexture(attackComp.attackTexture!!)!!
         val projLeft = createProjectile(attackComp, dir, bounds, -attackComp.projectileSpeed,
                 0f, texture, ProjectileMovementType.Wave)
         val projRight = createProjectile(attackComp, dir, bounds, attackComp.projectileSpeed,
@@ -249,7 +244,7 @@ class EnemyAttackSystem(private val player: Player, private val res: Resources) 
     }
 
     private fun twoVerticalWave(attackComp: AttackComponent, bounds: Rectangle, dir: DirectionComponent) {
-        val texture = res.getTexture(attackComp.attackTexture + TOP_RIGHT) ?: res.getTexture(attackComp.attackTexture!!)!!
+        val texture = res.getTexture(attackComp.attackTexture!!)!!
         val projTop = createProjectile(attackComp, dir, bounds, 0f, attackComp.projectileSpeed,
                 texture, ProjectileMovementType.Wave)
         val projBot = createProjectile(attackComp, dir, bounds, 0f, -attackComp.projectileSpeed,
@@ -287,7 +282,7 @@ class EnemyAttackSystem(private val player: Player, private val res: Resources) 
                 .position(originX, originY)
                 .velocity(dx = dx, dy = dy)
                 .boundingBox(bw.toFloat(), bh.toFloat())
-                .texture(texture)
+                .texture(texture, attackComp.attackTexture)
                 .direction(yFlip = true).remove().build()
     }
 
@@ -306,7 +301,7 @@ class EnemyAttackSystem(private val player: Player, private val res: Resources) 
                 .position(originX, originY)
                 .velocity(dx = dx, dy = dy)
                 .boundingBox(bw.toFloat(), bh.toFloat())
-                .texture(texture)
+                .texture(texture, attackComp.attackTexture)
                 .direction(yFlip = true).gravity(collidable = false).remove().build()
     }
 

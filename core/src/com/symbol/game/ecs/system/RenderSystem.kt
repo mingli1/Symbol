@@ -8,8 +8,11 @@ import com.badlogic.gdx.graphics.g2d.Batch
 import com.symbol.game.ecs.Mapper
 import com.symbol.game.ecs.component.TextureComponent
 import com.symbol.game.map.camera.CameraUtil
+import com.symbol.game.util.Resources
+import com.symbol.game.util.TOP
+import com.symbol.game.util.TOP_RIGHT
 
-class RenderSystem(private val batch: Batch, private val cam: OrthographicCamera) :
+class RenderSystem(private val batch: Batch, private val cam: OrthographicCamera, private val res: Resources) :
         IteratingSystem(Family.all(TextureComponent::class.java).get()) {
 
     override fun processEntity(entity: Entity?, dt: Float) {
@@ -28,6 +31,8 @@ class RenderSystem(private val batch: Batch, private val cam: OrthographicCamera
         var fWidth = width
         var fHeight = height
 
+        applyProjectileFlip(entity)
+
         if (dir != null) {
             if (!dir.facingRight) {
                 xOffset = width
@@ -41,6 +46,22 @@ class RenderSystem(private val batch: Batch, private val cam: OrthographicCamera
 
         if (CameraUtil.withinCamera(position.x + xOffset, position.y + yOffset, cam)) {
             batch.draw(texture.texture, position.x + xOffset, position.y + yOffset, fWidth, fHeight)
+        }
+    }
+
+    private fun applyProjectileFlip(entity: Entity?) {
+        if (Mapper.PROJ_MAPPER.get(entity) != null) {
+            val texture = Mapper.TEXTURE_MAPPER.get(entity)
+            val velocity = Mapper.VEL_MAPPER.get(entity)
+
+            val defaultTexture = res.getTexture(texture.textureStr!!)
+
+            if (velocity.dx != 0f && velocity.dy == 0f)
+                texture.texture = defaultTexture
+            else if (velocity.dx == 0f && velocity.dy != 0f)
+                texture.texture = res.getTexture(texture.textureStr + TOP) ?: defaultTexture
+            else if (velocity.dx != 0f && velocity.dy != 0f)
+                texture.texture = res.getTexture(texture.textureStr + TOP_RIGHT) ?: defaultTexture
         }
     }
 

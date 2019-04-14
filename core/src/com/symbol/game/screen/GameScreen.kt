@@ -73,7 +73,7 @@ class GameScreen(game: Symbol) : AbstractScreen(game) {
         engine.addSystem(DirectionSystem())
         engine.addSystem(GravitySystem())
         engine.addSystem(StatusEffectSystem())
-        engine.addSystem(RenderSystem(game.batch, cam))
+        engine.addSystem(RenderSystem(game.batch, cam, game.res))
         engine.addSystem(StatusRenderSystem(game.batch, game.res, cam))
         engine.addSystem(RemoveSystem())
     }
