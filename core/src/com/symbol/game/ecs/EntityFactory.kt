@@ -15,7 +15,7 @@ object EntityFactory {
         when (type) {
             EnemyType.EConstant -> {
                 EntityBuilder.instance(engine)
-                        .enemy(movementType = EnemyMovementType.None, attackType = EnemyAttackType.ShootEight)
+                        .enemy(movementType = EnemyMovementType.None, attackType = EnemyAttackType.ShootAtPlayer)
                         .lastStand()
                         .statusEffect()
                         .activation(150f)

@@ -82,6 +82,7 @@ class GameScreen(game: Symbol) : AbstractScreen(game) {
         engine.getSystem(MapCollisionSystem::class.java).setMapData(mm.mapObjects,
                 mm.mapWidth * TILE_SIZE, mm.mapHeight * TILE_SIZE)
         engine.getSystem(ProjectileSystem::class.java).setMapData(mm.mapObjects)
+        engine.getSystem(EnemyAttackSystem::class.java).setMapData(mm.mapWidth.toFloat() * TILE_SIZE)
     }
 
     override fun show() {

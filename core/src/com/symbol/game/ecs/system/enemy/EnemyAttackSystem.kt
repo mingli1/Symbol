@@ -5,13 +5,16 @@ import com.badlogic.ashley.core.Family
 import com.badlogic.ashley.core.PooledEngine
 import com.badlogic.ashley.systems.IteratingSystem
 import com.badlogic.gdx.graphics.g2d.TextureRegion
+import com.badlogic.gdx.math.Intersector
 import com.badlogic.gdx.math.MathUtils
+import com.badlogic.gdx.math.MathUtils.*
 import com.badlogic.gdx.math.Rectangle
 import com.symbol.game.ecs.EntityBuilder
 import com.symbol.game.ecs.Mapper
 import com.symbol.game.ecs.component.Direction
 import com.symbol.game.ecs.component.DirectionComponent
 import com.symbol.game.ecs.component.ProjectileMovementType
+import com.symbol.game.ecs.component.enemy.ActivationComponent
 import com.symbol.game.ecs.component.enemy.AttackComponent
 import com.symbol.game.ecs.component.enemy.EnemyComponent
 import com.symbol.game.ecs.entity.EnemyAttackType
@@ -23,7 +26,6 @@ import com.symbol.game.effects.particle.DEFAULT_LIFETIME
 import com.symbol.game.effects.particle.ParticleSpawner
 import com.symbol.game.map.camera.CameraShake
 import com.symbol.game.util.Resources
-import kotlin.math.abs
 
 private const val CAMERA_SHAKE_POWER = 3f
 private const val CAMERA_SHAKE_DURATION = 0.7f
@@ -32,6 +34,12 @@ private const val TRAP_EXPLODE_TIME = 2f
 
 class EnemyAttackSystem(private val player: Player, private val res: Resources) :
         IteratingSystem(Family.all(EnemyComponent::class.java).get()) {
+
+    private var mapWidth = 0f
+
+    fun setMapData(mapWidth: Float) {
+        this.mapWidth = mapWidth
+    }
 
     override fun processEntity(entity: Entity?, dt: Float) {
         val enemyComponent = Mapper.ENEMY_MAPPER.get(entity)
@@ -69,9 +77,9 @@ class EnemyAttackSystem(private val player: Player, private val res: Resources) 
                     EnemyAttackType.ShootFour -> shootFour(attack, dir, bounds)
                     EnemyAttackType.ShootFourDiagonal -> shootFourDiagonal(attack, dir, bounds)
                     EnemyAttackType.ShootEight -> shootEight(attack, dir, bounds)
-                    EnemyAttackType.ShootAtPlayer -> shootAtPlayer(attack, dir, bounds, playerBounds)
+                    EnemyAttackType.ShootAtPlayer -> shootAtPlayer(attack, activation, dir, bounds, playerBounds)
                     EnemyAttackType.SprayThree -> sprayThree(attack, bounds)
-                    EnemyAttackType.ShootAndQuake -> shootAtPlayer(attack, dir, bounds, playerBounds)
+                    EnemyAttackType.ShootAndQuake -> shootAtPlayer(attack, activation, dir, bounds, playerBounds)
                     EnemyAttackType.Random -> random(attack, bounds, dir)
                     EnemyAttackType.ArcTwo -> arcTwo(attack, bounds, dir)
                     EnemyAttackType.HorizontalWave -> horizontalWave(attack, bounds, dir)
@@ -150,23 +158,61 @@ class EnemyAttackSystem(private val player: Player, private val res: Resources) 
         shootFourDiagonal(attackComp, dir, bounds)
     }
 
-    private fun shootAtPlayer(attackComp: AttackComponent, dir: DirectionComponent, bounds: Rectangle, playerBounds: Rectangle) {
+    private fun shootAtPlayer(attackComp: AttackComponent, activation: ActivationComponent,
+                              dir: DirectionComponent, bounds: Rectangle, playerBounds: Rectangle) {
         val texture = res.getTexture(attackComp.attackTexture!!)!!
 
-        val xBiased = abs(bounds.x - playerBounds.x) > abs(bounds.y - playerBounds.y)
-        val xCenter = playerBounds.x + playerBounds.width / 2
-        val yCenter = playerBounds.y + playerBounds.height / 2
+        val xCenter = bounds.x + bounds.width / 2
+        val yCenter = bounds.y + bounds.height / 2
+        val px = playerBounds.x + playerBounds.width / 2
+        val py = playerBounds.y + playerBounds.height / 2
+        val radius = if (activation.activationRange == -1f) mapWidth else activation.activationRange
+        val speed = attackComp.projectileSpeed
 
-        dir.facingRight = bounds.x < xCenter
-
-        if (bounds.x < xCenter && xBiased)
-            createProjectile(attackComp, dir, bounds, attackComp.projectileSpeed, 0f, texture)
-        if (bounds.x >= xCenter && xBiased)
-            createProjectile(attackComp, dir, bounds, -attackComp.projectileSpeed, 0f, texture)
-        if (bounds.y < yCenter && !xBiased)
-            createProjectile(attackComp, dir, bounds, 0f, attackComp.projectileSpeed, texture)
-        if (bounds.y >= yCenter && !xBiased)
-            createProjectile(attackComp, dir, bounds, 0f, -attackComp.projectileSpeed, texture)
+        if (Intersector.isPointInTriangle(px, py, xCenter, yCenter,
+                        xCenter + cos(PI / 8f) * radius, yCenter + sin(PI / 8f) * radius,
+                        xCenter + cos(-PI / 8f) * radius, yCenter + sin(-PI / 8f) * radius)) {
+            createProjectile(attackComp, dir, bounds, speed, 0f, texture)
+        }
+        else if (Intersector.isPointInTriangle(px, py, xCenter, yCenter,
+                        xCenter + cos(PI / 8f) * radius, yCenter + sin(PI / 8f) * radius,
+                        xCenter + cos(3 * PI / 8f) * radius, yCenter + sin(3 * PI / 8f) * radius)) {
+            createProjectile(attackComp, dir, bounds, speed * DIAGONAL_PROJECTILE_SCALING,
+                    speed * DIAGONAL_PROJECTILE_SCALING, texture)
+        }
+        else if (Intersector.isPointInTriangle(px, py, xCenter, yCenter,
+                        xCenter + cos(3 * PI / 8f) * radius, yCenter + sin(3 * PI / 8f) * radius,
+                        xCenter + cos(5 * PI / 8f) * radius, yCenter + sin(5 * PI / 8f) * radius)) {
+            createProjectile(attackComp, dir, bounds, 0f, speed, texture)
+        }
+        else if (Intersector.isPointInTriangle(px, py, xCenter, yCenter,
+                        xCenter + cos(5 * PI / 8f) * radius, yCenter + sin(5 * PI / 8f) * radius,
+                        xCenter + cos(7 * PI / 8f) * radius, yCenter + sin(7 * PI / 8f) * radius)) {
+            createProjectile(attackComp, dir, bounds, -speed * DIAGONAL_PROJECTILE_SCALING,
+                    speed * DIAGONAL_PROJECTILE_SCALING, texture)
+        }
+        else if (Intersector.isPointInTriangle(px, py, xCenter, yCenter,
+                        xCenter + cos(7 * PI / 8f) * radius, yCenter + sin(7 * PI / 8f) * radius,
+                        xCenter + cos(9 * PI / 8f) * radius, yCenter + sin(9 * PI / 8f) * radius)) {
+            createProjectile(attackComp, dir, bounds, -speed, 0f, texture)
+        }
+        else if (Intersector.isPointInTriangle(px, py, xCenter, yCenter,
+                        xCenter + cos(9 * PI / 8f) * radius, yCenter + sin(9 * PI / 8f) * radius,
+                        xCenter + cos(11 * PI / 8f) * radius, yCenter + sin(11 * PI / 8f) * radius)) {
+            createProjectile(attackComp, dir, bounds, -speed * DIAGONAL_PROJECTILE_SCALING,
+                    -speed * DIAGONAL_PROJECTILE_SCALING, texture)
+        }
+        else if (Intersector.isPointInTriangle(px, py, xCenter, yCenter,
+                        xCenter + cos(11 * PI / 8f) * radius, yCenter + sin(11 * PI / 8f) * radius,
+                        xCenter + cos(13 * PI / 8f) * radius, yCenter + sin(13 * PI / 8f) * radius)) {
+            createProjectile(attackComp, dir, bounds, 0f, -speed, texture)
+        }
+        else if (Intersector.isPointInTriangle(px, py, xCenter, yCenter,
+                        xCenter + cos(13 * PI / 8f) * radius, yCenter + sin(13 * PI / 8f) * radius,
+                        xCenter + cos(-PI / 8f) * radius, yCenter + sin(-PI / 8f) * radius)) {
+            createProjectile(attackComp, dir, bounds, speed * DIAGONAL_PROJECTILE_SCALING,
+                    -speed * DIAGONAL_PROJECTILE_SCALING, texture)
+        }
     }
 
     private fun sprayThree(attackComp: AttackComponent, bounds: Rectangle) {
