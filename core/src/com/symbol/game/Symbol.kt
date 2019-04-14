@@ -34,7 +34,7 @@ class Symbol : Game() {
         }
 
         profiler = GLProfiler(Gdx.graphics)
-        profiler.enable()
+        if (Config.isDebug()) profiler.enable()
 
         menuScreen = MenuScreen(this)
         gameScreen = GameScreen(this)

@@ -88,7 +88,7 @@ public class Hud extends Scene {
         createSettingsButton();
         createChargeBar();
 
-        if (Config.DEBUG) {
+        if (Config.INSTANCE.isDebug()) {
             fps = new Label("", new Label.LabelStyle(game.getRes().getFont(), Color.BLACK));
             fps.setPosition(5, 5);
             stage.addActor(fps);
@@ -132,7 +132,7 @@ public class Hud extends Scene {
 
     @Override
     public void update(float dt) {
-        if (Config.DEBUG) fps.setText(Gdx.graphics.getFramesPerSecond() + " FPS");
+        if (Config.INSTANCE.isDebug()) fps.setText(Gdx.graphics.getFramesPerSecond() + " FPS");
 
         HealthComponent health = Mapper.INSTANCE.getHEALTH_MAPPER().get(player);
         float hpPercentage = (float) health.getHp() / health.getMaxHp();

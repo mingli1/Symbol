@@ -2,9 +2,11 @@ package com.symbol.game.screen
 
 import com.badlogic.ashley.core.PooledEngine
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.Input
 import com.badlogic.gdx.InputMultiplexer
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.math.Vector2
+import com.symbol.game.Config
 import com.symbol.game.Symbol
 import com.symbol.game.ecs.Mapper
 import com.symbol.game.ecs.entity.Player
@@ -24,6 +26,7 @@ import com.symbol.game.scene.Hud
 
 private const val CAMERA_LERP = 2.5f
 private const val PARALLAX_SCALING = 0.2f
+private const val DEBUG_CAM_SPEED = 2f
 
 class GameScreen(game: Symbol) : AbstractScreen(game) {
 
@@ -40,6 +43,8 @@ class GameScreen(game: Symbol) : AbstractScreen(game) {
             cam, Vector2(PARALLAX_SCALING, PARALLAX_SCALING))
 
     private val hud = Hud(game, player, stage, viewport)
+
+    private var debugCamera = false
 
     init {
         engine.addEntity(player)
@@ -95,6 +100,7 @@ class GameScreen(game: Symbol) : AbstractScreen(game) {
     }
 
     private fun update(dt: Float) {
+        if (Config.isDebug()) debugCamera()
         updateCamera(dt)
         background.update(dt)
         ParticleSpawner.update(dt)
@@ -105,12 +111,14 @@ class GameScreen(game: Symbol) : AbstractScreen(game) {
     private fun updateCamera(dt: Float) {
         val playerPos = Mapper.POS_MAPPER.get(player)
 
-        cam.position.x += (playerPos.x + (TILE_SIZE / 2) - cam.position.x) * CAMERA_LERP * dt
-        cam.position.y += (playerPos.y + (TILE_SIZE / 2) - cam.position.y) * CAMERA_LERP * dt
+        if (!debugCamera) {
+            cam.position.x += (playerPos.x + (TILE_SIZE / 2) - cam.position.x) * CAMERA_LERP * dt
+            cam.position.y += (playerPos.y + (TILE_SIZE / 2) - cam.position.y) * CAMERA_LERP * dt
 
-        if (CameraShake.time > 0 || CameraShake.toggle) {
-            CameraShake.update(dt)
-            cam.translate(CameraShake.position)
+            if (CameraShake.time > 0 || CameraShake.toggle) {
+                CameraShake.update(dt)
+                cam.translate(CameraShake.position)
+            }
         }
 
         cam.update()
@@ -161,6 +169,26 @@ class GameScreen(game: Symbol) : AbstractScreen(game) {
         mm.dispose()
 
         hud.dispose()
+    }
+
+    // DEBUG ONLY (Desktop)
+
+    private fun debugCamera() {
+        val w = Gdx.input.isKeyPressed(Input.Keys.W)
+        val a = Gdx.input.isKeyPressed(Input.Keys.A)
+        val s = Gdx.input.isKeyPressed(Input.Keys.S)
+        val d = Gdx.input.isKeyPressed(Input.Keys.D)
+        val f = Gdx.input.isKeyPressed(Input.Keys.F)
+
+        debugCamera = w || a || s || d || f
+
+        if (w) cam.position.y += DEBUG_CAM_SPEED
+        if (a) cam.position.x -= DEBUG_CAM_SPEED
+        if (s) cam.position.y -= DEBUG_CAM_SPEED
+        if (d) cam.position.x += DEBUG_CAM_SPEED
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.J)) cam.zoom -= 0.1f
+        if (Gdx.input.isKeyJustPressed(Input.Keys.K)) cam.zoom += 0.1f
     }
 
 }

@@ -5,11 +5,11 @@ import com.badlogic.gdx.Gdx
 
 object Config {
 
-    const val DEBUG = true
+    private const val DEBUG = true
 
     const val V_WIDTH = 200
     const val V_HEIGHT = V_WIDTH * 3 / 5
-    const val SCALE = 4
+    private const val SCALE = 4
 
     const val S_WIDTH = V_WIDTH * SCALE
     const val S_HEIGHT = V_HEIGHT * SCALE
@@ -23,6 +23,8 @@ object Config {
     const val V_SYNC = false
 
     const val RESIZABLE = false
+
+    fun isDebug() : Boolean = DEBUG
 
     fun onAndroid() : Boolean = Gdx.app.type == Application.ApplicationType.Android
 
