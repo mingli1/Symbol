@@ -169,48 +169,42 @@ class EnemyAttackSystem(private val player: Player, private val res: Resources) 
         val radius = if (activation.activationRange == -1f) mapWidth else activation.activationRange
         val speed = attackComp.projectileSpeed
 
-        if (Intersector.isPointInTriangle(px, py, xCenter, yCenter,
-                        xCenter + cos(PI / 8f) * radius, yCenter + sin(PI / 8f) * radius,
-                        xCenter + cos(-PI / 8f) * radius, yCenter + sin(-PI / 8f) * radius)) {
-            createProjectile(attackComp, dir, bounds, speed, 0f, texture)
-        }
-        else if (Intersector.isPointInTriangle(px, py, xCenter, yCenter,
-                        xCenter + cos(PI / 8f) * radius, yCenter + sin(PI / 8f) * radius,
-                        xCenter + cos(3 * PI / 8f) * radius, yCenter + sin(3 * PI / 8f) * radius)) {
-            createProjectile(attackComp, dir, bounds, speed * DIAGONAL_PROJECTILE_SCALING,
+        when {
+            Intersector.isPointInTriangle(px, py, xCenter, yCenter,
+                    xCenter + cos(PI / 8f) * radius, yCenter + sin(PI / 8f) * radius,
+                    xCenter + cos(-PI / 8f) * radius, yCenter + sin(-PI / 8f) * radius) ->
+                createProjectile(attackComp, dir, bounds, speed, 0f, texture)
+            Intersector.isPointInTriangle(px, py, xCenter, yCenter,
+                    xCenter + cos(PI / 8f) * radius, yCenter + sin(PI / 8f) * radius,
+                    xCenter + cos(3 * PI / 8f) * radius, yCenter + sin(3 * PI / 8f) * radius) ->
+                createProjectile(attackComp, dir, bounds, speed * DIAGONAL_PROJECTILE_SCALING,
                     speed * DIAGONAL_PROJECTILE_SCALING, texture)
-        }
-        else if (Intersector.isPointInTriangle(px, py, xCenter, yCenter,
-                        xCenter + cos(3 * PI / 8f) * radius, yCenter + sin(3 * PI / 8f) * radius,
-                        xCenter + cos(5 * PI / 8f) * radius, yCenter + sin(5 * PI / 8f) * radius)) {
-            createProjectile(attackComp, dir, bounds, 0f, speed, texture)
-        }
-        else if (Intersector.isPointInTriangle(px, py, xCenter, yCenter,
-                        xCenter + cos(5 * PI / 8f) * radius, yCenter + sin(5 * PI / 8f) * radius,
-                        xCenter + cos(7 * PI / 8f) * radius, yCenter + sin(7 * PI / 8f) * radius)) {
-            createProjectile(attackComp, dir, bounds, -speed * DIAGONAL_PROJECTILE_SCALING,
+            Intersector.isPointInTriangle(px, py, xCenter, yCenter,
+                    xCenter + cos(3 * PI / 8f) * radius, yCenter + sin(3 * PI / 8f) * radius,
+                    xCenter + cos(5 * PI / 8f) * radius, yCenter + sin(5 * PI / 8f) * radius) ->
+                createProjectile(attackComp, dir, bounds, 0f, speed, texture)
+            Intersector.isPointInTriangle(px, py, xCenter, yCenter,
+                    xCenter + cos(5 * PI / 8f) * radius, yCenter + sin(5 * PI / 8f) * radius,
+                    xCenter + cos(7 * PI / 8f) * radius, yCenter + sin(7 * PI / 8f) * radius) ->
+                createProjectile(attackComp, dir, bounds, -speed * DIAGONAL_PROJECTILE_SCALING,
                     speed * DIAGONAL_PROJECTILE_SCALING, texture)
-        }
-        else if (Intersector.isPointInTriangle(px, py, xCenter, yCenter,
-                        xCenter + cos(7 * PI / 8f) * radius, yCenter + sin(7 * PI / 8f) * radius,
-                        xCenter + cos(9 * PI / 8f) * radius, yCenter + sin(9 * PI / 8f) * radius)) {
-            createProjectile(attackComp, dir, bounds, -speed, 0f, texture)
-        }
-        else if (Intersector.isPointInTriangle(px, py, xCenter, yCenter,
-                        xCenter + cos(9 * PI / 8f) * radius, yCenter + sin(9 * PI / 8f) * radius,
-                        xCenter + cos(11 * PI / 8f) * radius, yCenter + sin(11 * PI / 8f) * radius)) {
-            createProjectile(attackComp, dir, bounds, -speed * DIAGONAL_PROJECTILE_SCALING,
+            Intersector.isPointInTriangle(px, py, xCenter, yCenter,
+                    xCenter + cos(7 * PI / 8f) * radius, yCenter + sin(7 * PI / 8f) * radius,
+                    xCenter + cos(9 * PI / 8f) * radius, yCenter + sin(9 * PI / 8f) * radius) ->
+                createProjectile(attackComp, dir, bounds, -speed, 0f, texture)
+            Intersector.isPointInTriangle(px, py, xCenter, yCenter,
+                    xCenter + cos(9 * PI / 8f) * radius, yCenter + sin(9 * PI / 8f) * radius,
+                    xCenter + cos(11 * PI / 8f) * radius, yCenter + sin(11 * PI / 8f) * radius) ->
+                createProjectile(attackComp, dir, bounds, -speed * DIAGONAL_PROJECTILE_SCALING,
                     -speed * DIAGONAL_PROJECTILE_SCALING, texture)
-        }
-        else if (Intersector.isPointInTriangle(px, py, xCenter, yCenter,
-                        xCenter + cos(11 * PI / 8f) * radius, yCenter + sin(11 * PI / 8f) * radius,
-                        xCenter + cos(13 * PI / 8f) * radius, yCenter + sin(13 * PI / 8f) * radius)) {
-            createProjectile(attackComp, dir, bounds, 0f, -speed, texture)
-        }
-        else if (Intersector.isPointInTriangle(px, py, xCenter, yCenter,
-                        xCenter + cos(13 * PI / 8f) * radius, yCenter + sin(13 * PI / 8f) * radius,
-                        xCenter + cos(-PI / 8f) * radius, yCenter + sin(-PI / 8f) * radius)) {
-            createProjectile(attackComp, dir, bounds, speed * DIAGONAL_PROJECTILE_SCALING,
+            Intersector.isPointInTriangle(px, py, xCenter, yCenter,
+                    xCenter + cos(11 * PI / 8f) * radius, yCenter + sin(11 * PI / 8f) * radius,
+                    xCenter + cos(13 * PI / 8f) * radius, yCenter + sin(13 * PI / 8f) * radius) ->
+                createProjectile(attackComp, dir, bounds, 0f, -speed, texture)
+            Intersector.isPointInTriangle(px, py, xCenter, yCenter,
+                    xCenter + cos(13 * PI / 8f) * radius, yCenter + sin(13 * PI / 8f) * radius,
+                    xCenter + cos(-PI / 8f) * radius, yCenter + sin(-PI / 8f) * radius) ->
+                createProjectile(attackComp, dir, bounds, speed * DIAGONAL_PROJECTILE_SCALING,
                     -speed * DIAGONAL_PROJECTILE_SCALING, texture)
         }
     }
