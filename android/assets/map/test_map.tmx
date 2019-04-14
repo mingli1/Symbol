@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.0.1" orientation="orthogonal" renderorder="right-down" width="50" height="20" tilewidth="8" tileheight="8" nextobjectid="190">
+<map version="1.0" tiledversion="1.0.1" orientation="orthogonal" renderorder="right-down" width="50" height="20" tilewidth="8" tileheight="8" nextobjectid="197">
  <tileset firstgid="1" name="tileset" tilewidth="8" tileheight="8" tilecount="64" columns="8">
   <image source="tileset.png" width="64" height="64"/>
  </tileset>
@@ -7,7 +7,7 @@
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,2,2,2,2,2,2,2,2,2,3,0,0,0,
 1,2,2,2,2,2,2,2,3,0,1,2,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -35,6 +35,7 @@
   <object id="128" x="128" y="64" width="104" height="8"/>
   <object id="138" x="80" y="24" width="24" height="8"/>
   <object id="139" x="0" y="24" width="72" height="8"/>
+  <object id="192" x="288" y="16" width="88" height="8"/>
  </objectgroup>
  <objectgroup name="enemy">
   <object id="90" x="88" y="16" width="7.27273" height="7.45455">
@@ -45,6 +46,16 @@
   <object id="120" x="120" y="136.159" width="8.18182" height="6.36364">
    <properties>
     <property name="type" value="cintegral"/>
+   </properties>
+  </object>
+  <object id="193" x="288" y="8" width="8" height="8">
+   <properties>
+    <property name="type" value="njoin"/>
+   </properties>
+  </object>
+  <object id="196" x="352" y="56" width="8" height="8">
+   <properties>
+    <property name="type" value="sum"/>
    </properties>
   </object>
  </objectgroup>
@@ -176,8 +187,36 @@
     <property name="type" value="mirror"/>
    </properties>
   </object>
+  <object id="190" x="312" y="8" width="8" height="8">
+   <properties>
+    <property name="id" type="int" value="0"/>
+    <property name="target" type="int" value="1"/>
+    <property name="type" value="portal"/>
+   </properties>
+  </object>
+  <object id="191" x="344" y="8" width="8" height="8">
+   <properties>
+    <property name="id" type="int" value="1"/>
+    <property name="target" type="int" value="0"/>
+    <property name="type" value="portal"/>
+   </properties>
+  </object>
+  <object id="194" x="128" y="56" width="8" height="8">
+   <properties>
+    <property name="id" type="int" value="2"/>
+    <property name="target" type="int" value="3"/>
+    <property name="type" value="portal"/>
+   </properties>
+  </object>
+  <object id="195" x="392" y="56" width="8" height="8">
+   <properties>
+    <property name="id" type="int" value="3"/>
+    <property name="target" type="int" value="2"/>
+    <property name="type" value="portal"/>
+   </properties>
+  </object>
  </objectgroup>
  <objectgroup name="player">
-  <object id="10" x="129.5" y="55.25" width="8" height="7.09091"/>
+  <object id="10" x="313" y="55" width="8" height="7.09091"/>
  </objectgroup>
 </map>

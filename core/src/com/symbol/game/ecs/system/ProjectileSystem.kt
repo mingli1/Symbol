@@ -263,7 +263,10 @@ class ProjectileSystem(private val player: Player, private val res: Resources)
         val lastEntity = Mapper.LAST_ENTITY_MAPPER.get(entity)
         if (lastEntity?.entity != null) {
             val leBounds = Mapper.BOUNDING_BOX_MAPPER.get(lastEntity.entity)
-            if (!bb.rect.overlaps(leBounds.rect)) pj.withinMirror = false
+            if (!bb.rect.overlaps(leBounds.rect)) {
+                pj.withinMirror = false
+                entity?.remove(LastEntityComponent::class.java)
+            }
         }
     }
 

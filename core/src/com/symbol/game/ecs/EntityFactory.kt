@@ -64,7 +64,7 @@ object EntityFactory {
                         .enemy(attackType = EnemyAttackType.ShootOne)
                         .statusEffect()
                         .activation(120f)
-                        .attack(damage = 2, attackTexture = "p_large_triangle", attackRate = 1.4f, projectileSpeed = 45f)
+                        .attack(damage = 2, attackTexture = "p_dot4", attackRate = 2.5f, projectileSpeed = 45f)
                         .color(EntityColor.SUM_COLOR)
                         .health(2)
                         .boundingBox(10f, 13f)
@@ -284,7 +284,7 @@ object EntityFactory {
                 val target = props["target"]!! as Int
 
                 EntityBuilder.instance(engine)
-                        .mapEntity(type = type, projectileCollidable = true)
+                        .mapEntity(type = type)
                         .portal(id, target)
                         .boundingBox(bw, bh)
                         .position(rect.x, rect.y)
