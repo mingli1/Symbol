@@ -60,6 +60,7 @@ class EnemyMovementSystem(private val player: Player, private val res: Resources
                 EnemyMovementType.RandomWithJump -> randomWithJump(entity, dt, position, velocity, gravity)
                 EnemyMovementType.Orbit -> orbit(entity, enemyComponent)
                 EnemyMovementType.TeleportTriangle -> teleportTriangle(entity, dt, position)
+                EnemyMovementType.TeleportSquare -> teleportSquare(entity, dt, position)
             }
         }
     }
@@ -119,7 +120,6 @@ class EnemyMovementSystem(private val player: Player, private val res: Resources
     }
 
     private fun orbit(entity: Entity?, enemyComponent: EnemyComponent) {
-        val orbit = Mapper.ORBIT_MAPPER.get(entity)
         val remove = Mapper.REMOVE_MAPPER.get(entity)
         val parentRemove = Mapper.REMOVE_MAPPER.get(enemyComponent.parent)
 
@@ -149,7 +149,29 @@ class EnemyMovementSystem(private val player: Player, private val res: Resources
         }
 
         when (teleport.pos) {
-            0 -> {}
+            0 -> position.set(position.originX, position.originY)
+            1 -> position.set(position.originX + teleport.range / 2f,
+                    position.originY + MathUtils.sin(MathUtils.PI / 3f) * teleport.range)
+            2 -> position.set(position.originX + teleport.range, position.originY)
+        }
+    }
+
+    private fun teleportSquare(entity: Entity?, dt: Float, position: PositionComponent) {
+        val enemy = Mapper.ENEMY_MAPPER.get(entity)
+        val teleport = Mapper.TELEPORT_MAPPER.get(entity)
+
+        enemy.movementTimer += dt
+        if (enemy.movementTimer >= teleport.freq) {
+            enemy.movementTimer = 0f
+            teleport.pos++
+            if (teleport.pos > 3) teleport.pos = 0
+        }
+
+        when (teleport.pos) {
+            0 -> position.set(position.originX, position.originY)
+            1 -> position.set(position.originX, position.originY + teleport.range)
+            2 -> position.set(position.originX + teleport.range, position.originY + teleport.range)
+            3 -> position.set(position.originX + teleport.range, position.originY)
         }
     }
 

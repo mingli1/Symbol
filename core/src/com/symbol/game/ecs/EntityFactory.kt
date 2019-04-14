@@ -15,8 +15,8 @@ object EntityFactory {
         when (type) {
             EnemyType.EConstant -> {
                 EntityBuilder.instance(engine)
-                        .enemy(movementType = EnemyMovementType.None, attackType = EnemyAttackType.ShootAtPlayer)
-                        .lastStand()
+                        .enemy(movementType = EnemyMovementType.TeleportTriangle, attackType = EnemyAttackType.ShootAtPlayer)
+                        .teleport(15f, 0.5f)
                         .statusEffect()
                         .activation(150f)
                         .attack(damage = 1, projectileSpeed = 45f, attackTexture = "p_dot", attackRate = 1.5f)
@@ -27,7 +27,7 @@ object EntityFactory {
                         .velocity(speed = 25f)
                         .direction(facingRight = facingRight)
                         .texture(texture, textureStr)
-                        .knockback().gravity().remove().build()
+                        .knockback().remove().build()
             }
             EnemyType.SquareRoot -> {
                 EntityBuilder.instance(engine)
