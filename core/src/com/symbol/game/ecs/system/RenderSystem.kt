@@ -50,7 +50,8 @@ class RenderSystem(private val batch: Batch, private val cam: OrthographicCamera
     }
 
     private fun applyProjectileFlip(entity: Entity?) {
-        if (Mapper.PROJ_MAPPER.get(entity) != null) {
+        val proj = Mapper.PROJ_MAPPER.get(entity)
+        if (proj != null && !proj.sub) {
             val texture = Mapper.TEXTURE_MAPPER.get(entity)
             val velocity = Mapper.VEL_MAPPER.get(entity)
 
