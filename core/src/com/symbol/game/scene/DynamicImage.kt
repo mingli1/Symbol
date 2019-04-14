@@ -22,6 +22,7 @@ class DynamicImage(drawable: TextureRegion) : Image(drawable) {
     }
 
     fun applyLinearMovement(origin: Vector2, target: Vector2, speed: Float) {
+        startLinear = false
         setPosition(origin.x, origin.y)
         this.origin.set(origin)
         this.target.set(target)

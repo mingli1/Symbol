@@ -19,6 +19,7 @@ import com.symbol.game.input.MultiTouchDisabler
 import com.symbol.game.map.TILE_SIZE
 import com.symbol.game.map.camera.Background
 import com.symbol.game.scene.DynamicImage
+import com.symbol.game.scene.dialog.AboutDialog
 
 private const val BACKGROUND_VELOCITY = -40f
 private const val BACKGROUND_SCALE = 0.4f
@@ -39,6 +40,8 @@ class MenuScreen(game: Symbol) : AbstractScreen(game) {
     private val background = Background(game.res.getTexture("background")!!,
             cam, Vector2(BACKGROUND_SCALE, 0f), Vector2(BACKGROUND_VELOCITY, 0f))
 
+    private val aboutDialog = AboutDialog(game)
+
     private val buttonTable = Table()
     private lateinit var playerImage: DynamicImage
     private lateinit var aboutButton: ImageButton
@@ -54,6 +57,7 @@ class MenuScreen(game: Symbol) : AbstractScreen(game) {
 
     private var transition = false
     private var nextScreen: AbstractScreen? = null
+
     init {
         buttonTable.setFillParent(true)
         buttonTable.bottom().padRight(TILE_SIZE * 2f)
@@ -128,6 +132,12 @@ class MenuScreen(game: Symbol) : AbstractScreen(game) {
         aboutButton = ImageButton(game.res.getImageButtonStyle("about"))
         aboutButton.setPosition(176f, 8f)
         stage.addActor(aboutButton)
+
+        aboutButton.addListener(object: ClickListener() {
+            override fun clicked(event: InputEvent?, x: Float, y: Float) {
+                aboutDialog.show(stage)
+            }
+        })
     }
 
     override fun show() {

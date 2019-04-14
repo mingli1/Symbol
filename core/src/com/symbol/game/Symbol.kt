@@ -39,7 +39,7 @@ class Symbol : Game() {
         menuScreen = MenuScreen(this)
         gameScreen = GameScreen(this)
 
-        this.setScreen(gameScreen)
+        this.setScreen(menuScreen)
     }
 
     fun profile(className: String) {

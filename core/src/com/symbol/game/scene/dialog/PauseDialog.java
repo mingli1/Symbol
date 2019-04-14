@@ -1,10 +1,7 @@
 package com.symbol.game.scene.dialog;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.utils.Align;
 import com.symbol.game.Symbol;
-import com.symbol.game.ecs.entity.EntityColor;
 
 public class PauseDialog extends BaseModalDialog {
 
@@ -14,7 +11,7 @@ public class PauseDialog extends BaseModalDialog {
     private static final String EXIT_TAG = "Exit";
 
     private static final float WINDOW_MIN_HEIGHT = 90f;
-    private static final float TITLE_PADDING = 20f;
+
     private static final float TOP_BOTTOM_PADDING = 10f;
     private static final float BUTTON_WIDTH = 60f;
     private static final float BUTTON_HEIGHT = 15f;
@@ -27,10 +24,6 @@ public class PauseDialog extends BaseModalDialog {
         this.game = game;
 
         getBackground().setMinHeight(WINDOW_MIN_HEIGHT);
-        getTitleLabel().setAlignment(Align.center);
-        getTitleLabel().setFontScale(1.5f);
-        getTitleLabel().setColor(new Color(Color.valueOf(EntityColor.PLAYER_COLOR)));
-        getTitleTable().padTop(TITLE_PADDING);
 
         getButtonTable().defaults().width(BUTTON_WIDTH).padLeft(BUTTON_PADDING);
         getButtonTable().defaults().height(BUTTON_HEIGHT).padRight(BUTTON_PADDING);
