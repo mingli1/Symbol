@@ -9,30 +9,25 @@ import com.symbol.game.Symbol;
 
 public class AboutDialog extends BaseModalDialog {
 
-    private static final String TITLE = "About";
-    private static final String CONTENT = "Created by\nMing Li in 2019";
-    private static final String BUTTON_LABEL = "Source Code";
     private static final float MIN_HEIGHT = 65f;
 
-    private static final String URL = "https://github.com/mingli1/Symbol";
-
     public AboutDialog(final Symbol game) {
-        super(TITLE, game.getRes().getSkin(), game);
+        super(game.getRes().getString("aboutDialogTitle"), game.getRes().getSkin(), game);
 
         dismissable = true;
 
         getContentTable().left().bottom().padLeft(5f);
-        text(CONTENT);
+        text(game.getRes().getString("aboutDialogContent"));
 
         ImageButton githubButton = new ImageButton(game.getRes().getImageButtonStyle("github"));
         githubButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                Gdx.net.openURI(URL);
+                Gdx.net.openURI(game.getRes().getString("githubUrl"));
             }
         });
         button(githubButton);
-        getButtonTable().add(new Label(BUTTON_LABEL, getSkin()));
+        getButtonTable().add(new Label(game.getRes().getString("sourceCodeLabel"), getSkin()));
         getButtonTable().pad(0f, 5f, 5f, 5f);
     }
 

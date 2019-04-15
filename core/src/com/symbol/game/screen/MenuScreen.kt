@@ -28,9 +28,6 @@ private const val FADE_DURATION = 1f
 
 private const val NUM_BUTTONS = 3
 private const val BUTTON_WIDTH = 100f
-private const val PLAY_TAG = "play"
-private const val HELP_TAG = "help"
-private const val SETTINGS_TAG = "settings"
 
 class MenuScreen(game: Symbol) : AbstractScreen(game) {
 
@@ -46,7 +43,7 @@ class MenuScreen(game: Symbol) : AbstractScreen(game) {
     private lateinit var playerImage: DynamicImage
     private lateinit var aboutButton: ImageButton
 
-    private val logoChars = "symbol".toCharArray()
+    private val logoChars = game.res.getString("title")!!.toCharArray()
     private val letters = Array(6) {
         DynamicImage(game.res.getTexture("logo_${logoChars[it]}")!!)
     }
@@ -74,7 +71,9 @@ class MenuScreen(game: Symbol) : AbstractScreen(game) {
 
     private fun createButtons() {
         val blockImages = Array(NUM_BUTTONS) { Image(blockTexture) }
-        val buttonTexts = arrayOf(PLAY_TAG, HELP_TAG, SETTINGS_TAG)
+        val buttonTexts = arrayOf(game.res.getString("playButton"),
+                game.res.getString("helpButton"),
+                game.res.getString("settingsButton"))
 
         playerImage = DynamicImage(game.res.getTexture("player")!!)
         playerImage.setPosition(34f, 64f)

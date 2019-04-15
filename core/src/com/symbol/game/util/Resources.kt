@@ -11,6 +11,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import com.badlogic.gdx.utils.Disposable
+import com.badlogic.gdx.utils.JsonReader
+import com.badlogic.gdx.utils.JsonValue
 
 const val TOP = "_t"
 const val TOP_RIGHT ="_tr"
@@ -32,7 +34,10 @@ private const val BUTTON_DOWN = "_down"
 class Resources : Disposable {
 
     private val assetManager = AssetManager()
+    private val jsonReader = JsonReader()
+
     private val atlas: TextureAtlas
+    private val strings: JsonValue
 
     val skin: Skin
     val font: BitmapFont
@@ -43,6 +48,8 @@ class Resources : Disposable {
 
         atlas = assetManager.get("textures/textures.atlas", TextureAtlas::class.java)
 
+        strings = jsonReader.parse(Gdx.files.internal("data/strings.json"))
+
         font = BitmapFont(Gdx.files.internal("font/font.fnt"), atlas.findRegion("font"), false)
         font.setUseIntegerPositions(false)
 
@@ -51,8 +58,12 @@ class Resources : Disposable {
         skin.load(Gdx.files.internal("textures/skin.json"))
     }
 
-    fun getTexture(key: String): TextureRegion? {
+    fun getTexture(key: String) : TextureRegion? {
         return atlas.findRegion(key)
+    }
+
+    fun getString(key: String) : String? {
+        return strings.getString(key)
     }
 
     fun getSubProjectileTextureFor(key: String) : TextureRegion? {

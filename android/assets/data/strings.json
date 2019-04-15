@@ -1,0 +1,13 @@
+{
+  "title": "symbol",
+  "playButton": "play",
+  "helpButton": "help",
+  "settingsButton": "settings",
+  "aboutDialogTitle": "about",
+  "aboutDialogContent": "created by\nming li in 2019",
+  "sourceCodeLabel": "source code",
+  "pauseDialogTitle": "paused",
+  "resumeButton": "resume",
+  "exitButton": "exit",
+  "githubUrl": "https://github.com/mingli1/Symbol"
+}
