@@ -18,7 +18,6 @@ import com.symbol.game.ecs.component.enemy.ActivationComponent
 import com.symbol.game.ecs.component.enemy.AttackComponent
 import com.symbol.game.ecs.component.enemy.EnemyComponent
 import com.symbol.game.ecs.entity.EnemyAttackType
-import com.symbol.game.ecs.entity.EntityColor
 import com.symbol.game.ecs.entity.Player
 import com.symbol.game.ecs.system.DIAGONAL_PROJECTILE_SCALING
 import com.symbol.game.effects.particle.DEFAULT_INTESITY
@@ -318,7 +317,7 @@ class EnemyAttackSystem(private val player: Player, private val res: Resources) 
                         collidesWithTerrain = false, collidesWithProjectiles = attackComp.projectileDestroyable,
                         textureStr = attackComp.attackTexture,
                         damage = attackComp.damage, detonateTime = attackComp.attackDetonateTime, acceleration = attackComp.projectileAcceleration)
-                .color(EntityColor.getProjectileColor(attackComp.attackTexture)!!)
+                .color(res.getColor(attackComp.attackTexture!!)!!)
                 .position(originX, originY)
                 .velocity(dx = dx, dy = dy)
                 .boundingBox(bw.toFloat(), bh.toFloat())
@@ -336,7 +335,7 @@ class EnemyAttackSystem(private val player: Player, private val res: Resources) 
         return EntityBuilder.instance(engine as PooledEngine)
                 .projectile(collidesWithTerrain = false, collidesWithProjectiles = attackComp.projectileDestroyable,
                         textureStr = attackComp.attackTexture, damage = attackComp.damage)
-                .color(EntityColor.getProjectileColor(attackComp.attackTexture)!!)
+                .color(res.getColor(attackComp.attackTexture!!)!!)
                 .position(originX, originY)
                 .velocity(dx = dx, dy = dy)
                 .boundingBox(bw.toFloat(), bh.toFloat())

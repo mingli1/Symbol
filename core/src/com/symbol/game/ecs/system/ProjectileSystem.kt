@@ -17,7 +17,6 @@ import com.symbol.game.ecs.component.*
 import com.symbol.game.ecs.component.map.MapEntityComponent
 import com.symbol.game.ecs.component.map.MirrorComponent
 import com.symbol.game.ecs.component.map.ToggleTileComponent
-import com.symbol.game.ecs.entity.EntityColor
 import com.symbol.game.ecs.entity.MapEntityType
 import com.symbol.game.ecs.entity.Player
 import com.symbol.game.effects.particle.DEFAULT_INTESITY
@@ -299,18 +298,18 @@ class ProjectileSystem(private val player: Player, private val res: Resources)
             val speed = if (vel.dx != 0f) Math.abs(vel.dx) else Math.abs(vel.dy)
             val texture = res.getSubProjectileTextureFor(pj.textureStr!!)!!
 
-            createSubProjectile(1, bounds, speed, 0f, texture, false, true, EntityColor.DOT_COLOR)
-            createSubProjectile(1, bounds, 0f, -speed, texture, false, true, EntityColor.DOT_COLOR)
-            createSubProjectile(1, bounds, -speed, 0f, texture, false, true, EntityColor.DOT_COLOR)
-            createSubProjectile(1, bounds, 0f, speed, texture, false, true, EntityColor.DOT_COLOR)
+            createSubProjectile(1, bounds, speed, 0f, texture, false, true, res.getColor("p_dot"))
+            createSubProjectile(1, bounds, 0f, -speed, texture, false, true, res.getColor("p_dot"))
+            createSubProjectile(1, bounds, -speed, 0f, texture, false, true, res.getColor("p_dot"))
+            createSubProjectile(1, bounds, 0f, speed, texture, false, true, res.getColor("p_dot"))
             createSubProjectile(1, bounds, speed * DIAGONAL_PROJECTILE_SCALING,
-                    -speed * DIAGONAL_PROJECTILE_SCALING, texture, false, true, EntityColor.DOT_COLOR)
+                    -speed * DIAGONAL_PROJECTILE_SCALING, texture, false, true, res.getColor("p_dot"))
             createSubProjectile(1, bounds, -speed * DIAGONAL_PROJECTILE_SCALING,
-                    -speed * DIAGONAL_PROJECTILE_SCALING, texture, false, true, EntityColor.DOT_COLOR)
+                    -speed * DIAGONAL_PROJECTILE_SCALING, texture, false, true, res.getColor("p_dot"))
             createSubProjectile(1, bounds, -speed * DIAGONAL_PROJECTILE_SCALING,
-                    speed * DIAGONAL_PROJECTILE_SCALING, texture, false, true, EntityColor.DOT_COLOR)
+                    speed * DIAGONAL_PROJECTILE_SCALING, texture, false, true, res.getColor("p_dot"))
             createSubProjectile(1, bounds, speed * DIAGONAL_PROJECTILE_SCALING,
-                    speed * DIAGONAL_PROJECTILE_SCALING, texture, false, true, EntityColor.DOT_COLOR)
+                    speed * DIAGONAL_PROJECTILE_SCALING, texture, false, true, res.getColor("p_dot"))
         }
     }
 

@@ -9,7 +9,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.symbol.game.Symbol;
-import com.symbol.game.ecs.entity.EntityColor;
 
 public class BaseModalDialog extends Dialog {
 
@@ -23,7 +22,7 @@ public class BaseModalDialog extends Dialog {
 
         getTitleLabel().setAlignment(Align.center);
         getTitleLabel().setFontScale(1.5f);
-        getTitleLabel().setColor(new Color(Color.valueOf(EntityColor.PLAYER_COLOR)));
+        getTitleLabel().setColor(new Color(Color.valueOf(game.getRes().getColor("player"))));
         getTitleTable().padTop(TITLE_PADDING);
 
         image = new Image(game.getRes().getTexture("shadow"));

@@ -20,7 +20,6 @@ import com.symbol.game.Symbol;
 import com.symbol.game.ecs.Mapper;
 import com.symbol.game.ecs.component.HealthComponent;
 import com.symbol.game.ecs.component.PlayerComponent;
-import com.symbol.game.ecs.entity.EntityColor;
 import com.symbol.game.scene.dialog.PauseDialog;
 
 import static com.symbol.game.ecs.entity.PlayerKt.PLAYER_TIER_ONE_ATTACK_TIME;
@@ -223,8 +222,8 @@ public class Hud extends Scene {
             game.getBatch().draw(game.getRes().getTexture("hp_bar_bg_color"), CHARGE_BAR_POSITION.x + 1, CHARGE_BAR_POSITION.y + 1,
                     CHARGE_BAR_WIDTH, CHARGE_BAR_HEIGHT);
 
-            String hex = playerComp.getChargeIndex() == 1 ? EntityColor.INSTANCE.getProjectileColor("p_dot")
-                    : EntityColor.INSTANCE.getProjectileColor("p_dot" + playerComp.getChargeIndex());
+            String hex = playerComp.getChargeIndex() == 1 ? game.getRes().getColor("p_dot")
+                    : game.getRes().getColor("p_dot" + playerComp.getChargeIndex());
             game.getBatch().draw(game.getRes().getTexture(hex), CHARGE_BAR_POSITION.x + 1, CHARGE_BAR_POSITION.y + 1,
                     chargeBarWidth, CHARGE_BAR_HEIGHT);
 

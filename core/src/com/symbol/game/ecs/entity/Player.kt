@@ -50,7 +50,7 @@ class Player(private val res: Resources) : Entity() {
     }
 
     fun reset() {
-        color.hex = EntityColor.PLAYER_COLOR
+        color.hex = res.getColor("player")
         bounds.rect.setSize(PLAYER_BOUNDS_WIDTH, PLAYER_BOUNDS_HEIGHT)
         texture.texture = res.getTexture("player")
         velocity.speed = PLAYER_SPEED

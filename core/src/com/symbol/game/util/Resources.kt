@@ -38,6 +38,7 @@ class Resources : Disposable {
 
     private val atlas: TextureAtlas
     private val strings: JsonValue
+    private val colors: JsonValue
 
     val skin: Skin
     val font: BitmapFont
@@ -49,6 +50,7 @@ class Resources : Disposable {
         atlas = assetManager.get("textures/textures.atlas", TextureAtlas::class.java)
 
         strings = jsonReader.parse(Gdx.files.internal("data/strings.json"))
+        colors = jsonReader.parse(Gdx.files.internal("data/colors.json"))
 
         font = BitmapFont(Gdx.files.internal("font/font.fnt"), atlas.findRegion("font"), false)
         font.setUseIntegerPositions(false)
@@ -64,6 +66,10 @@ class Resources : Disposable {
 
     fun getString(key: String) : String? {
         return strings.getString(key)
+    }
+
+    fun getColor(key: String) : String? {
+        return colors.getString(key)
     }
 
     fun getSubProjectileTextureFor(key: String) : TextureRegion? {
