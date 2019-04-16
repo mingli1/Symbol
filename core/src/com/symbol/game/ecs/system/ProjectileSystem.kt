@@ -23,12 +23,14 @@ import com.symbol.game.effects.particle.DEFAULT_INTESITY
 import com.symbol.game.effects.particle.DEFAULT_LIFETIME
 import com.symbol.game.effects.particle.ParticleSpawner
 import com.symbol.game.map.MapObject
+import com.symbol.game.map.camera.CameraRotation
 import com.symbol.game.util.Resources
 import com.symbol.game.util.TOGGLE_OFF
 import com.symbol.game.util.TOGGLE_ON
 
 const val DIAGONAL_PROJECTILE_SCALING = 0.75f
 private const val KNOCKBACK_TIME = 0.1f
+private const val GRAVITY_FLIP_TIME = 0.75f
 
 class ProjectileSystem(private val player: Player, private val res: Resources)
     : IteratingSystem(Family.all(ProjectileComponent::class.java).get()) {
@@ -516,15 +518,19 @@ class ProjectileSystem(private val player: Player, private val res: Resources)
     }
 
     private fun handleGravitySwitch() {
-        val gravity = Mapper.GRAVITY_MAPPER.get(player)
+        if (CameraRotation.isEnded()) {
+            val gravity = Mapper.GRAVITY_MAPPER.get(player)
 
-        gravity.reverse = !gravity.reverse
-        for (gravitySwitch in mapEntities) {
-            val gme = Mapper.MAP_ENTITY_MAPPER.get(gravitySwitch)
-            if (gme.mapEntityType == MapEntityType.GravitySwitch) {
-                val meTexture = Mapper.TEXTURE_MAPPER.get(gravitySwitch)
-                meTexture.texture = res.getTexture(meTexture.textureStr +
-                        if (gravity.reverse) TOGGLE_ON else TOGGLE_OFF)
+            gravity.reverse = !gravity.reverse
+            CameraRotation.start(180f, GRAVITY_FLIP_TIME)
+
+            for (gravitySwitch in mapEntities) {
+                val gme = Mapper.MAP_ENTITY_MAPPER.get(gravitySwitch)
+                if (gme.mapEntityType == MapEntityType.GravitySwitch) {
+                    val meTexture = Mapper.TEXTURE_MAPPER.get(gravitySwitch)
+                    meTexture.texture = res.getTexture(meTexture.textureStr +
+                            if (gravity.reverse) TOGGLE_ON else TOGGLE_OFF)
+                }
             }
         }
     }

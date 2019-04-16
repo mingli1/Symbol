@@ -21,6 +21,7 @@ import com.symbol.game.input.KeyInputSystem
 import com.symbol.game.map.MapManager
 import com.symbol.game.map.TILE_SIZE
 import com.symbol.game.map.camera.Background
+import com.symbol.game.map.camera.CameraRotation
 import com.symbol.game.map.camera.CameraShake
 import com.symbol.game.scene.Hud
 
@@ -58,7 +59,9 @@ class GameScreen(game: Symbol) : AbstractScreen(game) {
         engine.addSystem(PlayerSystem(player))
 
         multiplexer.addProcessor(stage)
-        multiplexer.addProcessor(input)
+        if (!Config.onAndroid()) multiplexer.addProcessor(input)
+
+        CameraRotation.init(cam)
     }
 
     private fun initSystems() {
@@ -122,6 +125,7 @@ class GameScreen(game: Symbol) : AbstractScreen(game) {
             }
         }
 
+        CameraRotation.update(dt)
         cam.update()
     }
 
@@ -190,6 +194,8 @@ class GameScreen(game: Symbol) : AbstractScreen(game) {
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.J)) cam.zoom -= 0.1f
         if (Gdx.input.isKeyJustPressed(Input.Keys.K)) cam.zoom += 0.1f
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.R)) cam.rotate(45f)
     }
 
 }
