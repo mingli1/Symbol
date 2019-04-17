@@ -84,6 +84,7 @@ public class Hud extends Scene {
         pauseDialog = new PauseDialog(game);
 
         createHealthBar();
+        createHelpButton();
         createSettingsButton();
         createChargeBar();
 
@@ -104,10 +105,16 @@ public class Hud extends Scene {
         root.add(hpBarIcon).pad(6f, 4f, 3f, 4f);
     }
 
+    private void createHelpButton() {
+        ImageButton.ImageButtonStyle style = game.getRes().getImageButtonStyle("help");
+        ImageButton helpButton = new ImageButton(style);
+        root.add(helpButton).expandX().right().padRight(8f).padTop(3f);
+    }
+
     private void createSettingsButton() {
         ImageButton.ImageButtonStyle style = game.getRes().getImageButtonStyle("settings");
         ImageButton settingsButton = new ImageButton(style);
-        root.add(settingsButton).expandX().right().padRight(4f).padTop(3f);
+        root.add(settingsButton).right().padRight(4f).padTop(3f);
 
         settingsButton.addListener(new ClickListener() {
             @Override
