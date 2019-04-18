@@ -37,7 +37,7 @@ class GameScreen(game: Symbol) : AbstractScreen(game) {
     private val input: KeyInput
     private val androidInput: AndroidInput
 
-    private val mm = MapManager(engine, game.res)
+    private val mapManager = MapManager(engine, game.res)
 
     private var player = Player(game.res)
     private val background = Background(game.res.getTexture("background")!!,
@@ -82,10 +82,10 @@ class GameScreen(game: Symbol) : AbstractScreen(game) {
     }
 
     private fun resetSystems() {
-        engine.getSystem(MapCollisionSystem::class.java).setMapData(mm.mapObjects,
-                mm.mapWidth * TILE_SIZE, mm.mapHeight * TILE_SIZE)
-        engine.getSystem(ProjectileSystem::class.java).setMapData(mm.mapObjects)
-        engine.getSystem(EnemyAttackSystem::class.java).setMapData(mm.mapWidth.toFloat() * TILE_SIZE)
+        engine.getSystem(MapCollisionSystem::class.java).setMapData(mapManager.mapObjects,
+                mapManager.mapWidth * TILE_SIZE, mapManager.mapHeight * TILE_SIZE)
+        engine.getSystem(ProjectileSystem::class.java).setMapData(mapManager.mapObjects)
+        engine.getSystem(EnemyAttackSystem::class.java).setMapData(mapManager.mapWidth.toFloat() * TILE_SIZE)
     }
 
     override fun show() {
@@ -95,10 +95,10 @@ class GameScreen(game: Symbol) : AbstractScreen(game) {
         engine.removeAllEntities()
         engine.addEntity(player)
         player.reset()
-        mm.load("test_map")
+        mapManager.load("test_map")
 
         val playerPosition = Mapper.POS_MAPPER.get(player)
-        playerPosition.set(mm.playerSpawnPosition.x, mm.playerSpawnPosition.y)
+        playerPosition.set(mapManager.playerSpawnPosition.x, mapManager.playerSpawnPosition.y)
 
         cam.up.set(0f, 1f, 0f)
         if (!CameraRotation.isEnded()) CameraRotation.end()
@@ -153,7 +153,7 @@ class GameScreen(game: Symbol) : AbstractScreen(game) {
         game.batch.setColor(1f, 1f, 1f, 1f)
 
         background.render(game.batch)
-        mm.render(game.batch, cam)
+        mapManager.render(game.batch, cam)
         updateEngine(dt)
         ParticleSpawner.render(game.batch, cam)
 
@@ -176,7 +176,7 @@ class GameScreen(game: Symbol) : AbstractScreen(game) {
 
     override fun dispose() {
         super.dispose()
-        mm.dispose()
+        mapManager.dispose()
 
         hud.dispose()
     }
