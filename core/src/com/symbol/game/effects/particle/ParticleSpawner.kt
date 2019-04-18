@@ -57,4 +57,9 @@ object ParticleSpawner {
         }
     }
 
+    fun reset() {
+        particles.clear()
+        particlePool.clear()
+    }
+
 }

@@ -28,31 +28,49 @@ private const val PLAYER_BOUNDS_HEIGHT = 7f
 
 class Player(private val res: Resources) : Entity() {
 
+    private val player = PlayerComponent()
+    private val position = PositionComponent()
     private val color = ColorComponent()
     private val bounds = BoundingBoxComponent()
     private val texture = TextureComponent()
     private val velocity = VelocityComponent()
     private val health = HealthComponent()
     private val jump = JumpComponent()
+    private val gravity = GravityComponent()
+    private val statusEffect = StatusEffectComponent()
+    private val direction = DirectionComponent()
 
     init {
-        add(PlayerComponent())
-        add(PositionComponent())
-        add(GravityComponent())
-        add(DirectionComponent())
-        add(StatusEffectComponent())
+        add(player)
+        add(position)
         add(color)
         add(bounds)
         add(texture)
         add(velocity)
         add(health)
         add(jump)
+        add(gravity)
+        add(statusEffect)
+        add(direction)
     }
 
     fun reset() {
+        player.reset()
+        position.reset()
+        color.reset()
+        bounds.reset()
+        texture.reset()
+        velocity.reset()
+        health.reset()
+        jump.reset()
+        gravity.reset()
+        statusEffect.reset()
+        direction.reset()
+
         color.hex = res.getColor("player")
         bounds.rect.setSize(PLAYER_BOUNDS_WIDTH, PLAYER_BOUNDS_HEIGHT)
         texture.texture = res.getTexture("player")
+        texture.textureStr = "player"
         velocity.speed = PLAYER_SPEED
         health.hp = PLAYER_HP
         health.maxHp = PLAYER_HP

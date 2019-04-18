@@ -100,6 +100,11 @@ class GameScreen(game: Symbol) : AbstractScreen(game) {
         val playerPosition = Mapper.POS_MAPPER.get(player)
         playerPosition.set(mm.playerSpawnPosition.x, mm.playerSpawnPosition.y)
 
+        cam.up.set(0f, 1f, 0f)
+        if (!CameraRotation.isEnded()) CameraRotation.end()
+
+        ParticleSpawner.reset()
+
         resetSystems()
     }
 

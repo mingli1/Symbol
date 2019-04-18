@@ -29,11 +29,7 @@ object CameraRotation {
 
             rotate(interpolation.apply(startRotation, rotationAmount, alpha) - totalRotation)
 
-            if (alpha == 1f) {
-                time = 0f
-                ended = true
-                totalRotation = 0f
-            }
+            if (alpha == 1f) end()
         }
     }
 
@@ -42,6 +38,12 @@ object CameraRotation {
         rotationAmount = degrees
         this.totalTime = totalTime
         ended = false
+    }
+
+    fun end() {
+        ended = true
+        time = 0f
+        totalRotation = 0f
     }
 
     fun isEnded() = ended
