@@ -127,7 +127,7 @@ public class Hud extends Scene {
                 }
                 else {
                     helpDialog.show(stage);
-                    helpButton.setZIndex(3);
+                    helpButton.setZIndex(stage.getActors().size + 1);
                     game.getGameScreen().notifyPause();
                 }
             }
