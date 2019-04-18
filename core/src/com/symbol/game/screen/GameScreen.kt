@@ -164,7 +164,7 @@ class GameScreen(game: Symbol) : AbstractScreen(game) {
 
     override fun notifyPause() {
         super.notifyPause()
-        if (!stage.actors.contains(hud.pauseDialog)) {
+        if (!stage.actors.contains(hud.pauseDialog) && !stage.actors.contains(hud.helpDialog)) {
             hud.pauseDialog.show(stage)
         }
     }

@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -20,6 +21,7 @@ import com.symbol.game.Symbol;
 import com.symbol.game.ecs.Mapper;
 import com.symbol.game.ecs.component.HealthComponent;
 import com.symbol.game.ecs.component.PlayerComponent;
+import com.symbol.game.scene.dialog.HelpDialog;
 import com.symbol.game.scene.dialog.PauseDialog;
 
 import static com.symbol.game.ecs.entity.PlayerKt.PLAYER_TIER_ONE_ATTACK_TIME;
@@ -46,6 +48,8 @@ public class Hud extends Scene {
     private static final float HP_BAR_ORANGE_THRESHOLD = 0.3f;
     private static final float HP_BAR_RED_THRESHOLD = 0.15f;
 
+    private static final Vector2 HELP_BUTTON_POSITION = new Vector2(161f, 104f);
+
     private Entity player;
 
     private Table root;
@@ -67,6 +71,7 @@ public class Hud extends Scene {
 
     private Label fps;
 
+    private HelpDialog helpDialog;
     private PauseDialog pauseDialog;
 
     public Hud(final Symbol game, Entity player, Stage stage, Viewport viewport) {
@@ -85,6 +90,7 @@ public class Hud extends Scene {
 
         createHealthBar();
         createHelpButton();
+        createHelpDialog();
         createSettingsButton();
         createChargeBar();
 
@@ -108,13 +114,37 @@ public class Hud extends Scene {
     private void createHelpButton() {
         ImageButton.ImageButtonStyle style = game.getRes().getImageButtonStyle("help");
         ImageButton helpButton = new ImageButton(style);
-        root.add(helpButton).expandX().right().padRight(8f).padTop(3f);
+        helpButton.setPosition(HELP_BUTTON_POSITION.x, HELP_BUTTON_POSITION.y);
+        stage.addActor(helpButton);
+
+        helpButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                if (helpDialog.isDisplayed()) {
+                    helpDialog.hide();
+                    helpButton.setZIndex(0);
+                    game.getGameScreen().notifyResume();
+                }
+                else {
+                    helpDialog.show(stage);
+                    helpButton.setZIndex(3);
+                    game.getGameScreen().notifyPause();
+                }
+            }
+        });
+    }
+
+    private void createHelpDialog() {
+        Window.WindowStyle windowStyle = new Window.WindowStyle();
+        windowStyle.background = new TextureRegionDrawable(game.getRes().getTexture("help_dialog_bg"));
+        windowStyle.titleFont = game.getRes().getFont();
+        helpDialog = new HelpDialog(game, windowStyle);
     }
 
     private void createSettingsButton() {
         ImageButton.ImageButtonStyle style = game.getRes().getImageButtonStyle("settings");
         ImageButton settingsButton = new ImageButton(style);
-        root.add(settingsButton).right().padRight(4f).padTop(3f);
+        root.add(settingsButton).expandX().right().padRight(4f).padTop(3f);
 
         settingsButton.addListener(new ClickListener() {
             @Override
@@ -195,10 +225,6 @@ public class Hud extends Scene {
         renderChargeBar();
     }
 
-    public Dialog getPauseDialog() {
-        return pauseDialog;
-    }
-
     private void renderHpBar() {
         game.getBatch().draw(game.getRes().getTexture("black"), HP_BAR_POSITION.x, HP_BAR_POSITION.y,
                 HP_BAR_WIDTH + 2, HP_BAR_HEIGHT + 2);
@@ -239,6 +265,14 @@ public class Hud extends Scene {
             game.getBatch().draw(game.getRes().getTexture("black"),
                     CHARGE_BAR_POSITION.x + 1 + BAR_TWO_OFFSET, CHARGE_BAR_POSITION.y + 1, 1, CHARGE_BAR_HEIGHT);
         }
+    }
+
+    public Dialog getPauseDialog() {
+        return pauseDialog;
+    }
+
+    public Window getHelpDialog() {
+        return helpDialog;
     }
 
     @Override
