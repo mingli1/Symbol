@@ -12,7 +12,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -135,10 +134,7 @@ public class Hud extends Scene {
     }
 
     private void createHelpDialog() {
-        Window.WindowStyle windowStyle = new Window.WindowStyle();
-        windowStyle.background = new TextureRegionDrawable(game.getRes().getTexture("help_dialog_bg"));
-        windowStyle.titleFont = game.getRes().getFont();
-        helpDialog = new HelpDialog(game, windowStyle);
+        helpDialog = new HelpDialog(game);
     }
 
     private void createSettingsButton() {
@@ -271,7 +267,7 @@ public class Hud extends Scene {
         return pauseDialog;
     }
 
-    public Window getHelpDialog() {
+    public Table getHelpDialog() {
         return helpDialog;
     }
 
