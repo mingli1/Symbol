@@ -2,9 +2,11 @@ package com.symbol.game
 
 import com.badlogic.gdx.Game
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.profiling.GLProfiler
+import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.symbol.game.input.MouseCursor
 import com.symbol.game.screen.AbstractScreen
 import com.symbol.game.screen.GameScreen
@@ -24,6 +26,8 @@ class Symbol : Game() {
     lateinit var menuScreen: MenuScreen private set
     lateinit var gameScreen: GameScreen private set
 
+    lateinit var fps: Label
+
     override fun create() {
         batch = SpriteBatch()
         res = Resources()
@@ -31,6 +35,11 @@ class Symbol : Game() {
         if (!Config.onAndroid()) {
             mouseCursor = MouseCursor()
             mouseCursor?.createCursor()
+        }
+
+        if (Config.isDebug()) {
+            fps = Label("", res.getLabelStyle(Color.BLACK))
+            fps.setPosition(5f, 5f)
         }
 
         profiler = GLProfiler(Gdx.graphics)
@@ -73,6 +82,7 @@ class Symbol : Game() {
     override fun render() {
         screen?.render(min(Config.DELTA_TIME_BOUND, Gdx.graphics.deltaTime))
         mouseCursor?.update(Gdx.graphics.deltaTime)
+        if (Config.isDebug()) fps.setText("${Gdx.graphics.getFramesPerSecond()} FPS")
     }
 
     override fun dispose() {

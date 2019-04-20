@@ -1,8 +1,6 @@
 package com.symbol.game.scene;
 
 import com.badlogic.ashley.core.Entity;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -10,12 +8,10 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.symbol.game.Config;
 import com.symbol.game.Symbol;
 import com.symbol.game.ecs.Mapper;
 import com.symbol.game.ecs.component.HealthComponent;
@@ -68,8 +64,6 @@ public class Hud extends Scene {
     private Image chargeBarIcon;
     private TextureRegionDrawable chargeBarTiers[] = new TextureRegionDrawable[4];
 
-    private Label fps;
-
     private HelpDialog helpDialog;
     private PauseDialog pauseDialog;
 
@@ -93,11 +87,7 @@ public class Hud extends Scene {
         createSettingsButton();
         createChargeBar();
 
-        if (Config.INSTANCE.isDebug()) {
-            fps = new Label("", new Label.LabelStyle(game.getRes().getFont(), Color.BLACK));
-            fps.setPosition(5, 5);
-            stage.addActor(fps);
-        }
+        stage.addActor(game.fps);
     }
 
     private void createHealthBar() {
@@ -164,8 +154,6 @@ public class Hud extends Scene {
 
     @Override
     public void update(float dt) {
-        if (Config.INSTANCE.isDebug()) fps.setText(Gdx.graphics.getFramesPerSecond() + " FPS");
-
         HealthComponent health = Mapper.INSTANCE.getHEALTH_MAPPER().get(player);
         float hpPercentage = (float) health.getHp() / health.getMaxHp();
         hpBarWidth = HP_BAR_WIDTH * hpPercentage;

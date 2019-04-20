@@ -118,10 +118,14 @@ class Resources : Disposable {
         val root = entityDetails.get("details")
         for (entityDetail in root) {
             val id = entityDetail.getString("id")
+            val image = getTexture(entityDetail.getString("image")!!)
+            image?.flip(entityDetail.getBoolean("flip"), false)
+
             entityDetailsMap[id] = EntityDetails(
                     id = id,
+                    name = entityDetail.getString("name"),
                     entityType = entityDetail.getString("entityType"),
-                    image = getTexture(entityDetail.getString("image")!!),
+                    image = image,
                     description = entityDetail.getString("description"),
                     additionalInfo = entityDetail.getString("additionalInfo")
             )

@@ -1,14 +1,19 @@
 package com.symbol.game.scene;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.Scaling;
 import com.symbol.game.ecs.EntityDetails;
 import com.symbol.game.util.Resources;
 
 public class HelpPage extends Table {
+
+    private static final float ENTITY_DETAILS_IMAGE_SIZE = 32f;
 
     private Resources res;
 
@@ -27,7 +32,7 @@ public class HelpPage extends Table {
         scrollPane.setFadeScrollBars(false);
         scrollPane.layout();
 
-        add(scrollPane).size(116f, 72f).fill();
+        add(scrollPane).size(106f, 64f).fill();
     }
 
     public HelpPage(Resources res, EntityDetails details) {
@@ -36,9 +41,37 @@ public class HelpPage extends Table {
     }
 
     private void createEntityDetailsLayout(EntityDetails details) {
-        Label entityTypeLabel = new Label(details.getEntityType(),
+        String name = details.getEntityType() + ": " + details.getName();
+        Label entityTypeLabel = new Label(name,
                 res.getLabelStyle(getColorForEntityType(details.getEntityType())));
-        container.add(entityTypeLabel);
+        container.add(entityTypeLabel).left().row();
+
+        Table middleTable = new Table();
+
+        Image entityImage = new Image(details.getImage());
+        entityImage.setScaling(Scaling.fit);
+        middleTable.add(entityImage)
+                .size(ENTITY_DETAILS_IMAGE_SIZE, ENTITY_DETAILS_IMAGE_SIZE)
+                .fill()
+                .padRight(4f)
+                .top();
+
+        Label descriptionLabel = new Label(details.getDescription(),
+                res.getLabelStyle(Color.BLACK));
+        descriptionLabel.setWrap(true);
+        descriptionLabel.setAlignment(Align.topLeft);
+        middleTable.add(descriptionLabel)
+                .width(64f)
+                .fill()
+                .padLeft(2f);
+
+        container.add(middleTable).spaceTop(4f).spaceBottom(4f).expand().top().row();
+
+        Label tipLabel = new Label("tip: " + details.getAdditionalInfo(),
+                res.getLabelStyle(new Color(80 / 255.f, 127 / 255.f, 175 / 255.f, 1)));
+        tipLabel.setWrap(true);
+        tipLabel.setAlignment(Align.topLeft);
+        container.add(tipLabel).width(96f).fill().left();
     }
 
     private Color getColorForEntityType(String entityType) {
