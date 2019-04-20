@@ -22,7 +22,7 @@ public class BaseModalDialog extends Dialog {
 
         getTitleLabel().setAlignment(Align.center);
         getTitleLabel().setFontScale(1.5f);
-        getTitleLabel().setColor(new Color(Color.valueOf(game.getRes().getColor("player"))));
+        getTitleLabel().setColor(game.getRes().getColorFromHexKey("player"));
         getTitleTable().padTop(TITLE_PADDING);
 
         image = new Image(game.getRes().getTexture("shadow"));

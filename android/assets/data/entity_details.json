@@ -1,0 +1,18 @@
+{
+  "details": [
+    {
+      "id": "e",
+      "entityType": "enemy",
+      "image": "e_e",
+      "description": "a very simple enemy that moves back and forth on a platform",
+      "additionalInfo": "its only damage source is direct contact, so avoid touching it!"
+    },
+    {
+      "id": "sqrt",
+      "entityType": "enemy",
+      "image": "e_sqrt",
+      "description": "a fast moving enemy that charges in one direction",
+      "additionalInfo": "try jumping over it or killing it before it reaches you!"
+    }
+  ]
+}

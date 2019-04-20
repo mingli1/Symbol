@@ -7,12 +7,14 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton
+import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import com.badlogic.gdx.utils.Disposable
 import com.badlogic.gdx.utils.JsonReader
 import com.badlogic.gdx.utils.JsonValue
+import com.symbol.game.ecs.EntityDetails
 
 const val TOP = "_t"
 const val TOP_RIGHT ="_tr"
@@ -39,6 +41,9 @@ class Resources : Disposable {
     private val atlas: TextureAtlas
     private val strings: JsonValue
     private val colors: JsonValue
+    private val entityDetails: JsonValue
+
+    private val entityDetailsMap: MutableMap<String, EntityDetails> = HashMap()
 
     val skin: Skin
     val font: BitmapFont
@@ -51,6 +56,8 @@ class Resources : Disposable {
 
         strings = jsonReader.parse(Gdx.files.internal("data/strings.json"))
         colors = jsonReader.parse(Gdx.files.internal("data/colors.json"))
+        entityDetails = jsonReader.parse(Gdx.files.internal("data/entity_details.json"))
+        loadEntityDetails()
 
         font = BitmapFont(Gdx.files.internal("font/font.fnt"), atlas.findRegion("font"), false)
         font.setUseIntegerPositions(false)
@@ -70,6 +77,10 @@ class Resources : Disposable {
 
     fun getColor(key: String) : String? {
         return colors.getString(key)
+    }
+
+    fun getEntityDetail(id: String) : EntityDetails {
+        return entityDetailsMap[id]!!
     }
 
     fun getSubProjectileTextureFor(key: String) : TextureRegion? {
@@ -93,6 +104,28 @@ class Resources : Disposable {
         style.font = font
         style.fontColor = color
         return style
+    }
+
+    fun getLabelStyle(color: Color = Color.WHITE) : Label.LabelStyle {
+        return Label.LabelStyle(font, color)
+    }
+
+    fun getColorFromHexKey(key: String) : Color {
+        return Color(Color.valueOf(getColor(key)))
+    }
+
+    private fun loadEntityDetails() {
+        val root = entityDetails.get("details")
+        for (entityDetail in root) {
+            val id = entityDetail.getString("id")
+            entityDetailsMap[id] = EntityDetails(
+                    id = id,
+                    entityType = entityDetail.getString("entityType"),
+                    image = getTexture(entityDetail.getString("image")!!),
+                    description = entityDetail.getString("description"),
+                    additionalInfo = entityDetail.getString("additionalInfo")
+            )
+        }
     }
 
     override fun dispose() {

@@ -13,7 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.symbol.game.Symbol;
-import com.symbol.game.scene.Page;
+import com.symbol.game.scene.HelpPage;
 import com.symbol.game.scene.PagedScrollPane;
 import com.symbol.game.util.Resources;
 
@@ -57,8 +57,7 @@ public class HelpDialog extends Table {
     private Table getInnerTable() {
         Table table = new Table();
 
-        Label.LabelStyle titleStyle = new Label.LabelStyle(res.getFont(),
-                new Color(Color.valueOf(res.getColor("player"))));
+        Label.LabelStyle titleStyle = res.getLabelStyle(res.getColorFromHexKey("player"));
         Label titleLabel = new Label(res.getString("helpDialogTitle"), titleStyle);
         table.add(titleLabel).left().padBottom(2f).row();
 
@@ -69,11 +68,8 @@ public class HelpDialog extends Table {
 
         PagedScrollPane pagedScrollPane = new PagedScrollPane(scrollPaneStyle, 15f);
         pagedScrollPane.setFlingTime(0.1f);
-        for (int i = 0; i < 15; i++) {
-            TextureRegionDrawable drawable = new TextureRegionDrawable(res.getTexture("help_page_bg"));
-            Page page = new Page(drawable, res, i);
-            pagedScrollPane.addPage(page);
-        }
+        pagedScrollPane.addPage(new HelpPage(res, res.getEntityDetail("e")));
+        pagedScrollPane.addPage(new HelpPage(res, res.getEntityDetail("sqrt")));
         table.add(pagedScrollPane).padBottom(1f).size(116f, 72f).fill();
 
         return table;
