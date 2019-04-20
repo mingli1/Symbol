@@ -4,10 +4,9 @@ import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.ui.Cell
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
-import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 
-class PagedScrollPane(skin: Skin, pageSpace: Float) : ScrollPane(null, skin) {
+class PagedScrollPane(style: ScrollPaneStyle, pageSpace: Float) : ScrollPane(null, style) {
 
     private var panDragOrFling = false
     private val container = Table()
@@ -15,6 +14,8 @@ class PagedScrollPane(skin: Skin, pageSpace: Float) : ScrollPane(null, skin) {
     init {
         container.defaults().space(pageSpace)
         actor = container
+        setFadeScrollBars(true)
+        setupFadeScrollBars(0f, 0f)
     }
 
     fun addPages(vararg pages: Actor) {

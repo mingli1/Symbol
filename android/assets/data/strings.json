@@ -9,5 +9,6 @@
   "pauseDialogTitle": "paused",
   "resumeButton": "resume",
   "exitButton": "exit",
-  "githubUrl": "https://github.com/mingli1/Symbol"
+  "githubUrl": "https://github.com/mingli1/Symbol",
+  "helpDialogTitle": "help"
 }

@@ -101,6 +101,7 @@ class GameScreen(game: Symbol) : AbstractScreen(game) {
         playerPosition.set(mapManager.playerSpawnPosition.x, mapManager.playerSpawnPosition.y)
 
         cam.up.set(0f, 1f, 0f)
+        // TODO: decide where to set initial camera position relative to player
         if (!CameraRotation.isEnded()) CameraRotation.end()
 
         ParticleSpawner.reset()
