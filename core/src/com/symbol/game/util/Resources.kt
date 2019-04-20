@@ -15,6 +15,7 @@ import com.badlogic.gdx.utils.Disposable
 import com.badlogic.gdx.utils.JsonReader
 import com.badlogic.gdx.utils.JsonValue
 import com.symbol.game.ecs.EntityDetails
+import com.symbol.game.scene.HelpPage
 
 const val TOP = "_t"
 const val TOP_RIGHT ="_tr"
@@ -32,6 +33,7 @@ const val BRACKET_RIGHT = "_right"
 private const val BUTTON = "button_"
 private const val BUTTON_UP = "_up"
 private const val BUTTON_DOWN = "_down"
+private const val BUTTON_DISABLED = "_disabled"
 
 class Resources : Disposable {
 
@@ -44,6 +46,7 @@ class Resources : Disposable {
     private val entityDetails: JsonValue
 
     private val entityDetailsMap: MutableMap<String, EntityDetails> = HashMap()
+    private val helpPages: MutableMap<String, HelpPage> = HashMap()
 
     val skin: Skin
     val font: BitmapFont
@@ -57,7 +60,6 @@ class Resources : Disposable {
         strings = jsonReader.parse(Gdx.files.internal("data/strings.json"))
         colors = jsonReader.parse(Gdx.files.internal("data/colors.json"))
         entityDetails = jsonReader.parse(Gdx.files.internal("data/entity_details.json"))
-        loadEntityDetails()
 
         font = BitmapFont(Gdx.files.internal("font/font.fnt"), atlas.findRegion("font"), false)
         font.setUseIntegerPositions(false)
@@ -65,6 +67,8 @@ class Resources : Disposable {
         skin = Skin(atlas)
         skin.add("default-font", font)
         skin.load(Gdx.files.internal("textures/skin.json"))
+
+        loadEntityDetails()
     }
 
     fun getTexture(key: String) : TextureRegion? {
@@ -94,6 +98,10 @@ class Resources : Disposable {
         style.imageUp = TextureRegionDrawable(getTexture(BUTTON + key + BUTTON_UP))
         style.imageDown = TextureRegionDrawable(getTexture(BUTTON + key + BUTTON_DOWN))
         style.imageOver = TextureRegionDrawable(getTexture(BUTTON + key + BUTTON_DOWN))
+
+        val disabled = getTexture(BUTTON + key + BUTTON_DISABLED)
+        if (disabled != null) style.imageDisabled = TextureRegionDrawable(disabled)
+
         return style
     }
 
@@ -114,6 +122,10 @@ class Resources : Disposable {
         return Color(Color.valueOf(getColor(key)))
     }
 
+    fun getHelpPage(key: String) : HelpPage? {
+        return helpPages[key]
+    }
+
     private fun loadEntityDetails() {
         val root = entityDetails.get("details")
         for (entityDetail in root) {
@@ -129,6 +141,13 @@ class Resources : Disposable {
                     description = entityDetail.getString("description"),
                     additionalInfo = entityDetail.getString("additionalInfo")
             )
+        }
+        createHelpPages()
+    }
+
+    private fun createHelpPages() {
+        for ((key, details) in entityDetailsMap) {
+            helpPages[key] = HelpPage(this, details)
         }
     }
 

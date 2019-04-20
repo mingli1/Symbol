@@ -1,8 +1,8 @@
 package com.symbol.game.scene.dialog;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -10,10 +10,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.symbol.game.Symbol;
-import com.symbol.game.scene.HelpPage;
 import com.symbol.game.scene.PagedScrollPane;
 import com.symbol.game.util.Resources;
 
@@ -23,12 +23,20 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
 public class HelpDialog extends Table {
 
     private static final float TOP_ARROW_OFFSET = 5f;
+    private static final float PAGE_SPACING = 15f;
+    private static final float PAGE_FLING_TIME = 0.1f;
+    private static final float SCROLL_PANE_WIDTH = 116f;
+    private static final float SCROLL_PANE_HEIGHT = 72f;
 
     private Resources res;
 
     private static final Vector2 POSITION = new Vector2(19f, 8f);
     private Image shadow;
     private boolean displayed;
+
+    private PagedScrollPane pagedScrollPane;
+    private ImageButton leftButton;
+    private ImageButton rightButton;
 
     public HelpDialog(final Symbol game) {
         res = game.getRes();
@@ -37,21 +45,30 @@ public class HelpDialog extends Table {
 
         setBackground(new TextureRegionDrawable(res.getTexture("help_dialog_bg")));
         padTop(TOP_ARROW_OFFSET);
-        //setDebug(true, true);
 
         createLayout();
     }
 
     private void createLayout() {
         ImageButton.ImageButtonStyle leftStyle = res.getImageButtonStyle("help_dialog_left");
-        ImageButton leftButton = new ImageButton(leftStyle);
+        leftButton = new ImageButton(leftStyle);
         add(leftButton).padLeft(3f);
 
         add(getInnerTable()).expandX();
 
         ImageButton.ImageButtonStyle rightStyle = res.getImageButtonStyle("help_dialog_right");
-        ImageButton rightButton = new ImageButton(rightStyle);
+        rightButton = new ImageButton(rightStyle);
         add(rightButton).padRight(3f);
+
+        leftButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) { pagedScrollPane.scrollToLeft(); }
+        });
+
+        rightButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) { pagedScrollPane.scrollToRight(); }
+        });
     }
 
     private Table getInnerTable() {
@@ -66,11 +83,13 @@ public class HelpDialog extends Table {
         scrollPaneStyle.background = scrollPaneStyle.corner = scrollPaneStyle.hScroll =
                 scrollPaneStyle.hScrollKnob = scrollPaneStyle.vScroll = scrollPaneStyle.vScrollKnob = none;
 
-        PagedScrollPane pagedScrollPane = new PagedScrollPane(scrollPaneStyle, 15f);
-        pagedScrollPane.setFlingTime(0.1f);
-        pagedScrollPane.addPage(new HelpPage(res, res.getEntityDetail("e")));
-        pagedScrollPane.addPage(new HelpPage(res, res.getEntityDetail("sqrt")));
-        table.add(pagedScrollPane).padBottom(1f).size(116f, 72f).fill();
+        pagedScrollPane = new PagedScrollPane(scrollPaneStyle, PAGE_SPACING);
+        pagedScrollPane.setFlingTime(PAGE_FLING_TIME);
+        pagedScrollPane.addPage(res.getHelpPage("e"));
+        pagedScrollPane.addPage(res.getHelpPage("sqrt"));
+        pagedScrollPane.addPage(res.getHelpPage("portal"));
+        pagedScrollPane.addPage(res.getHelpPage("mirror"));
+        table.add(pagedScrollPane).padBottom(1f).size(SCROLL_PANE_WIDTH, SCROLL_PANE_HEIGHT).fill();
 
         return table;
     }
@@ -91,7 +110,13 @@ public class HelpDialog extends Table {
     public void hide() {
         displayed = false;
         shadow.setVisible(false);
+        pagedScrollPane.resetCurrentPage();
         addAction(sequence(fadeOut(0.4f, Interpolation.fade), Actions.removeActor()));
+    }
+
+    public void update(float dt) {
+        leftButton.setDisabled(pagedScrollPane.getScrollX() <= 0);
+        rightButton.setDisabled(pagedScrollPane.getScrollX() >= pagedScrollPane.getMaxX());
     }
 
     public boolean isDisplayed() {

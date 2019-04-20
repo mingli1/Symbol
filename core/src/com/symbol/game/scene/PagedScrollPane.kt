@@ -35,7 +35,10 @@ class PagedScrollPane(style: ScrollPaneStyle, pageSpace: Float) : ScrollPane(nul
             panDragOrFling = false
             scrollToPage()
         }
-        else panDragOrFling = isPanning || isDragging || isFlinging
+        else if (isPanning || isDragging || isFlinging) {
+            panDragOrFling = true
+            resetCurrentPage()
+        }
     }
 
     private fun scrollToPage() {
@@ -53,6 +56,43 @@ class PagedScrollPane(style: ScrollPaneStyle, pageSpace: Float) : ScrollPane(nul
             }
             scrollX = MathUtils.clamp(pageX - (width - pageWidth) / 2f, 0f, maxX)
         }
+    }
+
+    fun scrollToLeft() {
+        val currIndex = getCurrentIndex()
+        if (currIndex == 0) return
+
+        resetCurrentPage()
+        scrollX = container.children[currIndex - 1].x
+    }
+
+    fun scrollToRight() {
+        val currIndex = getCurrentIndex()
+        if (currIndex == container.children.size - 1) return
+
+        resetCurrentPage()
+        scrollX = container.children[currIndex + 1].x
+    }
+
+    fun resetCurrentPage() {
+        val currentPage = getCurrentPage()
+        if (currentPage is Page) {
+            (currentPage as Page).reset()
+        }
+    }
+
+    private fun getCurrentPage() : Actor? {
+        for (page in container.children) {
+            if (scrollX <= page.x + page.width) return page
+        }
+        return null
+    }
+
+    private fun getCurrentIndex() : Int {
+        for ((index, page) in container.children.withIndex()) {
+            if (scrollX <= page.x + page.width) return index
+        }
+        return -1
     }
 
 }

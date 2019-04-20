@@ -154,6 +154,17 @@ public class Hud extends Scene {
 
     @Override
     public void update(float dt) {
+        updateStatusBars(dt);
+    }
+
+    @Override
+    public void render(float dt) {
+        if (helpDialog.isDisplayed()) helpDialog.update(dt);
+        renderHpBar();
+        renderChargeBar();
+    }
+
+    private void updateStatusBars(float dt) {
         HealthComponent health = Mapper.INSTANCE.getHEALTH_MAPPER().get(player);
         float hpPercentage = (float) health.getHp() / health.getMaxHp();
         hpBarWidth = HP_BAR_WIDTH * hpPercentage;
@@ -201,12 +212,6 @@ public class Hud extends Scene {
             if (chargeBarIcon.isVisible()) chargeBarIcon.setVisible(false);
             if (chargeBarWidth != 0f) chargeBarWidth = 0f;
         }
-    }
-
-    @Override
-    public void render(float dt) {
-        renderHpBar();
-        renderChargeBar();
     }
 
     private void renderHpBar() {

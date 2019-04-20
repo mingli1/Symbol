@@ -17,6 +17,24 @@
       "flip": true,
       "description": "a fast moving enemy that charges in one direction.",
       "additionalInfo": "try jumping over it or killing it before it reaches you!"
+    },
+    {
+      "id": "portal",
+      "name": "portal",
+      "entityType": "map object",
+      "image": "curly_brace_portal",
+      "flip": false,
+      "description": "teleports any entity to a target portal.",
+      "additionalInfo": ""
+    },
+    {
+      "id": "mirror",
+      "name": "mirror",
+      "entityType": "map object",
+      "image": "between_v",
+      "flip": false,
+      "description": "reflects all projectiles in an angle determined by the mirror.",
+      "additionalInfo": "anything reflected can target any entity, so your own attacks may damage you!"
     }
   ]
 }
