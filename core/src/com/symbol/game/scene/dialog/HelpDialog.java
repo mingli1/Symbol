@@ -85,6 +85,7 @@ public class HelpDialog extends Table {
 
         pagedScrollPane = new PagedScrollPane(scrollPaneStyle, PAGE_SPACING);
         pagedScrollPane.setFlingTime(PAGE_FLING_TIME);
+        pagedScrollPane.addPage(res.getHelpPage("status_effects_movement"));
         pagedScrollPane.addPage(res.getHelpPage("e"));
         pagedScrollPane.addPage(res.getHelpPage("sqrt"));
         pagedScrollPane.addPage(res.getHelpPage("portal"));

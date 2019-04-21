@@ -8,6 +8,5 @@ data class EntityDetails(
         val entityType: String? = null,
         val image: TextureRegion? = null,
         val description: String? = null,
-        val additionalInfo: String? = null,
-        var seen: Boolean = false
+        val additionalInfo: String? = null
 )

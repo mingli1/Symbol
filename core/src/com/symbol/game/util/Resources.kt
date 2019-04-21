@@ -15,6 +15,9 @@ import com.badlogic.gdx.utils.Disposable
 import com.badlogic.gdx.utils.JsonReader
 import com.badlogic.gdx.utils.JsonValue
 import com.symbol.game.data.EntityDetails
+import com.symbol.game.data.ImageAlign
+import com.symbol.game.data.ImageWrapper
+import com.symbol.game.data.TechnicalDetails
 import com.symbol.game.map.TILE_SIZE
 import com.symbol.game.scene.HelpPage
 
@@ -45,8 +48,8 @@ class Resources : Disposable {
     private val strings: JsonValue
     private val colors: JsonValue
     private val entityDetails: JsonValue
+    private val technicalDetails: JsonValue
 
-    private val entityDetailsMap: MutableMap<String, EntityDetails> = HashMap()
     private val helpPages: MutableMap<String, HelpPage> = HashMap()
 
     val skin: Skin
@@ -61,6 +64,7 @@ class Resources : Disposable {
         strings = jsonReader.parse(Gdx.files.internal("data/strings.json"))
         colors = jsonReader.parse(Gdx.files.internal("data/colors.json"))
         entityDetails = jsonReader.parse(Gdx.files.internal("data/entity_details.json"))
+        technicalDetails = jsonReader.parse(Gdx.files.internal("data/technical_details.json"))
 
         font = BitmapFont(Gdx.files.internal("font/font.fnt"), atlas.findRegion("font"), false)
         font.setUseIntegerPositions(false)
@@ -69,7 +73,7 @@ class Resources : Disposable {
         skin.add("default-font", font)
         skin.load(Gdx.files.internal("textures/skin.json"))
 
-        loadEntityDetails()
+        loadHelpPages()
     }
 
     fun getTexture(key: String) : TextureRegion? {
@@ -82,10 +86,6 @@ class Resources : Disposable {
 
     fun getColor(key: String) : String? {
         return colors.getString(key)
-    }
-
-    fun getEntityDetail(id: String) : EntityDetails {
-        return entityDetailsMap[id]!!
     }
 
     fun getSubProjectileTextureFor(key: String) : TextureRegion? {
@@ -127,9 +127,9 @@ class Resources : Disposable {
         return helpPages[key]
     }
 
-    private fun loadEntityDetails() {
-        val root = entityDetails.get("details")
-        for (entityDetail in root) {
+    private fun loadHelpPages() {
+        val entityDetailsRoot = entityDetails.get("details")
+        for (entityDetail in entityDetailsRoot) {
             val id = entityDetail.getString("id")
             val imageStr = entityDetail.getString("image")!!
             var image: TextureRegion?
@@ -140,10 +140,9 @@ class Resources : Disposable {
             } else {
                 getTexture(imageStr)
             }
-
             image?.flip(entityDetail.getBoolean("flip"), false)
 
-            entityDetailsMap[id] = EntityDetails(
+            val entityDetails = EntityDetails(
                     id = id,
                     name = entityDetail.getString("name"),
                     entityType = entityDetail.getString("entityType"),
@@ -151,13 +150,32 @@ class Resources : Disposable {
                     description = entityDetail.getString("description"),
                     additionalInfo = entityDetail.getString("additionalInfo")
             )
-        }
-        createHelpPages()
-    }
 
-    private fun createHelpPages() {
-        for ((key, details) in entityDetailsMap) {
-            helpPages[key] = HelpPage(this, details)
+            helpPages[id] = HelpPage(this, entityDetails)
+        }
+
+        val technicalDetailsRoot = technicalDetails.get("details")
+        for (technicalDetail in technicalDetailsRoot) {
+            val id = technicalDetail.getString("id")
+            val technicalDetails = TechnicalDetails(
+                    id = id,
+                    title = technicalDetail.getString("title"),
+                    imageSize = technicalDetail.getInt("imageSize")
+            )
+
+            val texts = technicalDetail.get("texts")
+            for (text in texts) {
+                technicalDetails.texts.add(text.asString())
+            }
+
+            val images = technicalDetail.get("images")
+            for (image in images) {
+                val wrapper = ImageWrapper(getTexture(image.getString("image")),
+                        ImageAlign.valueOf(image.getString("align")))
+                technicalDetails.images.add(wrapper)
+            }
+
+            helpPages[id] = HelpPage(this, technicalDetails)
         }
     }
 

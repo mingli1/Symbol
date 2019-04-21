@@ -1,0 +1,29 @@
+{
+  "details": [
+    {
+      "id": "status_effects_movement",
+      "title": "status effects",
+      "imageSize": 14,
+      "texts": [
+        "entities can apply various movement debuffs for a duration.",
+        "slow: an entity's speed is reduced",
+        "snare: an entity's movement is disabled",
+        "stun: an entity cannot move or attack"
+      ],
+      "images": [
+        {
+          "image": "se_slow",
+          "align": "Left"
+        },
+        {
+          "image": "se_snare",
+          "align": "Left"
+        },
+        {
+          "image": "se_stun",
+          "align": "Left"
+        }
+      ]
+    }
+  ]
+}
