@@ -4,12 +4,12 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.symbol.game.Symbol;
@@ -106,18 +106,24 @@ public class Hud extends Scene {
         helpButton.setPosition(HELP_BUTTON_POSITION.x, HELP_BUTTON_POSITION.y);
         stage.addActor(helpButton);
 
-        helpButton.addListener(new ClickListener() {
+        helpButton.addListener(new InputListener() {
             @Override
-            public void clicked(InputEvent event, float x, float y) {
-                if (helpDialog.isDisplayed()) {
-                    helpDialog.hide();
-                    helpButton.setZIndex(0);
-                    game.getGameScreen().notifyResume();
-                }
-                else {
-                    helpDialog.show(stage);
-                    helpButton.setZIndex(stage.getActors().size + 1);
-                    game.getGameScreen().notifyPause();
+            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+                return true;
+            }
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                if (pointer == 0) {
+                    if (helpDialog.isDisplayed()) {
+                        helpDialog.hide();
+                        helpButton.setZIndex(0);
+                        game.getGameScreen().notifyResume();
+                    }
+                    else {
+                        helpDialog.show(stage);
+                        helpButton.setZIndex(stage.getActors().size + 1);
+                        game.getGameScreen().notifyPause();
+                    }
                 }
             }
         });
@@ -132,11 +138,17 @@ public class Hud extends Scene {
         ImageButton settingsButton = new ImageButton(style);
         root.add(settingsButton).expandX().right().padRight(4f).padTop(3f);
 
-        settingsButton.addListener(new ClickListener() {
+        settingsButton.addListener(new InputListener() {
             @Override
-            public void clicked(InputEvent event, float x, float y) {
-                pauseDialog.show(stage);
-                game.getGameScreen().notifyPause();
+            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+                return true;
+            }
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                if (pointer == 0) {
+                    pauseDialog.show(stage);
+                    game.getGameScreen().notifyPause();
+                }
             }
         });
     }
