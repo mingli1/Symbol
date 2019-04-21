@@ -15,6 +15,7 @@ import com.badlogic.gdx.utils.Disposable
 import com.badlogic.gdx.utils.JsonReader
 import com.badlogic.gdx.utils.JsonValue
 import com.symbol.game.ecs.EntityDetails
+import com.symbol.game.map.TILE_SIZE
 import com.symbol.game.scene.HelpPage
 
 const val TOP = "_t"
@@ -130,7 +131,16 @@ class Resources : Disposable {
         val root = entityDetails.get("details")
         for (entityDetail in root) {
             val id = entityDetail.getString("id")
-            val image = getTexture(entityDetail.getString("image")!!)
+            val imageStr = entityDetail.getString("image")!!
+            var image: TextureRegion?
+
+            image = if (imageStr.contains("tileset", true)) {
+                val rc = imageStr.substring(7, imageStr.length).split("_")
+                getTexture("tileset")!!.split(TILE_SIZE, TILE_SIZE)[rc[0].toInt()][rc[1].toInt()]
+            } else {
+                getTexture(imageStr)
+            }
+
             image?.flip(entityDetail.getBoolean("flip"), false)
 
             entityDetailsMap[id] = EntityDetails(

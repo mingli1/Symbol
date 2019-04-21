@@ -87,8 +87,14 @@ public class HelpPage extends Table implements Page {
     }
 
     private Color getColorForEntityType(String entityType) {
-        if (entityType.equals("enemy")) return new Color(220 / 255.f, 0f, 0f, 1f);
-        else return new Color(114 / 255.f, 184 / 255.f, 1, 1);
+        switch (entityType) {
+            case "enemy":
+                return new Color(220 / 255.f, 0f, 0f, 1f);
+            case "terrain":
+                return new Color(132 / 255.f, 196 / 255.f, 125 / 255.f, 1);
+            default:
+                return new Color(114 / 255.f, 184 / 255.f, 1, 1);
+        }
     }
 
 }

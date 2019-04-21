@@ -89,6 +89,7 @@ public class HelpDialog extends Table {
         pagedScrollPane.addPage(res.getHelpPage("sqrt"));
         pagedScrollPane.addPage(res.getHelpPage("portal"));
         pagedScrollPane.addPage(res.getHelpPage("mirror"));
+        pagedScrollPane.addPage(res.getHelpPage("lethal"));
         table.add(pagedScrollPane).padBottom(1f).size(SCROLL_PANE_WIDTH, SCROLL_PANE_HEIGHT).fill();
 
         return table;

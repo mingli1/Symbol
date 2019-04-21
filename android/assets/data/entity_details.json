@@ -35,6 +35,15 @@
       "flip": false,
       "description": "reflects all projectiles in an angle determined by the mirror.",
       "additionalInfo": "anything reflected can target any entity, so your own attacks may damage you!"
+    },
+    {
+      "id": "lethal",
+      "name": "spikes",
+      "entityType": "terrain",
+      "image": "tileset1_1",
+      "flip": false,
+      "description": "a deadly trap that instantly kills the entity that touched it.",
+      "additionalInfo": ""
     }
   ]
 }
