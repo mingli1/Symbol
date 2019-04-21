@@ -1,4 +1,4 @@
-package com.symbol.game.ecs
+package com.symbol.game.data
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 

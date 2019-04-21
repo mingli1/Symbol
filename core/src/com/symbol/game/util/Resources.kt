@@ -14,7 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import com.badlogic.gdx.utils.Disposable
 import com.badlogic.gdx.utils.JsonReader
 import com.badlogic.gdx.utils.JsonValue
-import com.symbol.game.ecs.EntityDetails
+import com.symbol.game.data.EntityDetails
 import com.symbol.game.map.TILE_SIZE
 import com.symbol.game.scene.HelpPage
 

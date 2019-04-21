@@ -8,7 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Scaling;
-import com.symbol.game.ecs.EntityDetails;
+import com.symbol.game.data.EntityDetails;
 import com.symbol.game.util.Resources;
 
 public class HelpPage extends Table implements Page {
@@ -51,10 +51,15 @@ public class HelpPage extends Table implements Page {
     }
 
     private void createEntityDetailsLayout(EntityDetails details) {
-        String name = details.getEntityType() + ": " + details.getName();
-        Label entityTypeLabel = new Label(name,
+        Label entityTypeLabel = new Label(details.getName(),
                 res.getLabelStyle(getColorForEntityType(details.getEntityType())));
         container.add(entityTypeLabel).left().row();
+
+        container.add(new Image(res.getTexture("page_divider")))
+                .spaceTop(3f)
+                .spaceBottom(3f)
+                .left()
+                .row();
 
         Table middleTable = new Table();
 
@@ -75,9 +80,14 @@ public class HelpPage extends Table implements Page {
                 .fill()
                 .padLeft(2f);
 
-        container.add(middleTable).spaceTop(4f).spaceBottom(6f).expand().top().row();
+        container.add(middleTable).expand().top().row();
 
         if (!details.getAdditionalInfo().equals("")) {
+            container.add(new Image(res.getTexture("page_divider")))
+                    .spaceTop(4f)
+                    .spaceBottom(3f)
+                    .left()
+                    .row();
             Label tipLabel = new Label("tip: " + details.getAdditionalInfo(),
                     res.getLabelStyle(new Color(80 / 255.f, 127 / 255.f, 175 / 255.f, 1)));
             tipLabel.setWrap(true);
