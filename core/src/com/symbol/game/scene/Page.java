@@ -4,4 +4,8 @@ public interface Page {
 
     void reset();
 
+    void notifySeen();
+
+    boolean hasSeen();
+
 }

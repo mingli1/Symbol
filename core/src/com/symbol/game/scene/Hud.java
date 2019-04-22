@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
@@ -67,6 +68,8 @@ public class Hud extends Scene {
     private HelpDialog helpDialog;
     private PauseDialog pauseDialog;
 
+    private Image helpButtonAlert;
+
     public Hud(final Symbol game, Entity player, Stage stage, Viewport viewport) {
         super(game, stage, viewport);
         this.player = player;
@@ -86,6 +89,7 @@ public class Hud extends Scene {
         createHelpDialog();
         createSettingsButton();
         createChargeBar();
+        createHelpButtonAlert();
 
         stage.addActor(game.fps);
     }
@@ -117,11 +121,13 @@ public class Hud extends Scene {
                     if (helpDialog.isDisplayed()) {
                         helpDialog.hide();
                         helpButton.setZIndex(0);
+                        helpButtonAlert.setZIndex(1);
                         game.getGameScreen().notifyResume();
                     }
                     else {
                         helpDialog.show(stage);
                         helpButton.setZIndex(stage.getActors().size + 1);
+                        helpButtonAlert.setZIndex(stage.getActors().size + 1);
                         game.getGameScreen().notifyPause();
                     }
                 }
@@ -129,8 +135,16 @@ public class Hud extends Scene {
         });
     }
 
+    private void createHelpButtonAlert() {
+        helpButtonAlert = new Image(game.getRes().getTexture("button_alert"));
+        helpButtonAlert.setTouchable(Touchable.disabled);
+        toggleHelpButtonAlert(!helpDialog.hasAllPagesSeen());
+        helpButtonAlert.setPosition(171f, 112f);
+        stage.addActor(helpButtonAlert);
+    }
+
     private void createHelpDialog() {
-        helpDialog = new HelpDialog(game);
+        helpDialog = new HelpDialog(game, this);
     }
 
     private void createSettingsButton() {
@@ -274,6 +288,10 @@ public class Hud extends Scene {
 
     public Table getHelpDialog() {
         return helpDialog;
+    }
+
+    public void toggleHelpButtonAlert(boolean toggle) {
+        helpButtonAlert.setVisible(toggle);
     }
 
     @Override

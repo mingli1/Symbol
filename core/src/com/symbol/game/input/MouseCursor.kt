@@ -28,7 +28,7 @@ class MouseCursor : Disposable {
     }
 
     fun update(dt: Float) {
-        if (Gdx.input.deltaX != 0 || Gdx.input.deltaY != 0) {
+        if (Gdx.input.deltaX != 0 || Gdx.input.deltaY != 0 || Gdx.input.isButtonPressed(0)) {
             timer = 0f
             Gdx.graphics.setCursor(cursor)
         }

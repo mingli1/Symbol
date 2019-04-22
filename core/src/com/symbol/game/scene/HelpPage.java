@@ -30,6 +30,8 @@ public class HelpPage extends Table implements Page {
     private Table container;
     private ScrollPane scrollPane;
 
+    private boolean seen = false;
+
     private HelpPage(Resources res) {
         this.res = res;
         setBackground(new TextureRegionDrawable(res.getTexture("help_page_bg")));
@@ -170,6 +172,16 @@ public class HelpPage extends Table implements Page {
                 .spaceBottom(spaceBottom)
                 .left()
                 .row();
+    }
+
+    @Override
+    public void notifySeen() {
+        seen = true;
+    }
+
+    @Override
+    public boolean hasSeen() {
+        return seen;
     }
 
 }

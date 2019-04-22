@@ -5,6 +5,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.ui.HorizontalGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -14,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.symbol.game.Symbol;
+import com.symbol.game.scene.Hud;
 import com.symbol.game.scene.PagedScrollPane;
 import com.symbol.game.util.Resources;
 
@@ -29,6 +31,7 @@ public class HelpDialog extends Table {
     private static final float SCROLL_PANE_HEIGHT = 72f;
 
     private Resources res;
+    private Hud hud;
 
     private static final Vector2 POSITION = new Vector2(19f, 8f);
     private Image shadow;
@@ -38,8 +41,12 @@ public class HelpDialog extends Table {
     private ImageButton leftButton;
     private ImageButton rightButton;
 
-    public HelpDialog(final Symbol game) {
+    private Label newPage;
+
+    public HelpDialog(final Symbol game, final Hud hud) {
         res = game.getRes();
+        this.hud = hud;
+
         shadow = new Image(game.getRes().getTexture("shadow"));
         shadow.setVisible(false);
 
@@ -73,10 +80,17 @@ public class HelpDialog extends Table {
 
     private Table getInnerTable() {
         Table table = new Table();
+        Table header = new Table();
 
         Label.LabelStyle titleStyle = res.getLabelStyle(res.getColorFromHexKey("player"));
         Label titleLabel = new Label(res.getString("helpDialogTitle"), titleStyle);
-        table.add(titleLabel).left().padBottom(2f).row();
+        header.add(titleLabel).expandX().left();
+
+        Label.LabelStyle newStyle = res.getLabelStyle(res.getColorFromHexKey("p_dot"));
+        newPage = new Label(res.getString("helpDialogNew"), newStyle);
+        header.add(newPage).expandX().right();
+
+        table.add(header).padBottom(2f).fill().row();
 
         Drawable none = new TextureRegionDrawable(res.getTexture("default-rect"));
         ScrollPane.ScrollPaneStyle scrollPaneStyle = new ScrollPane.ScrollPaneStyle();
@@ -113,16 +127,23 @@ public class HelpDialog extends Table {
         displayed = false;
         shadow.setVisible(false);
         pagedScrollPane.resetCurrentPage();
+        hud.toggleHelpButtonAlert(!pagedScrollPane.hasAllSeen());
         addAction(sequence(fadeOut(0.4f, Interpolation.fade), Actions.removeActor()));
     }
 
     public void update(float dt) {
         leftButton.setDisabled(pagedScrollPane.getScrollX() <= 0);
         rightButton.setDisabled(pagedScrollPane.getScrollX() >= pagedScrollPane.getMaxX());
+
+        newPage.setVisible(!pagedScrollPane.isCurrentPageSeen());
     }
 
     public boolean isDisplayed() {
         return displayed;
+    }
+
+    public boolean hasAllPagesSeen() {
+        return pagedScrollPane.hasAllSeen();
     }
 
 }

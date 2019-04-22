@@ -10,5 +10,6 @@
   "resumeButton": "resume",
   "exitButton": "exit",
   "githubUrl": "https://github.com/mingli1/Symbol",
-  "helpDialogTitle": "help"
+  "helpDialogTitle": "hints",
+  "helpDialogNew": "new!"
 }

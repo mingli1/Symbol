@@ -75,15 +75,27 @@ class PagedScrollPane(style: ScrollPaneStyle, pageSpace: Float) : ScrollPane(nul
     }
 
     fun resetCurrentPage() {
-        val currentPage = getCurrentPage()
-        if (currentPage is Page) {
-            (currentPage as Page).reset()
+        val currPage = (getCurrentPage() as Page)
+        currPage.reset()
+        if (!currPage.hasSeen()) currPage.notifySeen()
+    }
+
+    fun hasAllSeen() : Boolean {
+        for (page in container.children) {
+            if (!(page as Page).hasSeen()) return false
         }
+        return true
+    }
+
+    fun isCurrentPageSeen() : Boolean {
+        return (getCurrentPage() as Page).hasSeen()
     }
 
     private fun getCurrentPage() : Actor? {
         for (page in container.children) {
-            if (scrollX <= page.x + page.width) return page
+            if (scrollX <= page.x + page.width) {
+                return page
+            }
         }
         return null
     }
