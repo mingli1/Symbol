@@ -140,7 +140,6 @@ public class HelpDialog extends Table {
         displayed = false;
         shadow.setVisible(false);
         pagedScrollPane.resetCurrentPage();
-        hud.toggleHelpButtonAlert(!pagedScrollPane.hasAllSeen());
         addAction(sequence(fadeOut(0.4f, Interpolation.fade), Actions.removeActor()));
     }
 
@@ -150,6 +149,8 @@ public class HelpDialog extends Table {
 
         newPage.setVisible(!pagedScrollPane.isCurrentPageSeen());
         rightButtonAlert.setVisible(!pagedScrollPane.isNextPageSeen());
+
+        hud.toggleHelpButtonAlert(!pagedScrollPane.hasAllSeen());
     }
 
     public boolean isDisplayed() {
