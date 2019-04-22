@@ -68,6 +68,7 @@ public class Hud extends Scene {
     private HelpDialog helpDialog;
     private PauseDialog pauseDialog;
 
+    private ImageButton helpButton;
     private Image helpButtonAlert;
 
     public Hud(final Symbol game, Entity player, Stage stage, Viewport viewport) {
@@ -106,7 +107,7 @@ public class Hud extends Scene {
 
     private void createHelpButton() {
         ImageButton.ImageButtonStyle style = game.getRes().getImageButtonStyle("help");
-        ImageButton helpButton = new ImageButton(style);
+        helpButton = new ImageButton(style);
         helpButton.setPosition(HELP_BUTTON_POSITION.x, HELP_BUTTON_POSITION.y);
         stage.addActor(helpButton);
 
@@ -119,10 +120,7 @@ public class Hud extends Scene {
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 if (pointer == 0) {
                     if (helpDialog.isDisplayed()) {
-                        helpDialog.hide();
-                        helpButton.setZIndex(0);
-                        helpButtonAlert.setZIndex(1);
-                        game.getGameScreen().notifyResume();
+                        hideHelpDialog();
                     }
                     else {
                         helpDialog.show(stage);
@@ -292,6 +290,13 @@ public class Hud extends Scene {
 
     public void toggleHelpButtonAlert(boolean toggle) {
         helpButtonAlert.setVisible(toggle);
+    }
+
+    public void hideHelpDialog() {
+        helpDialog.hide();
+        helpButton.setZIndex(0);
+        helpButtonAlert.setZIndex(1);
+        game.getGameScreen().notifyResume();
     }
 
     @Override

@@ -52,8 +52,13 @@ public class HelpDialog extends Table {
 
         shadow = new Image(game.getRes().getTexture("shadow"));
         shadow.setVisible(false);
+        shadow.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) { hud.hideHelpDialog(); }
+        });
 
         setBackground(new TextureRegionDrawable(res.getTexture("help_dialog_bg")));
+        setTouchable(Touchable.enabled);
         padTop(TOP_ARROW_OFFSET);
 
         createLayout();
