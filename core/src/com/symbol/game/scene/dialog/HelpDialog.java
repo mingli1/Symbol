@@ -4,12 +4,14 @@ import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
-import com.badlogic.gdx.scenes.scene2d.ui.HorizontalGroup;
+import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
+import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
@@ -40,6 +42,7 @@ public class HelpDialog extends Table {
     private PagedScrollPane pagedScrollPane;
     private ImageButton leftButton;
     private ImageButton rightButton;
+    private Image rightButtonAlert;
 
     private Label newPage;
 
@@ -63,15 +66,25 @@ public class HelpDialog extends Table {
 
         add(getInnerTable()).expandX();
 
+        Stack rightStack = new Stack();
+
         ImageButton.ImageButtonStyle rightStyle = res.getImageButtonStyle("help_dialog_right");
         rightButton = new ImageButton(rightStyle);
-        add(rightButton).padRight(3f);
+        rightStack.add(rightButton);
+
+        rightButtonAlert = new Image(res.getTexture("button_alert"));
+        rightButtonAlert.setVisible(true);
+        rightButtonAlert.setTouchable(Touchable.disabled);
+        Container<Image> wrapper = new Container<>(rightButtonAlert);
+        wrapper.padLeft(8f).padBottom(13f);
+        rightStack.add(wrapper);
+
+        add(rightStack).padRight(3f);
 
         leftButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) { pagedScrollPane.scrollToLeft(); }
         });
-
         rightButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) { pagedScrollPane.scrollToRight(); }
@@ -136,6 +149,7 @@ public class HelpDialog extends Table {
         rightButton.setDisabled(pagedScrollPane.getScrollX() >= pagedScrollPane.getMaxX());
 
         newPage.setVisible(!pagedScrollPane.isCurrentPageSeen());
+        rightButtonAlert.setVisible(!pagedScrollPane.isNextPageSeen());
     }
 
     public boolean isDisplayed() {

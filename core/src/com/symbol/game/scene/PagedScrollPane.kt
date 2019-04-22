@@ -91,6 +91,12 @@ class PagedScrollPane(style: ScrollPaneStyle, pageSpace: Float) : ScrollPane(nul
         return (getCurrentPage() as Page).hasSeen()
     }
 
+    fun isNextPageSeen() : Boolean {
+        val currIndex = getCurrentIndex()
+        if (currIndex == container.children.size - 1) return true
+        return (container.children[currIndex + 1] as Page).hasSeen()
+    }
+
     private fun getCurrentPage() : Actor? {
         for (page in container.children) {
             if (scrollX <= page.x + page.width) {
