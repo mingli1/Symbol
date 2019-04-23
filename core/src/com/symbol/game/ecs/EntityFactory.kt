@@ -16,7 +16,7 @@ object EntityFactory {
         when (type) {
             EnemyType.EConstant -> {
                 EntityBuilder.instance(engine)
-                        .enemy(movementType = EnemyMovementType.TeleportTriangle, attackType = EnemyAttackType.ShootAtPlayer)
+                        .enemy(enemyType = type, movementType = EnemyMovementType.TeleportTriangle, attackType = EnemyAttackType.ShootAtPlayer)
                         .teleport(15f, 0.5f)
                         .statusEffect()
                         .activation(150f)
@@ -32,7 +32,7 @@ object EntityFactory {
             }
             EnemyType.SquareRoot -> {
                 EntityBuilder.instance(engine)
-                        .enemy(movementType = EnemyMovementType.Charge)
+                        .enemy(enemyType = type, movementType = EnemyMovementType.Charge)
                         .statusEffect()
                         .activation(75f)
                         .attack(damage = 3)
@@ -47,7 +47,7 @@ object EntityFactory {
             }
             EnemyType.Exists -> {
                 EntityBuilder.instance(engine)
-                        .enemy(movementType = EnemyMovementType.Charge)
+                        .enemy(enemyType = type, movementType = EnemyMovementType.Charge)
                         .statusEffect()
                         .activation(90f)
                         .attack(damage = PLAYER_HP)
@@ -62,7 +62,7 @@ object EntityFactory {
             }
             EnemyType.Summation -> {
                 EntityBuilder.instance(engine)
-                        .enemy(attackType = EnemyAttackType.ShootOne)
+                        .enemy(enemyType = type, attackType = EnemyAttackType.ShootOne)
                         .statusEffect()
                         .activation(120f)
                         .attack(damage = 2, attackTexture = "p_dot4", attackRate = 2.5f, projectileSpeed = 45f)
@@ -77,7 +77,7 @@ object EntityFactory {
             }
             EnemyType.BigPi -> {
                 EntityBuilder.instance(engine)
-                        .enemy(attackType = EnemyAttackType.ShootOne)
+                        .enemy(enemyType = type, attackType = EnemyAttackType.ShootOne)
                         .statusEffect()
                         .activation(120f)
                         .attack(damage = 4, attackTexture = "p_big_ll", attackRate = 1.4f, projectileSpeed = 45f)
@@ -92,7 +92,7 @@ object EntityFactory {
             }
             EnemyType.In -> {
                 EntityBuilder.instance(engine)
-                        .enemy(attackType = EnemyAttackType.ShootOne)
+                        .enemy(enemyType = type, attackType = EnemyAttackType.ShootOne)
                         .statusEffect()
                         .activation(100f)
                         .attack(damage = 1, attackTexture = "p_xor", attackRate = 2f, projectileSpeed = 45f, attackDetonateTime = 2f)
@@ -107,7 +107,7 @@ object EntityFactory {
             }
             EnemyType.BigOmega -> {
                 EntityBuilder.instance(engine)
-                        .enemy(attackType = EnemyAttackType.SprayThree)
+                        .enemy(enemyType = type, attackType = EnemyAttackType.SprayThree)
                         .statusEffect()
                         .activation(150f)
                         .attack(damage = 2, attackTexture = "p_cup", attackRate = 2.5f, projectileSpeed = 200f)
@@ -121,7 +121,7 @@ object EntityFactory {
             }
             EnemyType.NaturalJoin -> {
                 EntityBuilder.instance(engine)
-                        .enemy(movementType = EnemyMovementType.BackAndForth)
+                        .enemy(enemyType = type, movementType = EnemyMovementType.BackAndForth)
                         .statusEffect()
                         .activation(100f)
                         .attack(damage = 2, attackTexture = "p_ltimes", projectileSpeed = 45f)
@@ -137,7 +137,7 @@ object EntityFactory {
             }
             EnemyType.BigPhi -> {
                 EntityBuilder.instance(engine)
-                        .enemy(attackType = EnemyAttackType.ShootAndQuake)
+                        .enemy(enemyType = type, attackType = EnemyAttackType.ShootAndQuake)
                         .statusEffect()
                         .activation(200f)
                         .attack(damage = 4, attackTexture = "p_alpha", attackRate = 1.5f, projectileSpeed = 60f)
@@ -154,7 +154,7 @@ object EntityFactory {
             }
             EnemyType.Percent -> {
                 val parent = EntityBuilder.instance(engine)
-                        .enemy(movementType = EnemyMovementType.BackAndForth)
+                        .enemy(enemyType = type, movementType = EnemyMovementType.BackAndForth)
                         .statusEffect()
                         .activation(120f)
                         .attack(damage = 1)
@@ -171,7 +171,7 @@ object EntityFactory {
                 val angles = listOf(MathUtils.PI2 / 5f, MathUtils.PI2 * 2f / 5f, MathUtils.PI2 * 3 / 5f, MathUtils.PI2 * 4 / 5f, 0f)
                 for (angle in angles) {
                     EntityBuilder.instance(engine)
-                            .enemy(movementType = EnemyMovementType.Orbit, parent = parent)
+                            .enemy(enemyType = type, movementType = EnemyMovementType.Orbit, parent = parent)
                             .activation(150f)
                             .attack(damage = 1)
                             .color(color)
@@ -186,7 +186,7 @@ object EntityFactory {
             }
             EnemyType.Nabla -> {
                 EntityBuilder.instance(engine)
-                        .enemy()
+                        .enemy(enemyType = type)
                         .activation(140f)
                         .attack(damage = 4)
                         .color(color)
@@ -200,7 +200,7 @@ object EntityFactory {
             }
             EnemyType.CIntegral -> {
                 EntityBuilder.instance(engine)
-                        .enemy(attackType = EnemyAttackType.ArcTwo)
+                        .enemy(enemyType = type, attackType = EnemyAttackType.ArcTwo)
                         .statusEffect()
                         .activation(120f)
                         .attack(damage = 4, attackTexture = "p_succ", attackRate = 2f,
@@ -217,7 +217,7 @@ object EntityFactory {
             }
             EnemyType.Because -> {
                 EntityBuilder.instance(engine)
-                        .enemy(movementType = EnemyMovementType.BackAndForth)
+                        .enemy(enemyType = type, movementType = EnemyMovementType.BackAndForth)
                         .statusEffect()
                         .activation(120f)
                         .attack(damage = 2, attackTexture = "p_because", projectileSpeed = 60f)
@@ -233,7 +233,7 @@ object EntityFactory {
             }
             EnemyType.Block -> {
                 EntityBuilder.instance(engine)
-                        .enemy()
+                        .enemy(enemyType = type)
                         .statusEffect()
                         .attack()
                         .activation()

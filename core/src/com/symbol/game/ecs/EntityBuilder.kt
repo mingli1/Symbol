@@ -9,6 +9,7 @@ import com.symbol.game.ecs.component.enemy.*
 import com.symbol.game.ecs.component.map.*
 import com.symbol.game.ecs.entity.EnemyAttackType
 import com.symbol.game.ecs.entity.EnemyMovementType
+import com.symbol.game.ecs.entity.EnemyType
 import com.symbol.game.ecs.entity.MapEntityType
 import com.symbol.game.ecs.system.GRAVITY
 import com.symbol.game.ecs.system.TERMINAL_VELOCITY
@@ -199,10 +200,12 @@ class EntityBuilder(private val engine: PooledEngine) {
         return this
     }
 
-    fun enemy(movementType: EnemyMovementType = EnemyMovementType.None,
+    fun enemy(enemyType: EnemyType = EnemyType.None,
+              movementType: EnemyMovementType = EnemyMovementType.None,
               attackType: EnemyAttackType = EnemyAttackType.None,
               parent: Entity? = null) : EntityBuilder {
         enemyComponent = engine.createComponent(EnemyComponent::class.java)
+        enemyComponent?.enemyType = enemyType
         enemyComponent?.movementType = movementType
         enemyComponent?.attackType = attackType
         enemyComponent?.parent = parent

@@ -1,5 +1,6 @@
 package com.symbol.game.map
 
+import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.core.PooledEngine
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.Batch
@@ -13,9 +14,11 @@ import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.utils.Array
 import com.badlogic.gdx.utils.Disposable
 import com.symbol.game.ecs.EntityFactory
+import com.symbol.game.ecs.Mapper
 import com.symbol.game.ecs.entity.EnemyType
 import com.symbol.game.ecs.entity.MapEntityType
 import com.symbol.game.map.camera.CameraUtil
+import com.symbol.game.scene.HelpPage
 import com.symbol.game.util.Resources
 
 const val TILE_SIZE = 8
@@ -54,6 +57,28 @@ class MapManager(private val engine: PooledEngine, private val res: Resources) :
     var playerSpawnPosition = Vector2()
 
     val mapObjects: Array<MapObject> = Array()
+    val helpPages: Array<HelpPage> = Array()
+
+    private val newEntities = Array<Entity>()
+    private val newMapObjects = Array<MapObject>()
+    private val oldEntities = Array<Entity>()
+    private val oldMapObjects = Array<MapObject>()
+
+    private val entityComparator: (Entity, Entity) -> Int = { e1, e2 ->
+        val pos1 = Mapper.POS_MAPPER.get(e1)
+        val pos2 = Mapper.POS_MAPPER.get(e2)
+
+        val dist1 = Vector2.dst2(playerSpawnPosition.x, playerSpawnPosition.y, pos1.x, pos1.y)
+        val dist2 = Vector2.dst2(playerSpawnPosition.x, playerSpawnPosition.y, pos2.x, pos2.y)
+
+        dist1.toInt() - dist2.toInt()
+    }
+
+    private val mapObjectComparator: (MapObject, MapObject) -> Int = { m1, m2 ->
+        val dist1 = Vector2.dst2(playerSpawnPosition.x, playerSpawnPosition.y, m1.bounds.x, m1.bounds.y)
+        val dist2 = Vector2.dst2(playerSpawnPosition.x, playerSpawnPosition.y, m2.bounds.x, m2.bounds.y)
+        dist1.toInt() - dist2.toInt()
+    }
 
     fun load(mapName: String) {
         tiledMap = mapLoader.load("$DIR$mapName.tmx")
@@ -96,6 +121,8 @@ class MapManager(private val engine: PooledEngine, private val res: Resources) :
             }
             textureMap.add(inner)
         }
+
+        loadHelpPages()
     }
 
     private fun loadMapObjects() {
@@ -137,6 +164,73 @@ class MapManager(private val engine: PooledEngine, private val res: Resources) :
             EntityFactory.createMapEntity(engine, res, mapEntityObject.properties, mapEntityType, mapEntityRect)
         }
     }
+
+    private fun loadHelpPages() {
+        helpPages.clear()
+
+        newEntities.clear()
+        oldEntities.clear()
+        newMapObjects.clear()
+        oldMapObjects.clear()
+
+        for (entity in engine.entities) {
+            val enemy = Mapper.ENEMY_MAPPER.get(entity)
+            val mapEntity = Mapper.MAP_ENTITY_MAPPER.get(entity)
+            var page: HelpPage? = null
+
+            if (enemy != null) page = res.getHelpPage(enemy.enemyType.typeStr)
+            else if (mapEntity != null) page = res.getHelpPage(mapEntity.mapEntityType.typeStr)
+
+            if (page != null) {
+                if (page.hasSeen() && !containsEntityType(oldEntities, entity)) oldEntities.add(entity)
+                else if (!containsEntityType(newEntities, entity)) newEntities.add(entity)
+            }
+        }
+
+        for (mapObject in mapObjects) {
+            val page = res.getHelpPage(mapObject.type.typeStr)
+            if (page != null) {
+                if (page.hasSeen()) oldMapObjects.add(mapObject)
+                else newMapObjects.add(mapObject)
+            }
+        }
+
+        newEntities.sort(entityComparator)
+        oldEntities.sort(entityComparator)
+        newMapObjects.sort(mapObjectComparator)
+        oldMapObjects.sort(mapObjectComparator)
+
+        for (mapObject in newMapObjects) addMapObjectHelpPage(mapObject)
+        for (entity in newEntities) addEntityHelpPage(entity)
+        for (entity in oldEntities) addEntityHelpPage(entity)
+        for (mapObject in oldMapObjects) addMapObjectHelpPage(mapObject)
+    }
+
+    private fun containsEntityType(entities: Array<Entity>, entity: Entity) : Boolean {
+        val enemy = Mapper.ENEMY_MAPPER.get(entity)
+        val mapEntity = Mapper.MAP_ENTITY_MAPPER.get(entity)
+        for (e in entities) {
+            val enemy2 = Mapper.ENEMY_MAPPER.get(e)
+            val mapEntity2 = Mapper.MAP_ENTITY_MAPPER.get(e)
+            if (enemy != null && enemy2 != null) {
+                if (enemy.enemyType == enemy2.enemyType) return true
+            }
+            else if (mapEntity != null && mapEntity2 != null) {
+                if (mapEntity.mapEntityType == mapEntity2.mapEntityType) return true
+            }
+        }
+        return false
+    }
+
+    private fun addEntityHelpPage(entity: Entity) {
+        val enemy = Mapper.ENEMY_MAPPER.get(entity)
+        val mapEntity = Mapper.MAP_ENTITY_MAPPER.get(entity)
+        if (enemy != null) helpPages.add(res.getHelpPage(enemy.enemyType.typeStr))
+        else if (mapEntity != null) helpPages.add(res.getHelpPage(mapEntity.mapEntityType.typeStr))
+    }
+
+    private fun addMapObjectHelpPage(mapObject: MapObject) =
+            helpPages.add(res.getHelpPage(mapObject.type.typeStr))
 
     fun render(batch: Batch, cam: OrthographicCamera) {
         for (row in 0 until mapHeight) {
