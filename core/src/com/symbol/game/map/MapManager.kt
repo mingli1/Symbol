@@ -190,8 +190,8 @@ class MapManager(private val engine: PooledEngine, private val res: Resources) :
         for (mapObject in mapObjects) {
             val page = res.getHelpPage(mapObject.type.typeStr)
             if (page != null) {
-                if (page.hasSeen()) oldMapObjects.add(mapObject)
-                else newMapObjects.add(mapObject)
+                if (page.hasSeen() && !containsMapObjectType(oldMapObjects, mapObject)) oldMapObjects.add(mapObject)
+                else if (!containsMapObjectType(newMapObjects, mapObject)) newMapObjects.add(mapObject)
             }
         }
 
@@ -218,6 +218,13 @@ class MapManager(private val engine: PooledEngine, private val res: Resources) :
             else if (mapEntity != null && mapEntity2 != null) {
                 if (mapEntity.mapEntityType == mapEntity2.mapEntityType) return true
             }
+        }
+        return false
+    }
+
+    private fun containsMapObjectType(mapObjects: Array<MapObject>, mapObject: MapObject) : Boolean {
+        for (me in mapObjects) {
+            if (mapObject.type == me.type) return true
         }
         return false
     }
