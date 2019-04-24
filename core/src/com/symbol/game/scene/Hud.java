@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.symbol.game.Symbol;
 import com.symbol.game.ecs.Mapper;
@@ -119,15 +120,8 @@ public class Hud extends Scene {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 if (pointer == 0) {
-                    if (helpDialog.isDisplayed()) {
-                        hideHelpDialog();
-                    }
-                    else {
-                        helpDialog.show(stage);
-                        helpButton.setZIndex(stage.getActors().size + 1);
-                        helpButtonAlert.setZIndex(stage.getActors().size + 1);
-                        game.getGameScreen().notifyPause();
-                    }
+                    if (helpDialog.isDisplayed()) hideHelpDialog();
+                    else showHelpDialog();
                 }
             }
         });
@@ -136,7 +130,6 @@ public class Hud extends Scene {
     private void createHelpButtonAlert() {
         helpButtonAlert = new Image(game.getRes().getTexture("button_alert"));
         helpButtonAlert.setTouchable(Touchable.disabled);
-        toggleHelpButtonAlert(!helpDialog.hasAllPagesSeen());
         helpButtonAlert.setPosition(171f, 112f);
         stage.addActor(helpButtonAlert);
     }
@@ -172,6 +165,7 @@ public class Hud extends Scene {
         }
 
         chargeBarIcon = new Image(chargeBarTiers[0]);
+        chargeBarIcon.setVisible(false);
         root.row();
         root.add(chargeBarIcon);
     }
@@ -292,11 +286,27 @@ public class Hud extends Scene {
         helpButtonAlert.setVisible(toggle);
     }
 
+    public void showHelpDialog() {
+        helpDialog.show(stage);
+        helpButton.setZIndex(stage.getActors().size + 1);
+        helpButtonAlert.setZIndex(stage.getActors().size + 1);
+        game.getGameScreen().notifyPause();
+    }
+
     public void hideHelpDialog() {
         helpDialog.hide();
         helpButton.setZIndex(0);
         helpButtonAlert.setZIndex(1);
         game.getGameScreen().notifyResume();
+    }
+
+    public boolean hasHelpPageNotSeen() {
+        return helpDialog.hasPageNotSeen();
+    }
+
+    public void setHelpPages(Array<Page> pages) {
+        helpDialog.setHelpPages(pages);
+        toggleHelpButtonAlert(helpDialog.hasPageNotSeen());
     }
 
     @Override

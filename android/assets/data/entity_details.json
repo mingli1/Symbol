@@ -19,6 +19,16 @@
       "additionalInfo": "try jumping over it or killing it before it reaches you!"
     },
     {
+      "id": "njoin",
+      "name": "natural join",
+      "entityType": "enemy",
+      "image": "e_njoin",
+      "flip": false,
+      "description": "a back and forth moving enemy that explodes when killed",
+      "additionalInfo": ""
+    },
+
+    {
       "id": "portal",
       "name": "portal",
       "entityType": "map object",
@@ -36,6 +46,34 @@
       "description": "reflects all projectiles in an angle determined by the mirror.",
       "additionalInfo": "anything reflected can target any entity, so your own attacks may damage you!"
     },
+    {
+      "id": "gswitch",
+      "name": "gravity switch",
+      "entityType": "map object",
+      "image": "updownarrow_off",
+      "flip": false,
+      "description": "reverses gravity for the player",
+      "additionalInfo": ""
+    },
+    {
+      "id": "sswitch",
+      "name": "toggle switch",
+      "entityType": "map object",
+      "image": "square_switch_on",
+      "flip": false,
+      "description": "toggles target toggle block(s) on and off",
+      "additionalInfo": ""
+    },
+    {
+      "id": "toggle",
+      "name": "toggle block",
+      "entityType": "map object",
+      "image": "toggle_square",
+      "flip": false,
+      "description": "a block that is toggleable by a toggle switch",
+      "additionalInfo": "getting stuck in this block will kill you!"
+    },
+
     {
       "id": "lethal",
       "name": "spikes",

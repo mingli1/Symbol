@@ -19,6 +19,7 @@ import com.symbol.game.ecs.entity.EnemyType
 import com.symbol.game.ecs.entity.MapEntityType
 import com.symbol.game.map.camera.CameraUtil
 import com.symbol.game.scene.HelpPage
+import com.symbol.game.scene.Page
 import com.symbol.game.util.Resources
 
 const val TILE_SIZE = 8
@@ -57,7 +58,7 @@ class MapManager(private val engine: PooledEngine, private val res: Resources) :
     var playerSpawnPosition = Vector2()
 
     val mapObjects: Array<MapObject> = Array()
-    val helpPages: Array<HelpPage> = Array()
+    val helpPages: Array<Page> = Array()
 
     private val newEntities = Array<Entity>()
     private val newMapObjects = Array<MapObject>()
@@ -183,7 +184,7 @@ class MapManager(private val engine: PooledEngine, private val res: Resources) :
 
             if (page != null) {
                 if (page.hasSeen() && !containsEntityType(oldEntities, entity)) oldEntities.add(entity)
-                else if (!containsEntityType(newEntities, entity)) newEntities.add(entity)
+                else if (!page.hasSeen() && !containsEntityType(newEntities, entity)) newEntities.add(entity)
             }
         }
 
@@ -191,7 +192,7 @@ class MapManager(private val engine: PooledEngine, private val res: Resources) :
             val page = res.getHelpPage(mapObject.type.typeStr)
             if (page != null) {
                 if (page.hasSeen() && !containsMapObjectType(oldMapObjects, mapObject)) oldMapObjects.add(mapObject)
-                else if (!containsMapObjectType(newMapObjects, mapObject)) newMapObjects.add(mapObject)
+                else if (!page.hasSeen() && !containsMapObjectType(newMapObjects, mapObject)) newMapObjects.add(mapObject)
             }
         }
 

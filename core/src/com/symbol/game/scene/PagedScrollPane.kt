@@ -5,6 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.ui.Cell
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.scenes.scene2d.ui.Table
+import com.badlogic.gdx.utils.Array
 
 class PagedScrollPane(style: ScrollPaneStyle, pageSpace: Float) : ScrollPane(null, style) {
 
@@ -18,14 +19,21 @@ class PagedScrollPane(style: ScrollPaneStyle, pageSpace: Float) : ScrollPane(nul
         setupFadeScrollBars(0f, 0f)
     }
 
-    fun addPages(vararg pages: Actor) {
+    fun addPages(pages: Array<Page>) {
         for (page in pages) {
-            container.add(page).expandY().fillY()
+            container.add(page.actor).expandY().fillY()
         }
     }
 
-    fun addPage(page: Actor) : Cell<Actor> {
-        return container.add(page).expandY().fillY()
+    fun addPage(page: Page) : Cell<Actor> {
+        return container.add(page.actor).expandY().fillY()
+    }
+
+    fun reset() {
+        panDragOrFling = false
+        scrollX = 0f
+        updateVisualScroll()
+        container.clearChildren()
     }
 
     override fun act(dt: Float) {

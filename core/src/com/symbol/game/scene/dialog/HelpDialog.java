@@ -16,8 +16,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Array;
 import com.symbol.game.Symbol;
 import com.symbol.game.scene.Hud;
+import com.symbol.game.scene.Page;
 import com.symbol.game.scene.PagedScrollPane;
 import com.symbol.game.util.Resources;
 
@@ -117,12 +119,6 @@ public class HelpDialog extends Table {
 
         pagedScrollPane = new PagedScrollPane(scrollPaneStyle, PAGE_SPACING);
         pagedScrollPane.setFlingTime(PAGE_FLING_TIME);
-        pagedScrollPane.addPage(res.getHelpPage("status_effects_movement"));
-        pagedScrollPane.addPage(res.getHelpPage("e"));
-        pagedScrollPane.addPage(res.getHelpPage("sqrt"));
-        pagedScrollPane.addPage(res.getHelpPage("portal"));
-        pagedScrollPane.addPage(res.getHelpPage("mirror"));
-        pagedScrollPane.addPage(res.getHelpPage("lethal"));
         table.add(pagedScrollPane).padBottom(1f).size(SCROLL_PANE_WIDTH, SCROLL_PANE_HEIGHT).fill();
 
         return table;
@@ -145,6 +141,7 @@ public class HelpDialog extends Table {
         displayed = false;
         shadow.setVisible(false);
         pagedScrollPane.resetCurrentPage();
+        hud.toggleHelpButtonAlert(!pagedScrollPane.hasAllSeen());
         addAction(sequence(fadeOut(0.4f, Interpolation.fade), Actions.removeActor()));
     }
 
@@ -158,12 +155,17 @@ public class HelpDialog extends Table {
         hud.toggleHelpButtonAlert(!pagedScrollPane.hasAllSeen());
     }
 
+    public void setHelpPages(Array<Page> pages) {
+        pagedScrollPane.reset();
+        pagedScrollPane.addPages(pages);
+    }
+
     public boolean isDisplayed() {
         return displayed;
     }
 
-    public boolean hasAllPagesSeen() {
-        return pagedScrollPane.hasAllSeen();
+    public boolean hasPageNotSeen() {
+        return !pagedScrollPane.hasAllSeen();
     }
 
 }

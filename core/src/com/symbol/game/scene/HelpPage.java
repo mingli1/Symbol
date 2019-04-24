@@ -1,6 +1,7 @@
 package com.symbol.game.scene;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
@@ -183,5 +184,8 @@ public class HelpPage extends Table implements Page {
     public boolean hasSeen() {
         return seen;
     }
+
+    @Override
+    public Actor getActor() { return this; }
 
 }

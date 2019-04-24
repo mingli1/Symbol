@@ -96,17 +96,21 @@ class GameScreen(game: Symbol) : AbstractScreen(game) {
         engine.addEntity(player)
         player.reset()
         mapManager.load("test_map")
+        hud.setHelpPages(mapManager.helpPages)
 
         val playerPosition = Mapper.POS_MAPPER.get(player)
         playerPosition.set(mapManager.playerSpawnPosition.x, mapManager.playerSpawnPosition.y)
 
         cam.up.set(0f, 1f, 0f)
+        //cam.position.set(playerPosition.x + (TILE_SIZE / 2), playerPosition.y + (TILE_SIZE / 2), 0f)
         // TODO: decide where to set initial camera position relative to player
         if (!CameraRotation.isEnded()) CameraRotation.end()
 
         ParticleSpawner.reset()
 
         resetSystems()
+
+        if (hud.hasHelpPageNotSeen()) hud.showHelpDialog()
     }
 
     private fun update(dt: Float) {
