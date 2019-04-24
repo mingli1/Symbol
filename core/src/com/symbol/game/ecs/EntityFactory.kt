@@ -413,6 +413,19 @@ object EntityFactory {
                         .texture(texture, textureStr)
                         .remove().build()
             }
+            MapEntityType.InvertSwitch -> {
+                val textureStr = "invert_switch"
+                val texture = res.getTexture(textureStr)!!
+
+                EntityBuilder.instance(engine)
+                        .mapEntity(type = type, mapCollidable = true, projectileCollidable = true)
+                        .invertSwitch()
+                        .boundingBox(texture.regionWidth.toFloat(), texture.regionHeight.toFloat())
+                        .position(rect.x, rect.y)
+                        .velocity()
+                        .texture(texture, textureStr)
+                        .remove().build()
+            }
             else -> {}
         }
     }

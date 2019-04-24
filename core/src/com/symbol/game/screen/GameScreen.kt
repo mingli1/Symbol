@@ -38,6 +38,8 @@ class GameScreen(game: Symbol) : AbstractScreen(game) {
     private val androidInput: AndroidInput
 
     private val mapManager = MapManager(engine, game.res)
+    private var canInvert = false
+    var mapInverted = false
 
     private var player = Player(game.res)
     private val background = Background(game.res.getTexture("background")!!,
@@ -68,7 +70,7 @@ class GameScreen(game: Symbol) : AbstractScreen(game) {
         engine.addSystem(MovementSystem())
         engine.addSystem(MapCollisionSystem(game.res))
         engine.addSystem(MapEntitySystem(player, game.res))
-        engine.addSystem(ProjectileSystem(player, game.res))
+        engine.addSystem(ProjectileSystem(player, game.res, this))
         engine.addSystem(HealthSystem())
         engine.addSystem(EnemyActivationSystem(player))
         engine.addSystem(EnemyAttackSystem(player, game.res))
@@ -95,8 +97,10 @@ class GameScreen(game: Symbol) : AbstractScreen(game) {
         engine.removeAllEntities()
         engine.addEntity(player)
         player.reset()
+
         mapManager.load("test_map")
         hud.setHelpPages(mapManager.helpPages)
+        canInvert = mapManager.containsInvertSwitch()
 
         val playerPosition = Mapper.POS_MAPPER.get(player)
         playerPosition.set(mapManager.playerSpawnPosition.x, mapManager.playerSpawnPosition.y)
@@ -157,16 +161,16 @@ class GameScreen(game: Symbol) : AbstractScreen(game) {
         game.batch.begin()
         game.batch.setColor(1f, 1f, 1f, 1f)
 
-        game.batch.shader = game.res.invertShader
+        if (canInvert) game.batch.shader = if (mapInverted) game.res.invertShader else null
 
         background.render(game.batch)
         mapManager.render(game.batch, cam)
         updateEngine(dt)
         ParticleSpawner.render(game.batch, cam)
 
-        game.batch.projectionMatrix = stage.camera.combined
-        game.batch.shader = null
+        if (canInvert) game.batch.shader = null
 
+        game.batch.projectionMatrix = stage.camera.combined
         hud.render(dt)
 
         game.batch.end()

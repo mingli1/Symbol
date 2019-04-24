@@ -55,6 +55,7 @@ class EntityBuilder(private val engine: PooledEngine) {
     private var forceFieldComponent: ForceFieldComponent? = null
     private var damageBoostComponent: DamageBoostComponent? = null
     private var mirrorComponent: MirrorComponent? = null
+    private var invertSwitchComponent: InvertSwitchComponent? = null
 
     companion object {
         fun instance(engine: PooledEngine) : EntityBuilder = EntityBuilder(engine)
@@ -338,6 +339,11 @@ class EntityBuilder(private val engine: PooledEngine) {
         return this
     }
 
+    fun invertSwitch() : EntityBuilder {
+        invertSwitchComponent = engine.createComponent(InvertSwitchComponent::class.java)
+        return this
+    }
+
     fun build() : Entity {
         val entity = engine.createEntity()
 
@@ -380,6 +386,7 @@ class EntityBuilder(private val engine: PooledEngine) {
         if (forceFieldComponent != null) entity.add(forceFieldComponent)
         if (damageBoostComponent != null) entity.add(damageBoostComponent)
         if (mirrorComponent != null) entity.add(mirrorComponent)
+        if (invertSwitchComponent != null) entity.add(invertSwitchComponent)
 
         engine.addEntity(entity)
         return entity

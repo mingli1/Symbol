@@ -240,6 +240,13 @@ class MapManager(private val engine: PooledEngine, private val res: Resources) :
     private fun addMapObjectHelpPage(mapObject: MapObject) =
             helpPages.add(res.getHelpPage(mapObject.type.typeStr))
 
+    fun containsInvertSwitch() : Boolean {
+        for (entity in engine.entities) {
+            if (Mapper.INVERT_SWITCH_MAPPER.get(entity) != null) return true
+        }
+        return false
+    }
+
     fun render(batch: Batch, cam: OrthographicCamera) {
         for (row in 0 until mapHeight) {
             for (col in 0 until mapWidth) {

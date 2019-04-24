@@ -24,6 +24,7 @@ import com.symbol.game.effects.particle.DEFAULT_LIFETIME
 import com.symbol.game.effects.particle.ParticleSpawner
 import com.symbol.game.map.MapObject
 import com.symbol.game.map.camera.CameraRotation
+import com.symbol.game.screen.GameScreen
 import com.symbol.game.util.Resources
 import com.symbol.game.util.TOGGLE_OFF
 import com.symbol.game.util.TOGGLE_ON
@@ -32,7 +33,7 @@ const val DIAGONAL_PROJECTILE_SCALING = 0.75f
 private const val KNOCKBACK_TIME = 0.1f
 private const val GRAVITY_FLIP_TIME = 0.75f
 
-class ProjectileSystem(private val player: Player, private val res: Resources)
+class ProjectileSystem(private val player: Player, private val res: Resources, private val gameScreen: GameScreen)
     : IteratingSystem(Family.all(ProjectileComponent::class.java).get()) {
 
     private var mapObjects: Array<MapObject> = Array()
@@ -244,6 +245,7 @@ class ProjectileSystem(private val player: Player, private val res: Resources)
                     MapEntityType.GravitySwitch -> handleGravitySwitch()
                     MapEntityType.SquareSwitch -> handleSquareSwitch(mapEntity)
                     MapEntityType.ForceField -> handleForceField(entity, mapEntity, boundsCircle)
+                    MapEntityType.InvertSwitch -> handleInvertSwitch(mapEntity)
                     else -> {}
                 }
             }
@@ -577,6 +579,12 @@ class ProjectileSystem(private val player: Player, private val res: Resources)
 
         if (!circleContainsPlayer && ff.activated)
             removeAndSpawnParticles(color, pj, position, width, height, remove)
+    }
+
+    private fun handleInvertSwitch(entity: Entity?) {
+        val invert = Mapper.INVERT_SWITCH_MAPPER.get(entity)
+        invert.toggle = !invert.toggle
+        gameScreen.mapInverted = invert.toggle
     }
 
 }

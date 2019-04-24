@@ -13,7 +13,8 @@ enum class MapEntityType(val typeStr: String) {
     SquareSwitch("sswitch"),
     ToggleTile("toggle"),
     ForceField("force_field"),
-    DamageBoost("damage_boost");
+    DamageBoost("damage_boost"),
+    InvertSwitch("iswitch");
 
     companion object {
         fun getType(typeStr: String) : MapEntityType? = values().find { it.typeStr == typeStr }

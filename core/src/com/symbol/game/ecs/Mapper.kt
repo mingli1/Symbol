@@ -46,5 +46,6 @@ object Mapper {
     val FORCE_FIELD_MAPPER = ComponentMapper.getFor(ForceFieldComponent::class.java)!!
     val DAMAGE_BOOST_MAPPER = ComponentMapper.getFor(DamageBoostComponent::class.java)!!
     val MIRROR_MAPPER = ComponentMapper.getFor(MirrorComponent::class.java)!!
+    val INVERT_SWITCH_MAPPER = ComponentMapper.getFor(InvertSwitchComponent::class.java)!!
 
 }
