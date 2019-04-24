@@ -110,7 +110,7 @@ class GameScreen(game: Symbol) : AbstractScreen(game) {
 
         resetSystems()
 
-        if (hud.hasHelpPageNotSeen()) hud.showHelpDialog()
+        //if (hud.hasHelpPageNotSeen()) hud.showHelpDialog()
     }
 
     private fun update(dt: Float) {
@@ -157,12 +157,15 @@ class GameScreen(game: Symbol) : AbstractScreen(game) {
         game.batch.begin()
         game.batch.setColor(1f, 1f, 1f, 1f)
 
+        game.batch.shader = game.res.invertShader
+
         background.render(game.batch)
         mapManager.render(game.batch, cam)
         updateEngine(dt)
         ParticleSpawner.render(game.batch, cam)
 
         game.batch.projectionMatrix = stage.camera.combined
+        game.batch.shader = null
 
         hud.render(dt)
 
@@ -170,6 +173,8 @@ class GameScreen(game: Symbol) : AbstractScreen(game) {
 
         stage.act(dt)
         stage.draw()
+
+        game.profile("GameScreen")
     }
 
     override fun notifyPause() {

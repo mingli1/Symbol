@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.graphics.g2d.TextureRegion
+import com.badlogic.gdx.graphics.glutils.ShaderProgram
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
@@ -54,6 +55,7 @@ class Resources : Disposable {
 
     val skin: Skin
     val font: BitmapFont
+    val invertShader: ShaderProgram
 
     init {
         assetManager.load("textures/textures.atlas", TextureAtlas::class.java)
@@ -72,6 +74,10 @@ class Resources : Disposable {
         skin = Skin(atlas)
         skin.add("default-font", font)
         skin.load(Gdx.files.internal("textures/skin.json"))
+
+        ShaderProgram.pedantic = false
+        invertShader = ShaderProgram(Gdx.files.internal("shader/invert.vsh"),
+                Gdx.files.internal("shader/invert.fsh"))
 
         loadHelpPages()
     }
