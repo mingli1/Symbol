@@ -101,6 +101,7 @@ class GameScreen(game: Symbol) : AbstractScreen(game) {
         mapManager.load("test_map")
         hud.setHelpPages(mapManager.helpPages)
         canInvert = mapManager.containsInvertSwitch()
+        mapInverted = false
 
         val playerPosition = Mapper.POS_MAPPER.get(player)
         playerPosition.set(mapManager.playerSpawnPosition.x, mapManager.playerSpawnPosition.y)
