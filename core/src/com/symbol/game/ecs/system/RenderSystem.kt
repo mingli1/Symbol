@@ -23,6 +23,9 @@ class RenderSystem(private val batch: Batch, private val cam: OrthographicCamera
 
         if (texture.texture == null) return
 
+        val enemy = Mapper.ENEMY_MAPPER.get(entity)
+        if (enemy != null && !enemy.visible) return
+
         val width = texture.texture!!.regionWidth.toFloat()
         val height = texture.texture!!.regionHeight.toFloat()
 

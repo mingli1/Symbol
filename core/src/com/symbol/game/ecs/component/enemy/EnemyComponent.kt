@@ -14,6 +14,7 @@ class EnemyComponent : Component, Pool.Poolable {
     var attackType = EnemyAttackType.None
     var parent: Entity? = null
     var movementTimer = 0f
+    var visible = true
 
     override fun reset() {
         enemyType = EnemyType.None
@@ -21,6 +22,7 @@ class EnemyComponent : Component, Pool.Poolable {
         attackType = EnemyAttackType.None
         parent = null
         movementTimer = 0f
+        visible = true
     }
 
 }

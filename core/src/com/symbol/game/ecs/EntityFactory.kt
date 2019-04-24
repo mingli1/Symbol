@@ -16,8 +16,7 @@ object EntityFactory {
         when (type) {
             EnemyType.EConstant -> {
                 EntityBuilder.instance(engine)
-                        .enemy(enemyType = type, movementType = EnemyMovementType.TeleportTriangle, attackType = EnemyAttackType.ShootAtPlayer)
-                        .teleport(15f, 0.5f)
+                        .enemy(enemyType = type, movementType = EnemyMovementType.BackAndForth, attackType = EnemyAttackType.ShootAtPlayer)
                         .statusEffect()
                         .activation(150f)
                         .attack(damage = 1, projectileSpeed = 45f, attackTexture = "p_dot", attackRate = 1.5f)
@@ -28,7 +27,7 @@ object EntityFactory {
                         .velocity(speed = 25f)
                         .direction(facingRight = facingRight)
                         .texture(texture, textureStr)
-                        .knockback().remove().build()
+                        .knockback().gravity().remove().build()
             }
             EnemyType.SquareRoot -> {
                 EntityBuilder.instance(engine)
@@ -154,12 +153,12 @@ object EntityFactory {
             }
             EnemyType.Percent -> {
                 val parent = EntityBuilder.instance(engine)
-                        .enemy(enemyType = type, movementType = EnemyMovementType.BackAndForth)
+                        .enemy(enemyType = type, movementType = EnemyMovementType.BackAndForth, visible = false)
                         .statusEffect()
                         .activation(120f)
                         .attack(damage = 1)
                         .color(color)
-                        .health(2)
+                        .health(20)
                         .boundingBox(10f, 10f)
                         .position(rect.x, rect.y)
                         .velocity(speed = 20f)
@@ -171,7 +170,7 @@ object EntityFactory {
                 val angles = listOf(MathUtils.PI2 / 5f, MathUtils.PI2 * 2f / 5f, MathUtils.PI2 * 3 / 5f, MathUtils.PI2 * 4 / 5f, 0f)
                 for (angle in angles) {
                     EntityBuilder.instance(engine)
-                            .enemy(enemyType = type, movementType = EnemyMovementType.Orbit, parent = parent)
+                            .enemy(enemyType = type, movementType = EnemyMovementType.Orbit, parent = parent, visible = false)
                             .activation(150f)
                             .attack(damage = 1)
                             .color(color)

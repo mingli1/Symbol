@@ -14,6 +14,7 @@ import com.badlogic.gdx.utils.Array
 import com.symbol.game.ecs.EntityBuilder
 import com.symbol.game.ecs.Mapper
 import com.symbol.game.ecs.component.*
+import com.symbol.game.ecs.component.enemy.EnemyComponent
 import com.symbol.game.ecs.component.map.MapEntityComponent
 import com.symbol.game.ecs.component.map.MirrorComponent
 import com.symbol.game.ecs.component.map.ToggleTileComponent
@@ -41,12 +42,14 @@ class ProjectileSystem(private val player: Player, private val res: Resources, p
     private lateinit var allEntities: ImmutableArray<Entity>
     private lateinit var mapEntities: ImmutableArray<Entity>
     private lateinit var toggleTiles: ImmutableArray<Entity>
+    private lateinit var enemies: ImmutableArray<Entity>
 
     override fun addedToEngine(engine: Engine?) {
         super.addedToEngine(engine)
         allEntities = engine!!.getEntitiesFor(Family.all(HealthComponent::class.java).get())
         mapEntities = engine.getEntitiesFor(Family.all(MapEntityComponent::class.java).get())
         toggleTiles = engine.getEntitiesFor(Family.all(ToggleTileComponent::class.java).get())
+        enemies = engine.getEntitiesFor(Family.all(EnemyComponent::class.java).get())
     }
 
     fun setMapData(mapObjects: Array<MapObject>) {
@@ -585,6 +588,10 @@ class ProjectileSystem(private val player: Player, private val res: Resources, p
         val invert = Mapper.INVERT_SWITCH_MAPPER.get(entity)
         invert.toggle = !invert.toggle
         gameScreen.mapInverted = invert.toggle
+        for (enemy in enemies) {
+            val enemyComp = Mapper.ENEMY_MAPPER.get(enemy)
+            enemyComp.visible = !enemyComp.visible
+        }
     }
 
 }

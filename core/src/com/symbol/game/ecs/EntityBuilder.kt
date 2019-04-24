@@ -204,12 +204,14 @@ class EntityBuilder(private val engine: PooledEngine) {
     fun enemy(enemyType: EnemyType = EnemyType.None,
               movementType: EnemyMovementType = EnemyMovementType.None,
               attackType: EnemyAttackType = EnemyAttackType.None,
-              parent: Entity? = null) : EntityBuilder {
+              parent: Entity? = null,
+              visible: Boolean = true) : EntityBuilder {
         enemyComponent = engine.createComponent(EnemyComponent::class.java)
         enemyComponent?.enemyType = enemyType
         enemyComponent?.movementType = movementType
         enemyComponent?.attackType = attackType
         enemyComponent?.parent = parent
+        enemyComponent?.visible = visible
         return this
     }
 

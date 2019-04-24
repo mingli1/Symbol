@@ -56,6 +56,15 @@
       "additionalInfo": ""
     },
     {
+      "id": "iswitch",
+      "name": "invert map switch",
+      "entityType": "map object",
+      "image": "invert_switch",
+      "flip": false,
+      "description": "inverts the map to allow the player to see invisible enemies",
+      "additionalInfo": "inverting also prevents you from seeing previously visible enemies!"
+    },
+    {
       "id": "sswitch",
       "name": "toggle switch",
       "entityType": "map object",

@@ -114,7 +114,7 @@ class GameScreen(game: Symbol) : AbstractScreen(game) {
 
         resetSystems()
 
-        //if (hud.hasHelpPageNotSeen()) hud.showHelpDialog()
+        if (hud.hasHelpPageNotSeen()) hud.showHelpDialog()
     }
 
     private fun update(dt: Float) {
@@ -168,7 +168,10 @@ class GameScreen(game: Symbol) : AbstractScreen(game) {
         updateEngine(dt)
         ParticleSpawner.render(game.batch, cam)
 
-        if (canInvert) game.batch.shader = null
+        if (canInvert) {
+            game.batch.shader = null
+            engine.getSystem(StatusRenderSystem::class.java).update(dt)
+        }
 
         game.batch.projectionMatrix = stage.camera.combined
         hud.render(dt)
