@@ -29,6 +29,7 @@ import com.symbol.game.screen.GameScreen
 import com.symbol.game.util.Resources
 import com.symbol.game.util.TOGGLE_OFF
 import com.symbol.game.util.TOGGLE_ON
+import kotlin.math.abs
 
 const val DIAGONAL_PROJECTILE_SCALING = 0.75f
 private const val KNOCKBACK_TIME = 0.1f
@@ -179,9 +180,10 @@ class ProjectileSystem(private val player: Player, private val res: Resources, p
         }
 
         when (pj.movementType) {
-            ProjectileMovementType.Normal -> {}
             ProjectileMovementType.Arc -> handleArcMovement(entity, dt, pj)
             ProjectileMovementType.Wave -> handleWaveMovement(entity, dt, pj)
+            ProjectileMovementType.Homing -> handleHomingMovement(entity)
+            else -> {}
         }
 
         handleDetonation(entity, pj, bb.rect, remove)
@@ -351,6 +353,23 @@ class ProjectileSystem(private val player: Player, private val res: Resources, p
             Direction.Left, Direction.Right -> velocity.dy = offset
             Direction.Up, Direction.Down -> velocity.dx = offset
         }
+    }
+
+    private fun handleHomingMovement(entity: Entity?) {
+        val velocity = Mapper.VEL_MAPPER.get(entity)
+        val bounds = Mapper.BOUNDING_BOX_MAPPER.get(entity)
+        val playerBounds = Mapper.BOUNDING_BOX_MAPPER.get(player)
+
+        val x = bounds.rect.x + bounds.rect.width / 2
+        val y = bounds.rect.y + bounds.rect.height / 2
+        val px = playerBounds.rect.x + playerBounds.rect.width / 2
+        val py = playerBounds.rect.y + playerBounds.rect.height / 2
+
+        velocity.dx = if (x > px) -velocity.speed else velocity.speed
+        velocity.dy = if (y > py) -velocity.speed else velocity.speed
+
+        if (abs(x - px) <= 1f) velocity.dx = 0f
+        if (abs(y - py) <= 1f) velocity.dy = 0f
     }
 
     private fun createSubProjectile(damage: Int, bounds: Rectangle,

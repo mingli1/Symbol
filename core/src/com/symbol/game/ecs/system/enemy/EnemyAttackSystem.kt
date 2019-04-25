@@ -25,6 +25,7 @@ import com.symbol.game.effects.particle.DEFAULT_LIFETIME
 import com.symbol.game.effects.particle.ParticleSpawner
 import com.symbol.game.map.camera.CameraShake
 import com.symbol.game.util.Resources
+import kotlin.math.abs
 
 private const val CAMERA_SHAKE_POWER = 3f
 private const val CAMERA_SHAKE_DURATION = 0.7f
@@ -87,6 +88,7 @@ class EnemyAttackSystem(private val player: Player, private val res: Resources) 
                     EnemyAttackType.TwoVerticalWave -> twoVerticalWave(attack, bounds, dir)
                     EnemyAttackType.FourWave -> fourWave(attack, bounds, dir)
                     EnemyAttackType.ShootBoomerang -> shootBoomerang(attack, bounds, dir)
+                    EnemyAttackType.ShootHoming -> shootHoming(attack, bounds, dir)
                 }
                 attack.canAttack = false
             }
@@ -303,6 +305,10 @@ class EnemyAttackSystem(private val player: Player, private val res: Resources) 
         shootOne(attackComp, dir, bounds, ProjectileMovementType.Boomerang)
     }
 
+    private fun shootHoming(attackComp: AttackComponent, bounds: Rectangle, dir: DirectionComponent) {
+        shootOne(attackComp, dir, bounds, ProjectileMovementType.Homing)
+    }
+
     private fun createProjectile(attackComp: AttackComponent, dir: DirectionComponent, bounds: Rectangle,
                                  dx: Float = 0f, dy: Float = 0f, texture: TextureRegion,
                                  movementType: ProjectileMovementType = ProjectileMovementType.Normal) : Entity? {
@@ -319,7 +325,7 @@ class EnemyAttackSystem(private val player: Player, private val res: Resources) 
                         damage = attackComp.damage, detonateTime = attackComp.attackDetonateTime, acceleration = attackComp.projectileAcceleration)
                 .color(res.getColor(attackComp.attackTexture!!)!!)
                 .position(originX, originY)
-                .velocity(dx = dx, dy = dy)
+                .velocity(dx = dx, dy = dy, speed = abs(if (dx != 0f) dx else dy))
                 .boundingBox(bw.toFloat(), bh.toFloat())
                 .texture(texture, attackComp.attackTexture)
                 .direction(yFlip = true).remove().build()
@@ -337,7 +343,7 @@ class EnemyAttackSystem(private val player: Player, private val res: Resources) 
                         textureStr = attackComp.attackTexture, damage = attackComp.damage)
                 .color(res.getColor(attackComp.attackTexture!!)!!)
                 .position(originX, originY)
-                .velocity(dx = dx, dy = dy)
+                .velocity(dx = dx, dy = dy, speed = abs(if (dx != 0f) dx else dy))
                 .boundingBox(bw.toFloat(), bh.toFloat())
                 .texture(texture, attackComp.attackTexture)
                 .direction(yFlip = true).gravity(collidable = false).remove().build()

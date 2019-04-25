@@ -45,7 +45,8 @@ enum class EnemyAttackType {
     TwoHorizontalWave,
     TwoVerticalWave,
     FourWave,
-    ShootBoomerang
+    ShootBoomerang,
+    ShootHoming
 
 }
 

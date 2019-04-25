@@ -55,6 +55,7 @@ enum class ProjectileMovementType {
     Normal,
     Arc,
     Wave,
-    Boomerang
+    Boomerang,
+    Homing
 
 }
