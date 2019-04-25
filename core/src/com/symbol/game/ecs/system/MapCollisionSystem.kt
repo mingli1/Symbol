@@ -11,6 +11,7 @@ import com.symbol.game.ecs.component.*
 import com.symbol.game.ecs.component.enemy.BlockComponent
 import com.symbol.game.ecs.component.map.MapEntityComponent
 import com.symbol.game.ecs.component.map.MovingPlatformComponent
+import com.symbol.game.ecs.component.map.ToggleTileComponent
 import com.symbol.game.effects.particle.DEFAULT_INTESITY
 import com.symbol.game.effects.particle.DEFAULT_LIFETIME
 import com.symbol.game.effects.particle.ParticleSpawner
@@ -39,6 +40,7 @@ class MapCollisionSystem(private val res: Resources) : IteratingSystem(
     private lateinit var removableEntities: ImmutableArray<Entity>
     private lateinit var movingPlatforms: ImmutableArray<Entity>
     private lateinit var collidableEntities: ImmutableArray<Entity>
+    private lateinit var toggleTiles: ImmutableArray<Entity>
 
     private var damageTimes: MutableMap<Entity, Float> = HashMap()
     private var startDamage: MutableMap<Entity, Boolean> = HashMap()
@@ -49,6 +51,7 @@ class MapCollisionSystem(private val res: Resources) : IteratingSystem(
         movingPlatforms = engine.getEntitiesFor(Family.all(MovingPlatformComponent::class.java).get())
         collidableEntities = engine.getEntitiesFor(Family.one(MapEntityComponent::class.java, BlockComponent::class.java)
                 .exclude(MovingPlatformComponent::class.java).get())
+        toggleTiles = engine.getEntitiesFor(Family.all(ToggleTileComponent::class.java).get())
     }
 
     override fun update(dt: Float) {
@@ -199,6 +202,13 @@ class MapCollisionSystem(private val res: Resources) : IteratingSystem(
             }
         }
 
+        for (toggleTile in toggleTiles) {
+            val tt = Mapper.TOGGLE_TILE_MAPPER.get(toggleTile)
+            if (bb.rect.overlaps(tt.lethalRect) && tt.toggle) {
+                killEntity(entity)
+            }
+        }
+
         if (startDamage[entity]!!) {
             damageTimes[entity!!] = damageTimes[entity]?.plus(dt)!!
             if (damageTimes[entity]!! >= MAP_OBJECT_DAMAGE_RATE) {
@@ -222,7 +232,7 @@ class MapCollisionSystem(private val res: Resources) : IteratingSystem(
         }
     }
 
-    private fun handleLethalMapObject(entity: Entity?) {
+    private fun killEntity(entity: Entity?) {
         val health = Mapper.HEALTH_MAPPER.get(entity)
         health?.hp = 0
 
@@ -230,6 +240,10 @@ class MapCollisionSystem(private val res: Resources) : IteratingSystem(
         val color = Mapper.COLOR_MAPPER.get(entity)
         ParticleSpawner.spawn(res, color.hex!!, DEFAULT_LIFETIME, DEFAULT_INTESITY + health.maxHp,
                 bounds.rect.x + bounds.rect.width / 2, bounds.rect.y + bounds.rect.height / 2)
+    }
+
+    private fun handleLethalMapObject(entity: Entity?) {
+        killEntity(entity)
     }
 
     private fun handleDamageMapObject(mapObject: MapObject, entity: Entity?) {

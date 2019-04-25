@@ -315,9 +315,10 @@ class EntityBuilder(private val engine: PooledEngine) {
         return this
     }
 
-    fun toggleTile(id: Int) : EntityBuilder {
+    fun toggleTile(id: Int, lx: Float = 0f, ly: Float = 0f, lw: Float = 0f, lh: Float = 0f) : EntityBuilder {
         toggleTileComponent = engine.createComponent(ToggleTileComponent::class.java)
         toggleTileComponent?.id = id
+        toggleTileComponent?.lethalRect?.set(lx, ly, lw, lh)
         return this
     }
 

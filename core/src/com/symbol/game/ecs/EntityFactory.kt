@@ -377,11 +377,13 @@ object EntityFactory {
             MapEntityType.ToggleTile -> {
                 val texture = res.getTexture("toggle_square")!!
                 val id = props["id"]!! as Int
+                val width = texture.regionWidth.toFloat()
+                val height = texture.regionHeight.toFloat()
 
                 EntityBuilder.instance(engine)
                         .mapEntity(type = type, mapCollidable = true, projectileCollidable = true)
-                        .toggleTile(id)
-                        .boundingBox(texture.regionWidth.toFloat(), texture.regionHeight.toFloat())
+                        .toggleTile(id, rect.x + 0.5f, rect.y + 0.5f, width - 1.5f, height - 1.5f)
+                        .boundingBox(width, height)
                         .position(rect.x, rect.y)
                         .velocity()
                         .texture(texture, "toggle_square")
