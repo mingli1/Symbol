@@ -11,5 +11,9 @@
   "exitButton": "exit",
   "githubUrl": "https://github.com/mingli1/Symbol",
   "helpDialogTitle": "hints",
-  "helpDialogNew": "new!"
+  "helpDialogNew": "new!",
+  "exitConfirmTitle": "exit map?",
+  "exitConfirmMessage": "are you sure you want to quit the map?\nyour progress won't be saved.",
+  "affirmativeText": "yes",
+  "dismissiveText": "no"
 }

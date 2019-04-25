@@ -16,6 +16,8 @@ public class BaseModalDialog extends Dialog {
     private Image image;
     boolean dismissable = false;
 
+    Stage stage;
+
     BaseModalDialog(String title, Skin skin, final Symbol game) {
         super(title, skin);
 
@@ -36,6 +38,7 @@ public class BaseModalDialog extends Dialog {
 
     @Override
     public Dialog show(Stage stage) {
+        this.stage = stage;
         stage.addActor(image);
         super.show(stage);
         return this;

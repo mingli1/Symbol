@@ -115,7 +115,7 @@ class GameScreen(game: Symbol) : AbstractScreen(game) {
 
         resetSystems()
 
-        if (hud.hasHelpPageNotSeen()) hud.showHelpDialog()
+        //if (hud.hasHelpPageNotSeen()) hud.showHelpDialog()
     }
 
     private fun update(dt: Float) {

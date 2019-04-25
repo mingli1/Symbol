@@ -14,6 +14,8 @@ public class PauseDialog extends BaseModalDialog {
 
     private final Symbol game;
 
+    private ConfirmDialog confirmDialog;
+
     public PauseDialog(final Symbol game) {
         super(game.getRes().getString("pauseDialogTitle"), game.getRes().getSkin(), game);
         this.game = game;
@@ -35,6 +37,15 @@ public class PauseDialog extends BaseModalDialog {
 
         TextButton exitButton = new TextButton(game.getRes().getString("exitButton"), getSkin());
         button(exitButton, game.getRes().getString("exitButton"));
+
+        confirmDialog = new ConfirmDialog(game,
+                game.getRes().getString("exitConfirmTitle"),
+                game.getRes().getString("exitConfirmMessage"),
+                this::exit,
+                () -> {
+                    confirmDialog.hide();
+                    show(stage);
+                });
     }
 
     @Override
@@ -44,9 +55,14 @@ public class PauseDialog extends BaseModalDialog {
             game.getGameScreen().notifyResume();
         }
         else if (object.equals(game.getRes().getString("exitButton"))) {
-            hide(null);
-            game.setScreen(game.getMenuScreen());
+            confirmDialog.show(stage);
         }
+    }
+
+    private void exit() {
+        hide(null);
+        confirmDialog.hide(null);
+        game.setScreen(game.getMenuScreen());
     }
 
 }
