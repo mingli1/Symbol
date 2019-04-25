@@ -251,16 +251,19 @@ object EntityFactory {
     }
 
     fun createMapEntity(engine: PooledEngine, res: Resources, props: MapProperties, type: MapEntityType, rect: Rectangle) {
+        val dx = (props["dx"] ?: 0f) as Float
+        val dy = (props["dy"] ?: 0f) as Float
+        val dist = (props["dist"] ?: 0f) as Float
+
         when (type) {
             MapEntityType.MovingPlatform -> {
-                val dist = (props["dist"] ?: 0f) as Float
-                val dx = (props["dx"] ?: 0f) as Float
                 val textureStr = "${type.typeStr}${MathUtils.ceil(rect.width / 8)}"
                 val texture = res.getTexture(textureStr)!!
 
                 EntityBuilder.instance(engine)
                         .mapEntity(type = type, projectileCollidable = true)
-                        .movingPlatform(distance = dist, positive = dx > 0)
+                        .movingPlatform()
+                        .backAndForth(dist = dist, positive = dx > 0)
                         .boundingBox(texture.regionWidth.toFloat(), texture.regionHeight.toFloat())
                         .position(rect.x, rect.y)
                         .velocity(dx = dx)

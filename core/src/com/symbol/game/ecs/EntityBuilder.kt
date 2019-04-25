@@ -56,6 +56,7 @@ class EntityBuilder(private val engine: PooledEngine) {
     private var damageBoostComponent: DamageBoostComponent? = null
     private var mirrorComponent: MirrorComponent? = null
     private var invertSwitchComponent: InvertSwitchComponent? = null
+    private var backAndForthComponent: BackAndForthComponent? = null
 
     companion object {
         fun instance(engine: PooledEngine) : EntityBuilder = EntityBuilder(engine)
@@ -280,10 +281,8 @@ class EntityBuilder(private val engine: PooledEngine) {
         return this
     }
 
-    fun movingPlatform(distance: Float = 0f, positive: Boolean = true) : EntityBuilder {
+    fun movingPlatform() : EntityBuilder {
         movingPlatformComponent = engine.createComponent(MovingPlatformComponent::class.java)
-        movingPlatformComponent?.distance = distance
-        movingPlatformComponent?.positive = positive
         return this
     }
 
@@ -346,6 +345,13 @@ class EntityBuilder(private val engine: PooledEngine) {
         return this
     }
 
+    fun backAndForth(dist: Float = 0f, positive: Boolean = true) : EntityBuilder {
+        backAndForthComponent = engine.createComponent(BackAndForthComponent::class.java)
+        backAndForthComponent?.dist = dist
+        backAndForthComponent?.positive = positive
+        return this
+    }
+
     fun build() : Entity {
         val entity = engine.createEntity()
 
@@ -389,6 +395,7 @@ class EntityBuilder(private val engine: PooledEngine) {
         if (damageBoostComponent != null) entity.add(damageBoostComponent)
         if (mirrorComponent != null) entity.add(mirrorComponent)
         if (invertSwitchComponent != null) entity.add(invertSwitchComponent)
+        if (backAndForthComponent != null) entity.add(backAndForthComponent)
 
         engine.addEntity(entity)
         return entity

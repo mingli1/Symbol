@@ -36,7 +36,6 @@ object Mapper {
     val BLOCK_MAPPER = ComponentMapper.getFor(BlockComponent::class.java)!!
 
     val MAP_ENTITY_MAPPER = ComponentMapper.getFor(MapEntityComponent::class.java)!!
-    val MOVING_PLATFORM_MAPPER = ComponentMapper.getFor(MovingPlatformComponent::class.java)!!
     val PORTAL_MAPPER = ComponentMapper.getFor(PortalComponent::class.java)!!
     val CLAMP_MAPPER = ComponentMapper.getFor(ClampComponent::class.java)!!
     val HEALTH_PACK_MAPPER = ComponentMapper.getFor(HealthPackComponent::class.java)!!
@@ -47,5 +46,6 @@ object Mapper {
     val DAMAGE_BOOST_MAPPER = ComponentMapper.getFor(DamageBoostComponent::class.java)!!
     val MIRROR_MAPPER = ComponentMapper.getFor(MirrorComponent::class.java)!!
     val INVERT_SWITCH_MAPPER = ComponentMapper.getFor(InvertSwitchComponent::class.java)!!
+    val BACK_AND_FORTH_MAPPER = ComponentMapper.getFor(BackAndForthComponent::class.java)!!
 
 }

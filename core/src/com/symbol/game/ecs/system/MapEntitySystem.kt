@@ -12,6 +12,7 @@ import com.symbol.game.ecs.component.PlayerComponent
 import com.symbol.game.ecs.component.ProjectileComponent
 import com.symbol.game.ecs.component.StatusEffect
 import com.symbol.game.ecs.component.enemy.EnemyComponent
+import com.symbol.game.ecs.component.map.BackAndForthComponent
 import com.symbol.game.ecs.component.map.MapEntityComponent
 import com.symbol.game.ecs.component.map.PortalComponent
 import com.symbol.game.ecs.entity.MapEntityType
@@ -36,8 +37,11 @@ class MapEntitySystem(private val player: Player, private val res: Resources) :
 
     override fun processEntity(entity: Entity?, dt: Float) {
         val mapEntityComponent = Mapper.MAP_ENTITY_MAPPER.get(entity)
+        val backAndForthComponent = Mapper.BACK_AND_FORTH_MAPPER.get(entity)
+
+        if (backAndForthComponent != null) handleMovement(entity, backAndForthComponent)
+
         when (mapEntityComponent.mapEntityType) {
-            MapEntityType.MovingPlatform -> handleMovingPlatform(entity)
             MapEntityType.TemporaryPlatform -> handleTempPlatform(entity)
             MapEntityType.Portal -> handlePortal(entity)
             MapEntityType.Clamp -> handleClamp(entity, dt)
@@ -48,24 +52,38 @@ class MapEntitySystem(private val player: Player, private val res: Resources) :
         }
     }
 
-    private fun handleMovingPlatform(entity: Entity?) {
-        val mp = Mapper.MOVING_PLATFORM_MAPPER.get(entity)
+    private fun handleMovement(entity: Entity?, bf: BackAndForthComponent) {
         val bounds = Mapper.BOUNDING_BOX_MAPPER.get(entity)
         val position = Mapper.POS_MAPPER.get(entity)
         val velocity = Mapper.VEL_MAPPER.get(entity)
 
         if (velocity.dx != 0f) {
-            if (mp.positive) {
+            if (bf.positive) {
                 val trueX = position.x + bounds.rect.width
-                if ((velocity.dx > 0 && trueX - position.originX >= mp.distance) ||
+                if ((velocity.dx > 0 && trueX - position.originX >= bf.dist) ||
                         (velocity.dx < 0 && position.x <= position.originX)) {
                     velocity.dx = -velocity.dx
                 }
             }
             else {
-                if ((velocity.dx < 0 && position.originX - position.x >= mp.distance) ||
+                if ((velocity.dx < 0 && position.originX - position.x >= bf.dist) ||
                         (velocity.dx > 0 && position.x >= position.originX)) {
                     velocity.dx = -velocity.dx
+                }
+            }
+        }
+        else if (velocity.dy != 0f) {
+            if (bf.positive) {
+                val trueY = position.y + bounds.rect.height
+                if ((velocity.dy > 0 && trueY - position.originY >= bf.dist) ||
+                        (velocity.dy < 0 && position.y <= position.originY)) {
+                    velocity.dy = -velocity.dy
+                }
+            }
+            else {
+                if ((velocity.dy < 0 && position.originY - position.y >= bf.dist) ||
+                        (velocity.dy > 0 && position.y >= position.originY)) {
+                    velocity.dy = -velocity.dy
                 }
             }
         }
