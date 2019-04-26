@@ -24,6 +24,7 @@ import com.symbol.game.map.camera.Background
 import com.symbol.game.map.camera.CameraRotation
 import com.symbol.game.map.camera.CameraShake
 import com.symbol.game.scene.Hud
+import com.symbol.game.scene.dialog.DeathDialog
 
 private const val CAMERA_LERP = 2.5f
 private const val PARALLAX_SCALING = 0.2f
@@ -46,6 +47,7 @@ class GameScreen(game: Symbol) : AbstractScreen(game) {
             cam, Vector2(PARALLAX_SCALING, PARALLAX_SCALING))
 
     private val hud = Hud(game, player, stage, viewport)
+    val deathDialog = DeathDialog(game)
 
     private var debugCamera = false
 
@@ -58,7 +60,7 @@ class GameScreen(game: Symbol) : AbstractScreen(game) {
         androidInput = AndroidInput(game, keyInputSystem, stage, viewport)
 
         engine.addSystem(keyInputSystem)
-        engine.addSystem(PlayerSystem(player))
+        engine.addSystem(PlayerSystem(player, this))
 
         multiplexer.addProcessor(stage)
         if (!Config.onAndroid()) multiplexer.addProcessor(input)
@@ -114,6 +116,8 @@ class GameScreen(game: Symbol) : AbstractScreen(game) {
         ParticleSpawner.reset()
 
         resetSystems()
+        notifyResume()
+        hud.toggle(true);
 
         //if (hud.hasHelpPageNotSeen()) hud.showHelpDialog()
     }
@@ -185,9 +189,23 @@ class GameScreen(game: Symbol) : AbstractScreen(game) {
 
     override fun notifyPause() {
         super.notifyPause()
+        if (!Config.onAndroid()) multiplexer.removeProcessor(input)
         if (!stage.actors.contains(hud.pauseDialog) && !stage.actors.contains(hud.helpDialog)) {
             hud.pauseDialog.show(stage)
         }
+    }
+
+    override fun notifyResume() {
+        super.notifyResume()
+        if (!Config.onAndroid() && !multiplexer.processors.contains(input)) {
+            multiplexer.addProcessor(input)
+        }
+    }
+
+    fun showDeathDialog() {
+        if (!Config.onAndroid()) multiplexer.removeProcessor(input)
+        hud.toggle(false)
+        deathDialog.show(stage)
     }
 
     override fun dispose() {

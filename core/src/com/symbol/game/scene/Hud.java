@@ -69,8 +69,11 @@ public class Hud extends Scene {
     private HelpDialog helpDialog;
     private PauseDialog pauseDialog;
 
+    private ImageButton settingsButton;
     private ImageButton helpButton;
     private Image helpButtonAlert;
+
+    private boolean toggle = true;
 
     public Hud(final Symbol game, Entity player, Stage stage, Viewport viewport) {
         super(game, stage, viewport);
@@ -140,7 +143,7 @@ public class Hud extends Scene {
 
     private void createSettingsButton() {
         ImageButton.ImageButtonStyle style = game.getRes().getImageButtonStyle("settings");
-        ImageButton settingsButton = new ImageButton(style);
+        settingsButton = new ImageButton(style);
         root.add(settingsButton).expandX().right().padRight(4f).padTop(3f);
 
         settingsButton.addListener(new InputListener() {
@@ -178,8 +181,10 @@ public class Hud extends Scene {
     @Override
     public void render(float dt) {
         if (helpDialog.isDisplayed()) helpDialog.update(dt);
-        renderHpBar();
-        renderChargeBar();
+        if (toggle) {
+            renderHpBar();
+            renderChargeBar();
+        }
     }
 
     private void updateStatusBars(float dt) {
@@ -280,6 +285,15 @@ public class Hud extends Scene {
 
     public Table getHelpDialog() {
         return helpDialog;
+    }
+
+    public void toggle(boolean toggle) {
+        this.toggle = toggle;
+        hpBarIcon.setVisible(toggle);
+        chargeBarIcon.setVisible(toggle);
+        settingsButton.setVisible(toggle);
+        helpButton.setVisible(toggle);
+        toggleHelpButtonAlert(toggle && helpDialog.hasPageNotSeen());
     }
 
     public void toggleHelpButtonAlert(boolean toggle) {

@@ -39,6 +39,7 @@ class Player(private val res: Resources) : Entity() {
     private val gravity = GravityComponent()
     private val statusEffect = StatusEffectComponent()
     private val direction = DirectionComponent()
+    private val remove = RemoveComponent()
 
     init {
         add(player)
@@ -52,6 +53,7 @@ class Player(private val res: Resources) : Entity() {
         add(gravity)
         add(statusEffect)
         add(direction)
+        add(remove)
     }
 
     fun reset() {
@@ -66,6 +68,7 @@ class Player(private val res: Resources) : Entity() {
         gravity.reset()
         statusEffect.reset()
         direction.reset()
+        remove.reset()
 
         color.hex = res.getColor("player")
         bounds.rect.setSize(PLAYER_BOUNDS_WIDTH, PLAYER_BOUNDS_HEIGHT)

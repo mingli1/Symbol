@@ -4,8 +4,9 @@ import com.badlogic.ashley.core.EntitySystem
 import com.symbol.game.ecs.Mapper
 import com.symbol.game.ecs.entity.PLAYER_PROJECTILE_SHOOT_DELAY
 import com.symbol.game.ecs.entity.Player
+import com.symbol.game.screen.GameScreen
 
-class PlayerSystem(private val player: Player) : EntitySystem() {
+class PlayerSystem(private val player: Player, private val gameScreen: GameScreen) : EntitySystem() {
 
     private var stateTime = 0f
     private var healTime = 0f
@@ -39,6 +40,10 @@ class PlayerSystem(private val player: Player) : EntitySystem() {
                     healTime = 0f
                 }
             }
+        }
+
+        if (playerComp.dead && !gameScreen.deathDialog.isDisplayed) {
+            gameScreen.showDeathDialog()
         }
     }
 

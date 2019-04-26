@@ -5,6 +5,8 @@ import com.badlogic.gdx.utils.Pool
 
 class PlayerComponent : Component, Pool.Poolable {
 
+    var dead = false
+
     var damage = 0
     var damageBoost = 0
 
@@ -21,6 +23,7 @@ class PlayerComponent : Component, Pool.Poolable {
     var healTime = 0f
 
     override fun reset() {
+        dead = false
         damage = 0
         damageBoost = 0
         canJump = false

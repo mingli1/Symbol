@@ -16,8 +16,8 @@ class HealthSystem : IteratingSystem(Family.all(HealthComponent::class.java).get
         if (health.hp > health.maxHp) health.hp = health.maxHp
 
         if (health.hp <= 0) {
-            if (entity !is Player) remove?.shouldRemove = true
-            else health.hp = 0
+            remove?.shouldRemove = true
+            if (entity is Player) Mapper.PLAYER_MAPPER.get(entity).dead = true
         }
     }
 
