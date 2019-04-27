@@ -2,11 +2,13 @@ package com.symbol.game.scene.dialog;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Interpolation;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.symbol.game.Symbol;
 import com.symbol.game.util.Resources;
@@ -20,10 +22,12 @@ public class DeathDialog extends Table {
     private static final float FADE_IN_TIME = 3f;
     private static final float BUTTON_WIDTH = 100f;
 
+    private final Symbol game;
     private Resources res;
     private boolean displayed;
 
     public DeathDialog(final Symbol game) {
+        this.game = game;
         res = game.getRes();
         setBackground(new TextureRegionDrawable(res.getTexture("death_shadow")));
         setFillParent(true);
@@ -42,6 +46,17 @@ public class DeathDialog extends Table {
 
         TextButton quitButton = new TextButton(res.getString("quitButton"), res.getSkin());
         add(quitButton).width(BUTTON_WIDTH).height(16f);
+
+        respawnButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) { onRespawnClicked(); }
+        });
+        quitButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                onQuitClicked();
+            }
+        });
     }
 
     public void show(Stage stage) {
@@ -55,6 +70,16 @@ public class DeathDialog extends Table {
     public void hide() {
         displayed = false;
         remove();
+    }
+
+    private void onRespawnClicked() {
+        hide();
+        game.getGameScreen().loadMap(true);
+    }
+
+    private void onQuitClicked() {
+        hide();
+        game.setScreen(game.getMenuScreen());
     }
 
     public boolean isDisplayed() {

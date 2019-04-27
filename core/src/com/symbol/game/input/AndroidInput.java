@@ -24,6 +24,11 @@ public class AndroidInput extends Scene {
 
     private KeyInputHandler keyInputHandler;
 
+    private ImageButton leftButton;
+    private ImageButton rightButton;
+    private ImageButton jumpButton;
+    private ImageButton shootButton;
+
     public AndroidInput(final Symbol game, KeyInputHandler keyInputHandler, Stage stage, Viewport viewport) {
         super(game, stage, viewport);
         this.keyInputHandler = keyInputHandler;
@@ -40,7 +45,7 @@ public class AndroidInput extends Scene {
         final ImageButton.ImageButtonStyle leftDown = new ImageButton.ImageButtonStyle();
         leftDown.imageUp = new TextureRegionDrawable(game.getRes().getTexture("button_left_down"));
 
-        final ImageButton leftButton = new ImageButton(game.getRes().getImageButtonStyle("left"));
+        leftButton = new ImageButton(game.getRes().getImageButtonStyle("left"));
         leftButton.setPosition(LEFT_BUTTON_POSITION.x, LEFT_BUTTON_POSITION.y);
         leftButton.setSize(DIRECTIONAL_BUTTON_SIZE, DIRECTIONAL_BUTTON_SIZE);
 
@@ -63,7 +68,7 @@ public class AndroidInput extends Scene {
         final ImageButton.ImageButtonStyle rightDown = new ImageButton.ImageButtonStyle();
         rightDown.imageUp = new TextureRegionDrawable(game.getRes().getTexture("button_right_down"));
 
-        final ImageButton rightButton = new ImageButton(game.getRes().getImageButtonStyle("right"));
+        rightButton = new ImageButton(game.getRes().getImageButtonStyle("right"));
         rightButton.setPosition(RIGHT_BUTTON_POSITION.x, RIGHT_BUTTON_POSITION.y);
         rightButton.setSize(DIRECTIONAL_BUTTON_SIZE, DIRECTIONAL_BUTTON_SIZE);
 
@@ -86,7 +91,7 @@ public class AndroidInput extends Scene {
     }
 
     private void createActionButtons() {
-        ImageButton jumpButton = new ImageButton(game.getRes().getImageButtonStyle("jump"));
+        jumpButton = new ImageButton(game.getRes().getImageButtonStyle("jump"));
         jumpButton.setPosition(JUMP_BUTTON_POSITION.x, JUMP_BUTTON_POSITION.y);
         jumpButton.setSize(ACTION_BUTTON_SIZE, ACTION_BUTTON_SIZE);
 
@@ -98,7 +103,7 @@ public class AndroidInput extends Scene {
             }
         });
 
-        ImageButton shootButton = new ImageButton(game.getRes().getImageButtonStyle("shoot"));
+        shootButton = new ImageButton(game.getRes().getImageButtonStyle("shoot"));
         shootButton.setPosition(SHOOT_BUTTON_POSITION.x, SHOOT_BUTTON_POSITION.y);
         shootButton.setSize(ACTION_BUTTON_SIZE, ACTION_BUTTON_SIZE);
 
@@ -116,6 +121,15 @@ public class AndroidInput extends Scene {
 
         stage.addActor(jumpButton);
         stage.addActor(shootButton);
+    }
+
+    public void toggle(boolean toggle) {
+        if (Config.INSTANCE.onAndroid()) {
+            leftButton.setVisible(toggle);
+            rightButton.setVisible(toggle);
+            jumpButton.setVisible(toggle);
+            shootButton.setVisible(toggle);
+        }
     }
 
     @Override

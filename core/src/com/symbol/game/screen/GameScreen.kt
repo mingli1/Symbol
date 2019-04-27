@@ -94,6 +94,10 @@ class GameScreen(game: Symbol) : AbstractScreen(game) {
 
     override fun show() {
         Gdx.input.inputProcessor = multiplexer
+        loadMap()
+    }
+
+    fun loadMap(respawn: Boolean = false) {
         gameState = GameState.Resume
 
         engine.removeAllEntities()
@@ -117,9 +121,10 @@ class GameScreen(game: Symbol) : AbstractScreen(game) {
 
         resetSystems()
         notifyResume()
-        hud.toggle(true);
+        hud.toggle(true)
+        androidInput.toggle(true)
 
-        //if (hud.hasHelpPageNotSeen()) hud.showHelpDialog()
+        if (!respawn && hud.hasHelpPageNotSeen()) hud.showHelpDialog()
     }
 
     private fun update(dt: Float) {
@@ -190,7 +195,9 @@ class GameScreen(game: Symbol) : AbstractScreen(game) {
     override fun notifyPause() {
         super.notifyPause()
         if (!Config.onAndroid()) multiplexer.removeProcessor(input)
-        if (!stage.actors.contains(hud.pauseDialog) && !stage.actors.contains(hud.helpDialog)) {
+        if (!stage.actors.contains(hud.pauseDialog) &&
+                !stage.actors.contains(hud.helpDialog) &&
+                !stage.actors.contains(deathDialog)) {
             hud.pauseDialog.show(stage)
         }
     }
@@ -205,6 +212,7 @@ class GameScreen(game: Symbol) : AbstractScreen(game) {
     fun showDeathDialog() {
         if (!Config.onAndroid()) multiplexer.removeProcessor(input)
         hud.toggle(false)
+        androidInput.toggle(false)
         deathDialog.show(stage)
     }
 
