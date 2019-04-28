@@ -14,7 +14,8 @@ enum class MapEntityType(val typeStr: String) {
     ToggleTile("toggle"),
     ForceField("force_field"),
     DamageBoost("damage_boost"),
-    InvertSwitch("iswitch");
+    InvertSwitch("iswitch"),
+    AccelerationGate("agate");
 
     companion object {
         fun getType(typeStr: String) : MapEntityType? = values().find { it.typeStr == typeStr }

@@ -13,6 +13,7 @@ import com.symbol.game.ecs.entity.EnemyType
 import com.symbol.game.ecs.entity.MapEntityType
 import com.symbol.game.ecs.system.GRAVITY
 import com.symbol.game.ecs.system.TERMINAL_VELOCITY
+import com.symbol.game.util.Orientation
 
 class EntityBuilder(private val engine: PooledEngine) {
 
@@ -57,6 +58,7 @@ class EntityBuilder(private val engine: PooledEngine) {
     private var mirrorComponent: MirrorComponent? = null
     private var invertSwitchComponent: InvertSwitchComponent? = null
     private var backAndForthComponent: BackAndForthComponent? = null
+    private var accelerationGateComponent: AccelerationGateComponent? = null
 
     companion object {
         fun instance(engine: PooledEngine) : EntityBuilder = EntityBuilder(engine)
@@ -337,7 +339,7 @@ class EntityBuilder(private val engine: PooledEngine) {
 
     fun mirror(orientation: String) : EntityBuilder {
         mirrorComponent = engine.createComponent(MirrorComponent::class.java)
-        mirrorComponent?.orientation = MirrorComponent.Orientation.getType(orientation)!!
+        mirrorComponent?.orientation = Orientation.getType(orientation)!!
         return this
     }
 
@@ -350,6 +352,12 @@ class EntityBuilder(private val engine: PooledEngine) {
         backAndForthComponent = engine.createComponent(BackAndForthComponent::class.java)
         backAndForthComponent?.dist = dist
         backAndForthComponent?.positive = positive
+        return this
+    }
+
+    fun accelerationGate(boost: Float = 0f) : EntityBuilder {
+        accelerationGateComponent = engine.createComponent(AccelerationGateComponent::class.java)
+        accelerationGateComponent?.boost = boost
         return this
     }
 
@@ -397,6 +405,7 @@ class EntityBuilder(private val engine: PooledEngine) {
         if (mirrorComponent != null) entity.add(mirrorComponent)
         if (invertSwitchComponent != null) entity.add(invertSwitchComponent)
         if (backAndForthComponent != null) entity.add(backAndForthComponent)
+        if (accelerationGateComponent != null) entity.add(accelerationGateComponent)
 
         engine.addEntity(entity)
         return entity

@@ -105,7 +105,8 @@ class KeyInputSystem(private val res: Resources) : EntitySystem(), KeyInputHandl
                     .player()
                     .color(res.getColor(key)!!)
                     .position(x, y)
-                    .velocity(dx = if (dir.facingRight) PLAYER_PROJECTILE_SPEED else -PLAYER_PROJECTILE_SPEED)
+                    .velocity(dx = if (dir.facingRight) PLAYER_PROJECTILE_SPEED else -PLAYER_PROJECTILE_SPEED,
+                            speed = PLAYER_PROJECTILE_SPEED)
                     .boundingBox(width, height)
                     .texture(texture, key)
                     .direction().remove()

@@ -26,6 +26,7 @@ import com.symbol.game.effects.particle.ParticleSpawner
 import com.symbol.game.map.MapObject
 import com.symbol.game.map.camera.CameraRotation
 import com.symbol.game.screen.GameScreen
+import com.symbol.game.util.Orientation
 import com.symbol.game.util.Resources
 import com.symbol.game.util.TOGGLE_OFF
 import com.symbol.game.util.TOGGLE_ON
@@ -242,7 +243,11 @@ class ProjectileSystem(private val player: Player, private val res: Resources, p
                     Mapper.PLAYER_MAPPER.get(entity) != null
 
             if (!pj.sub && overlap) {
-                if (me.mapEntityType == MapEntityType.Mirror) handleMirror(entity, mapEntity, pj)
+                when (me.mapEntityType) {
+                    MapEntityType.Mirror -> handleMirror(entity, mapEntity, pj)
+                    MapEntityType.AccelerationGate -> handleAccelerationGate(entity, mapEntity)
+                    else -> {}
+                }
             }
 
             if (affectAllOrFromPlayer && !pj.sub && overlap) {
@@ -456,7 +461,7 @@ class ProjectileSystem(private val player: Player, private val res: Resources, p
 
         if (!pj.withinMirror) {
             when (mirror.orientation) {
-                MirrorComponent.Orientation.Vertical -> {
+                Orientation.Vertical -> {
                     val xHalf = mBounds.rect.x + mBounds.rect.width / 2
                     if ((pRight && px >= xHalf) || (pLeft && px <= xHalf) ||
                             (pDownRight && px >= xHalf) || (pDownLeft && px <= xHalf) ||
@@ -465,7 +470,7 @@ class ProjectileSystem(private val player: Player, private val res: Resources, p
                         applyMirror(entity, mapEntity, pj)
                     }
                 }
-                MirrorComponent.Orientation.Horizontal -> {
+                Orientation.Horizontal -> {
                     val yHalf = mBounds.rect.y + mBounds.rect.height / 2
                     if ((pUp && py >= yHalf) || (pDown && py <= yHalf) ||
                             (pDownRight && py <= yHalf) || (pDownLeft && py <= yHalf) ||
@@ -474,7 +479,7 @@ class ProjectileSystem(private val player: Player, private val res: Resources, p
                         applyMirror(entity, mapEntity, pj)
                     }
                 }
-                MirrorComponent.Orientation.LeftDiagonal -> {
+                Orientation.LeftDiagonal -> {
                     if ((pRight && px >= mBounds.rect.x + mBounds.rect.width - py + mBounds.rect.y) ||
                             (pLeft && px <= mBounds.rect.x + mBounds.rect.width - py + mBounds.rect.y)) {
                         velocity.dy = -velocity.dx
@@ -500,7 +505,7 @@ class ProjectileSystem(private val player: Player, private val res: Resources, p
                         applyMirror(entity, mapEntity, pj)
                     }
                 }
-                MirrorComponent.Orientation.RightDiagonal -> {
+                Orientation.RightDiagonal -> {
                     if ((pRight && px >= mBounds.rect.x + py - mBounds.rect.y) ||
                             (pLeft && px <= mBounds.rect.x + py - mBounds.rect.y)) {
                         velocity.dy = velocity.dx
@@ -610,6 +615,23 @@ class ProjectileSystem(private val player: Player, private val res: Resources, p
         for (enemy in enemies) {
             val enemyComp = Mapper.ENEMY_MAPPER.get(enemy)
             enemyComp.visible = !enemyComp.visible
+        }
+    }
+
+    private fun handleAccelerationGate(entity: Entity?, mapEntity: Entity?) {
+        val velocity = Mapper.VEL_MAPPER.get(entity)
+        val agate = Mapper.ACCEL_GATE_MAPPER.get(mapEntity)
+        if (velocity.dx > 0 && velocity.dx != velocity.speed + agate.boost) {
+            velocity.dx = velocity.speed + agate.boost
+        }
+        else if (velocity.dx < 0 && velocity.dx != -velocity.speed - agate.boost) {
+            velocity.dx = -velocity.speed - agate.boost
+        }
+        else if (velocity.dy > 0 && velocity.dy != velocity.speed + agate.boost) {
+            velocity.dy = velocity.speed + agate.boost
+        }
+        else if (velocity.dy < 0 && velocity.dy != -velocity.speed - agate.boost) {
+            velocity.dy = -velocity.speed - agate.boost
         }
     }
 

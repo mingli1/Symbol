@@ -415,7 +415,7 @@ object EntityFactory {
                         .position(rect.x, rect.y)
                         .velocity()
                         .texture(texture, textureStr)
-                        .remove().build()
+                        .build()
             }
             MapEntityType.InvertSwitch -> {
                 val textureStr = "invert_switch"
@@ -428,7 +428,22 @@ object EntityFactory {
                         .position(rect.x, rect.y)
                         .velocity()
                         .texture(texture, textureStr)
-                        .remove().build()
+                        .build()
+            }
+            MapEntityType.AccelerationGate -> {
+                val boost = (props["boost"] ?: 0f) as Float
+                val orientation = (props["or"] ?: "v") as String
+                val textureStr = "agate_$orientation"
+                val texture = res.getTexture(textureStr)!!
+
+                EntityBuilder.instance(engine)
+                        .mapEntity(type = type)
+                        .accelerationGate(boost = boost)
+                        .boundingBox(texture.regionWidth.toFloat(), texture.regionHeight.toFloat())
+                        .position(rect.x, rect.y)
+                        .velocity()
+                        .texture(texture, textureStr)
+                        .build()
             }
             else -> {}
         }

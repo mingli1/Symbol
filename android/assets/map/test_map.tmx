@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.0.1" orientation="orthogonal" renderorder="right-down" width="50" height="20" tilewidth="8" tileheight="8" nextobjectid="214">
+<map version="1.0" tiledversion="1.0.1" orientation="orthogonal" renderorder="right-down" width="50" height="20" tilewidth="8" tileheight="8" nextobjectid="216">
  <tileset firstgid="1" name="tileset" tilewidth="8" tileheight="8" tilecount="64" columns="8">
   <image source="tileset.png" width="64" height="64"/>
  </tileset>
@@ -57,11 +57,6 @@
     <property name="type" value="cintegral"/>
    </properties>
   </object>
-  <object id="193" x="288" y="8" width="8" height="8">
-   <properties>
-    <property name="type" value="njoin"/>
-   </properties>
-  </object>
   <object id="213" x="352" y="56" width="7.27273" height="7.45455">
    <properties>
     <property name="type" value="percent"/>
@@ -87,31 +82,33 @@
     <property name="type" value="toggle"/>
    </properties>
   </object>
-  <object id="118" x="248" y="64" width="8" height="8">
-   <properties>
-    <property name="id" type="int" value="0"/>
-    <property name="type" value="toggle"/>
-   </properties>
-  </object>
   <object id="187" x="190.75" y="135.5" width="8" height="8">
    <properties>
     <property name="or" value="v"/>
     <property name="type" value="mirror"/>
    </properties>
   </object>
-  <object id="209" x="256" y="56" width="8" height="8">
+  <object id="209" x="200" y="56" width="8" height="8">
    <properties>
     <property name="id" type="int" value="0"/>
     <property name="type" value="gswitch"/>
    </properties>
   </object>
-  <object id="212" x="280" y="56" width="8" height="8">
+  <object id="212" x="224" y="8" width="8" height="8">
    <properties>
+    <property name="dist" type="float" value="30"/>
+    <property name="dy" type="float" value="10"/>
     <property name="type" value="iswitch"/>
+   </properties>
+  </object>
+  <object id="215" x="285.818" y="45.8182" width="2.54545" height="7">
+   <properties>
+    <property name="boost" type="float" value="100"/>
+    <property name="type" value="agate"/>
    </properties>
   </object>
  </objectgroup>
  <objectgroup name="player">
-  <object id="10" x="304" y="56" width="8" height="7.09091"/>
+  <object id="10" x="256" y="56" width="8" height="7.09091"/>
  </objectgroup>
 </map>

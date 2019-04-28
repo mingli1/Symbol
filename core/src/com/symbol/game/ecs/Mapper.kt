@@ -47,5 +47,6 @@ object Mapper {
     val MIRROR_MAPPER = ComponentMapper.getFor(MirrorComponent::class.java)!!
     val INVERT_SWITCH_MAPPER = ComponentMapper.getFor(InvertSwitchComponent::class.java)!!
     val BACK_AND_FORTH_MAPPER = ComponentMapper.getFor(BackAndForthComponent::class.java)!!
+    val ACCEL_GATE_MAPPER = ComponentMapper.getFor(AccelerationGateComponent::class.java)!!
 
 }
