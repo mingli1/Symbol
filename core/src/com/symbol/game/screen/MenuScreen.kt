@@ -21,10 +21,10 @@ import com.symbol.game.map.camera.Background
 import com.symbol.game.scene.DynamicImage
 import com.symbol.game.scene.dialog.AboutDialog
 
-private const val BACKGROUND_VELOCITY = -40f
-private const val BACKGROUND_SCALE = 0.4f
+internal const val BACKGROUND_VELOCITY = -40f
+internal const val BACKGROUND_SCALE = 0.4f
 
-private const val FADE_DURATION = 1f
+internal const val FADE_DURATION = 1f
 
 private const val NUM_BUTTONS = 3
 private const val BUTTON_WIDTH = 100f
@@ -95,7 +95,7 @@ class MenuScreen(game: Symbol) : AbstractScreen(game) {
                     playerImage.applyJump(-GRAVITY, PLAYER_JUMP_IMPULSE - 45f)
                     transition = true
                     nextScreen = when (i) {
-                        0 -> game.gameScreen
+                        0 -> game.mapSelectScreen
                         else -> null
                     }
                     Gdx.input.inputProcessor = null

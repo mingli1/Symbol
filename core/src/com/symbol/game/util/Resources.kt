@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.BitmapFont
+import com.badlogic.gdx.graphics.g2d.NinePatch
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.graphics.glutils.ShaderProgram
@@ -84,6 +85,10 @@ class Resources : Disposable {
 
     fun getTexture(key: String) : TextureRegion? {
         return atlas.findRegion(key)
+    }
+
+    fun getNinePatch(key: String) : NinePatch? {
+        return atlas.createPatch(key)
     }
 
     fun getString(key: String) : String? {

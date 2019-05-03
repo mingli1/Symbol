@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.symbol.game.input.MouseCursor
 import com.symbol.game.screen.AbstractScreen
 import com.symbol.game.screen.GameScreen
+import com.symbol.game.screen.MapSelectScreen
 import com.symbol.game.screen.MenuScreen
 import com.symbol.game.util.Resources
 import kotlin.math.min
@@ -25,6 +26,7 @@ class Symbol : Game() {
 
     lateinit var menuScreen: MenuScreen private set
     lateinit var gameScreen: GameScreen private set
+    lateinit var mapSelectScreen: MapSelectScreen private set
 
     lateinit var fps: Label
 
@@ -47,8 +49,9 @@ class Symbol : Game() {
 
         menuScreen = MenuScreen(this)
         gameScreen = GameScreen(this)
+        mapSelectScreen = MapSelectScreen(this)
 
-        this.setScreen(gameScreen)
+        this.setScreen(mapSelectScreen)
     }
 
     fun profile(className: String) {
