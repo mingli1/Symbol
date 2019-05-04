@@ -1,8 +1,6 @@
 package com.symbol.game.screen
 
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.InputMultiplexer
-import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.InputEvent
@@ -15,27 +13,18 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.symbol.game.Symbol
 import com.symbol.game.ecs.entity.PLAYER_JUMP_IMPULSE
 import com.symbol.game.ecs.system.GRAVITY
-import com.symbol.game.input.MultiTouchDisabler
 import com.symbol.game.map.TILE_SIZE
-import com.symbol.game.map.camera.Background
 import com.symbol.game.scene.DynamicImage
 import com.symbol.game.scene.dialog.AboutDialog
-
-internal const val BACKGROUND_VELOCITY = -40f
-internal const val BACKGROUND_SCALE = 0.4f
 
 internal const val FADE_DURATION = 1f
 
 private const val NUM_BUTTONS = 3
 private const val BUTTON_WIDTH = 100f
 
-class MenuScreen(game: Symbol) : AbstractScreen(game) {
-
-    private val multiplexer = InputMultiplexer()
+class MenuScreen(game: Symbol) : DefaultScreen(game) {
 
     private val blockTexture = game.res.getTexture("tileset")!!.split(TILE_SIZE, TILE_SIZE)[0][3]
-    private val background = Background(game.res.getTexture("background")!!,
-            cam, Vector2(BACKGROUND_SCALE, 0f), Vector2(BACKGROUND_VELOCITY, 0f))
 
     private val aboutDialog = AboutDialog(game)
 
@@ -64,9 +53,6 @@ class MenuScreen(game: Symbol) : AbstractScreen(game) {
         createButtons()
         createTitle()
         createAboutButton()
-
-        multiplexer.addProcessor(MultiTouchDisabler())
-        multiplexer.addProcessor(stage)
     }
 
     private fun createButtons() {
@@ -140,7 +126,7 @@ class MenuScreen(game: Symbol) : AbstractScreen(game) {
     }
 
     override fun show() {
-        Gdx.input.inputProcessor = multiplexer
+        super.show()
         transition = false
         nextScreen = null
 
@@ -148,8 +134,8 @@ class MenuScreen(game: Symbol) : AbstractScreen(game) {
         fadeIn(FADE_DURATION)
     }
 
-    private fun update(dt: Float) {
-        background.update(dt)
+    override fun update(dt: Float) {
+        super.update(dt)
         playerImage.update(dt)
 
         for (letter in letters) {
@@ -160,24 +146,6 @@ class MenuScreen(game: Symbol) : AbstractScreen(game) {
             transition = false
             if (nextScreen != null) fadeToScreen(nextScreen!!)
         }
-    }
-
-    override fun render(dt: Float) {
-        update(dt)
-
-        Gdx.gl.glClearColor(1f, 1f, 1f, 1f)
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
-
-        game.batch.projectionMatrix = cam.combined
-        game.batch.begin()
-        game.batch.setColor(1f, 1f, 1f, 1f)
-
-        background.render(game.batch)
-
-        game.batch.end()
-
-        stage.act(dt)
-        stage.draw()
     }
 
 }

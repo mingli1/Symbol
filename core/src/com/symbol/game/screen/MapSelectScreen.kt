@@ -1,36 +1,23 @@
 package com.symbol.game.screen
 
-import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.InputMultiplexer
-import com.badlogic.gdx.graphics.GL20
-import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.ui.*
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable
 import com.symbol.game.Symbol
-import com.symbol.game.input.MultiTouchDisabler
-import com.symbol.game.map.camera.Background
 
 private const val HEADER_WIDTH = 116f
 private const val HEADER_HEIGHT = 22f
 
-class MapSelectScreen(game: Symbol) : AbstractScreen(game) {
+class MapSelectScreen(game: Symbol) : DefaultScreen(game) {
 
     private val res = game.res
-
-    private val multiplexer = InputMultiplexer()
-    private val background = Background(game.res.getTexture("background")!!,
-            cam, Vector2(BACKGROUND_SCALE, 0f), Vector2(BACKGROUND_VELOCITY, 0f))
 
     private lateinit var progressLabel: Label
 
     init {
         createBackButton()
         createHeader()
-
-        multiplexer.addProcessor(MultiTouchDisabler())
-        multiplexer.addProcessor(stage)
     }
 
     private fun createBackButton() {
@@ -82,31 +69,12 @@ class MapSelectScreen(game: Symbol) : AbstractScreen(game) {
     }
 
     override fun show() {
-        Gdx.input.inputProcessor = multiplexer
+        super.show()
         fadeIn(FADE_DURATION)
     }
 
-    private fun update(dt: Float) {
-        background.update(dt)
-    }
-
     override fun render(dt: Float) {
-        update(dt)
-
-        Gdx.gl.glClearColor(1f, 1f, 1f, 1f)
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
-
-        game.batch.projectionMatrix = cam.combined
-        game.batch.begin()
-        game.batch.setColor(1f, 1f, 1f, 1f)
-
-        background.render(game.batch)
-
-        game.batch.end()
-
-        stage.act(dt)
-        stage.draw()
-
+        super.render(dt)
         game.profile("MapSelectScreen")
     }
 

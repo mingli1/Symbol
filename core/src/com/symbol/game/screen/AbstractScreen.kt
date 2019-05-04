@@ -12,7 +12,7 @@ import com.symbol.game.Symbol
 
 abstract class AbstractScreen(protected val game: Symbol) : Screen, Disposable {
 
-    protected var stage: Stage private set
+    var stage: Stage private set
     protected var viewport: Viewport private set
     protected var cam = OrthographicCamera()
     protected var gameState = GameState.Resume

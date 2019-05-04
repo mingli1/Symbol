@@ -3,15 +3,15 @@ package com.symbol.game
 import com.badlogic.gdx.Game
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Color
+import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.profiling.GLProfiler
+import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.symbol.game.input.MouseCursor
-import com.symbol.game.screen.AbstractScreen
-import com.symbol.game.screen.GameScreen
-import com.symbol.game.screen.MapSelectScreen
-import com.symbol.game.screen.MenuScreen
+import com.symbol.game.map.camera.Background
+import com.symbol.game.screen.*
 import com.symbol.game.util.Resources
 import kotlin.math.min
 
@@ -23,6 +23,7 @@ class Symbol : Game() {
     private lateinit var profiler: GLProfiler
 
     private var currentScreen: AbstractScreen? = null
+    lateinit var background: Background private set
 
     lateinit var menuScreen: MenuScreen private set
     lateinit var gameScreen: GameScreen private set
@@ -52,6 +53,10 @@ class Symbol : Game() {
         mapSelectScreen = MapSelectScreen(this)
 
         this.setScreen(mapSelectScreen)
+
+        background = Background(res.getTexture("background")!!,
+                menuScreen.stage.camera as OrthographicCamera,
+                Vector2(BACKGROUND_SCALE, 0f), Vector2(BACKGROUND_VELOCITY, 0f))
     }
 
     fun profile(className: String) {
