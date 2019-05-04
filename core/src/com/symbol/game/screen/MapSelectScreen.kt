@@ -5,9 +5,7 @@ import com.badlogic.gdx.InputMultiplexer
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.scenes.scene2d.InputEvent
-import com.badlogic.gdx.scenes.scene2d.ui.Container
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton
-import com.badlogic.gdx.scenes.scene2d.ui.Table
+import com.badlogic.gdx.scenes.scene2d.ui.*
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable
 import com.symbol.game.Symbol
@@ -15,7 +13,7 @@ import com.symbol.game.input.MultiTouchDisabler
 import com.symbol.game.map.camera.Background
 
 private const val HEADER_WIDTH = 116f
-private const val HEADER_HEIGHT = 20f
+private const val HEADER_HEIGHT = 22f
 
 class MapSelectScreen(game: Symbol) : AbstractScreen(game) {
 
@@ -24,6 +22,8 @@ class MapSelectScreen(game: Symbol) : AbstractScreen(game) {
     private val multiplexer = InputMultiplexer()
     private val background = Background(game.res.getTexture("background")!!,
             cam, Vector2(BACKGROUND_SCALE, 0f), Vector2(BACKGROUND_VELOCITY, 0f))
+
+    private lateinit var progressLabel: Label
 
     init {
         createBackButton()
@@ -59,8 +59,21 @@ class MapSelectScreen(game: Symbol) : AbstractScreen(game) {
         val headerTable = Table()
         headerTable.setFillParent(true)
 
-        bgContainer.actor = headerTable
+        val labelStyle = res.getLabelStyle()
+        val prompt = Label(res.getString("mapSelectHeader"), labelStyle)
+        prompt.setFontScale(1.5f)
+        headerTable.add(prompt).expandX().padTop(4f).row()
 
+        val progressGroup = HorizontalGroup()
+        progressGroup.space(6f)
+        val progressIcon = Image(res.getTexture("map_complete_icon"))
+        progressLabel = Label(res.getString("mapSelectProgress"), labelStyle)
+
+        progressGroup.addActor(progressIcon)
+        progressGroup.addActor(progressLabel)
+        headerTable.add(progressGroup).padTop(2f).padRight(8f)
+
+        bgContainer.actor = headerTable
         root.actor = bgContainer
         root.top()
         root.padTop(5f)

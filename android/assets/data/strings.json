@@ -18,5 +18,7 @@
   "dismissiveText": "no",
   "deathMessage": "you died!",
   "respawnButton": "respawn",
-  "quitButton": "quit"
+  "quitButton": "quit",
+  "mapSelectHeader": "select a map",
+  "mapSelectProgress": "14 / 30"
 }
