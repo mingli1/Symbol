@@ -18,8 +18,8 @@ import com.symbol.game.ecs.Mapper
 import com.symbol.game.ecs.entity.EnemyType
 import com.symbol.game.ecs.entity.MapEntityType
 import com.symbol.game.map.camera.CameraUtil
-import com.symbol.game.scene.HelpPage
-import com.symbol.game.scene.Page
+import com.symbol.game.scene.page.HelpPage
+import com.symbol.game.scene.page.Page
 import com.symbol.game.util.Resources
 
 const val TILE_SIZE = 8

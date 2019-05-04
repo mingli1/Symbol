@@ -21,7 +21,7 @@ import com.symbol.game.data.ImageAlign
 import com.symbol.game.data.ImageWrapper
 import com.symbol.game.data.TechnicalDetails
 import com.symbol.game.map.TILE_SIZE
-import com.symbol.game.scene.HelpPage
+import com.symbol.game.scene.page.HelpPage
 
 const val TOP = "_t"
 const val TOP_RIGHT ="_tr"

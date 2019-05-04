@@ -19,8 +19,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
 import com.symbol.game.Symbol;
 import com.symbol.game.scene.Hud;
-import com.symbol.game.scene.Page;
-import com.symbol.game.scene.PagedScrollPane;
+import com.symbol.game.scene.page.Page;
+import com.symbol.game.scene.page.PagedScrollPane;
 import com.symbol.game.util.Resources;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.fadeOut;

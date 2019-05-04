@@ -20,6 +20,7 @@ import com.symbol.game.ecs.component.HealthComponent;
 import com.symbol.game.ecs.component.PlayerComponent;
 import com.symbol.game.scene.dialog.HelpDialog;
 import com.symbol.game.scene.dialog.PauseDialog;
+import com.symbol.game.scene.page.Page;
 
 import static com.symbol.game.ecs.entity.PlayerKt.PLAYER_TIER_ONE_ATTACK_TIME;
 import static com.symbol.game.ecs.entity.PlayerKt.PLAYER_TIER_THREE_ATTACK_TIME;
