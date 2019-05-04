@@ -90,11 +90,11 @@ public class HelpDialog extends Table {
 
         leftButton.addListener(new ClickListener() {
             @Override
-            public void clicked(InputEvent event, float x, float y) { pagedScrollPane.scrollToLeft(); }
+            public void clicked(InputEvent event, float x, float y) { pagedScrollPane.scrollToPrevious(); }
         });
         rightButton.addListener(new ClickListener() {
             @Override
-            public void clicked(InputEvent event, float x, float y) { pagedScrollPane.scrollToRight(); }
+            public void clicked(InputEvent event, float x, float y) { pagedScrollPane.scrollToNext(); }
         });
     }
 
@@ -117,7 +117,7 @@ public class HelpDialog extends Table {
         scrollPaneStyle.background = scrollPaneStyle.corner = scrollPaneStyle.hScroll =
                 scrollPaneStyle.hScrollKnob = scrollPaneStyle.vScroll = scrollPaneStyle.vScrollKnob = none;
 
-        pagedScrollPane = new PagedScrollPane(scrollPaneStyle, PAGE_SPACING);
+        pagedScrollPane = new PagedScrollPane(true, scrollPaneStyle, PAGE_SPACING);
         pagedScrollPane.setFlingTime(PAGE_FLING_TIME);
         table.add(pagedScrollPane).padBottom(1f).size(SCROLL_PANE_WIDTH, SCROLL_PANE_HEIGHT).fill();
 

@@ -2,12 +2,12 @@ package com.symbol.game.scene
 
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.scenes.scene2d.Actor
-import com.badlogic.gdx.scenes.scene2d.ui.Cell
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.utils.Array
 
-class PagedScrollPane(style: ScrollPaneStyle, pageSpace: Float) : ScrollPane(null, style) {
+class PagedScrollPane(private val horizontal: Boolean = true,
+                      style: ScrollPaneStyle, pageSpace: Float) : ScrollPane(null, style) {
 
     private var panDragOrFling = false
     private val container = Table()
@@ -20,18 +20,17 @@ class PagedScrollPane(style: ScrollPaneStyle, pageSpace: Float) : ScrollPane(nul
     }
 
     fun addPages(pages: Array<Page>) {
-        for (page in pages) {
-            container.add(page.actor).expandY().fillY()
-        }
+        pages.forEach { addPage(it) }
     }
 
-    fun addPage(page: Page) : Cell<Actor> {
-        return container.add(page.actor).expandY().fillY()
+    private fun addPage(page: Page) {
+        if (horizontal) container.add(page.actor).expandY().fillY()
+        else container.add(page.actor).expandX().fillX().row()
     }
 
     fun reset() {
         panDragOrFling = false
-        scrollX = 0f
+        if (horizontal) scrollX = 0f else scrollY = 0f
         updateVisualScroll()
         container.clearChildren()
     }
@@ -52,34 +51,38 @@ class PagedScrollPane(style: ScrollPaneStyle, pageSpace: Float) : ScrollPane(nul
     private fun scrollToPage() {
         val pages = container.children
 
-        if (scrollX >= maxX || scrollX <= 0f) return
+        if (horizontal && (scrollX >= maxX || scrollX <= 0f)) return
+        else if (!horizontal && (scrollY >= maxY || scrollY <= 0f)) return
 
-        var pageX = 0f
-        var pageWidth = 0f
+        var pageCoord = 0f
+        var pageDimen = 0f
         if (pages.size > 0) {
             for (page in pages) {
-                pageX = page.x
-                pageWidth = page.width
-                if (scrollX < pageX + pageWidth / 2f) break
+                pageCoord = if (horizontal) page.x else page.y
+                pageDimen = if (horizontal) page.width else page.height
+                if ((if (horizontal) scrollX else scrollY) < pageCoord + pageDimen / 2f) break
             }
-            scrollX = MathUtils.clamp(pageX - (width - pageWidth) / 2f, 0f, maxX)
+            if (horizontal) scrollX = MathUtils.clamp(pageCoord - (width - pageDimen) / 2f, 0f, maxX)
+            else scrollY = MathUtils.clamp(pageCoord - (height - pageDimen) / 2f, 0f, maxY)
         }
     }
 
-    fun scrollToLeft() {
+    fun scrollToPrevious() {
         val currIndex = getCurrentIndex()
         if (currIndex == 0) return
 
         resetCurrentPage()
-        scrollX = container.children[currIndex - 1].x
+        if (horizontal) scrollX = container.children[currIndex - 1].x
+        else scrollY = container.children[currIndex - 1].y
     }
 
-    fun scrollToRight() {
+    fun scrollToNext() {
         val currIndex = getCurrentIndex()
         if (currIndex == container.children.size - 1) return
 
         resetCurrentPage()
-        scrollX = container.children[currIndex + 1].x
+        if (horizontal) scrollX = container.children[currIndex + 1].x
+        else scrollY = container.children[currIndex + 1].y
     }
 
     fun resetCurrentPage() {
@@ -107,7 +110,8 @@ class PagedScrollPane(style: ScrollPaneStyle, pageSpace: Float) : ScrollPane(nul
 
     private fun getCurrentPage() : Actor? {
         for (page in container.children) {
-            if (scrollX <= page.x + page.width) {
+            if (horizontal && scrollX <= page.x + page.width ||
+                    !horizontal && scrollY <= page.y + page.height) {
                 return page
             }
         }
@@ -116,7 +120,8 @@ class PagedScrollPane(style: ScrollPaneStyle, pageSpace: Float) : ScrollPane(nul
 
     private fun getCurrentIndex() : Int {
         for ((index, page) in container.children.withIndex()) {
-            if (scrollX <= page.x + page.width) return index
+            if (horizontal && scrollX <= page.x + page.width) return index
+            else if (!horizontal && scrollY <= page.y + page.height) return index
         }
         return -1
     }
