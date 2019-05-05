@@ -13,6 +13,8 @@ private const val HEADER_WIDTH = 116f
 private const val HEADER_HEIGHT = 22f
 
 private const val PAGE_FLING_TIME = 0.1f
+private const val PAGE_TOP_PADDING = 50f
+private const val PAGE_BOTTOM_PADDING = 34f * 2
 
 class MapSelectScreen(game: Symbol) : DefaultScreen(game) {
 
@@ -45,7 +47,7 @@ class MapSelectScreen(game: Symbol) : DefaultScreen(game) {
         pagedScrollPane.disableSnapToPage()
         pagedScrollPane.disableAutoReset()
 
-        pagedScrollPane.addPadding(34f)
+        pagedScrollPane.addPadding(PAGE_TOP_PADDING)
         pagedScrollPane.addPage(MapPage(res, MapPage.MapPageType.Start, pagedScrollPane))
         pagedScrollPane.addPage(MapPage(res, MapPage.MapPageType.Right, pagedScrollPane))
         pagedScrollPane.addPage(MapPage(res, MapPage.MapPageType.Left, pagedScrollPane))
@@ -54,7 +56,7 @@ class MapSelectScreen(game: Symbol) : DefaultScreen(game) {
         pagedScrollPane.addPage(MapPage(res, MapPage.MapPageType.Right, pagedScrollPane))
         pagedScrollPane.addPage(MapPage(res, MapPage.MapPageType.Left, pagedScrollPane))
         pagedScrollPane.addPage(MapPage(res, MapPage.MapPageType.EndRight, pagedScrollPane))
-        pagedScrollPane.addPadding(34f * 2)
+        pagedScrollPane.addPadding(PAGE_BOTTOM_PADDING)
 
         container.actor = pagedScrollPane
 
@@ -116,7 +118,7 @@ class MapSelectScreen(game: Symbol) : DefaultScreen(game) {
 
     override fun render(dt: Float) {
         super.render(dt)
-        //game.profile("MapSelectScreen")
+        game.profile("MapSelectScreen")
     }
 
 }
