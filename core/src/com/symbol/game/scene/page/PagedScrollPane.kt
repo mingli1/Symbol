@@ -12,11 +12,22 @@ class PagedScrollPane(private val horizontal: Boolean = true,
     private var panDragOrFling = false
     private val container = Table()
 
+    private var autoResetOnPageEnter = true
+    private var snapToPage = true
+
     init {
         container.defaults().space(pageSpace)
         actor = container
         setFadeScrollBars(true)
         setupFadeScrollBars(0f, 0f)
+    }
+
+    fun disableSnapToPage() {
+        snapToPage = false
+    }
+
+    fun disableAutoReset() {
+        autoResetOnPageEnter = false
     }
 
     fun addPages(pages: Array<Page>) {
@@ -26,6 +37,11 @@ class PagedScrollPane(private val horizontal: Boolean = true,
     fun addPage(page: Page) {
         if (horizontal) container.add(page.pageActor).expandY().fillY()
         else container.add(page.pageActor).expandX().fillX().row()
+    }
+
+    fun addEmptyPage(offset: Float) {
+        if (horizontal) container.add().minWidth(offset)
+        else container.add().minHeight(offset).row()
     }
 
     fun reset() {
@@ -49,6 +65,8 @@ class PagedScrollPane(private val horizontal: Boolean = true,
     }
 
     private fun scrollToPage() {
+        if (!snapToPage) return
+
         val pages = container.children
 
         if (horizontal && (scrollX >= maxX || scrollX <= 0f)) return
@@ -85,7 +103,15 @@ class PagedScrollPane(private val horizontal: Boolean = true,
         else scrollY = maxY - container.children[currIndex + 1].y
     }
 
+    fun scrollToIndex(index: Int) {
+        val pages = container.children
+        if (horizontal) scrollX = pages[index].x
+        else scrollY = pages[pages.size - 1 - index].y - (34f * 2)
+    }
+
     fun resetCurrentPage() {
+        if (!autoResetOnPageEnter) return
+
         val currPage = (getCurrentPage() as Page)
         currPage.reset()
         if (!currPage.hasSeen()) currPage.notifySeen()

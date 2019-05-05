@@ -42,11 +42,20 @@ class MapSelectScreen(game: Symbol) : DefaultScreen(game) {
 
         pagedScrollPane = PagedScrollPane(false, scrollPaneStyle, 0f)
         pagedScrollPane.setFlingTime(PAGE_FLING_TIME)
-        pagedScrollPane.setOverscroll(false, false)
+        pagedScrollPane.disableSnapToPage()
+        pagedScrollPane.disableAutoReset()
+
+        pagedScrollPane.addEmptyPage(34f)
         pagedScrollPane.addPage(MapPage(res, MapPage.MapPageType.Start))
         pagedScrollPane.addPage(MapPage(res, MapPage.MapPageType.Right))
         pagedScrollPane.addPage(MapPage(res, MapPage.MapPageType.Left))
+        pagedScrollPane.addPage(MapPage(res, MapPage.MapPageType.Right))
+        pagedScrollPane.addPage(MapPage(res, MapPage.MapPageType.Left))
+        pagedScrollPane.addPage(MapPage(res, MapPage.MapPageType.Right))
+        pagedScrollPane.addPage(MapPage(res, MapPage.MapPageType.Left))
         pagedScrollPane.addPage(MapPage(res, MapPage.MapPageType.EndRight))
+        pagedScrollPane.addEmptyPage(34f)
+        pagedScrollPane.addEmptyPage(34f)
 
         container.actor = pagedScrollPane
 
