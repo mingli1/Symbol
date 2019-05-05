@@ -4,20 +4,53 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.ui.*
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import com.symbol.game.Symbol
+import com.symbol.game.scene.page.MapPage
+import com.symbol.game.scene.page.PagedScrollPane
 
 private const val HEADER_WIDTH = 116f
 private const val HEADER_HEIGHT = 22f
+
+private const val PAGE_FLING_TIME = 0.1f
 
 class MapSelectScreen(game: Symbol) : DefaultScreen(game) {
 
     private val res = game.res
 
+    private lateinit var pagedScrollPane: PagedScrollPane
     private lateinit var progressLabel: Label
 
     init {
+        createPagedScrollPane()
         createBackButton()
         createHeader()
+    }
+
+    private fun createPagedScrollPane() {
+        val container = Container<PagedScrollPane>()
+        container.setFillParent(true)
+
+        val emptyDrawable = TextureRegionDrawable(res.getTexture("default-rect"))
+        val scrollPaneStyle = ScrollPane.ScrollPaneStyle()
+        scrollPaneStyle.background = emptyDrawable
+        scrollPaneStyle.corner = emptyDrawable
+        scrollPaneStyle.hScroll = emptyDrawable
+        scrollPaneStyle.hScrollKnob = emptyDrawable
+        scrollPaneStyle.vScroll = emptyDrawable
+        scrollPaneStyle.vScrollKnob = emptyDrawable
+
+        pagedScrollPane = PagedScrollPane(false, scrollPaneStyle, 0f)
+        pagedScrollPane.setFlingTime(PAGE_FLING_TIME)
+        pagedScrollPane.setOverscroll(false, false)
+        pagedScrollPane.addPage(MapPage(res, MapPage.MapPageType.Start))
+        pagedScrollPane.addPage(MapPage(res, MapPage.MapPageType.Right))
+        pagedScrollPane.addPage(MapPage(res, MapPage.MapPageType.Left))
+        pagedScrollPane.addPage(MapPage(res, MapPage.MapPageType.EndRight))
+
+        container.actor = pagedScrollPane
+
+        stage.addActor(container)
     }
 
     private fun createBackButton() {
@@ -75,7 +108,7 @@ class MapSelectScreen(game: Symbol) : DefaultScreen(game) {
 
     override fun render(dt: Float) {
         super.render(dt)
-        game.profile("MapSelectScreen")
+        //game.profile("MapSelectScreen")
     }
 
 }

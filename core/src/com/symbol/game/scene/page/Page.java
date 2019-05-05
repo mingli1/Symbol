@@ -10,6 +10,6 @@ public interface Page {
 
     boolean hasSeen();
 
-    Actor getActor();
+    Actor getPageActor();
 
 }

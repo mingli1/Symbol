@@ -25,7 +25,13 @@ public class MapPage extends Table implements Page {
 
     public MapPage(Resources res, MapPageType type) {
         this.res = res;
+        setDebug(true);
         setBackground(new TextureRegionDrawable(res.getTexture(type.key)));
+    }
+
+    @Override
+    public void reset() {
+
     }
 
     @Override
@@ -39,7 +45,7 @@ public class MapPage extends Table implements Page {
     }
 
     @Override
-    public Actor getActor() {
+    public Actor getPageActor() {
         return this;
     }
 

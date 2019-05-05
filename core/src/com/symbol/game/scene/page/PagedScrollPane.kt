@@ -23,9 +23,9 @@ class PagedScrollPane(private val horizontal: Boolean = true,
         pages.forEach { addPage(it) }
     }
 
-    private fun addPage(page: Page) {
-        if (horizontal) container.add(page.actor).expandY().fillY()
-        else container.add(page.actor).expandX().fillX().row()
+    fun addPage(page: Page) {
+        if (horizontal) container.add(page.pageActor).expandY().fillY()
+        else container.add(page.pageActor).expandX().fillX().row()
     }
 
     fun reset() {
@@ -58,7 +58,7 @@ class PagedScrollPane(private val horizontal: Boolean = true,
         var pageDimen = 0f
         if (pages.size > 0) {
             for (page in pages) {
-                pageCoord = if (horizontal) page.x else page.y
+                pageCoord = if (horizontal) page.x else maxY - page.y
                 pageDimen = if (horizontal) page.width else page.height
                 if ((if (horizontal) scrollX else scrollY) < pageCoord + pageDimen / 2f) break
             }
@@ -73,7 +73,7 @@ class PagedScrollPane(private val horizontal: Boolean = true,
 
         resetCurrentPage()
         if (horizontal) scrollX = container.children[currIndex - 1].x
-        else scrollY = container.children[currIndex - 1].y
+        else scrollY = maxY - container.children[currIndex - 1].y
     }
 
     fun scrollToNext() {
@@ -82,7 +82,7 @@ class PagedScrollPane(private val horizontal: Boolean = true,
 
         resetCurrentPage()
         if (horizontal) scrollX = container.children[currIndex + 1].x
-        else scrollY = container.children[currIndex + 1].y
+        else scrollY = maxY - container.children[currIndex + 1].y
     }
 
     fun resetCurrentPage() {
@@ -111,7 +111,7 @@ class PagedScrollPane(private val horizontal: Boolean = true,
     private fun getCurrentPage() : Actor? {
         for (page in container.children) {
             if (horizontal && scrollX <= page.x + page.width ||
-                    !horizontal && scrollY <= page.y + page.height) {
+                    !horizontal && scrollY <= maxY - page.y + page.height / 2) {
                 return page
             }
         }
@@ -121,7 +121,7 @@ class PagedScrollPane(private val horizontal: Boolean = true,
     private fun getCurrentIndex() : Int {
         for ((index, page) in container.children.withIndex()) {
             if (horizontal && scrollX <= page.x + page.width) return index
-            else if (!horizontal && scrollY <= page.y + page.height) return index
+            else if (!horizontal && scrollY <= maxY - page.y + page.height / 2) return index
         }
         return -1
     }

@@ -186,6 +186,6 @@ public class HelpPage extends Table implements Page {
     }
 
     @Override
-    public Actor getActor() { return this; }
+    public Actor getPageActor() { return this; }
 
 }
