@@ -45,7 +45,7 @@ class MapSelectScreen(game: Symbol) : DefaultScreen(game) {
         pagedScrollPane.disableSnapToPage()
         pagedScrollPane.disableAutoReset()
 
-        pagedScrollPane.addEmptyPage(34f)
+        pagedScrollPane.addPadding(34f)
         pagedScrollPane.addPage(MapPage(res, MapPage.MapPageType.Start))
         pagedScrollPane.addPage(MapPage(res, MapPage.MapPageType.Right))
         pagedScrollPane.addPage(MapPage(res, MapPage.MapPageType.Left))
@@ -54,8 +54,7 @@ class MapSelectScreen(game: Symbol) : DefaultScreen(game) {
         pagedScrollPane.addPage(MapPage(res, MapPage.MapPageType.Right))
         pagedScrollPane.addPage(MapPage(res, MapPage.MapPageType.Left))
         pagedScrollPane.addPage(MapPage(res, MapPage.MapPageType.EndRight))
-        pagedScrollPane.addEmptyPage(34f)
-        pagedScrollPane.addEmptyPage(34f)
+        pagedScrollPane.addPadding(34f * 2)
 
         container.actor = pagedScrollPane
 

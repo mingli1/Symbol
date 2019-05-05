@@ -14,6 +14,7 @@ class PagedScrollPane(private val horizontal: Boolean = true,
 
     private var autoResetOnPageEnter = true
     private var snapToPage = true
+    private var totalEndPadding = 0f
 
     init {
         container.defaults().space(pageSpace)
@@ -39,7 +40,9 @@ class PagedScrollPane(private val horizontal: Boolean = true,
         else container.add(page.pageActor).expandX().fillX().row()
     }
 
-    fun addEmptyPage(offset: Float) {
+    fun addPadding(offset: Float) {
+        if (container.children.size > 0) totalEndPadding += offset
+
         if (horizontal) container.add().minWidth(offset)
         else container.add().minHeight(offset).row()
     }
@@ -105,8 +108,8 @@ class PagedScrollPane(private val horizontal: Boolean = true,
 
     fun scrollToIndex(index: Int) {
         val pages = container.children
-        if (horizontal) scrollX = pages[index].x
-        else scrollY = pages[pages.size - 1 - index].y - (34f * 2)
+        if (horizontal) scrollX = pages[index].x - totalEndPadding
+        else scrollY = pages[pages.size - 1 - index].y - totalEndPadding
     }
 
     fun resetCurrentPage() {
