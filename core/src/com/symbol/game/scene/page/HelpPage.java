@@ -188,4 +188,7 @@ public class HelpPage extends Table implements Page {
     @Override
     public Actor getPageActor() { return this; }
 
+    @Override
+    public void setPageIndex(int pageIndex) {}
+
 }

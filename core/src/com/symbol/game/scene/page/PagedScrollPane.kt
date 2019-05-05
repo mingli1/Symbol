@@ -36,6 +36,7 @@ class PagedScrollPane(private val horizontal: Boolean = true,
     }
 
     fun addPage(page: Page) {
+        page.setPageIndex(container.children.size)
         if (horizontal) container.add(page.pageActor).expandY().fillY()
         else container.add(page.pageActor).expandX().fillX().row()
     }

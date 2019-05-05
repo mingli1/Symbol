@@ -1,13 +1,19 @@
 package com.symbol.game.scene.page;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.symbol.game.util.Resources;
 
 public class MapPage extends Table implements Page {
 
     private Resources res;
+    private PagedScrollPane parent;
+
+    private int pageIndex;
 
     public enum MapPageType {
         Start("map_page_start"),
@@ -23,10 +29,38 @@ public class MapPage extends Table implements Page {
         }
     }
 
-    public MapPage(Resources res, MapPageType type) {
+    public MapPage(Resources res, MapPageType type, PagedScrollPane parent) {
         this.res = res;
-        setDebug(true);
+        this.parent = parent;
         setBackground(new TextureRegionDrawable(res.getTexture(type.key)));
+
+        createMapButton(type);
+    }
+
+    private void createMapButton(MapPageType type) {
+        ImageButton.ImageButtonStyle mapIncompletedStyle = res.getImageButtonStyle("map_incomplete");
+        ImageButton mapButton = new ImageButton(mapIncompletedStyle);
+
+        switch (type) {
+            case Start:
+                add(mapButton).expandX().left();
+                break;
+            case Left:
+            case EndLeft:
+                add(mapButton).expandX().left().padBottom(1f);
+                break;
+            case Right:
+            case EndRight:
+                add(mapButton).expandX().right().padBottom(1f);
+                break;
+        }
+
+        mapButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                parent.scrollToIndex(pageIndex);
+            }
+        });
     }
 
     @Override
@@ -47,6 +81,11 @@ public class MapPage extends Table implements Page {
     @Override
     public Actor getPageActor() {
         return this;
+    }
+
+    @Override
+    public void setPageIndex(int pageIndex) {
+        this.pageIndex = pageIndex;
     }
 
 }

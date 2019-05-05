@@ -46,14 +46,14 @@ class MapSelectScreen(game: Symbol) : DefaultScreen(game) {
         pagedScrollPane.disableAutoReset()
 
         pagedScrollPane.addPadding(34f)
-        pagedScrollPane.addPage(MapPage(res, MapPage.MapPageType.Start))
-        pagedScrollPane.addPage(MapPage(res, MapPage.MapPageType.Right))
-        pagedScrollPane.addPage(MapPage(res, MapPage.MapPageType.Left))
-        pagedScrollPane.addPage(MapPage(res, MapPage.MapPageType.Right))
-        pagedScrollPane.addPage(MapPage(res, MapPage.MapPageType.Left))
-        pagedScrollPane.addPage(MapPage(res, MapPage.MapPageType.Right))
-        pagedScrollPane.addPage(MapPage(res, MapPage.MapPageType.Left))
-        pagedScrollPane.addPage(MapPage(res, MapPage.MapPageType.EndRight))
+        pagedScrollPane.addPage(MapPage(res, MapPage.MapPageType.Start, pagedScrollPane))
+        pagedScrollPane.addPage(MapPage(res, MapPage.MapPageType.Right, pagedScrollPane))
+        pagedScrollPane.addPage(MapPage(res, MapPage.MapPageType.Left, pagedScrollPane))
+        pagedScrollPane.addPage(MapPage(res, MapPage.MapPageType.Right, pagedScrollPane))
+        pagedScrollPane.addPage(MapPage(res, MapPage.MapPageType.Left, pagedScrollPane))
+        pagedScrollPane.addPage(MapPage(res, MapPage.MapPageType.Right, pagedScrollPane))
+        pagedScrollPane.addPage(MapPage(res, MapPage.MapPageType.Left, pagedScrollPane))
+        pagedScrollPane.addPage(MapPage(res, MapPage.MapPageType.EndRight, pagedScrollPane))
         pagedScrollPane.addPadding(34f * 2)
 
         container.actor = pagedScrollPane
