@@ -23,11 +23,15 @@ class Symbol : Game() {
     private lateinit var profiler: GLProfiler
 
     private var currentScreen: AbstractScreen? = null
-    lateinit var background: Background private set
+    val background: Background by lazy {
+        Background(res.getTexture("background")!!,
+                menuScreen.stage.camera as OrthographicCamera,
+                Vector2(BACKGROUND_SCALE, 0f), Vector2(BACKGROUND_VELOCITY, 0f))
+    }
 
-    lateinit var menuScreen: MenuScreen private set
-    lateinit var gameScreen: GameScreen private set
-    lateinit var mapSelectScreen: MapSelectScreen private set
+    val menuScreen: MenuScreen by lazy { MenuScreen(this) }
+    val gameScreen: GameScreen by lazy { GameScreen(this) }
+    val mapSelectScreen: MapSelectScreen by lazy { MapSelectScreen(this) }
 
     lateinit var fps: Label
 
@@ -48,15 +52,7 @@ class Symbol : Game() {
         profiler = GLProfiler(Gdx.graphics)
         if (Config.isDebug()) profiler.enable()
 
-        menuScreen = MenuScreen(this)
-        gameScreen = GameScreen(this)
-        mapSelectScreen = MapSelectScreen(this)
-
         this.setScreen(mapSelectScreen)
-
-        background = Background(res.getTexture("background")!!,
-                menuScreen.stage.camera as OrthographicCamera,
-                Vector2(BACKGROUND_SCALE, 0f), Vector2(BACKGROUND_VELOCITY, 0f))
     }
 
     fun profile(className: String) {
@@ -97,7 +93,10 @@ class Symbol : Game() {
         batch.dispose()
         res.dispose()
         mouseCursor?.dispose()
+
+        menuScreen.dispose()
         gameScreen.dispose()
+        mapSelectScreen.dispose()
     }
 
 }

@@ -11,11 +11,9 @@ const val BACKGROUND_SCALE = 0.4f
 
 open class DefaultScreen(game: Symbol) : AbstractScreen(game) {
 
-    private val multiplexer = InputMultiplexer()
-
-    init {
-        multiplexer.addProcessor(MultiTouchDisabler())
-        multiplexer.addProcessor(stage)
+    private val multiplexer = InputMultiplexer().apply {
+        addProcessor(MultiTouchDisabler())
+        addProcessor(stage)
     }
 
     override fun show() {
@@ -32,13 +30,15 @@ open class DefaultScreen(game: Symbol) : AbstractScreen(game) {
         Gdx.gl.glClearColor(1f, 1f, 1f, 1f)
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
 
-        game.batch.projectionMatrix = cam.combined
-        game.batch.begin()
-        game.batch.setColor(1f, 1f, 1f, 1f)
+        game.run {
+            batch.projectionMatrix = cam.combined
+            batch.begin()
+            batch.setColor(1f, 1f, 1f, 1f)
 
-        game.background.render(game.batch)
+            background.render(batch)
 
-        game.batch.end()
+            batch.end()
+        }
 
         stage.act()
         stage.draw()

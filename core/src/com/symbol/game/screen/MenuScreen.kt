@@ -91,13 +91,13 @@ class MenuScreen(game: Symbol) : DefaultScreen(game) {
     }
 
     private fun createTitle() {
-        for (letter in letters) {
-            letter.addListener(object: InputListener() {
+        letters.forEach {
+            it.addListener(object: InputListener() {
                 override fun enter(event: InputEvent?, x: Float, y: Float, pointer: Int, fromActor: Actor?) {
-                    letter.applyJump(-GRAVITY, 60f)
+                    it.applyJump(-GRAVITY, 60f)
                 }
             })
-            stage.addActor(letter)
+            stage.addActor(it)
         }
     }
 
@@ -114,15 +114,15 @@ class MenuScreen(game: Symbol) : DefaultScreen(game) {
     }
 
     private fun createAboutButton() {
-        aboutButton = ImageButton(game.res.getImageButtonStyle("about"))
-        aboutButton.setPosition(176f, 8f)
+        aboutButton = ImageButton(game.res.getImageButtonStyle("about")).apply {
+            setPosition(176f, 8f)
+            addListener(object: ClickListener() {
+                override fun clicked(event: InputEvent?, x: Float, y: Float) {
+                    aboutDialog.show(stage)
+                }
+            })
+        }
         stage.addActor(aboutButton)
-
-        aboutButton.addListener(object: ClickListener() {
-            override fun clicked(event: InputEvent?, x: Float, y: Float) {
-                aboutDialog.show(stage)
-            }
-        })
     }
 
     override fun show() {
@@ -138,9 +138,7 @@ class MenuScreen(game: Symbol) : DefaultScreen(game) {
         super.update(dt)
         playerImage.update(dt)
 
-        for (letter in letters) {
-            letter.update(dt)
-        }
+        letters.forEach { it.update(dt) }
 
         if (transition && !playerImage.moving()) {
             transition = false

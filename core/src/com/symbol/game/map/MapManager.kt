@@ -41,14 +41,14 @@ private const val ENEMY_FACING_RIGHT = "facingRight"
 class MapManager(private val engine: PooledEngine, private val res: Resources) : Disposable {
 
     private val mapLoader = TmxMapLoader()
-    private lateinit var tiledMap: TiledMap
+    private var tiledMap: TiledMap? = null
 
     private val textureMap = Array<Array<TextureRegion>>()
     private val tileLayer: TiledMapTileLayer by lazy {
-        tiledMap.layers.get(TILE_LAYER) as TiledMapTileLayer
+        tiledMap!!.layers.get(TILE_LAYER) as TiledMapTileLayer
     }
-    private val collisionLayer: MapLayer by lazy { tiledMap.layers.get(COLLISION_LAYER) }
-    private val playerSpawnLayer: MapLayer by lazy { tiledMap.layers.get(PLAYER_SPAWN_LAYER) }
+    private val collisionLayer: MapLayer by lazy { tiledMap!!.layers.get(COLLISION_LAYER) }
+    private val playerSpawnLayer: MapLayer by lazy { tiledMap!!.layers.get(PLAYER_SPAWN_LAYER) }
     private var enemyLayer: MapLayer? = null
     private var mapEntityLayer: MapLayer? = null
 
@@ -84,8 +84,8 @@ class MapManager(private val engine: PooledEngine, private val res: Resources) :
     fun load(mapName: String) {
         tiledMap = mapLoader.load("$DIR$mapName.tmx")
 
-        enemyLayer = tiledMap.layers.get(ENEMY_LAYER)
-        mapEntityLayer = tiledMap.layers.get(MAP_ENTITY_LAYER)
+        enemyLayer = tiledMap!!.layers.get(ENEMY_LAYER)
+        mapEntityLayer = tiledMap!!.layers.get(MAP_ENTITY_LAYER)
 
         val spawn = playerSpawnLayer.objects.getByType(RectangleMapObject::class.java)[0].rectangle
         playerSpawnPosition.set(spawn.x, spawn.y)
@@ -250,7 +250,7 @@ class MapManager(private val engine: PooledEngine, private val res: Resources) :
     }
 
     override fun dispose() {
-        tiledMap.dispose()
+        tiledMap?.dispose()
     }
 
 }
