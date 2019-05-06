@@ -35,74 +35,73 @@ class MapSelectScreen(game: Symbol) : DefaultScreen(game) {
     }
 
     private fun createPagedScrollPane() {
-        val container = Container<PagedScrollPane>()
-        container.setFillParent(true)
+        val container = Container<PagedScrollPane>().apply { setFillParent(true) }
 
         val emptyDrawable = TextureRegionDrawable(res.getTexture("default-rect"))
-        val scrollPaneStyle = ScrollPane.ScrollPaneStyle()
-        scrollPaneStyle.background = emptyDrawable
-        scrollPaneStyle.corner = emptyDrawable
-        scrollPaneStyle.hScroll = emptyDrawable
-        scrollPaneStyle.hScrollKnob = emptyDrawable
-        scrollPaneStyle.vScroll = emptyDrawable
-        scrollPaneStyle.vScrollKnob = emptyDrawable
+        val scrollPaneStyle = ScrollPane.ScrollPaneStyle().apply {
+            background = emptyDrawable
+            corner = emptyDrawable
+            hScroll = emptyDrawable
+            hScrollKnob = emptyDrawable
+            vScroll = emptyDrawable
+            vScrollKnob = emptyDrawable
+        }
 
-        pagedScrollPane = PagedScrollPane(false, scrollPaneStyle, 0f)
-        pagedScrollPane.setFlingTime(PAGE_FLING_TIME)
-        pagedScrollPane.setOverscroll(false, false)
-        pagedScrollPane.disableSnapToPage()
-        pagedScrollPane.disableAutoReset()
+        pagedScrollPane = PagedScrollPane(false, scrollPaneStyle, 0f).apply {
+            setFlingTime(PAGE_FLING_TIME)
+            setOverscroll(false, false)
+            disableSnapToPage()
+            disableAutoReset()
 
-        pagedScrollPane.addPadding(PAGE_TOP_PADDING)
-        pagedScrollPane.addPage(MapPage(res, MapPage.MapPageType.Start, this))
-        pagedScrollPane.addPage(MapPage(res, MapPage.MapPageType.Right, this))
-        pagedScrollPane.addPage(MapPage(res, MapPage.MapPageType.Left, this))
-        pagedScrollPane.addPage(MapPage(res, MapPage.MapPageType.Right, this))
-        pagedScrollPane.addPage(MapPage(res, MapPage.MapPageType.Left, this))
-        pagedScrollPane.addPage(MapPage(res, MapPage.MapPageType.Right, this))
-        pagedScrollPane.addPage(MapPage(res, MapPage.MapPageType.Left, this))
-        pagedScrollPane.addPage(MapPage(res, MapPage.MapPageType.Right, this))
-        pagedScrollPane.addPage(MapPage(res, MapPage.MapPageType.EndLeft, this))
-        pagedScrollPane.addPadding(PAGE_BOTTOM_PADDING)
+            addPadding(PAGE_TOP_PADDING)
+            addPage(MapPage(res, MapPage.MapPageType.Start, this@MapSelectScreen))
+            addPage(MapPage(res, MapPage.MapPageType.Right, this@MapSelectScreen))
+            addPage(MapPage(res, MapPage.MapPageType.Left, this@MapSelectScreen))
+            addPage(MapPage(res, MapPage.MapPageType.Right, this@MapSelectScreen))
+            addPage(MapPage(res, MapPage.MapPageType.Left, this@MapSelectScreen))
+            addPage(MapPage(res, MapPage.MapPageType.Right, this@MapSelectScreen))
+            addPage(MapPage(res, MapPage.MapPageType.Left, this@MapSelectScreen))
+            addPage(MapPage(res, MapPage.MapPageType.Right, this@MapSelectScreen))
+            addPage(MapPage(res, MapPage.MapPageType.EndLeft, this@MapSelectScreen))
+            addPadding(PAGE_BOTTOM_PADDING)
+        }
 
         container.actor = pagedScrollPane
-
         stage.addActor(container)
     }
 
     private fun createBackButton() {
         val buttonStyle = res.getImageButtonStyle("back")
-        backButton = ImageButton(buttonStyle)
-        backButton.setPosition(8f, 97f)
-
-        backButton.addListener(object: ClickListener() {
-            override fun clicked(event: InputEvent?, x: Float, y: Float) {
-                fadeToScreen(game.menuScreen)
-            }
-        })
+        backButton = ImageButton(buttonStyle).apply {
+            setPosition(8f, 97f)
+            addListener(object: ClickListener() {
+                override fun clicked(event: InputEvent?, x: Float, y: Float) {
+                    fadeToScreen(game.menuScreen)
+                }
+            })
+        }
 
         stage.addActor(backButton)
     }
 
     private fun createHeader() {
-        headerContainer = Container()
-        headerContainer.setFillParent(true)
+        headerContainer = Container<Container<Table>>().apply { setFillParent(true) }
 
         val bgTexture = res.getNinePatch("map_select_header_bg")!!
-        val bgContainer = Container<Table>()
-        bgContainer.background = NinePatchDrawable(bgTexture)
-        bgContainer.width(HEADER_WIDTH).height(HEADER_HEIGHT)
+        val bgContainer = Container<Table>().apply {
+            background = NinePatchDrawable(bgTexture)
+            width(HEADER_WIDTH)
+            height(HEADER_HEIGHT)
+        }
 
-        val headerTable = Table()
-        headerTable.setFillParent(true)
+        val headerTable = Table().apply { setFillParent(true) }
 
         val labelStyle = res.getLabelStyle()
         val prompt = Label(res.getString("mapSelectHeader"), labelStyle)
         prompt.setFontScale(1.5f)
         headerTable.add(prompt).expandX().padTop(4f).row()
 
-        val progressGroup = HorizontalGroup()
-        progressGroup.space(6f)
+        val progressGroup = HorizontalGroup().apply { space(6f) }
         val progressIcon = Image(res.getTexture("map_complete_icon"))
         progressLabel = Label(res.getString("mapSelectProgress"), labelStyle)
 
@@ -111,9 +110,11 @@ class MapSelectScreen(game: Symbol) : DefaultScreen(game) {
         headerTable.add(progressGroup).padTop(2f).padRight(8f)
 
         bgContainer.actor = headerTable
-        headerContainer.actor = bgContainer
-        headerContainer.top()
-        headerContainer.padTop(5f)
+        headerContainer.run {
+            actor = bgContainer
+            top()
+            padTop(5f)
+        }
 
         stage.addActor(headerContainer)
     }
@@ -135,9 +136,7 @@ class MapSelectScreen(game: Symbol) : DefaultScreen(game) {
         }
     }
 
-    fun navigateToGameScreen() {
-        fadeToScreen(game.gameScreen)
-    }
+    fun navigateToGameScreen() = fadeToScreen(game.gameScreen)
 
     override fun show() {
         super.show()
@@ -149,8 +148,6 @@ class MapSelectScreen(game: Symbol) : DefaultScreen(game) {
         game.profile("MapSelectScreen")
     }
 
-    override fun exit() {
-        hideMapDialog()
-    }
+    override fun exit() = hideMapDialog()
 
 }
