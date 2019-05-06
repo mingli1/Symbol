@@ -13,9 +13,9 @@ import com.symbol.game.scene.page.PagedScrollPane
 private const val HEADER_WIDTH = 116f
 private const val HEADER_HEIGHT = 22f
 
-private const val PAGE_FLING_TIME = 0.1f
+private const val PAGE_FLING_TIME = 1f
 private const val PAGE_TOP_PADDING = 50f
-private const val PAGE_BOTTOM_PADDING = 34f * 2
+private const val PAGE_BOTTOM_PADDING = 34f
 
 class MapSelectScreen(game: Symbol) : DefaultScreen(game) {
 
@@ -49,6 +49,7 @@ class MapSelectScreen(game: Symbol) : DefaultScreen(game) {
 
         pagedScrollPane = PagedScrollPane(false, scrollPaneStyle, 0f)
         pagedScrollPane.setFlingTime(PAGE_FLING_TIME)
+        pagedScrollPane.setOverscroll(false, false)
         pagedScrollPane.disableSnapToPage()
         pagedScrollPane.disableAutoReset()
 
@@ -60,7 +61,8 @@ class MapSelectScreen(game: Symbol) : DefaultScreen(game) {
         pagedScrollPane.addPage(MapPage(res, MapPage.MapPageType.Left, this))
         pagedScrollPane.addPage(MapPage(res, MapPage.MapPageType.Right, this))
         pagedScrollPane.addPage(MapPage(res, MapPage.MapPageType.Left, this))
-        pagedScrollPane.addPage(MapPage(res, MapPage.MapPageType.EndRight, this))
+        pagedScrollPane.addPage(MapPage(res, MapPage.MapPageType.Right, this))
+        pagedScrollPane.addPage(MapPage(res, MapPage.MapPageType.EndLeft, this))
         pagedScrollPane.addPadding(PAGE_BOTTOM_PADDING)
 
         container.actor = pagedScrollPane
