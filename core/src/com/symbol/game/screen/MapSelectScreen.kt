@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import com.symbol.game.Symbol
+import com.symbol.game.scene.dialog.MapDialog
 import com.symbol.game.scene.page.MapPage
 import com.symbol.game.scene.page.PagedScrollPane
 
@@ -20,8 +21,12 @@ class MapSelectScreen(game: Symbol) : DefaultScreen(game) {
 
     private val res = game.res
 
-    private lateinit var pagedScrollPane: PagedScrollPane
+    lateinit var pagedScrollPane: PagedScrollPane
     private lateinit var progressLabel: Label
+    private lateinit var headerContainer: Container<Container<Table>>
+    private lateinit var backButton: ImageButton
+
+    private val mapDialog = MapDialog(game.res, this)
 
     init {
         createPagedScrollPane()
@@ -48,14 +53,14 @@ class MapSelectScreen(game: Symbol) : DefaultScreen(game) {
         pagedScrollPane.disableAutoReset()
 
         pagedScrollPane.addPadding(PAGE_TOP_PADDING)
-        pagedScrollPane.addPage(MapPage(res, MapPage.MapPageType.Start, pagedScrollPane))
-        pagedScrollPane.addPage(MapPage(res, MapPage.MapPageType.Right, pagedScrollPane))
-        pagedScrollPane.addPage(MapPage(res, MapPage.MapPageType.Left, pagedScrollPane))
-        pagedScrollPane.addPage(MapPage(res, MapPage.MapPageType.Right, pagedScrollPane))
-        pagedScrollPane.addPage(MapPage(res, MapPage.MapPageType.Left, pagedScrollPane))
-        pagedScrollPane.addPage(MapPage(res, MapPage.MapPageType.Right, pagedScrollPane))
-        pagedScrollPane.addPage(MapPage(res, MapPage.MapPageType.Left, pagedScrollPane))
-        pagedScrollPane.addPage(MapPage(res, MapPage.MapPageType.EndRight, pagedScrollPane))
+        pagedScrollPane.addPage(MapPage(res, MapPage.MapPageType.Start, this))
+        pagedScrollPane.addPage(MapPage(res, MapPage.MapPageType.Right, this))
+        pagedScrollPane.addPage(MapPage(res, MapPage.MapPageType.Left, this))
+        pagedScrollPane.addPage(MapPage(res, MapPage.MapPageType.Right, this))
+        pagedScrollPane.addPage(MapPage(res, MapPage.MapPageType.Left, this))
+        pagedScrollPane.addPage(MapPage(res, MapPage.MapPageType.Right, this))
+        pagedScrollPane.addPage(MapPage(res, MapPage.MapPageType.Left, this))
+        pagedScrollPane.addPage(MapPage(res, MapPage.MapPageType.EndRight, this))
         pagedScrollPane.addPadding(PAGE_BOTTOM_PADDING)
 
         container.actor = pagedScrollPane
@@ -65,7 +70,7 @@ class MapSelectScreen(game: Symbol) : DefaultScreen(game) {
 
     private fun createBackButton() {
         val buttonStyle = res.getImageButtonStyle("back")
-        val backButton = ImageButton(buttonStyle)
+        backButton = ImageButton(buttonStyle)
         backButton.setPosition(8f, 97f)
 
         backButton.addListener(object: ClickListener() {
@@ -78,8 +83,8 @@ class MapSelectScreen(game: Symbol) : DefaultScreen(game) {
     }
 
     private fun createHeader() {
-        val root = Container<Container<Table>>()
-        root.setFillParent(true)
+        headerContainer = Container()
+        headerContainer.setFillParent(true)
 
         val bgTexture = res.getNinePatch("map_select_header_bg")!!
         val bgContainer = Container<Table>()
@@ -104,11 +109,32 @@ class MapSelectScreen(game: Symbol) : DefaultScreen(game) {
         headerTable.add(progressGroup).padTop(2f).padRight(8f)
 
         bgContainer.actor = headerTable
-        root.actor = bgContainer
-        root.top()
-        root.padTop(5f)
+        headerContainer.actor = bgContainer
+        headerContainer.top()
+        headerContainer.padTop(5f)
 
-        stage.addActor(root)
+        stage.addActor(headerContainer)
+    }
+
+    fun showMapDialog(right: Boolean) {
+        if (!mapDialog.isDisplayed) {
+            mapDialog.setOrientation(right)
+            mapDialog.show(stage)
+
+            val maxZIndex = stage.actors.size + 1
+            backButton.zIndex = maxZIndex
+        }
+    }
+
+    fun hideMapDialog() {
+        if (mapDialog.isDisplayed) {
+            mapDialog.hide()
+            backButton.zIndex = 0
+        }
+    }
+
+    fun navigateToGameScreen() {
+        fadeToScreen(game.gameScreen)
     }
 
     override fun show() {
@@ -119,6 +145,10 @@ class MapSelectScreen(game: Symbol) : DefaultScreen(game) {
     override fun render(dt: Float) {
         super.render(dt)
         game.profile("MapSelectScreen")
+    }
+
+    override fun exit() {
+        hideMapDialog()
     }
 
 }

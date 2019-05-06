@@ -3,12 +3,13 @@ package com.symbol.game.scene.page;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.symbol.game.screen.MapSelectScreen;
 import com.symbol.game.util.Resources;
 
 public class MapPage extends Table implements Page {
@@ -16,10 +17,11 @@ public class MapPage extends Table implements Page {
     private static final float MAP_BUTTON_WIDTH = 21f;
 
     private Resources res;
-    private PagedScrollPane parent;
+    private MapSelectScreen parent;
 
     private int pageIndex;
     private Label mapIconLabel;
+    private boolean right;
 
     public enum MapPageType {
         Start("map_page_start"),
@@ -35,7 +37,7 @@ public class MapPage extends Table implements Page {
         }
     }
 
-    public MapPage(Resources res, MapPageType type, PagedScrollPane parent) {
+    public MapPage(Resources res, MapPageType type, MapSelectScreen parent) {
         this.res = res;
         this.parent = parent;
         setBackground(new TextureRegionDrawable(res.getTexture(type.key)));
@@ -58,20 +60,27 @@ public class MapPage extends Table implements Page {
             case EndLeft:
                 add(mapButton).expandX().left().padTop(5f).row();
                 add(wrapper).width(MAP_BUTTON_WIDTH).expandX().left();
+                right = false;
                 break;
             case Right:
             case EndRight:
                 add(mapButton).expandX().right().padTop(5f).row();
                 add(wrapper).width(MAP_BUTTON_WIDTH).expandX().right();
+                right = true;
                 break;
         }
 
-        mapButton.addListener(new InputListener() {
+        mapButton.addListener(new ClickListener() {
             @Override
-            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-                parent.scrollToIndex(pageIndex);
+            public void clicked(InputEvent event, float x, float y) {
+                parent.pagedScrollPane.scrollToIndex(pageIndex);
+                onMapButtonClicked();
             }
         });
+    }
+
+    private void onMapButtonClicked() {
+        parent.showMapDialog(right);
     }
 
     @Override

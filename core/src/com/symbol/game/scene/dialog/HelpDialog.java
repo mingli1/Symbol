@@ -53,7 +53,6 @@ public class HelpDialog extends Table {
         this.hud = hud;
 
         shadow = new Image(game.getRes().getTexture("shadow"));
-        shadow.setVisible(false);
         shadow.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) { hud.hideHelpDialog(); }
@@ -126,7 +125,6 @@ public class HelpDialog extends Table {
 
     public void show(Stage stage) {
         displayed = true;
-        shadow.setVisible(true);
 
         clearActions();
         pack();
@@ -139,9 +137,9 @@ public class HelpDialog extends Table {
 
     public void hide() {
         displayed = false;
-        shadow.setVisible(false);
         pagedScrollPane.resetCurrentPage();
         hud.toggleHelpButtonAlert(!pagedScrollPane.hasAllSeen());
+        shadow.remove();
         addAction(sequence(fadeOut(0.4f, Interpolation.fade), Actions.removeActor()));
     }
 

@@ -41,8 +41,11 @@ abstract class AbstractScreen(protected val game: Symbol) : Screen, Disposable {
         stage.dispose()
     }
 
+    open fun exit() {}
+
     protected fun fadeToScreen(screen: AbstractScreen, duration: Float = 0.3f) {
         stage.addAction(Actions.sequence(
+                Actions.run { exit() },
                 Actions.fadeOut(duration),
                 Actions.run { game.setScreen(screen) }))
     }

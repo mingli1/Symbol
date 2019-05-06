@@ -20,5 +20,6 @@
   "respawnButton": "respawn",
   "quitButton": "quit",
   "mapSelectHeader": "select a map",
-  "mapSelectProgress": "14 / 30"
+  "mapSelectProgress": "14 / 30",
+  "mapEnterButton": "enter"
 }
