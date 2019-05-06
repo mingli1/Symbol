@@ -31,9 +31,7 @@ class PagedScrollPane(private val horizontal: Boolean = true,
         autoResetOnPageEnter = false
     }
 
-    fun addPages(pages: Array<Page>) {
-        pages.forEach { addPage(it) }
-    }
+    fun addPages(pages: Array<Page>) = pages.forEach { addPage(it) }
 
     fun addPage(page: Page) {
         page.setPageIndex(container.children.size)
@@ -90,56 +88,53 @@ class PagedScrollPane(private val horizontal: Boolean = true,
     }
 
     fun scrollToPrevious() {
-        val currIndex = getCurrentIndex()
-        if (currIndex == 0) return
-
-        resetCurrentPage()
-        if (horizontal) scrollX = container.children[currIndex - 1].x
-        else scrollY = maxY - container.children[currIndex - 1].y
+        getCurrentIndex().let {
+            if (it == 0) return
+            resetCurrentPage()
+            if (horizontal) scrollX = container.children[it - 1].x
+            else scrollY = maxY - container.children[it - 1].y
+        }
     }
 
     fun scrollToNext() {
-        val currIndex = getCurrentIndex()
-        if (currIndex == container.children.size - 1) return
+        getCurrentIndex().let {
+            if (it == container.children.size - 1) return
+            resetCurrentPage()
+            if (horizontal) scrollX = container.children[it + 1].x
+            else scrollY = maxY - container.children[it + 1].y
+        }
 
-        resetCurrentPage()
-        if (horizontal) scrollX = container.children[currIndex + 1].x
-        else scrollY = maxY - container.children[currIndex + 1].y
     }
 
     fun scrollToIndex(index: Int) {
-        val pages = container.children
-        if (horizontal) scrollX = pages[index].x - totalEndPadding
-        else scrollY = pages[pages.size - 1 - index].y - totalEndPadding
+        container.children.let {
+            if (horizontal) scrollX = it[index].x - totalEndPadding
+            else scrollY = it[it.size - 1 - index].y - totalEndPadding
+        }
     }
 
     fun resetCurrentPage() {
         if (!autoResetOnPageEnter) return
 
-        val currPage = (getCurrentPage() as Page)
-        currPage.reset()
-        if (!currPage.hasSeen()) currPage.notifySeen()
-    }
-
-    fun hasAllSeen() : Boolean {
-        for (page in container.children) {
-            if (!(page as Page).hasSeen()) return false
+        (getCurrentPage() as Page).run {
+            reset()
+            if (!hasSeen()) notifySeen()
         }
-        return true
     }
 
-    fun isCurrentPageSeen() : Boolean {
-        return (getCurrentPage() as Page).hasSeen()
-    }
+    fun hasAllSeen() = container.children.find { !(it as Page).hasSeen() } == null
+
+    fun isCurrentPageSeen() = (getCurrentPage() as Page).hasSeen()
 
     fun isNextPageSeen() : Boolean {
-        val currIndex = getCurrentIndex()
-        if (currIndex == container.children.size - 1) return true
-        return (container.children[currIndex + 1] as Page).hasSeen()
+        getCurrentIndex().let {
+            if (it == container.children.size - 1) return true
+            return (container.children[it + 1] as Page).hasSeen()
+        }
     }
 
     private fun getCurrentPage() : Actor? {
-        for (page in container.children) {
+        container.children.forEach { page ->
             if (horizontal && scrollX <= page.x + page.width ||
                     !horizontal && scrollY <= maxY - page.y + page.height / 2) {
                 return page

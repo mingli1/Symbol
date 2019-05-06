@@ -42,7 +42,7 @@ class KeyInputSystem(private val res: Resources) : EntitySystem(), KeyInputHandl
         }
 
         if (se.type == StatusEffect.Snare) {
-            Mapper.DIR_MAPPER.get(player).apply { facingRight = right }
+            Mapper.DIR_MAPPER.get(player).run { facingRight = right }
         }
     }
 
