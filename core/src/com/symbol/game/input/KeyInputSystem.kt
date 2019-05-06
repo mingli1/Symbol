@@ -13,15 +13,13 @@ import com.symbol.game.util.Resources
 class KeyInputSystem(private val res: Resources) : EntitySystem(), KeyInputHandler {
 
     private lateinit var player: Entity
-    private lateinit var playerComp: PlayerComponent
-    private lateinit var vel: VelocityComponent
+    private val playerComp: PlayerComponent by lazy { Mapper.PLAYER_MAPPER.get(player) }
+    private val vel: VelocityComponent by lazy { Mapper.VEL_MAPPER.get(player) }
 
     private var charging = false
 
     override fun addedToEngine(engine: Engine?) {
         player = engine!!.getEntitiesFor(Family.all(PlayerComponent::class.java).get()).get(0)
-        playerComp = Mapper.PLAYER_MAPPER.get(player)
-        vel = Mapper.VEL_MAPPER.get(player)
     }
 
     override fun update(dt: Float) {
@@ -44,8 +42,7 @@ class KeyInputSystem(private val res: Resources) : EntitySystem(), KeyInputHandl
         }
 
         if (se.type == StatusEffect.Snare) {
-            val dir = Mapper.DIR_MAPPER.get(player)
-            dir.facingRight = right
+            Mapper.DIR_MAPPER.get(player).apply { facingRight = right }
         }
     }
 

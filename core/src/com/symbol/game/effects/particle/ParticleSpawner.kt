@@ -29,11 +29,12 @@ object ParticleSpawner {
               zNegVyScale: Float = DEFAULT_Z_NEG_VY_SCALING,
               zNegVzScale: Float = DEFAULT_Z_NEG_VZ_SCALING,
               zPosVzScale: Float = DEFAULT_Z_POS_VZ_SCALING) {
-        for (i in 1..intensity) {
-            val particle = particlePool.obtain()
-            particle.set(res, hex, lifetime)
-            particle.initVectors(x, y, zi, vxScale, vyScale, vzScale,
-                    zNegVxScale, zNegVyScale, zNegVzScale, zPosVzScale)
+        repeat(intensity) {
+            val particle = particlePool.obtain().apply {
+                set(res, hex, lifetime)
+                initVectors(x, y, zi, vxScale, vyScale, vzScale,
+                        zNegVxScale, zNegVyScale, zNegVzScale, zPosVzScale)
+            }
             particles.add(particle)
         }
     }
@@ -50,9 +51,9 @@ object ParticleSpawner {
     }
 
     fun render(batch: Batch, cam: OrthographicCamera) {
-        for (particle in particles) {
-            if (CameraUtil.withinCamera(particle.position.x, particle.position.y, cam)) {
-                particle.render(batch)
+        particles.forEach {
+            if (CameraUtil.withinCamera(it.position.x, it.position.y, cam)) {
+                it.render(batch)
             }
         }
     }

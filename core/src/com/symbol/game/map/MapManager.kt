@@ -41,19 +41,19 @@ private const val ENEMY_FACING_RIGHT = "facingRight"
 class MapManager(private val engine: PooledEngine, private val res: Resources) : Disposable {
 
     private val mapLoader = TmxMapLoader()
-    private var tiledMap: TiledMap? = null
+    private lateinit var tiledMap: TiledMap
 
     private val textureMap = Array<Array<TextureRegion>>()
-    private lateinit var tileLayer: TiledMapTileLayer
-    private lateinit var collisionLayer: MapLayer
-    private lateinit var playerSpawnLayer: MapLayer
+    private val tileLayer: TiledMapTileLayer by lazy {
+        tiledMap.layers.get(TILE_LAYER) as TiledMapTileLayer
+    }
+    private val collisionLayer: MapLayer by lazy { tiledMap.layers.get(COLLISION_LAYER) }
+    private val playerSpawnLayer: MapLayer by lazy { tiledMap.layers.get(PLAYER_SPAWN_LAYER) }
     private var enemyLayer: MapLayer? = null
     private var mapEntityLayer: MapLayer? = null
 
-    var mapWidth = 0
-        private set
-    var mapHeight = 0
-        private set
+    val mapWidth: Int by lazy { tileLayer.width }
+    val mapHeight: Int by lazy { tileLayer.height }
 
     var playerSpawnPosition = Vector2()
 
@@ -84,22 +84,15 @@ class MapManager(private val engine: PooledEngine, private val res: Resources) :
     fun load(mapName: String) {
         tiledMap = mapLoader.load("$DIR$mapName.tmx")
 
-        tileLayer = tiledMap!!.layers.get(TILE_LAYER) as TiledMapTileLayer
-        collisionLayer = tiledMap!!.layers.get(COLLISION_LAYER)
-        playerSpawnLayer = tiledMap!!.layers.get(PLAYER_SPAWN_LAYER)
-        enemyLayer = tiledMap!!.layers.get(ENEMY_LAYER)
-        mapEntityLayer = tiledMap!!.layers.get(MAP_ENTITY_LAYER)
-
-        mapWidth = tileLayer.width
-        mapHeight = tileLayer.height
+        enemyLayer = tiledMap.layers.get(ENEMY_LAYER)
+        mapEntityLayer = tiledMap.layers.get(MAP_ENTITY_LAYER)
 
         val spawn = playerSpawnLayer.objects.getByType(RectangleMapObject::class.java)[0].rectangle
         playerSpawnPosition.set(spawn.x, spawn.y)
 
         loadMapObjects()
-
-        if (enemyLayer != null) loadEnemies()
-        if (mapEntityLayer != null) loadMapEntities()
+        loadEnemies()
+        loadMapEntities()
 
         val tileset = res.getTexture("tileset")!!.split(TILE_SIZE, TILE_SIZE)
 
@@ -128,41 +121,45 @@ class MapManager(private val engine: PooledEngine, private val res: Resources) :
 
     private fun loadMapObjects() {
         mapObjects.clear()
-        val objects = collisionLayer.objects
-        for (rectangleMapObject in objects.getByType(RectangleMapObject::class.java)) {
-            val mapObjectRect = rectangleMapObject.rectangle
-            val typeProp = rectangleMapObject.properties[MAP_OBJECT_TYPE]
-            val damageProp = rectangleMapObject.properties[MAP_OBJECT_DAMAGE]
 
-            val mapObjectType = if (typeProp == null) MapObjectType.Ground else MapObjectType.getType(typeProp.toString())!!
-            val mapObjectDamage = if (damageProp == null) 0 else damageProp as Int
+        collisionLayer.objects.let { objects ->
+            objects.getByType(RectangleMapObject::class.java).forEach {
+                val mapObjectRect = it.rectangle
+                val typeProp = it.properties[MAP_OBJECT_TYPE]
+                val damageProp = it.properties[MAP_OBJECT_DAMAGE]
 
-            mapObjects.add(MapObject(mapObjectRect, mapObjectType, mapObjectDamage))
+                val mapObjectType = if (typeProp == null) MapObjectType.Ground else MapObjectType.getType(typeProp.toString())!!
+                val mapObjectDamage = if (damageProp == null) 0 else damageProp as Int
+
+                mapObjects.add(MapObject(mapObjectRect, mapObjectType, mapObjectDamage))
+            }
         }
     }
 
     private fun loadEnemies() {
-        val enemyObjects = enemyLayer!!.objects
-        for (enemyMapObject in enemyObjects.getByType(RectangleMapObject::class.java)) {
-            val enemyObjectRect = enemyMapObject.rectangle
-            val typeProp = enemyMapObject.properties[TYPE]
-            val facingRightProp = enemyMapObject.properties[ENEMY_FACING_RIGHT]
+        enemyLayer?.objects?.let { enemyObjects ->
+            enemyObjects.getByType(RectangleMapObject::class.java).forEach {
+                val enemyObjectRect = it.rectangle
+                val typeProp = it.properties[TYPE]
+                val facingRightProp = it.properties[ENEMY_FACING_RIGHT]
 
-            val enemyObjectType = if (typeProp == null) EnemyType.None else EnemyType.getType(typeProp.toString())!!
-            val facingRight = if (facingRightProp == null) true else facingRightProp as Boolean
+                val enemyObjectType = if (typeProp == null) EnemyType.None else EnemyType.getType(typeProp.toString())!!
+                val facingRight = if (facingRightProp == null) true else facingRightProp as Boolean
 
-            EntityFactory.createEnemy(engine, res, enemyObjectType, enemyObjectRect, facingRight)
+                EntityFactory.createEnemy(engine, res, enemyObjectType, enemyObjectRect, facingRight)
+            }
         }
     }
 
     private fun loadMapEntities() {
-        val mapEntityObjects = mapEntityLayer!!.objects
-        for (mapEntityObject in mapEntityObjects.getByType(RectangleMapObject::class.java)) {
-            val mapEntityRect = mapEntityObject.rectangle
-            val typeProp = mapEntityObject.properties[TYPE]
-            val mapEntityType = if (typeProp == null) MapEntityType.None else MapEntityType.getType(typeProp.toString())!!
+        mapEntityLayer?.objects?.let { mapEntityObjects ->
+            mapEntityObjects.getByType(RectangleMapObject::class.java).forEach {
+                val mapEntityRect = it.rectangle
+                val typeProp = it.properties[TYPE]
+                val mapEntityType = if (typeProp == null) MapEntityType.None else MapEntityType.getType(typeProp.toString())!!
 
-            EntityFactory.createMapEntity(engine, res, mapEntityObject.properties, mapEntityType, mapEntityRect)
+                EntityFactory.createMapEntity(engine, res, it.properties, mapEntityType, mapEntityRect)
+            }
         }
     }
 
@@ -188,11 +185,10 @@ class MapManager(private val engine: PooledEngine, private val res: Resources) :
             }
         }
 
-        for (mapObject in mapObjects) {
-            val page = res.getHelpPage(mapObject.type.typeStr)
-            if (page != null) {
-                if (page.hasSeen() && !containsMapObjectType(oldMapObjects, mapObject)) oldMapObjects.add(mapObject)
-                else if (!page.hasSeen() && !containsMapObjectType(newMapObjects, mapObject)) newMapObjects.add(mapObject)
+        mapObjects.forEach {
+            res.getHelpPage(it.type.typeStr)?.let { page ->
+                if (page.hasSeen() && !containsMapObjectType(oldMapObjects, it)) oldMapObjects.add(it)
+                else if (!page.hasSeen() && !containsMapObjectType(newMapObjects, it)) newMapObjects.add(it)
             }
         }
 
@@ -201,10 +197,10 @@ class MapManager(private val engine: PooledEngine, private val res: Resources) :
         newMapObjects.sort(mapObjectComparator)
         oldMapObjects.sort(mapObjectComparator)
 
-        for (mapObject in newMapObjects) addMapObjectHelpPage(mapObject)
-        for (entity in newEntities) addEntityHelpPage(entity)
-        for (entity in oldEntities) addEntityHelpPage(entity)
-        for (mapObject in oldMapObjects) addMapObjectHelpPage(mapObject)
+        newMapObjects.forEach { addMapObjectHelpPage(it) }
+        newEntities.forEach { addEntityHelpPage(it) }
+        oldEntities.forEach { addEntityHelpPage(it) }
+        oldMapObjects.forEach { addMapObjectHelpPage(it) }
     }
 
     private fun containsEntityType(entities: Array<Entity>, entity: Entity) : Boolean {
@@ -223,29 +219,19 @@ class MapManager(private val engine: PooledEngine, private val res: Resources) :
         return false
     }
 
-    private fun containsMapObjectType(mapObjects: Array<MapObject>, mapObject: MapObject) : Boolean {
-        for (me in mapObjects) {
-            if (mapObject.type == me.type) return true
-        }
-        return false
-    }
+    private fun containsMapObjectType(mapObjects: Array<MapObject>, mapObject: MapObject) : Boolean =
+            mapObjects.find { it.type == mapObject.type } != null
 
     private fun addEntityHelpPage(entity: Entity) {
-        val enemy = Mapper.ENEMY_MAPPER.get(entity)
-        val mapEntity = Mapper.MAP_ENTITY_MAPPER.get(entity)
-        if (enemy != null) helpPages.add(res.getHelpPage(enemy.enemyType.typeStr))
-        else if (mapEntity != null) helpPages.add(res.getHelpPage(mapEntity.mapEntityType.typeStr))
+        Mapper.ENEMY_MAPPER.get(entity)?.let { helpPages.add(res.getHelpPage(it.enemyType.typeStr)) }
+        Mapper.MAP_ENTITY_MAPPER.get(entity)?.let { helpPages.add(res.getHelpPage(it.mapEntityType.typeStr)) }
     }
 
     private fun addMapObjectHelpPage(mapObject: MapObject) =
             helpPages.add(res.getHelpPage(mapObject.type.typeStr))
 
-    fun containsInvertSwitch() : Boolean {
-        for (entity in engine.entities) {
-            if (Mapper.INVERT_SWITCH_MAPPER.get(entity) != null) return true
-        }
-        return false
-    }
+    fun containsInvertSwitch() : Boolean =
+            engine.entities.find { Mapper.INVERT_SWITCH_MAPPER.get(it) != null } != null
 
     fun render(batch: Batch, cam: OrthographicCamera) {
         for (row in 0 until mapHeight) {
@@ -264,7 +250,7 @@ class MapManager(private val engine: PooledEngine, private val res: Resources) :
     }
 
     override fun dispose() {
-        tiledMap?.dispose()
+        tiledMap.dispose()
     }
 
 }
