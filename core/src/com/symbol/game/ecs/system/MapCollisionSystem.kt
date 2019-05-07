@@ -57,10 +57,10 @@ class MapCollisionSystem(private val res: Resources) : IteratingSystem(
     override fun update(dt: Float) {
         super.update(dt)
         for (entity in removableEntities) {
-            val position = Mapper.POS_MAPPER.get(entity)
-            val width = Mapper.TEXTURE_MAPPER.get(entity).texture!!.regionWidth
-            val height = Mapper.TEXTURE_MAPPER.get(entity).texture!!.regionHeight
-            val remove = Mapper.REMOVE_MAPPER.get(entity)
+            val position = Mapper.POS_MAPPER[entity]
+            val width = Mapper.TEXTURE_MAPPER[entity].texture!!.regionWidth
+            val height = Mapper.TEXTURE_MAPPER[entity].texture!!.regionHeight
+            val remove = Mapper.REMOVE_MAPPER[entity]
             if (position.x < -mapWidth - width || position.x > mapWidth * 2 ||
                     position.y < -mapHeight - height || position.y > mapHeight * 2) {
                 remove.shouldRemove = true
@@ -69,13 +69,13 @@ class MapCollisionSystem(private val res: Resources) : IteratingSystem(
     }
 
     override fun processEntity(entity: Entity?, dt: Float) {
-        val bb = Mapper.BOUNDING_BOX_MAPPER.get(entity)
-        val position = Mapper.POS_MAPPER.get(entity)
-        val velocity = Mapper.VEL_MAPPER.get(entity)
-        val width = Mapper.TEXTURE_MAPPER.get(entity).texture!!.regionWidth
-        val height = Mapper.TEXTURE_MAPPER.get(entity).texture!!.regionHeight
-        val gravity = Mapper.GRAVITY_MAPPER.get(entity)
-        val player = Mapper.PLAYER_MAPPER.get(entity)
+        val bb = Mapper.BOUNDING_BOX_MAPPER[entity]
+        val position = Mapper.POS_MAPPER[entity]
+        val velocity = Mapper.VEL_MAPPER[entity]
+        val width = Mapper.TEXTURE_MAPPER[entity].texture!!.regionWidth
+        val height = Mapper.TEXTURE_MAPPER[entity].texture!!.regionHeight
+        val gravity = Mapper.GRAVITY_MAPPER[entity]
+        val player = Mapper.PLAYER_MAPPER[entity]
 
         stepX = (if (gravity.onMovingPlatform) velocity.platformDx else velocity.dx) * dt / NUM_SUB_STEPS
         for (i in 0 until NUM_SUB_STEPS) {
@@ -90,19 +90,19 @@ class MapCollisionSystem(private val res: Resources) : IteratingSystem(
                     }
                 }
                 for (cEntity in collidableEntities) {
-                    val bounds = Mapper.BOUNDING_BOX_MAPPER.get(cEntity)
-                    val mapEntityComp = Mapper.MAP_ENTITY_MAPPER.get(cEntity)
+                    val bounds = Mapper.BOUNDING_BOX_MAPPER[cEntity]
+                    val mapEntityComp = Mapper.MAP_ENTITY_MAPPER[cEntity]
 
                     if (bb.rect.overlaps(bounds.rect)) {
                         if ((mapEntityComp != null && mapEntityComp.mapCollidable) ||
-                                Mapper.BLOCK_MAPPER.get(cEntity) != null) {
+                                Mapper.BLOCK_MAPPER[cEntity] != null) {
                             revertCurrentPosition(position)
                         }
                     }
                 }
                 for (mplatform in movingPlatforms) {
-                    val bounds = Mapper.BOUNDING_BOX_MAPPER.get(mplatform)
-                    val vel = Mapper.VEL_MAPPER.get(mplatform)
+                    val bounds = Mapper.BOUNDING_BOX_MAPPER[mplatform]
+                    val vel = Mapper.VEL_MAPPER[mplatform]
                     if (bb.rect.overlaps(bounds.rect)) {
                         val collisionLeft = (velocity.dx >= 0 && vel.dx < 0) || (velocity.dx > 0 && vel.dx > 0)
                         val collisionRight = (velocity.dx <= 0 && vel.dx > 0) || (velocity.dx < 0 && vel.dx < 0)
@@ -130,7 +130,7 @@ class MapCollisionSystem(private val res: Resources) : IteratingSystem(
                             gravity.onGround = true
                             gravity.platform.set(mapObject.bounds)
 
-                            val se = Mapper.STATUS_EFFECT_MAPPER.get(entity)
+                            val se = Mapper.STATUS_EFFECT_MAPPER[entity]
                             if (se != null && !se.entityApplied && se.type != StatusEffect.None) se.finish()
 
                             handleGroundedMapObject(mapObject, player, se)
@@ -143,12 +143,12 @@ class MapCollisionSystem(private val res: Resources) : IteratingSystem(
                     }
                 }
                 for (cEntity in collidableEntities) {
-                    val bounds = Mapper.BOUNDING_BOX_MAPPER.get(cEntity)
-                    val mapEntityComp = Mapper.MAP_ENTITY_MAPPER.get(cEntity)
+                    val bounds = Mapper.BOUNDING_BOX_MAPPER[cEntity]
+                    val mapEntityComp = Mapper.MAP_ENTITY_MAPPER[cEntity]
 
                     if (bb.rect.overlaps(bounds.rect)) {
                         if ((mapEntityComp != null && mapEntityComp.mapCollidable) ||
-                                Mapper.BLOCK_MAPPER.get(cEntity) != null) {
+                                Mapper.BLOCK_MAPPER[cEntity] != null) {
                             revertCurrentPosition(position)
                             if (velocity.dy < 0 || (gravity.reverse && velocity.dy > 0 )) {
                                 gravity.onGround = true
@@ -160,7 +160,7 @@ class MapCollisionSystem(private val res: Resources) : IteratingSystem(
                     }
                 }
                 for (mplatform in movingPlatforms) {
-                    val bounds = Mapper.BOUNDING_BOX_MAPPER.get(mplatform)
+                    val bounds = Mapper.BOUNDING_BOX_MAPPER[mplatform]
                     if (bb.rect.overlaps(bounds.rect)) {
                         revertCurrentPosition(position)
                         if ((velocity.dy < 0 || (gravity.reverse && velocity.dy > 0)) &&
@@ -173,7 +173,7 @@ class MapCollisionSystem(private val res: Resources) : IteratingSystem(
                         }
                         velocity.dy = 0f
 
-                        val vel = Mapper.VEL_MAPPER.get(mplatform)
+                        val vel = Mapper.VEL_MAPPER[mplatform]
                         if (gravity.onMovingPlatform) {
                             if ((velocity.dx < 0 && vel.dx > 0) || (velocity.dx > 0 && vel.dx < 0))
                                 velocity.platformDx = velocity.dx / 2 - vel.dx
@@ -190,7 +190,7 @@ class MapCollisionSystem(private val res: Resources) : IteratingSystem(
             velocity.platformDx = 0f
         }
 
-        if (Mapper.PROJ_MAPPER.get(entity) != null) return
+        if (Mapper.PROJ_MAPPER[entity] != null) return
 
         for (mapObject in mapObjects) {
             if (bb.rect.overlaps(mapObject.bounds)) {
@@ -203,7 +203,7 @@ class MapCollisionSystem(private val res: Resources) : IteratingSystem(
         }
 
         for (toggleTile in toggleTiles) {
-            val tt = Mapper.TOGGLE_TILE_MAPPER.get(toggleTile)
+            val tt = Mapper.TOGGLE_TILE_MAPPER[toggleTile]
             if (bb.rect.overlaps(tt.lethalRect) && tt.toggle) {
                 killEntity(entity)
             }
@@ -233,11 +233,11 @@ class MapCollisionSystem(private val res: Resources) : IteratingSystem(
     }
 
     private fun killEntity(entity: Entity?) {
-        val health = Mapper.HEALTH_MAPPER.get(entity)
+        val health = Mapper.HEALTH_MAPPER[entity]
         health?.hp = 0
 
-        val bounds = Mapper.BOUNDING_BOX_MAPPER.get(entity)
-        val color = Mapper.COLOR_MAPPER.get(entity)
+        val bounds = Mapper.BOUNDING_BOX_MAPPER[entity]
+        val color = Mapper.COLOR_MAPPER[entity]
         ParticleSpawner.spawn(res, color.hex!!, DEFAULT_LIFETIME, DEFAULT_INTESITY + health.maxHp,
                 bounds.rect.x + bounds.rect.width / 2, bounds.rect.y + bounds.rect.height / 2)
     }
@@ -248,12 +248,12 @@ class MapCollisionSystem(private val res: Resources) : IteratingSystem(
 
     private fun handleDamageMapObject(mapObject: MapObject, entity: Entity?) {
         if (damageTimes[entity] == 0f) {
-            val health = Mapper.HEALTH_MAPPER.get(entity)
+            val health = Mapper.HEALTH_MAPPER[entity]
             health?.hit(mapObject.damage)
             startDamage[entity!!] = true
 
-            val bounds = Mapper.BOUNDING_BOX_MAPPER.get(entity)
-            val color = Mapper.COLOR_MAPPER.get(entity)
+            val bounds = Mapper.BOUNDING_BOX_MAPPER[entity]
+            val color = Mapper.COLOR_MAPPER[entity]
             ParticleSpawner.spawn(res, color.hex!!, DEFAULT_LIFETIME,
                     (DEFAULT_INTESITY + mapObject.damage) * 2,
                     bounds.rect.x + bounds.rect.width / 2, bounds.rect.y + bounds.rect.height / 2)

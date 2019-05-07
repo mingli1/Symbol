@@ -69,27 +69,31 @@ class GameScreen(game: Symbol) : AbstractScreen(game) {
     }
 
     private fun initSystems() {
-        engine.addSystem(MovementSystem())
-        engine.addSystem(MapCollisionSystem(game.res))
-        engine.addSystem(MapEntitySystem(player, game.res))
-        engine.addSystem(ProjectileSystem(player, game.res, this))
-        engine.addSystem(HealthSystem())
-        engine.addSystem(EnemyActivationSystem(player))
-        engine.addSystem(EnemyAttackSystem(player, game.res))
-        engine.addSystem(EnemyMovementSystem(player, game.res))
-        engine.addSystem(DirectionSystem())
-        engine.addSystem(GravitySystem())
-        engine.addSystem(StatusEffectSystem())
-        engine.addSystem(RenderSystem(game.batch, cam, game.res))
-        engine.addSystem(StatusRenderSystem(game.batch, game.res, cam))
-        engine.addSystem(RemoveSystem())
+        engine.run {
+            addSystem(MovementSystem())
+            addSystem(MapCollisionSystem(game.res))
+            addSystem(MapEntitySystem(player, game.res))
+            addSystem(ProjectileSystem(player, game.res, this@GameScreen))
+            addSystem(HealthSystem())
+            addSystem(EnemyActivationSystem(player))
+            addSystem(EnemyAttackSystem(player, game.res))
+            addSystem(EnemyMovementSystem(player, game.res))
+            addSystem(DirectionSystem())
+            addSystem(GravitySystem())
+            addSystem(StatusEffectSystem())
+            addSystem(RenderSystem(game.batch, cam, game.res))
+            addSystem(StatusRenderSystem(game.batch, game.res, cam))
+            addSystem(RemoveSystem())
+        }
     }
 
     private fun resetSystems() {
-        engine.getSystem(MapCollisionSystem::class.java).setMapData(mapManager.mapObjects,
-                mapManager.mapWidth * TILE_SIZE, mapManager.mapHeight * TILE_SIZE)
-        engine.getSystem(ProjectileSystem::class.java).setMapData(mapManager.mapObjects)
-        engine.getSystem(EnemyAttackSystem::class.java).setMapData(mapManager.mapWidth.toFloat() * TILE_SIZE)
+        engine.run {
+            getSystem(MapCollisionSystem::class.java).setMapData(mapManager.mapObjects,
+                    mapManager.mapWidth * TILE_SIZE, mapManager.mapHeight * TILE_SIZE)
+            getSystem(ProjectileSystem::class.java).setMapData(mapManager.mapObjects)
+            getSystem(EnemyAttackSystem::class.java).setMapData(mapManager.mapWidth.toFloat() * TILE_SIZE)
+        }
     }
 
     override fun show() {
@@ -109,7 +113,7 @@ class GameScreen(game: Symbol) : AbstractScreen(game) {
         canInvert = mapManager.containsInvertSwitch()
         mapInverted = false
 
-        val playerPosition = Mapper.POS_MAPPER.get(player)
+        val playerPosition = Mapper.POS_MAPPER[player]
         playerPosition.set(mapManager.playerSpawnPosition.x, mapManager.playerSpawnPosition.y)
 
         cam.up.set(0f, 1f, 0f)
@@ -137,7 +141,7 @@ class GameScreen(game: Symbol) : AbstractScreen(game) {
     }
 
     private fun updateCamera(dt: Float) {
-        val playerPos = Mapper.POS_MAPPER.get(player)
+        val playerPos = Mapper.POS_MAPPER[player]
 
         if (!debugCamera) {
             cam.position.x += (playerPos.x + (TILE_SIZE / 2) - cam.position.x) * CAMERA_LERP * dt

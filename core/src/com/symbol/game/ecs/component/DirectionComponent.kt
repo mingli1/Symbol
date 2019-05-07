@@ -16,12 +16,3 @@ class DirectionComponent : Component, Pool.Poolable {
     }
 
 }
-
-enum class Direction {
-
-    Up,
-    Down,
-    Left,
-    Right
-
-}

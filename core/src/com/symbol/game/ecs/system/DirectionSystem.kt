@@ -9,10 +9,10 @@ import com.symbol.game.ecs.component.DirectionComponent
 class DirectionSystem : IteratingSystem(Family.all(DirectionComponent::class.java).get()) {
 
     override fun processEntity(entity: Entity?, deltaTime: Float) {
-        val vel = Mapper.VEL_MAPPER.get(entity)
-        val dir = Mapper.DIR_MAPPER.get(entity)
+        val vel = Mapper.VEL_MAPPER[entity]
+        val dir = Mapper.DIR_MAPPER[entity]
 
-        val knockback = Mapper.KNOCKBACK_MAPPER.get(entity)
+        val knockback = Mapper.KNOCKBACK_MAPPER[entity]
         val knockingBack = knockback?.knockingBack ?: false
 
         if (vel.dx > 0 && !knockingBack) dir.facingRight = true

@@ -55,8 +55,8 @@ class Resources : Disposable {
     private val helpPages: MutableMap<String, HelpPage> = HashMap()
 
     val skin: Skin
-    val font: BitmapFont
     val invertShader: ShaderProgram
+    private val font: BitmapFont
 
     init {
         assetManager.load("textures/textures.atlas", TextureAtlas::class.java)
@@ -83,63 +83,52 @@ class Resources : Disposable {
         loadHelpPages()
     }
 
-    fun getTexture(key: String) : TextureRegion? {
-        return atlas.findRegion(key)
-    }
+    fun getTexture(key: String) : TextureRegion? = atlas.findRegion(key)
 
-    fun getNinePatch(key: String) : NinePatch? {
-        return atlas.createPatch(key)
-    }
+    fun getNinePatch(key: String) : NinePatch? = atlas.createPatch(key)
 
-    fun getString(key: String) : String? {
-        return strings.getString(key)
-    }
+    fun getString(key: String) : String? = strings.getString(key)
 
-    fun getColor(key: String) : String? {
-        return colors.getString(key)
-    }
+    fun getColor(key: String) : String? = colors.getString(key)
 
-    fun getSubProjectileTextureFor(key: String) : TextureRegion? {
-        if (key == "p_xor") return getTexture("p_dot_xor")
-        if (key == "p_dot4") return getTexture("p_dot")
-        return null
-    }
+    fun getSubProjectileTextureFor(key: String) : TextureRegion? =
+            when (key) {
+                "p_xor" -> getTexture("p_dot_xor")
+                "p_dot4" -> getTexture("p_dot")
+                else -> null
+            }
 
     fun getImageButtonStyle(key: String) : ImageButton.ImageButtonStyle {
-        val style = ImageButton.ImageButtonStyle()
-        style.imageUp = TextureRegionDrawable(getTexture(BUTTON + key + BUTTON_UP))
-        style.imageDown = TextureRegionDrawable(getTexture(BUTTON + key + BUTTON_DOWN))
-        style.imageOver = TextureRegionDrawable(getTexture(BUTTON + key + BUTTON_DOWN))
+        val style = ImageButton.ImageButtonStyle().apply {
+            imageUp = TextureRegionDrawable(getTexture(BUTTON + key + BUTTON_UP))
+            imageDown = TextureRegionDrawable(getTexture(BUTTON + key + BUTTON_DOWN))
+            imageOver = TextureRegionDrawable(getTexture(BUTTON + key + BUTTON_DOWN))
+        }
 
-        val disabled = getTexture(BUTTON + key + BUTTON_DISABLED)
-        if (disabled != null) style.imageDisabled = TextureRegionDrawable(disabled)
+        getTexture(BUTTON + key + BUTTON_DISABLED)?.let {
+            style.imageDisabled = TextureRegionDrawable(it)
+        }
 
         return style
     }
 
     fun getTextButtonStyle(key: String, color: Color = Color.WHITE) : TextButton.TextButtonStyle {
-        val style = TextButton.TextButtonStyle()
-        style.up = TextureRegionDrawable(getTexture(BUTTON + key + BUTTON_UP))
-        style.over = TextureRegionDrawable(getTexture(BUTTON + key + BUTTON_DOWN))
-        style.font = font
-        style.fontColor = color
-        return style
+        return TextButton.TextButtonStyle().apply {
+            up = TextureRegionDrawable(getTexture(BUTTON + key + BUTTON_UP))
+            over = TextureRegionDrawable(getTexture(BUTTON + key + BUTTON_DOWN))
+            font = this@Resources.font
+            fontColor = color
+        }
     }
 
-    fun getLabelStyle(color: Color = Color.WHITE) : Label.LabelStyle {
-        return Label.LabelStyle(font, color)
-    }
+    fun getLabelStyle(color: Color = Color.WHITE) = Label.LabelStyle(font, color)
 
-    fun getColorFromHexKey(key: String) : Color {
-        return Color(Color.valueOf(getColor(key)))
-    }
+    fun getColorFromHexKey(key: String) = Color(Color.valueOf(getColor(key)))
 
-    fun getHelpPage(key: String) : HelpPage? {
-        return helpPages[key]
-    }
+    fun getHelpPage(key: String) : HelpPage? = helpPages[key]
 
     private fun loadHelpPages() {
-        val entityDetailsRoot = entityDetails.get("details")
+        val entityDetailsRoot = entityDetails["details"]
         for (entityDetail in entityDetailsRoot) {
             val id = entityDetail.getString("id")
             val imageStr = entityDetail.getString("image")!!
@@ -165,7 +154,7 @@ class Resources : Disposable {
             helpPages[id] = HelpPage(this, entityDetails)
         }
 
-        val technicalDetailsRoot = technicalDetails.get("details")
+        val technicalDetailsRoot = technicalDetails["details"]
         for (technicalDetail in technicalDetailsRoot) {
             val id = technicalDetail.getString("id")
             val technicalDetails = TechnicalDetails(
@@ -174,12 +163,12 @@ class Resources : Disposable {
                     imageSize = technicalDetail.getInt("imageSize")
             )
 
-            val texts = technicalDetail.get("texts")
+            val texts = technicalDetail["texts"]
             for (text in texts) {
                 technicalDetails.texts.add(text.asString())
             }
 
-            val images = technicalDetail.get("images")
+            val images = technicalDetail["images"]
             for (image in images) {
                 val wrapper = ImageWrapper(getTexture(image.getString("image")),
                         ImageAlign.valueOf(image.getString("align")))

@@ -12,30 +12,30 @@ class StatusEffectSystem : IteratingSystem(Family.all(StatusEffectComponent::cla
         .exclude(ProjectileComponent::class.java).get()) {
 
     override fun processEntity(entity: Entity?, dt: Float) {
-        val se = Mapper.STATUS_EFFECT_MAPPER.get(entity)
-
-        if (se.type != StatusEffect.None && se.duration != 0f && !se.startEffect) {
-            se.startEffect = true
-            se.entityApplied = true
-        }
-
-        if (se.startEffect) {
-            if (se.statusChange) {
-                se.durationTimer = 0f
-                se.statusChange = false
+        Mapper.STATUS_EFFECT_MAPPER[entity]?.let { se ->
+            if (se.type != StatusEffect.None && se.duration != 0f && !se.startEffect) {
+                se.startEffect = true
+                se.entityApplied = true
             }
-            se.durationTimer += dt
 
-            onEffectDuration(se, entity)
+            if (se.startEffect) {
+                if (se.statusChange) {
+                    se.durationTimer = 0f
+                    se.statusChange = false
+                }
+                se.durationTimer += dt
 
-            if (se.durationTimer >= se.duration) {
-                onEffectEnd(se, entity)
+                onEffectDuration(se, entity)
 
-                se.startEffect = false
-                se.durationTimer = 0f
-                se.entityApplied = false
-                se.finish()
-                handleLingeringEffects(se)
+                if (se.durationTimer >= se.duration) {
+                    onEffectEnd(se, entity)
+
+                    se.startEffect = false
+                    se.durationTimer = 0f
+                    se.entityApplied = false
+                    se.finish()
+                    handleLingeringEffects(se)
+                }
             }
         }
     }
@@ -73,47 +73,48 @@ class StatusEffectSystem : IteratingSystem(Family.all(StatusEffectComponent::cla
     private fun handleStun(entity: Entity?) {
         handleSnare(entity)
 
-        val player = Mapper.PLAYER_MAPPER.get(entity)
-        player?.canShoot = false
-        player?.canJump = false
-        player?.canDoubleJump = false
-        val attack = Mapper.ATTACK_MAPPER.get(entity)
-        attack?.canAttack = false
+        Mapper.PLAYER_MAPPER[entity]?.run {
+            canShoot = false
+            canJump = false
+            canDoubleJump = false
+        }
+        Mapper.ATTACK_MAPPER[entity]?.run { canAttack = false }
     }
 
-    private fun handleSnare(entity: Entity?) {
-        val velocity = Mapper.VEL_MAPPER.get(entity)
-        if (velocity.dx != 0f) velocity.dx = 0f
-    }
+    private fun handleSnare(entity: Entity?) = Mapper.VEL_MAPPER[entity].run { if (dx != 0f) dx = 0f }
 
     private fun handleSlow(entity: Entity?, se: StatusEffectComponent) {
-        val velocity = Mapper.VEL_MAPPER.get(entity)
-        if (velocity.dx > 0f) velocity.dx = velocity.speed * se.value
-        else if (velocity.dx < 0f) velocity.dx = -velocity.speed * se.value
+        Mapper.VEL_MAPPER[entity].run {
+            if (dx > 0f) dx = speed * se.value
+            else if (dx < 0f) dx = -speed * se.value
+        }
     }
 
     private fun handleGrounded(entity: Entity?) {
-        val player = Mapper.PLAYER_MAPPER.get(entity)
-        player?.canJump = false
-        player?.canDoubleJump = false
+        Mapper.PLAYER_MAPPER[entity]?.run {
+            canJump = false
+            canDoubleJump = false
+        }
     }
 
     private fun handleSpeedBoostRight(entity: Entity?, se: StatusEffectComponent) {
-        val velocity = Mapper.VEL_MAPPER.get(entity)
-        if (velocity.dx > 0 && velocity.dx == velocity.speed) velocity.dx += se.value
+        Mapper.VEL_MAPPER[entity].run {
+            if (dx > 0 && dx == speed) dx += se.value
+        }
     }
 
     private fun handleSpeedBoostLeft(entity: Entity?, se: StatusEffectComponent) {
-        val velocity = Mapper.VEL_MAPPER.get(entity)
-        if (velocity.dx < 0 && velocity.dx == -velocity.speed) velocity.dx -= se.value
+        Mapper.VEL_MAPPER[entity].run {
+            if (dx < 0 && dx == -speed) dx -= se.value
+        }
     }
 
     private fun handleJumpBoost(entity: Entity?) {
-        Mapper.PLAYER_MAPPER.get(entity)?.hasJumpBoost = true
+        Mapper.PLAYER_MAPPER[entity]?.hasJumpBoost = true
     }
 
     private fun handleDamageBoost(entity: Entity?) {
-        Mapper.PLAYER_MAPPER.get(entity)?.damageBoost = 0
+        Mapper.PLAYER_MAPPER[entity]?.damageBoost = 0
     }
 
 }

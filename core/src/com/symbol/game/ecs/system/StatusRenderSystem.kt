@@ -27,16 +27,16 @@ class StatusRenderSystem(private val batch: Batch, private val res: Resources, p
     : IteratingSystem(Family.one(StatusEffectComponent::class.java, HealthComponent::class.java).exclude(ProjectileComponent::class.java).get()) {
 
     override fun processEntity(entity: Entity, dt: Float) {
-        val pos = Mapper.POS_MAPPER.get(entity)
-        val texture = Mapper.TEXTURE_MAPPER.get(entity)
-        val se = Mapper.STATUS_EFFECT_MAPPER.get(entity)
+        val pos = Mapper.POS_MAPPER[entity]
+        val texture = Mapper.TEXTURE_MAPPER[entity]
+        val se = Mapper.STATUS_EFFECT_MAPPER[entity]
 
         val hasStatusEffect = se != null && se.type !== StatusEffect.None
         val width = texture.texture!!.regionWidth.toFloat()
         val height = texture.texture!!.regionHeight.toFloat()
 
-        val health = Mapper.HEALTH_MAPPER.get(entity)
-        if (health.hpChange && health.hp > 0 && Mapper.PLAYER_MAPPER.get(entity) == null) {
+        val health = Mapper.HEALTH_MAPPER[entity]
+        if (health.hpChange && health.hp > 0 && Mapper.PLAYER_MAPPER[entity] == null) {
             se.startHealthBar = true
             se.renderTimer = 0f
             health.hpChange = false

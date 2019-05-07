@@ -2,6 +2,7 @@ package com.symbol.game.ecs.component
 
 import com.badlogic.ashley.core.Component
 import com.badlogic.gdx.utils.Pool
+import com.symbol.game.util.Direction
 
 class ProjectileComponent : Component, Pool.Poolable {
 

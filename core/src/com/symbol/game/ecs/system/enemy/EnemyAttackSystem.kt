@@ -11,7 +11,6 @@ import com.badlogic.gdx.math.MathUtils.*
 import com.badlogic.gdx.math.Rectangle
 import com.symbol.game.ecs.EntityBuilder
 import com.symbol.game.ecs.Mapper
-import com.symbol.game.ecs.component.Direction
 import com.symbol.game.ecs.component.DirectionComponent
 import com.symbol.game.ecs.component.ProjectileMovementType
 import com.symbol.game.ecs.component.enemy.ActivationComponent
@@ -24,6 +23,7 @@ import com.symbol.game.effects.particle.DEFAULT_INTESITY
 import com.symbol.game.effects.particle.DEFAULT_LIFETIME
 import com.symbol.game.effects.particle.ParticleSpawner
 import com.symbol.game.map.camera.CameraShake
+import com.symbol.game.util.Direction
 import com.symbol.game.util.Resources
 import kotlin.math.abs
 
@@ -42,20 +42,19 @@ class EnemyAttackSystem(private val player: Player, private val res: Resources) 
     }
 
     override fun processEntity(entity: Entity?, dt: Float) {
-        val enemyComponent = Mapper.ENEMY_MAPPER.get(entity)
-        val activation = Mapper.ACTIVATION_MAPPER.get(entity)
-        val attack = Mapper.ATTACK_MAPPER.get(entity)
-        val remove = Mapper.REMOVE_MAPPER.get(entity)
-        val bounds = Mapper.BOUNDING_BOX_MAPPER.get(entity).rect
-        val playerBounds = Mapper.BOUNDING_BOX_MAPPER.get(player).rect
-        val dir = Mapper.DIR_MAPPER.get(entity)
+        val enemyComponent = Mapper.ENEMY_MAPPER[entity]
+        val activation = Mapper.ACTIVATION_MAPPER[entity]
+        val attack = Mapper.ATTACK_MAPPER[entity]
+        val remove = Mapper.REMOVE_MAPPER[entity]
+        val bounds = Mapper.BOUNDING_BOX_MAPPER[entity].rect
+        val playerBounds = Mapper.BOUNDING_BOX_MAPPER[player].rect
+        val dir = Mapper.DIR_MAPPER[entity]
 
-        if (bounds.overlaps(playerBounds) && Mapper.BLOCK_MAPPER.get(entity) == null) {
-            val playerHealth = Mapper.HEALTH_MAPPER.get(player)
-            playerHealth.hit(attack.damage)
+        if (bounds.overlaps(playerBounds) && Mapper.BLOCK_MAPPER[entity] == null) {
+            Mapper.HEALTH_MAPPER[player].run { hit(attack.damage) }
             remove.shouldRemove = true
 
-            val color = Mapper.COLOR_MAPPER.get(entity)
+            val color = Mapper.COLOR_MAPPER[entity]
             ParticleSpawner.spawn(res, color.hex!!, DEFAULT_LIFETIME, (DEFAULT_INTESITY + attack.damage) * 2,
                     bounds.x + bounds.width / 2, bounds.y + bounds.height / 2)
             return
@@ -63,9 +62,10 @@ class EnemyAttackSystem(private val player: Player, private val res: Resources) 
 
         if (activation.active) {
             if (enemyComponent.attackType == EnemyAttackType.ShootAndQuake) {
-                val gravity = Mapper.GRAVITY_MAPPER.get(entity)
-                if (gravity.onGround) {
-                    CameraShake.shakeFor(CAMERA_SHAKE_POWER, CAMERA_SHAKE_DURATION)
+                Mapper.GRAVITY_MAPPER[entity].run {
+                    if (onGround) {
+                        CameraShake.shakeFor(CAMERA_SHAKE_POWER, CAMERA_SHAKE_DURATION)
+                    }
                 }
             }
             if (attack.canAttack) {
@@ -94,17 +94,16 @@ class EnemyAttackSystem(private val player: Player, private val res: Resources) 
             }
         }
 
-        if (Mapper.EXPLODE_MAPPER.get(entity) != null) {
+        if (Mapper.EXPLODE_MAPPER[entity] != null) {
             explodeOnDeath(entity, attack, dir, bounds)
         }
 
-        val trap = Mapper.TRAP_MAPPER.get(entity)
-        if (trap != null) {
-            if (trap.countdown) {
-                trap.timer += dt
-                if (trap.timer >= TRAP_EXPLODE_TIME) {
+        Mapper.TRAP_MAPPER[entity]?.run {
+            if (countdown) {
+                timer += dt
+                if (timer >= TRAP_EXPLODE_TIME) {
                     remove.shouldRemove = true
-                    if (trap.hits != 3) explodeOnDeath(entity, attack, dir, bounds)
+                    if (hits != 3) explodeOnDeath(entity, attack, dir, bounds)
                 }
             }
         }
@@ -249,18 +248,14 @@ class EnemyAttackSystem(private val player: Player, private val res: Resources) 
     }
 
     private fun explodeOnDeath(entity: Entity?, attackComp: AttackComponent, dir: DirectionComponent, bounds: Rectangle) {
-        val remove = Mapper.REMOVE_MAPPER.get(entity)
-        if (remove.shouldRemove) {
-            shootEight(attackComp, dir, bounds)
-        }
+        Mapper.REMOVE_MAPPER[entity].run { if (shouldRemove) shootEight(attackComp, dir, bounds) }
     }
 
     private fun horizontalWave(attackComp: AttackComponent, bounds: Rectangle, dir: DirectionComponent) {
         val texture = res.getTexture(attackComp.attackTexture!!)!!
         val proj = createProjectile(attackComp, dir, bounds, if (dir.facingRight) attackComp.projectileSpeed else -attackComp.projectileSpeed,
                 0f, texture, ProjectileMovementType.Wave)
-        val projComp = Mapper.PROJ_MAPPER.get(proj)
-        projComp.waveDir = Direction.Right
+        Mapper.PROJ_MAPPER[proj].run { waveDir = Direction.Right }
     }
 
     private fun verticalWave(attackComp: AttackComponent, bounds: Rectangle, dir: DirectionComponent) {
@@ -268,7 +263,7 @@ class EnemyAttackSystem(private val player: Player, private val res: Resources) 
         val proj = createProjectile(attackComp, dir, bounds, 0f,
                 if (MathUtils.randomBoolean()) attackComp.projectileSpeed else -attackComp.projectileSpeed,
                 texture, ProjectileMovementType.Wave)
-        val projComp = Mapper.PROJ_MAPPER.get(proj)
+        val projComp = Mapper.PROJ_MAPPER[proj]
         projComp.waveDir = Direction.Up
     }
 
@@ -278,10 +273,8 @@ class EnemyAttackSystem(private val player: Player, private val res: Resources) 
                 0f, texture, ProjectileMovementType.Wave)
         val projRight = createProjectile(attackComp, dir, bounds, attackComp.projectileSpeed,
                 0f, texture, ProjectileMovementType.Wave)
-        val pl = Mapper.PROJ_MAPPER.get(projLeft)
-        val pr = Mapper.PROJ_MAPPER.get(projRight)
-        pl.waveDir = Direction.Left
-        pr.waveDir = Direction.Right
+        Mapper.PROJ_MAPPER[projLeft].run { waveDir = Direction.Left }
+        Mapper.PROJ_MAPPER[projRight].run { waveDir = Direction.Right }
     }
 
     private fun twoVerticalWave(attackComp: AttackComponent, bounds: Rectangle, dir: DirectionComponent) {
@@ -290,10 +283,8 @@ class EnemyAttackSystem(private val player: Player, private val res: Resources) 
                 texture, ProjectileMovementType.Wave)
         val projBot = createProjectile(attackComp, dir, bounds, 0f, -attackComp.projectileSpeed,
                 texture, ProjectileMovementType.Wave)
-        val pt = Mapper.PROJ_MAPPER.get(projTop)
-        val pb = Mapper.PROJ_MAPPER.get(projBot)
-        pt.waveDir = Direction.Up
-        pb.waveDir = Direction.Down
+        Mapper.PROJ_MAPPER[projTop].run { waveDir = Direction.Up }
+        Mapper.PROJ_MAPPER[projBot].run { waveDir = Direction.Down }
     }
 
     private fun fourWave(attackComp: AttackComponent, bounds: Rectangle, dir: DirectionComponent) {

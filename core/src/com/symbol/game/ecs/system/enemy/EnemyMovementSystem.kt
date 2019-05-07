@@ -22,30 +22,31 @@ class EnemyMovementSystem(private val player: Player, private val res: Resources
     : IteratingSystem(Family.all(EnemyComponent::class.java).get()) {
 
     override fun processEntity(entity: Entity?, dt: Float) {
-        val enemyComponent = Mapper.ENEMY_MAPPER.get(entity)
-        val activation = Mapper.ACTIVATION_MAPPER.get(entity)
-        val corp = Mapper.CORPOREAL_MAPPER.get(entity)
-        val dirComponent = Mapper.DIR_MAPPER.get(entity)
-        val position = Mapper.POS_MAPPER.get(entity)
-        val velocity = Mapper.VEL_MAPPER.get(entity)
-        val gravity = Mapper.GRAVITY_MAPPER.get(entity)
-        val jump = Mapper.JUMP_MAPPER.get(entity)
+        val enemyComponent = Mapper.ENEMY_MAPPER[entity]
+        val dirComponent = Mapper.DIR_MAPPER[entity]
+        val position = Mapper.POS_MAPPER[entity]
+        val velocity = Mapper.VEL_MAPPER[entity]
+        val gravity = Mapper.GRAVITY_MAPPER[entity]
+        val jump = Mapper.JUMP_MAPPER[entity]
 
-        if (corp != null && corp.incorporealTime != 0f) {
-            corp.timer += dt
-            if (corp.timer >= corp.incorporealTime) {
-                corp.corporeal = !corp.corporeal
+        Mapper.CORPOREAL_MAPPER[entity]?.run {
+            if (incorporealTime != 0f) {
+                timer += dt
+                if (timer >= incorporealTime) {
+                    corporeal = !corporeal
 
-                if (!corp.corporeal) {
-                    val texture = Mapper.TEXTURE_MAPPER.get(entity)
-                    texture.texture = res.getTexture(texture.textureStr + INCORPOREAL) ?: texture.texture
+                    if (!corporeal) {
+                        Mapper.TEXTURE_MAPPER[entity].run {
+                            texture = res.getTexture(textureStr + INCORPOREAL) ?: texture
+                        }
+                    }
+
+                    timer = 0f
                 }
-
-                corp.timer = 0f
             }
         }
 
-        if (activation.active) {
+        if (Mapper.ACTIVATION_MAPPER[entity].active) {
             if (gravity != null) {
                 if (gravity.onGround && jump != null
                         && enemyComponent.movementType != EnemyMovementType.RandomWithJump) {
@@ -66,7 +67,7 @@ class EnemyMovementSystem(private val player: Player, private val res: Resources
     }
 
     private fun backAndForth(entity: Entity?, p: PositionComponent, v: VelocityComponent, dir: DirectionComponent, g: GravityComponent) {
-        val bounds = Mapper.BOUNDING_BOX_MAPPER.get(entity)
+        val bounds = Mapper.BOUNDING_BOX_MAPPER[entity]
 
         if (v.dx == 0f) v.dx = if (dir.facingRight) v.speed else -v.speed
         if (p.x < g.platform.x) {
@@ -78,13 +79,13 @@ class EnemyMovementSystem(private val player: Player, private val res: Resources
     }
 
     private fun charge(p: PositionComponent, v: VelocityComponent) {
-        val playerPosition = Mapper.POS_MAPPER.get(player)
+        val playerPosition = Mapper.POS_MAPPER[player]
         if (v.dx == 0f) v.dx = if (p.x < playerPosition.x) v.speed else -v.speed
     }
 
     private fun random(entity: Entity?, dt: Float, p: PositionComponent, v: VelocityComponent, g: GravityComponent) {
-        val enemy = Mapper.ENEMY_MAPPER.get(entity)
-        val bounds = Mapper.BOUNDING_BOX_MAPPER.get(entity)
+        val enemy = Mapper.ENEMY_MAPPER[entity]
+        val bounds = Mapper.BOUNDING_BOX_MAPPER[entity]
         if (p.x < g.platform.x) {
             v.dx = v.speed
             return
@@ -109,7 +110,7 @@ class EnemyMovementSystem(private val player: Player, private val res: Resources
     private fun randomWithJump(entity: Entity?, dt: Float, p: PositionComponent,
                                v: VelocityComponent, g: GravityComponent) {
         random(entity, dt, p, v, g)
-        val jump = Mapper.JUMP_MAPPER.get(entity)
+        val jump = Mapper.JUMP_MAPPER[entity]
         jump.timer += dt
         if (jump.timer >= JUMP_FREQUENCY) {
             if (jump.impulse != 0f && MathUtils.randomBoolean()) {
@@ -120,12 +121,12 @@ class EnemyMovementSystem(private val player: Player, private val res: Resources
     }
 
     private fun orbit(entity: Entity?, enemyComponent: EnemyComponent) {
-        val remove = Mapper.REMOVE_MAPPER.get(entity)
-        val parentRemove = Mapper.REMOVE_MAPPER.get(enemyComponent.parent)
+        val remove = Mapper.REMOVE_MAPPER[entity]
+        val parentRemove = Mapper.REMOVE_MAPPER[enemyComponent.parent]
 
         if (parentRemove != null && !parentRemove.shouldRemove) {
-            val position = Mapper.POS_MAPPER.get(entity)
-            val bounds = Mapper.BOUNDING_BOX_MAPPER.get(enemyComponent.parent)
+            val position = Mapper.POS_MAPPER[entity]
+            val bounds = Mapper.BOUNDING_BOX_MAPPER[enemyComponent.parent]
             val originX = bounds.rect.x + bounds.rect.width / 2
             val originY = bounds.rect.y + bounds.rect.height / 2
 
@@ -138,8 +139,8 @@ class EnemyMovementSystem(private val player: Player, private val res: Resources
     }
 
     private fun teleportTriangle(entity: Entity?, dt: Float, position: PositionComponent) {
-        val enemy = Mapper.ENEMY_MAPPER.get(entity)
-        val teleport = Mapper.TELEPORT_MAPPER.get(entity)
+        val enemy = Mapper.ENEMY_MAPPER[entity]
+        val teleport = Mapper.TELEPORT_MAPPER[entity]
 
         enemy.movementTimer += dt
         if (enemy.movementTimer >= teleport.freq) {
@@ -157,8 +158,8 @@ class EnemyMovementSystem(private val player: Player, private val res: Resources
     }
 
     private fun teleportSquare(entity: Entity?, dt: Float, position: PositionComponent) {
-        val enemy = Mapper.ENEMY_MAPPER.get(entity)
-        val teleport = Mapper.TELEPORT_MAPPER.get(entity)
+        val enemy = Mapper.ENEMY_MAPPER[entity]
+        val teleport = Mapper.TELEPORT_MAPPER[entity]
 
         enemy.movementTimer += dt
         if (enemy.movementTimer >= teleport.freq) {
