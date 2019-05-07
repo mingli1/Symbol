@@ -16,7 +16,6 @@ import com.symbol.game.ecs.Mapper
 import com.symbol.game.ecs.component.*
 import com.symbol.game.ecs.component.enemy.EnemyComponent
 import com.symbol.game.ecs.component.map.MapEntityComponent
-import com.symbol.game.ecs.component.map.MirrorComponent
 import com.symbol.game.ecs.component.map.ToggleTileComponent
 import com.symbol.game.ecs.entity.MapEntityType
 import com.symbol.game.ecs.entity.Player
@@ -26,10 +25,7 @@ import com.symbol.game.effects.particle.ParticleSpawner
 import com.symbol.game.map.MapObject
 import com.symbol.game.map.camera.CameraRotation
 import com.symbol.game.screen.GameScreen
-import com.symbol.game.util.Orientation
-import com.symbol.game.util.Resources
-import com.symbol.game.util.TOGGLE_OFF
-import com.symbol.game.util.TOGGLE_ON
+import com.symbol.game.util.*
 import kotlin.math.abs
 
 const val DIAGONAL_PROJECTILE_SCALING = 0.75f

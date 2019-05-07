@@ -11,7 +11,6 @@ import com.badlogic.gdx.math.MathUtils.*
 import com.badlogic.gdx.math.Rectangle
 import com.symbol.game.ecs.EntityBuilder
 import com.symbol.game.ecs.Mapper
-import com.symbol.game.ecs.component.Direction
 import com.symbol.game.ecs.component.DirectionComponent
 import com.symbol.game.ecs.component.ProjectileMovementType
 import com.symbol.game.ecs.component.enemy.ActivationComponent
@@ -24,6 +23,7 @@ import com.symbol.game.effects.particle.DEFAULT_INTESITY
 import com.symbol.game.effects.particle.DEFAULT_LIFETIME
 import com.symbol.game.effects.particle.ParticleSpawner
 import com.symbol.game.map.camera.CameraShake
+import com.symbol.game.util.Direction
 import com.symbol.game.util.Resources
 import kotlin.math.abs
 
