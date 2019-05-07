@@ -23,29 +23,30 @@ class EnemyMovementSystem(private val player: Player, private val res: Resources
 
     override fun processEntity(entity: Entity?, dt: Float) {
         val enemyComponent = Mapper.ENEMY_MAPPER[entity]
-        val activation = Mapper.ACTIVATION_MAPPER[entity]
-        val corp = Mapper.CORPOREAL_MAPPER[entity]
         val dirComponent = Mapper.DIR_MAPPER[entity]
         val position = Mapper.POS_MAPPER[entity]
         val velocity = Mapper.VEL_MAPPER[entity]
         val gravity = Mapper.GRAVITY_MAPPER[entity]
         val jump = Mapper.JUMP_MAPPER[entity]
 
-        if (corp != null && corp.incorporealTime != 0f) {
-            corp.timer += dt
-            if (corp.timer >= corp.incorporealTime) {
-                corp.corporeal = !corp.corporeal
+        Mapper.CORPOREAL_MAPPER[entity]?.run {
+            if (incorporealTime != 0f) {
+                timer += dt
+                if (timer >= incorporealTime) {
+                    corporeal = !corporeal
 
-                if (!corp.corporeal) {
-                    val texture = Mapper.TEXTURE_MAPPER[entity]
-                    texture.texture = res.getTexture(texture.textureStr + INCORPOREAL) ?: texture.texture
+                    if (!corporeal) {
+                        Mapper.TEXTURE_MAPPER[entity].run {
+                            texture = res.getTexture(textureStr + INCORPOREAL) ?: texture
+                        }
+                    }
+
+                    timer = 0f
                 }
-
-                corp.timer = 0f
             }
         }
 
-        if (activation.active) {
+        if (Mapper.ACTIVATION_MAPPER[entity].active) {
             if (gravity != null) {
                 if (gravity.onGround && jump != null
                         && enemyComponent.movementType != EnemyMovementType.RandomWithJump) {

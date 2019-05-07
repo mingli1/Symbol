@@ -210,15 +210,16 @@ class MapEntitySystem(private val player: Player, private val res: Resources) :
     }
 
     private fun handleForceField(entity: Entity?, dt: Float) {
-        val ff = Mapper.FORCE_FIELD_MAPPER[entity]
-        val texture = Mapper.TEXTURE_MAPPER[entity]
-
-        if (ff.duration != 0f) {
-            ff.timer += dt
-            if (ff.timer >= ff.duration) {
-                ff.activated = !ff.activated
-                texture.texture = if (ff.activated) res.getTexture(texture.textureStr!!) else null
-                ff.timer = 0f
+        Mapper.FORCE_FIELD_MAPPER[entity].run {
+            if (duration != 0f) {
+                timer += dt
+                if (timer >= duration) {
+                    activated = !activated
+                    Mapper.TEXTURE_MAPPER[entity].run {
+                        texture = if (activated) res.getTexture(textureStr!!) else null
+                    }
+                    timer = 0f
+                }
             }
         }
     }

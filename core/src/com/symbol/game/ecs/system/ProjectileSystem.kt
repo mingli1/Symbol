@@ -62,13 +62,12 @@ class ProjectileSystem(private val player: Player, private val res: Resources, p
     override fun update(dt: Float) {
         super.update(dt)
 
-        for (e in allEntities) {
-            val vel = Mapper.VEL_MAPPER[e]
-            Mapper.KNOCKBACK_MAPPER[e]?.run {
+        allEntities.forEach {
+            Mapper.KNOCKBACK_MAPPER[it]?.run {
                 if (knockingBack) {
                     timer += dt
                     if (timer > KNOCKBACK_TIME) {
-                        vel.dx = vel.prevVel
+                        Mapper.VEL_MAPPER[it].run { dx = prevVel }
                         timer = 0f
                         knockingBack = false
                     }
@@ -398,25 +397,25 @@ class ProjectileSystem(private val player: Player, private val res: Resources, p
     }
 
     private fun handleTeleportation(entity: Entity?) {
-        val teleport = Mapper.TELEPORT_MAPPER[entity]
-        if (teleport?.range == 0f) {
-            val bounds = Mapper.BOUNDING_BOX_MAPPER[entity]
-            val position = Mapper.POS_MAPPER[entity]
-            val velocity = Mapper.VEL_MAPPER[entity]
+        Mapper.TELEPORT_MAPPER[entity]?.run {
+            if (range == 0f) {
+                val bounds = Mapper.BOUNDING_BOX_MAPPER[entity]
+                val position = Mapper.POS_MAPPER[entity]
+                val velocity = Mapper.VEL_MAPPER[entity]
 
-            val platform = mapObjects.random().bounds
-            val randX = MathUtils.random(platform.x, platform.x + platform.width - bounds.rect.width)
-            val newY = platform.y + platform.height + bounds.rect.height / 2
+                val platform = mapObjects.random().bounds
+                val randX = MathUtils.random(platform.x, platform.x + platform.width - bounds.rect.width)
+                val newY = platform.y + platform.height + bounds.rect.height / 2
 
-            position.set(randX, newY)
-            velocity.dx = 0f
+                position.set(randX, newY)
+                velocity.dx = 0f
+            }
         }
     }
 
     private fun handleLastStand(entity: Entity?) {
-        val attackComp = Mapper.ATTACK_MAPPER[entity]
-        if (attackComp != null) {
-            if (Mapper.LAST_STAND_MAPPER[entity] != null) {
+        Mapper.ATTACK_MAPPER[entity]?.let { attackComp ->
+            Mapper.LAST_STAND_MAPPER[entity]?.let {
                 val health = Mapper.HEALTH_MAPPER[entity]
                 val scale = 1f / health.maxHp
                 attackComp.attackRate -= attackComp.attackRate * scale
@@ -433,12 +432,11 @@ class ProjectileSystem(private val player: Player, private val res: Resources, p
     }
 
     private fun handleTrapEnemy(entity: Entity?) {
-        val trapComp = Mapper.TRAP_MAPPER[entity]
-        val texture = Mapper.TEXTURE_MAPPER[entity]
-
-        if (!trapComp.countdown) trapComp.countdown = true
-        trapComp.hits++
-        if (trapComp.hits <= 3) texture.texture = res.getTexture(texture.textureStr + trapComp.hits)
+        Mapper.TRAP_MAPPER[entity].run {
+            if (!countdown) countdown = true
+            hits++
+            if (hits <= 3) Mapper.TEXTURE_MAPPER[entity].run { texture = res.getTexture(textureStr + hits) }
+        }
     }
 
     private fun handleMirror(entity: Entity?, mapEntity: Entity?, pj: ProjectileComponent) {
@@ -554,10 +552,10 @@ class ProjectileSystem(private val player: Player, private val res: Resources, p
             gravity.reverse = !gravity.reverse
             CameraRotation.start(180f, GRAVITY_FLIP_TIME)
 
-            for (gravitySwitch in mapEntities) {
-                val gme = Mapper.MAP_ENTITY_MAPPER[gravitySwitch]
+            mapEntities.forEach {
+                val gme = Mapper.MAP_ENTITY_MAPPER[it]
                 if (gme.mapEntityType == MapEntityType.GravitySwitch) {
-                    val meTexture = Mapper.TEXTURE_MAPPER[gravitySwitch]
+                    val meTexture = Mapper.TEXTURE_MAPPER[it]
                     meTexture.texture = res.getTexture(meTexture.textureStr +
                             if (gravity.reverse) TOGGLE_ON else TOGGLE_OFF)
                 }
@@ -573,10 +571,10 @@ class ProjectileSystem(private val player: Player, private val res: Resources, p
         switchTexture.texture = res.getTexture(switchTexture.textureStr +
                 if (switch.toggle) TOGGLE_ON else TOGGLE_OFF)
 
-        for (tt in toggleTiles) {
-            val tme = Mapper.MAP_ENTITY_MAPPER[tt]
-            val toggleComp = Mapper.TOGGLE_TILE_MAPPER[tt]
-            val toggleTexture = Mapper.TEXTURE_MAPPER[tt]
+        toggleTiles.forEach {
+            val tme = Mapper.MAP_ENTITY_MAPPER[it]
+            val toggleComp = Mapper.TOGGLE_TILE_MAPPER[it]
+            val toggleTexture = Mapper.TEXTURE_MAPPER[it]
 
             if (switch.targetId == toggleComp.id) {
                 toggleComp.toggle = !toggleComp.toggle
@@ -610,12 +608,12 @@ class ProjectileSystem(private val player: Player, private val res: Resources, p
     }
 
     private fun handleInvertSwitch(entity: Entity?) {
-        val invert = Mapper.INVERT_SWITCH_MAPPER[entity]
-        invert.toggle = !invert.toggle
-        gameScreen.mapInverted = invert.toggle
-        for (enemy in enemies) {
-            val enemyComp = Mapper.ENEMY_MAPPER[enemy]
-            enemyComp.visible = !enemyComp.visible
+        Mapper.INVERT_SWITCH_MAPPER[entity].run {
+            toggle = !toggle
+            gameScreen.mapInverted = toggle
+        }
+        enemies.forEach {
+            Mapper.ENEMY_MAPPER[it].run { visible = !visible }
         }
     }
 
