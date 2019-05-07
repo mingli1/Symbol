@@ -128,7 +128,7 @@ class Resources : Disposable {
     fun getHelpPage(key: String) : HelpPage? = helpPages[key]
 
     private fun loadHelpPages() {
-        val entityDetailsRoot = entityDetails.get("details")
+        val entityDetailsRoot = entityDetails["details"]
         for (entityDetail in entityDetailsRoot) {
             val id = entityDetail.getString("id")
             val imageStr = entityDetail.getString("image")!!
@@ -154,7 +154,7 @@ class Resources : Disposable {
             helpPages[id] = HelpPage(this, entityDetails)
         }
 
-        val technicalDetailsRoot = technicalDetails.get("details")
+        val technicalDetailsRoot = technicalDetails["details"]
         for (technicalDetail in technicalDetailsRoot) {
             val id = technicalDetail.getString("id")
             val technicalDetails = TechnicalDetails(
@@ -163,12 +163,12 @@ class Resources : Disposable {
                     imageSize = technicalDetail.getInt("imageSize")
             )
 
-            val texts = technicalDetail.get("texts")
+            val texts = technicalDetail["texts"]
             for (text in texts) {
                 technicalDetails.texts.add(text.asString())
             }
 
-            val images = technicalDetail.get("images")
+            val images = technicalDetail["images"]
             for (image in images) {
                 val wrapper = ImageWrapper(getTexture(image.getString("image")),
                         ImageAlign.valueOf(image.getString("align")))

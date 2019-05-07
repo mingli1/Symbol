@@ -19,7 +19,7 @@ class KeyInputSystem(private val res: Resources) : EntitySystem(), KeyInputHandl
     private var charging = false
 
     override fun addedToEngine(engine: Engine?) {
-        player = engine!!.getEntitiesFor(Family.all(PlayerComponent::class.java).get()).get(0)
+        player = engine!!.getEntitiesFor(Family.all(PlayerComponent::class.java).get())[0]
     }
 
     override fun update(dt: Float) {
