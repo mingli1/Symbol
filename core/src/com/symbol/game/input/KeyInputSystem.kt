@@ -13,8 +13,8 @@ import com.symbol.game.util.Resources
 class KeyInputSystem(private val res: Resources) : EntitySystem(), KeyInputHandler {
 
     private lateinit var player: Entity
-    private val playerComp: PlayerComponent by lazy { Mapper.PLAYER_MAPPER.get(player) }
-    private val vel: VelocityComponent by lazy { Mapper.VEL_MAPPER.get(player) }
+    private val playerComp: PlayerComponent by lazy { Mapper.PLAYER_MAPPER[player] }
+    private val vel: VelocityComponent by lazy { Mapper.VEL_MAPPER[player] }
 
     private var charging = false
 
@@ -35,19 +35,19 @@ class KeyInputSystem(private val res: Resources) : EntitySystem(), KeyInputHandl
     }
 
     override fun move(right: Boolean) {
-        val se = Mapper.STATUS_EFFECT_MAPPER.get(player)
-        val gravity = Mapper.GRAVITY_MAPPER.get(player)
+        val se = Mapper.STATUS_EFFECT_MAPPER[player]
+        val gravity = Mapper.GRAVITY_MAPPER[player]
         if (se.type != StatusEffect.Stun && se.type != StatusEffect.Snare) {
             vel.move(if (gravity.reverse) !right else right)
         }
 
         if (se.type == StatusEffect.Snare) {
-            Mapper.DIR_MAPPER.get(player).run { facingRight = right }
+            Mapper.DIR_MAPPER[player].run { facingRight = right }
         }
     }
 
     override fun stop(right: Boolean) {
-        val gravity = Mapper.GRAVITY_MAPPER.get(player)
+        val gravity = Mapper.GRAVITY_MAPPER[player]
         val dir = if (gravity.reverse) !right else right
 
         when (dir) {
@@ -57,8 +57,8 @@ class KeyInputSystem(private val res: Resources) : EntitySystem(), KeyInputHandl
     }
 
     override fun jump() {
-        val gravity = Mapper.GRAVITY_MAPPER.get(player)
-        val jump = Mapper.JUMP_MAPPER.get(player)
+        val gravity = Mapper.GRAVITY_MAPPER[player]
+        val jump = Mapper.JUMP_MAPPER[player]
 
         if (gravity.onGround && playerComp.canJump) {
             if (gravity.reverse)
@@ -83,8 +83,8 @@ class KeyInputSystem(private val res: Resources) : EntitySystem(), KeyInputHandl
 
     override fun endCharge() {
         if (charging) {
-            val playerPos = Mapper.POS_MAPPER.get(player)
-            val dir = Mapper.DIR_MAPPER.get(player)
+            val playerPos = Mapper.POS_MAPPER[player]
+            val dir = Mapper.DIR_MAPPER[player]
             val key = PLAYER_PROJECTILE_RES_KEY + if (playerComp.chargeIndex > 1) playerComp.chargeIndex else ""
             val texture = res.getTexture(key)!!
             val width = texture.regionWidth.toFloat()

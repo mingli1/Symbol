@@ -10,11 +10,11 @@ import com.symbol.game.ecs.entity.Player
 class HealthSystem : IteratingSystem(Family.all(HealthComponent::class.java).get()) {
 
     override fun processEntity(entity: Entity?, deltaTime: Float) {
-        Mapper.HEALTH_MAPPER.get(entity).run {
+        Mapper.HEALTH_MAPPER[entity].run {
             if (hp > maxHp) hp = maxHp
             if (hp <= 0) {
-                Mapper.REMOVE_MAPPER.get(entity)?.shouldRemove = true
-                if (entity is Player) Mapper.PLAYER_MAPPER.get(entity).dead = true
+                Mapper.REMOVE_MAPPER[entity]?.shouldRemove = true
+                if (entity is Player) Mapper.PLAYER_MAPPER[entity].dead = true
             }
         }
     }

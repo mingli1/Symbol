@@ -113,7 +113,7 @@ class GameScreen(game: Symbol) : AbstractScreen(game) {
         canInvert = mapManager.containsInvertSwitch()
         mapInverted = false
 
-        val playerPosition = Mapper.POS_MAPPER.get(player)
+        val playerPosition = Mapper.POS_MAPPER[player]
         playerPosition.set(mapManager.playerSpawnPosition.x, mapManager.playerSpawnPosition.y)
 
         cam.up.set(0f, 1f, 0f)
@@ -141,7 +141,7 @@ class GameScreen(game: Symbol) : AbstractScreen(game) {
     }
 
     private fun updateCamera(dt: Float) {
-        val playerPos = Mapper.POS_MAPPER.get(player)
+        val playerPos = Mapper.POS_MAPPER[player]
 
         if (!debugCamera) {
             cam.position.x += (playerPos.x + (TILE_SIZE / 2) - cam.position.x) * CAMERA_LERP * dt

@@ -36,8 +36,8 @@ class MapEntitySystem(private val player: Player, private val res: Resources) :
     }
 
     override fun processEntity(entity: Entity?, dt: Float) {
-        val mapEntityComponent = Mapper.MAP_ENTITY_MAPPER.get(entity)
-        val backAndForthComponent = Mapper.BACK_AND_FORTH_MAPPER.get(entity)
+        val mapEntityComponent = Mapper.MAP_ENTITY_MAPPER[entity]
+        val backAndForthComponent = Mapper.BACK_AND_FORTH_MAPPER[entity]
 
         if (backAndForthComponent != null) handleMovement(entity, backAndForthComponent)
 
@@ -53,9 +53,9 @@ class MapEntitySystem(private val player: Player, private val res: Resources) :
     }
 
     private fun handleMovement(entity: Entity?, bf: BackAndForthComponent) {
-        val bounds = Mapper.BOUNDING_BOX_MAPPER.get(entity)
-        val position = Mapper.POS_MAPPER.get(entity)
-        val velocity = Mapper.VEL_MAPPER.get(entity)
+        val bounds = Mapper.BOUNDING_BOX_MAPPER[entity]
+        val position = Mapper.POS_MAPPER[entity]
+        val velocity = Mapper.VEL_MAPPER[entity]
 
         if (velocity.dx != 0f) {
             if (bf.positive) {
@@ -90,11 +90,11 @@ class MapEntitySystem(private val player: Player, private val res: Resources) :
     }
 
     private fun handleTempPlatform(entity: Entity?) {
-        val bounds = Mapper.BOUNDING_BOX_MAPPER.get(entity)
-        val remove = Mapper.REMOVE_MAPPER.get(entity)
-        val playerBounds = Mapper.BOUNDING_BOX_MAPPER.get(player)
-        val playerVel = Mapper.VEL_MAPPER.get(player)
-        val playerComp = Mapper.PLAYER_MAPPER.get(player)
+        val bounds = Mapper.BOUNDING_BOX_MAPPER[entity]
+        val remove = Mapper.REMOVE_MAPPER[entity]
+        val playerBounds = Mapper.BOUNDING_BOX_MAPPER[player]
+        val playerVel = Mapper.VEL_MAPPER[player]
+        val playerComp = Mapper.PLAYER_MAPPER[player]
 
         if (playerBounds.rect.overlaps(bounds.rect)) {
             remove.shouldRemove = true
@@ -104,17 +104,17 @@ class MapEntitySystem(private val player: Player, private val res: Resources) :
     }
 
     private fun handlePortal(entity: Entity?) {
-        val bounds = Mapper.BOUNDING_BOX_MAPPER.get(entity)
-        val portalSource = Mapper.PORTAL_MAPPER.get(entity)
+        val bounds = Mapper.BOUNDING_BOX_MAPPER[entity]
+        val portalSource = Mapper.PORTAL_MAPPER[entity]
 
         for (pEntity in portalAffectedEntities) {
-            val pEntityBounds = Mapper.BOUNDING_BOX_MAPPER.get(pEntity)
-            val width = Mapper.TEXTURE_MAPPER.get(pEntity).texture!!.regionWidth
-            val height = Mapper.TEXTURE_MAPPER.get(pEntity).texture!!.regionHeight
+            val pEntityBounds = Mapper.BOUNDING_BOX_MAPPER[pEntity]
+            val width = Mapper.TEXTURE_MAPPER[pEntity].texture!!.regionWidth
+            val height = Mapper.TEXTURE_MAPPER[pEntity].texture!!.regionHeight
 
-            val lastPortal = Mapper.LAST_ENTITY_MAPPER.get(pEntity)
+            val lastPortal = Mapper.LAST_ENTITY_MAPPER[pEntity]
             if (lastPortal?.entity != null && lastPortal.entity!! == entity) {
-                val leBounds = Mapper.BOUNDING_BOX_MAPPER.get(lastPortal.entity)
+                val leBounds = Mapper.BOUNDING_BOX_MAPPER[lastPortal.entity]
                 if (portalSource.teleported && !pEntityBounds.rect.overlaps(leBounds.rect)) {
                     portalSource.teleported = false
                     pEntity.remove(LastEntityComponent::class.java)
@@ -124,20 +124,20 @@ class MapEntitySystem(private val player: Player, private val res: Resources) :
             if (pEntityBounds.rect.overlaps(bounds.rect)) {
                 if (!portalSource.teleported) {
                     for (portal in portals) {
-                        val portalTarget = Mapper.PORTAL_MAPPER.get(portal)
+                        val portalTarget = Mapper.PORTAL_MAPPER[portal]
                         if (portalTarget.id == portalSource.target) {
-                            val targetPos = Mapper.BOUNDING_BOX_MAPPER.get(portal)
-                            val entityPos = Mapper.POS_MAPPER.get(pEntity)
+                            val targetPos = Mapper.BOUNDING_BOX_MAPPER[portal]
+                            val entityPos = Mapper.POS_MAPPER[pEntity]
 
                             entityPos.set(targetPos.rect.x, targetPos.rect.y)
                             pEntityBounds.rect.setPosition(entityPos.x + (width - pEntityBounds.rect.width) / 2,
                                     entityPos.y + (height - pEntityBounds.rect.height) / 2)
                             portalTarget.teleported = true
 
-                            val lastEntity = Mapper.LAST_ENTITY_MAPPER.get(pEntity)
+                            val lastEntity = Mapper.LAST_ENTITY_MAPPER[pEntity]
                             if (lastEntity == null) {
                                 pEntity?.add((engine as PooledEngine).createComponent(LastEntityComponent::class.java))
-                                Mapper.LAST_ENTITY_MAPPER.get(pEntity).entity = portal
+                                Mapper.LAST_ENTITY_MAPPER[pEntity].entity = portal
                             } else {
                                 lastEntity.entity = portal
                             }
@@ -151,11 +151,11 @@ class MapEntitySystem(private val player: Player, private val res: Resources) :
     }
 
     private fun handleClamp(entity: Entity?, dt: Float) {
-        val clamp = Mapper.CLAMP_MAPPER.get(entity)
-        val pos = Mapper.POS_MAPPER.get(entity)
-        val bounds = Mapper.BOUNDING_BOX_MAPPER.get(entity)
-        val vel = Mapper.VEL_MAPPER.get(entity)
-        val playerBounds = Mapper.BOUNDING_BOX_MAPPER.get(player)
+        val clamp = Mapper.CLAMP_MAPPER[entity]
+        val pos = Mapper.POS_MAPPER[entity]
+        val bounds = Mapper.BOUNDING_BOX_MAPPER[entity]
+        val vel = Mapper.VEL_MAPPER[entity]
+        val playerBounds = Mapper.BOUNDING_BOX_MAPPER[player]
 
         if (!clamp.right) {
             if (clamp.clamping) {
@@ -179,10 +179,10 @@ class MapEntitySystem(private val player: Player, private val res: Resources) :
         }
 
         if (playerBounds.rect.overlaps(bounds.rect)) {
-            val playerHealth = Mapper.HEALTH_MAPPER.get(player)
+            val playerHealth = Mapper.HEALTH_MAPPER[player]
             playerHealth.hp = 0
 
-            val color = Mapper.COLOR_MAPPER.get(player)
+            val color = Mapper.COLOR_MAPPER[player]
             ParticleSpawner.spawn(res, color.hex!!, DEFAULT_LIFETIME,
                     (DEFAULT_INTESITY + playerHealth.maxHp) * 2,
                     playerBounds.rect.x + playerBounds.rect.width / 2,
@@ -191,14 +191,14 @@ class MapEntitySystem(private val player: Player, private val res: Resources) :
     }
 
     private fun handleHealthPack(entity: Entity?) {
-        val healthPack = Mapper.HEALTH_PACK_MAPPER.get(entity)
-        val bounds = Mapper.BOUNDING_BOX_MAPPER.get(entity)
-        val playerBounds = Mapper.BOUNDING_BOX_MAPPER.get(player)
-        val remove = Mapper.REMOVE_MAPPER.get(entity)
+        val healthPack = Mapper.HEALTH_PACK_MAPPER[entity]
+        val bounds = Mapper.BOUNDING_BOX_MAPPER[entity]
+        val playerBounds = Mapper.BOUNDING_BOX_MAPPER[player]
+        val remove = Mapper.REMOVE_MAPPER[entity]
 
         if (playerBounds.rect.overlaps(bounds.rect)) {
-            val playerComp = Mapper.PLAYER_MAPPER.get(player)
-            val se = Mapper.STATUS_EFFECT_MAPPER.get(player)
+            val playerComp = Mapper.PLAYER_MAPPER[player]
+            val se = Mapper.STATUS_EFFECT_MAPPER[player]
 
             playerComp.startHealing = true
             playerComp.healing = healthPack.regen
@@ -210,8 +210,8 @@ class MapEntitySystem(private val player: Player, private val res: Resources) :
     }
 
     private fun handleForceField(entity: Entity?, dt: Float) {
-        val ff = Mapper.FORCE_FIELD_MAPPER.get(entity)
-        val texture = Mapper.TEXTURE_MAPPER.get(entity)
+        val ff = Mapper.FORCE_FIELD_MAPPER[entity]
+        val texture = Mapper.TEXTURE_MAPPER[entity]
 
         if (ff.duration != 0f) {
             ff.timer += dt
@@ -224,14 +224,14 @@ class MapEntitySystem(private val player: Player, private val res: Resources) :
     }
 
     private fun handleDamageBoost(entity: Entity?) {
-        val boost = Mapper.DAMAGE_BOOST_MAPPER.get(entity)
-        val bounds = Mapper.BOUNDING_BOX_MAPPER.get(entity)
-        val playerBounds = Mapper.BOUNDING_BOX_MAPPER.get(player)
-        val remove = Mapper.REMOVE_MAPPER.get(entity)
+        val boost = Mapper.DAMAGE_BOOST_MAPPER[entity]
+        val bounds = Mapper.BOUNDING_BOX_MAPPER[entity]
+        val playerBounds = Mapper.BOUNDING_BOX_MAPPER[player]
+        val remove = Mapper.REMOVE_MAPPER[entity]
 
         if (playerBounds.rect.overlaps(bounds.rect)) {
-            val playerComp = Mapper.PLAYER_MAPPER.get(player)
-            val se = Mapper.STATUS_EFFECT_MAPPER.get(player)
+            val playerComp = Mapper.PLAYER_MAPPER[player]
+            val se = Mapper.STATUS_EFFECT_MAPPER[player]
 
             playerComp.damageBoost = boost.damageBoost
             se.apply(StatusEffect.DamageBoost, boost.duration)

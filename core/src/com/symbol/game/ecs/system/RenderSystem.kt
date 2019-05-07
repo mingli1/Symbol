@@ -16,14 +16,14 @@ class RenderSystem(private val batch: Batch, private val cam: OrthographicCamera
         IteratingSystem(Family.all(TextureComponent::class.java).get()) {
 
     override fun processEntity(entity: Entity?, dt: Float) {
-        val texture = Mapper.TEXTURE_MAPPER.get(entity)
-        val position = Mapper.POS_MAPPER.get(entity)
-        val dir = Mapper.DIR_MAPPER.get(entity)
-        val gravity = Mapper.GRAVITY_MAPPER.get(entity)
+        val texture = Mapper.TEXTURE_MAPPER[entity]
+        val position = Mapper.POS_MAPPER[entity]
+        val dir = Mapper.DIR_MAPPER[entity]
+        val gravity = Mapper.GRAVITY_MAPPER[entity]
 
         if (texture.texture == null) return
 
-        val enemy = Mapper.ENEMY_MAPPER.get(entity)
+        val enemy = Mapper.ENEMY_MAPPER[entity]
         if (enemy != null && !enemy.visible) return
 
         val width = texture.texture!!.regionWidth.toFloat()
@@ -53,10 +53,10 @@ class RenderSystem(private val batch: Batch, private val cam: OrthographicCamera
     }
 
     private fun applyProjectileFlip(entity: Entity?) {
-        val proj = Mapper.PROJ_MAPPER.get(entity)
+        val proj = Mapper.PROJ_MAPPER[entity]
         if (proj != null && !proj.sub) {
-            val texture = Mapper.TEXTURE_MAPPER.get(entity)
-            val velocity = Mapper.VEL_MAPPER.get(entity)
+            val texture = Mapper.TEXTURE_MAPPER[entity]
+            val velocity = Mapper.VEL_MAPPER[entity]
 
             val defaultTexture = res.getTexture(texture.textureStr!!)
 

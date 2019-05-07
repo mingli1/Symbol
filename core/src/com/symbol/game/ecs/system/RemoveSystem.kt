@@ -9,7 +9,7 @@ import com.symbol.game.ecs.component.RemoveComponent
 class RemoveSystem : IteratingSystem(Family.all(RemoveComponent::class.java).get()) {
 
     override fun processEntity(entity: Entity?, deltaTime: Float) {
-        Mapper.REMOVE_MAPPER.get(entity).run {
+        Mapper.REMOVE_MAPPER[entity].run {
             if (shouldRemove) engine.removeEntity(entity)
         }
     }

@@ -13,7 +13,7 @@ class PlayerSystem(private val player: Player, private val gameScreen: GameScree
     private var totalHealTime = 0f
 
     override fun update(dt: Float) {
-        val playerComp = Mapper.PLAYER_MAPPER.get(player)
+        val playerComp = Mapper.PLAYER_MAPPER[player]
 
         if (!playerComp.canShoot) {
             stateTime += dt
@@ -30,13 +30,13 @@ class PlayerSystem(private val player: Player, private val gameScreen: GameScree
                 totalHealTime += dt
 
                 if (totalHealTime >= playerComp.healTime) {
-                    Mapper.HEALTH_MAPPER.get(player).heal(1)
+                    Mapper.HEALTH_MAPPER[player].heal(1)
                     healTime = 0f
                     totalHealTime = 0f
                     playerComp.startHealing = false
                 }
                 else if (healTime >= oneHealTime) {
-                    Mapper.HEALTH_MAPPER.get(player).heal(1)
+                    Mapper.HEALTH_MAPPER[player].heal(1)
                     healTime = 0f
                 }
             }

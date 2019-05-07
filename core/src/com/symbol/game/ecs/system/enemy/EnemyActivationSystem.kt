@@ -10,11 +10,11 @@ import com.symbol.game.ecs.entity.Player
 class EnemyActivationSystem(private val player: Player) : IteratingSystem(Family.all(EnemyComponent::class.java).get()) {
 
     override fun processEntity(entity: Entity?, deltaTime: Float) {
-        val activation = Mapper.ACTIVATION_MAPPER.get(entity)
+        val activation = Mapper.ACTIVATION_MAPPER[entity]
 
         if (activation.activationRange != -1f) {
-            val playerBounds = Mapper.BOUNDING_BOX_MAPPER.get(player)
-            val enemyBounds = Mapper.BOUNDING_BOX_MAPPER.get(entity)
+            val playerBounds = Mapper.BOUNDING_BOX_MAPPER[player]
+            val enemyBounds = Mapper.BOUNDING_BOX_MAPPER[entity]
             val x1 = playerBounds.rect.x + playerBounds.rect.width / 2
             val x2 = enemyBounds.rect.x + enemyBounds.rect.width / 2
             val y1 = playerBounds.rect.y + playerBounds.rect.height / 2

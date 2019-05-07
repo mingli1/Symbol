@@ -45,10 +45,10 @@ class MapManager(private val engine: PooledEngine, private val res: Resources) :
 
     private val textureMap = Array<Array<TextureRegion>>()
     private val tileLayer: TiledMapTileLayer by lazy {
-        tiledMap!!.layers.get(TILE_LAYER) as TiledMapTileLayer
+        tiledMap!!.layers[TILE_LAYER] as TiledMapTileLayer
     }
-    private val collisionLayer: MapLayer by lazy { tiledMap!!.layers.get(COLLISION_LAYER) }
-    private val playerSpawnLayer: MapLayer by lazy { tiledMap!!.layers.get(PLAYER_SPAWN_LAYER) }
+    private val collisionLayer: MapLayer by lazy { tiledMap!!.layers[COLLISION_LAYER] }
+    private val playerSpawnLayer: MapLayer by lazy { tiledMap!!.layers[PLAYER_SPAWN_LAYER] }
     private var enemyLayer: MapLayer? = null
     private var mapEntityLayer: MapLayer? = null
 
@@ -66,8 +66,8 @@ class MapManager(private val engine: PooledEngine, private val res: Resources) :
     private val oldMapObjects = Array<MapObject>()
 
     private val entityComparator: (Entity, Entity) -> Int = { e1, e2 ->
-        val pos1 = Mapper.POS_MAPPER.get(e1)
-        val pos2 = Mapper.POS_MAPPER.get(e2)
+        val pos1 = Mapper.POS_MAPPER[e1]
+        val pos2 = Mapper.POS_MAPPER[e2]
 
         val dist1 = Vector2.dst2(playerSpawnPosition.x, playerSpawnPosition.y, pos1.x, pos1.y)
         val dist2 = Vector2.dst2(playerSpawnPosition.x, playerSpawnPosition.y, pos2.x, pos2.y)
@@ -84,8 +84,8 @@ class MapManager(private val engine: PooledEngine, private val res: Resources) :
     fun load(mapName: String) {
         tiledMap = mapLoader.load("$DIR$mapName.tmx")
 
-        enemyLayer = tiledMap!!.layers.get(ENEMY_LAYER)
-        mapEntityLayer = tiledMap!!.layers.get(MAP_ENTITY_LAYER)
+        enemyLayer = tiledMap!!.layers[ENEMY_LAYER]
+        mapEntityLayer = tiledMap!!.layers[MAP_ENTITY_LAYER]
 
         val spawn = playerSpawnLayer.objects.getByType(RectangleMapObject::class.java)[0].rectangle
         playerSpawnPosition.set(spawn.x, spawn.y)
@@ -172,8 +172,8 @@ class MapManager(private val engine: PooledEngine, private val res: Resources) :
         oldMapObjects.clear()
 
         for (entity in engine.entities) {
-            val enemy = Mapper.ENEMY_MAPPER.get(entity)
-            val mapEntity = Mapper.MAP_ENTITY_MAPPER.get(entity)
+            val enemy = Mapper.ENEMY_MAPPER[entity]
+            val mapEntity = Mapper.MAP_ENTITY_MAPPER[entity]
             var page: HelpPage? = null
 
             if (enemy != null) page = res.getHelpPage(enemy.enemyType.typeStr)
@@ -204,11 +204,11 @@ class MapManager(private val engine: PooledEngine, private val res: Resources) :
     }
 
     private fun containsEntityType(entities: Array<Entity>, entity: Entity) : Boolean {
-        val enemy = Mapper.ENEMY_MAPPER.get(entity)
-        val mapEntity = Mapper.MAP_ENTITY_MAPPER.get(entity)
+        val enemy = Mapper.ENEMY_MAPPER[entity]
+        val mapEntity = Mapper.MAP_ENTITY_MAPPER[entity]
         for (e in entities) {
-            val enemy2 = Mapper.ENEMY_MAPPER.get(e)
-            val mapEntity2 = Mapper.MAP_ENTITY_MAPPER.get(e)
+            val enemy2 = Mapper.ENEMY_MAPPER[e]
+            val mapEntity2 = Mapper.MAP_ENTITY_MAPPER[e]
             if (enemy != null && enemy2 != null) {
                 if (enemy.enemyType == enemy2.enemyType) return true
             }
@@ -223,15 +223,15 @@ class MapManager(private val engine: PooledEngine, private val res: Resources) :
             mapObjects.find { it.type == mapObject.type } != null
 
     private fun addEntityHelpPage(entity: Entity) {
-        Mapper.ENEMY_MAPPER.get(entity)?.let { helpPages.add(res.getHelpPage(it.enemyType.typeStr)) }
-        Mapper.MAP_ENTITY_MAPPER.get(entity)?.let { helpPages.add(res.getHelpPage(it.mapEntityType.typeStr)) }
+        Mapper.ENEMY_MAPPER[entity]?.let { helpPages.add(res.getHelpPage(it.enemyType.typeStr)) }
+        Mapper.MAP_ENTITY_MAPPER[entity]?.let { helpPages.add(res.getHelpPage(it.mapEntityType.typeStr)) }
     }
 
     private fun addMapObjectHelpPage(mapObject: MapObject) =
             helpPages.add(res.getHelpPage(mapObject.type.typeStr))
 
     fun containsInvertSwitch() : Boolean =
-            engine.entities.find { Mapper.INVERT_SWITCH_MAPPER.get(it) != null } != null
+            engine.entities.find { Mapper.INVERT_SWITCH_MAPPER[it] != null } != null
 
     fun render(batch: Batch, cam: OrthographicCamera) {
         for (row in 0 until mapHeight) {

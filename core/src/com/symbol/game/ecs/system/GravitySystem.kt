@@ -12,8 +12,8 @@ const val TERMINAL_VELOCITY = -80.8f
 class GravitySystem : IteratingSystem(Family.all(GravityComponent::class.java).get()) {
 
     override fun processEntity(entity: Entity?, dt: Float) {
-        val vel = Mapper.VEL_MAPPER.get(entity)
-        val grav = Mapper.GRAVITY_MAPPER.get(entity)
+        val vel = Mapper.VEL_MAPPER[entity]
+        val grav = Mapper.GRAVITY_MAPPER[entity]
 
         if (grav.reverse) {
             if (vel.dy < -grav.terminalVelocity) vel.dy -= grav.gravity * dt

@@ -14,11 +14,11 @@ class MovementSystem : IteratingSystem(
 ) {
 
     override fun processEntity(entity: Entity?, dt: Float) {
-        val position = Mapper.POS_MAPPER.get(entity)
-        val velocity = Mapper.VEL_MAPPER.get(entity)
-        val orbit = Mapper.ORBIT_MAPPER.get(entity)
-        val bounds = Mapper.BOUNDING_BOX_MAPPER.get(entity)
-        val texture = Mapper.TEXTURE_MAPPER.get(entity)
+        val position = Mapper.POS_MAPPER[entity]
+        val velocity = Mapper.VEL_MAPPER[entity]
+        val orbit = Mapper.ORBIT_MAPPER[entity]
+        val bounds = Mapper.BOUNDING_BOX_MAPPER[entity]
+        val texture = Mapper.TEXTURE_MAPPER[entity]
 
         if (texture.texture == null) return
 

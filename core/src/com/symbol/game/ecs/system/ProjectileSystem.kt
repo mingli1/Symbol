@@ -63,28 +63,29 @@ class ProjectileSystem(private val player: Player, private val res: Resources, p
         super.update(dt)
 
         for (e in allEntities) {
-            val vel = Mapper.VEL_MAPPER.get(e)
-            val knockback = Mapper.KNOCKBACK_MAPPER.get(e)
-            if (knockback != null && knockback.knockingBack) {
-                knockback.timer += dt
-                if (knockback.timer > KNOCKBACK_TIME) {
-                    vel.dx = vel.prevVel
-                    knockback.timer = 0f
-                    knockback.knockingBack = false
+            val vel = Mapper.VEL_MAPPER[e]
+            Mapper.KNOCKBACK_MAPPER[e]?.run {
+                if (knockingBack) {
+                    timer += dt
+                    if (timer > KNOCKBACK_TIME) {
+                        vel.dx = vel.prevVel
+                        timer = 0f
+                        knockingBack = false
+                    }
                 }
             }
         }
     }
 
     override fun processEntity(entity: Entity?, dt: Float) {
-        val pj = Mapper.PROJ_MAPPER.get(entity)
-        val color = Mapper.COLOR_MAPPER.get(entity)
-        val bb = Mapper.BOUNDING_BOX_MAPPER.get(entity)
-        val position = Mapper.POS_MAPPER.get(entity)
-        val velocity = Mapper.VEL_MAPPER.get(entity)
-        val width = Mapper.TEXTURE_MAPPER.get(entity).texture!!.regionWidth
-        val height = Mapper.TEXTURE_MAPPER.get(entity).texture!!.regionHeight
-        val remove = Mapper.REMOVE_MAPPER.get(entity)
+        val pj = Mapper.PROJ_MAPPER[entity]
+        val color = Mapper.COLOR_MAPPER[entity]
+        val bb = Mapper.BOUNDING_BOX_MAPPER[entity]
+        val position = Mapper.POS_MAPPER[entity]
+        val velocity = Mapper.VEL_MAPPER[entity]
+        val width = Mapper.TEXTURE_MAPPER[entity].texture!!.regionWidth
+        val height = Mapper.TEXTURE_MAPPER[entity].texture!!.regionHeight
+        val remove = Mapper.REMOVE_MAPPER[entity]
         bb.rect.setPosition(position.x + (width - bb.rect.width) / 2, position.y + (height - bb.rect.height) / 2)
 
         pj.lifeTime += dt
@@ -131,13 +132,13 @@ class ProjectileSystem(private val player: Player, private val res: Resources, p
         handleMapEntityCollisions(entity)
 
         for (projectile in entities) {
-            val projectileComp = Mapper.PROJ_MAPPER.get(projectile)
+            val projectileComp = Mapper.PROJ_MAPPER[projectile]
             if (entity!! != projectile && projectileComp.collidesWithProjectiles) {
-                val bounds = Mapper.BOUNDING_BOX_MAPPER.get(projectile)
+                val bounds = Mapper.BOUNDING_BOX_MAPPER[projectile]
                 if (bb.rect.overlaps(bounds.rect)) {
                     if (pj.playerType != 0) handlePlayerProjectile(entity, pj, bb.rect)
                     remove.shouldRemove = true
-                    val projectileRemove = Mapper.REMOVE_MAPPER.get(projectile)
+                    val projectileRemove = Mapper.REMOVE_MAPPER[projectile]
                     projectileRemove.shouldRemove = true
                     break
                 }
@@ -145,20 +146,20 @@ class ProjectileSystem(private val player: Player, private val res: Resources, p
         }
 
         for (e in allEntities) {
-            val ebb = Mapper.BOUNDING_BOX_MAPPER.get(e)
-            val ev = Mapper.VEL_MAPPER.get(e)
+            val ebb = Mapper.BOUNDING_BOX_MAPPER[e]
+            val ev = Mapper.VEL_MAPPER[e]
 
             if (bb.rect.overlaps(ebb.rect)) {
-                val knockback = Mapper.KNOCKBACK_MAPPER.get(e)
-                val player = Mapper.PLAYER_MAPPER.get(e)
+                val knockback = Mapper.KNOCKBACK_MAPPER[e]
+                val player = Mapper.PLAYER_MAPPER[e]
 
-                if (Mapper.AFFECT_ALL_MAPPER.get(entity) != null ||
-                        (Mapper.PLAYER_MAPPER.get(entity) == null && player != null) ||
-                        (Mapper.PLAYER_MAPPER.get(entity) != null && player == null)) {
-                    val corp = Mapper.CORPOREAL_MAPPER.get(e)
+                if (Mapper.AFFECT_ALL_MAPPER[entity] != null ||
+                        (Mapper.PLAYER_MAPPER[entity] == null && player != null) ||
+                        (Mapper.PLAYER_MAPPER[entity] != null && player == null)) {
+                    val corp = Mapper.CORPOREAL_MAPPER[e]
                     if (corp != null && !corp.corporeal) break
 
-                    val trap = Mapper.TRAP_MAPPER.get(e)
+                    val trap = Mapper.TRAP_MAPPER[e]
                     if (trap != null) handleTrapEnemy(e)
 
                     if (knockback != null) {
@@ -168,8 +169,8 @@ class ProjectileSystem(private val player: Player, private val res: Resources, p
                     }
                     hit(e, pj.damage)
 
-                    val se = Mapper.STATUS_EFFECT_MAPPER.get(entity)
-                    val target = Mapper.STATUS_EFFECT_MAPPER.get(e)
+                    val se = Mapper.STATUS_EFFECT_MAPPER[entity]
+                    val target = Mapper.STATUS_EFFECT_MAPPER[e]
                     if (se != null && target != null) target.apply(se.apply, se.duration, se.value)
 
                     if (pj.playerType != 0) handlePlayerProjectile(entity, pj, bb.rect)
@@ -206,14 +207,14 @@ class ProjectileSystem(private val player: Player, private val res: Resources, p
     }
 
     private fun hit(entity: Entity, damage: Int) {
-        val ebb = Mapper.BOUNDING_BOX_MAPPER.get(entity)
-        val health = Mapper.HEALTH_MAPPER.get(entity)
+        val ebb = Mapper.BOUNDING_BOX_MAPPER[entity]
+        val health = Mapper.HEALTH_MAPPER[entity]
         var intensity = DEFAULT_INTESITY + damage
 
         health.hit(damage)
         if (health.hp <= 0) intensity *= 2
 
-        val entityColor = Mapper.COLOR_MAPPER.get(entity)
+        val entityColor = Mapper.COLOR_MAPPER[entity]
         ParticleSpawner.spawn(res, entityColor.hex!!,
                 DEFAULT_LIFETIME, intensity,
                 ebb.rect.x + ebb.rect.width / 2,
@@ -224,23 +225,23 @@ class ProjectileSystem(private val player: Player, private val res: Resources, p
     }
 
     private fun handleMapEntityCollisions(entity: Entity?) {
-        val pj = Mapper.PROJ_MAPPER.get(entity)
-        val color = Mapper.COLOR_MAPPER.get(entity)
-        val bb = Mapper.BOUNDING_BOX_MAPPER.get(entity)
-        val position = Mapper.POS_MAPPER.get(entity)
-        val width = Mapper.TEXTURE_MAPPER.get(entity).texture!!.regionWidth
-        val height = Mapper.TEXTURE_MAPPER.get(entity).texture!!.regionHeight
-        val remove = Mapper.REMOVE_MAPPER.get(entity)
+        val pj = Mapper.PROJ_MAPPER[entity]
+        val color = Mapper.COLOR_MAPPER[entity]
+        val bb = Mapper.BOUNDING_BOX_MAPPER[entity]
+        val position = Mapper.POS_MAPPER[entity]
+        val width = Mapper.TEXTURE_MAPPER[entity].texture!!.regionWidth
+        val height = Mapper.TEXTURE_MAPPER[entity].texture!!.regionHeight
+        val remove = Mapper.REMOVE_MAPPER[entity]
 
         for (mapEntity in mapEntities) {
-            val me = Mapper.MAP_ENTITY_MAPPER.get(mapEntity)
-            val bounds = Mapper.BOUNDING_BOX_MAPPER.get(mapEntity)
-            val boundsCircle = Mapper.BOUNDING_CIRCLE_MAPPER.get(mapEntity)
+            val me = Mapper.MAP_ENTITY_MAPPER[mapEntity]
+            val bounds = Mapper.BOUNDING_BOX_MAPPER[mapEntity]
+            val boundsCircle = Mapper.BOUNDING_CIRCLE_MAPPER[mapEntity]
 
             val overlap = if (boundsCircle == null) bb.rect.overlaps(bounds.rect) else
                 Intersector.overlaps(boundsCircle.circle, bb.rect)
-            val affectAllOrFromPlayer = Mapper.AFFECT_ALL_MAPPER.get(entity) != null ||
-                    Mapper.PLAYER_MAPPER.get(entity) != null
+            val affectAllOrFromPlayer = Mapper.AFFECT_ALL_MAPPER[entity] != null ||
+                    Mapper.PLAYER_MAPPER[entity] != null
 
             if (!pj.sub && overlap) {
                 when (me.mapEntityType) {
@@ -275,9 +276,9 @@ class ProjectileSystem(private val player: Player, private val res: Resources, p
             }
         }
 
-        val lastEntity = Mapper.LAST_ENTITY_MAPPER.get(entity)
+        val lastEntity = Mapper.LAST_ENTITY_MAPPER[entity]
         if (lastEntity?.entity != null) {
-            val leBounds = Mapper.BOUNDING_BOX_MAPPER.get(lastEntity.entity)
+            val leBounds = Mapper.BOUNDING_BOX_MAPPER[lastEntity.entity]
             if (!bb.rect.overlaps(leBounds.rect)) {
                 pj.withinMirror = false
                 entity?.remove(LastEntityComponent::class.java)
@@ -286,9 +287,9 @@ class ProjectileSystem(private val player: Player, private val res: Resources, p
     }
 
     private fun handleDetonation(entity: Entity?, pj: ProjectileComponent, bounds: Rectangle, remove: RemoveComponent) {
-        if (Mapper.PLAYER_MAPPER.get(entity) == null && !pj.collidesWithTerrain && pj.detonateTime != 0f) {
+        if (Mapper.PLAYER_MAPPER[entity] == null && !pj.collidesWithTerrain && pj.detonateTime != 0f) {
             if (pj.lifeTime >= pj.detonateTime) {
-                val vel = Mapper.VEL_MAPPER.get(entity)
+                val vel = Mapper.VEL_MAPPER[entity]
                 val speed = if (vel.dx != 0f) Math.abs(vel.dx) else Math.abs(vel.dy)
                 val texture = res.getSubProjectileTextureFor(pj.textureStr!!)!!
 
@@ -308,7 +309,7 @@ class ProjectileSystem(private val player: Player, private val res: Resources, p
 
     private fun handlePlayerProjectile(entity: Entity?, pj: ProjectileComponent, bounds: Rectangle) {
         if (pj.playerType == 4) {
-            val vel = Mapper.VEL_MAPPER.get(entity)
+            val vel = Mapper.VEL_MAPPER[entity]
             val speed = if (vel.dx != 0f) Math.abs(vel.dx) else Math.abs(vel.dy)
             val texture = res.getSubProjectileTextureFor(pj.textureStr!!)!!
 
@@ -328,7 +329,7 @@ class ProjectileSystem(private val player: Player, private val res: Resources, p
     }
 
     private fun handleArcMovement(entity: Entity?, dt: Float, pj: ProjectileComponent) {
-        val vel = Mapper.VEL_MAPPER.get(entity)
+        val vel = Mapper.VEL_MAPPER[entity]
         val ay = (pj.acceleration / 1.5f) * dt
         vel.dx += if (pj.parentFacingRight) pj.acceleration * dt else -pj.acceleration * dt
 
@@ -352,7 +353,7 @@ class ProjectileSystem(private val player: Player, private val res: Resources, p
         if (pj.waveTimer >= MathUtils.PI2) pj.waveTimer = 0f
         val offset = MathUtils.sin(pj.waveTimer) * pj.acceleration
 
-        val velocity = Mapper.VEL_MAPPER.get(entity)
+        val velocity = Mapper.VEL_MAPPER[entity]
 
         when (pj.waveDir) {
             Direction.Left, Direction.Right -> velocity.dy = offset
@@ -361,9 +362,9 @@ class ProjectileSystem(private val player: Player, private val res: Resources, p
     }
 
     private fun handleHomingMovement(entity: Entity?) {
-        val velocity = Mapper.VEL_MAPPER.get(entity)
-        val bounds = Mapper.BOUNDING_BOX_MAPPER.get(entity)
-        val playerBounds = Mapper.BOUNDING_BOX_MAPPER.get(player)
+        val velocity = Mapper.VEL_MAPPER[entity]
+        val bounds = Mapper.BOUNDING_BOX_MAPPER[entity]
+        val playerBounds = Mapper.BOUNDING_BOX_MAPPER[player]
 
         val x = bounds.rect.x + bounds.rect.width / 2
         val y = bounds.rect.y + bounds.rect.height / 2
@@ -397,11 +398,11 @@ class ProjectileSystem(private val player: Player, private val res: Resources, p
     }
 
     private fun handleTeleportation(entity: Entity?) {
-        val teleport = Mapper.TELEPORT_MAPPER.get(entity)
+        val teleport = Mapper.TELEPORT_MAPPER[entity]
         if (teleport?.range == 0f) {
-            val bounds = Mapper.BOUNDING_BOX_MAPPER.get(entity)
-            val position = Mapper.POS_MAPPER.get(entity)
-            val velocity = Mapper.VEL_MAPPER.get(entity)
+            val bounds = Mapper.BOUNDING_BOX_MAPPER[entity]
+            val position = Mapper.POS_MAPPER[entity]
+            val velocity = Mapper.VEL_MAPPER[entity]
 
             val platform = mapObjects.random().bounds
             val randX = MathUtils.random(platform.x, platform.x + platform.width - bounds.rect.width)
@@ -413,14 +414,14 @@ class ProjectileSystem(private val player: Player, private val res: Resources, p
     }
 
     private fun handleLastStand(entity: Entity?) {
-        val attackComp = Mapper.ATTACK_MAPPER.get(entity)
+        val attackComp = Mapper.ATTACK_MAPPER[entity]
         if (attackComp != null) {
-            if (Mapper.LAST_STAND_MAPPER.get(entity) != null) {
-                val health = Mapper.HEALTH_MAPPER.get(entity)
+            if (Mapper.LAST_STAND_MAPPER[entity] != null) {
+                val health = Mapper.HEALTH_MAPPER[entity]
                 val scale = 1f / health.maxHp
                 attackComp.attackRate -= attackComp.attackRate * scale
 
-                val se = Mapper.STATUS_EFFECT_MAPPER.get(entity)
+                val se = Mapper.STATUS_EFFECT_MAPPER[entity]
                 if (se != null) {
                     if (se.type != StatusEffect.LastStand && health.hp.toFloat() / health.maxHp.toFloat() <= 0.5f) {
                         se.apply(StatusEffect.LastStand)
@@ -432,8 +433,8 @@ class ProjectileSystem(private val player: Player, private val res: Resources, p
     }
 
     private fun handleTrapEnemy(entity: Entity?) {
-        val trapComp = Mapper.TRAP_MAPPER.get(entity)
-        val texture = Mapper.TEXTURE_MAPPER.get(entity)
+        val trapComp = Mapper.TRAP_MAPPER[entity]
+        val texture = Mapper.TEXTURE_MAPPER[entity]
 
         if (!trapComp.countdown) trapComp.countdown = true
         trapComp.hits++
@@ -441,10 +442,10 @@ class ProjectileSystem(private val player: Player, private val res: Resources, p
     }
 
     private fun handleMirror(entity: Entity?, mapEntity: Entity?, pj: ProjectileComponent) {
-        val mirror = Mapper.MIRROR_MAPPER.get(mapEntity)
-        val pBounds = Mapper.BOUNDING_BOX_MAPPER.get(entity)
-        val mBounds = Mapper.BOUNDING_BOX_MAPPER.get(mapEntity)
-        val velocity = Mapper.VEL_MAPPER.get(entity)
+        val mirror = Mapper.MIRROR_MAPPER[mapEntity]
+        val pBounds = Mapper.BOUNDING_BOX_MAPPER[entity]
+        val mBounds = Mapper.BOUNDING_BOX_MAPPER[mapEntity]
+        val velocity = Mapper.VEL_MAPPER[entity]
         entity?.add((engine as PooledEngine).createComponent(AffectAllComponent::class.java))
 
         val pRight = velocity.dx > 0 && velocity.dy == 0f
@@ -537,10 +538,10 @@ class ProjectileSystem(private val player: Player, private val res: Resources, p
 
     private fun applyMirror(entity: Entity?, mapEntity: Entity?, pj: ProjectileComponent) {
         pj.withinMirror = true
-        val lastEntity = Mapper.LAST_ENTITY_MAPPER.get(entity)
+        val lastEntity = Mapper.LAST_ENTITY_MAPPER[entity]
         if (lastEntity == null) {
             entity?.add((engine as PooledEngine).createComponent(LastEntityComponent::class.java))
-            Mapper.LAST_ENTITY_MAPPER.get(entity).entity = mapEntity
+            Mapper.LAST_ENTITY_MAPPER[entity].entity = mapEntity
         } else {
             lastEntity.entity = mapEntity
         }
@@ -548,15 +549,15 @@ class ProjectileSystem(private val player: Player, private val res: Resources, p
 
     private fun handleGravitySwitch() {
         if (CameraRotation.isEnded()) {
-            val gravity = Mapper.GRAVITY_MAPPER.get(player)
+            val gravity = Mapper.GRAVITY_MAPPER[player]
 
             gravity.reverse = !gravity.reverse
             CameraRotation.start(180f, GRAVITY_FLIP_TIME)
 
             for (gravitySwitch in mapEntities) {
-                val gme = Mapper.MAP_ENTITY_MAPPER.get(gravitySwitch)
+                val gme = Mapper.MAP_ENTITY_MAPPER[gravitySwitch]
                 if (gme.mapEntityType == MapEntityType.GravitySwitch) {
-                    val meTexture = Mapper.TEXTURE_MAPPER.get(gravitySwitch)
+                    val meTexture = Mapper.TEXTURE_MAPPER[gravitySwitch]
                     meTexture.texture = res.getTexture(meTexture.textureStr +
                             if (gravity.reverse) TOGGLE_ON else TOGGLE_OFF)
                 }
@@ -565,17 +566,17 @@ class ProjectileSystem(private val player: Player, private val res: Resources, p
     }
 
     private fun handleSquareSwitch(mapEntity: Entity?) {
-        val switch = Mapper.SQUARE_SWITCH_MAPPER.get(mapEntity)
-        val switchTexture = Mapper.TEXTURE_MAPPER.get(mapEntity)
+        val switch = Mapper.SQUARE_SWITCH_MAPPER[mapEntity]
+        val switchTexture = Mapper.TEXTURE_MAPPER[mapEntity]
 
         switch.toggle = !switch.toggle
         switchTexture.texture = res.getTexture(switchTexture.textureStr +
                 if (switch.toggle) TOGGLE_ON else TOGGLE_OFF)
 
         for (tt in toggleTiles) {
-            val tme = Mapper.MAP_ENTITY_MAPPER.get(tt)
-            val toggleComp = Mapper.TOGGLE_TILE_MAPPER.get(tt)
-            val toggleTexture = Mapper.TEXTURE_MAPPER.get(tt)
+            val tme = Mapper.MAP_ENTITY_MAPPER[tt]
+            val toggleComp = Mapper.TOGGLE_TILE_MAPPER[tt]
+            val toggleTexture = Mapper.TEXTURE_MAPPER[tt]
 
             if (switch.targetId == toggleComp.id) {
                 toggleComp.toggle = !toggleComp.toggle
@@ -587,14 +588,14 @@ class ProjectileSystem(private val player: Player, private val res: Resources, p
     }
 
     private fun handleForceField(entity: Entity?, mapEntity: Entity?, boundsCircle: BoundingCircleComponent) {
-        val color = Mapper.COLOR_MAPPER.get(entity)
-        val pj = Mapper.PROJ_MAPPER.get(entity)
-        val position = Mapper.POS_MAPPER.get(entity)
-        val remove = Mapper.REMOVE_MAPPER.get(entity)
-        val width = Mapper.TEXTURE_MAPPER.get(entity).texture!!.regionWidth
-        val height = Mapper.TEXTURE_MAPPER.get(entity).texture!!.regionHeight
-        val ff = Mapper.FORCE_FIELD_MAPPER.get(mapEntity)
-        val playerBounds = Mapper.BOUNDING_BOX_MAPPER.get(player)
+        val color = Mapper.COLOR_MAPPER[entity]
+        val pj = Mapper.PROJ_MAPPER[entity]
+        val position = Mapper.POS_MAPPER[entity]
+        val remove = Mapper.REMOVE_MAPPER[entity]
+        val width = Mapper.TEXTURE_MAPPER[entity].texture!!.regionWidth
+        val height = Mapper.TEXTURE_MAPPER[entity].texture!!.regionHeight
+        val ff = Mapper.FORCE_FIELD_MAPPER[mapEntity]
+        val playerBounds = Mapper.BOUNDING_BOX_MAPPER[player]
 
         val circleContainsPlayer = boundsCircle.circle.contains(playerBounds.rect.x, playerBounds.rect.y) &&
                 boundsCircle.circle.contains(playerBounds.rect.x + playerBounds.rect.width,
@@ -609,18 +610,18 @@ class ProjectileSystem(private val player: Player, private val res: Resources, p
     }
 
     private fun handleInvertSwitch(entity: Entity?) {
-        val invert = Mapper.INVERT_SWITCH_MAPPER.get(entity)
+        val invert = Mapper.INVERT_SWITCH_MAPPER[entity]
         invert.toggle = !invert.toggle
         gameScreen.mapInverted = invert.toggle
         for (enemy in enemies) {
-            val enemyComp = Mapper.ENEMY_MAPPER.get(enemy)
+            val enemyComp = Mapper.ENEMY_MAPPER[enemy]
             enemyComp.visible = !enemyComp.visible
         }
     }
 
     private fun handleAccelerationGate(entity: Entity?, mapEntity: Entity?) {
-        val velocity = Mapper.VEL_MAPPER.get(entity)
-        val agate = Mapper.ACCEL_GATE_MAPPER.get(mapEntity)
+        val velocity = Mapper.VEL_MAPPER[entity]
+        val agate = Mapper.ACCEL_GATE_MAPPER[mapEntity]
         if (velocity.dx > 0 && velocity.dx != velocity.speed + agate.boost) {
             velocity.dx = velocity.speed + agate.boost
         }
