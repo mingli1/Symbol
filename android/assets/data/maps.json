@@ -1,0 +1,28 @@
+{
+  "maps": [
+    {
+      "name": "map 1"
+    },
+    {
+      "name": "m2"
+    },
+    {
+      "name": "long map name 3"
+    },
+    {
+      "name": "extra really long map name 4 test"
+    },
+    {
+      "name": "map 5"
+    },
+    {
+      "name": "map 6"
+    },
+    {
+      "name": "map 7"
+    },
+    {
+      "name": "map 8"
+    }
+  ]
+}

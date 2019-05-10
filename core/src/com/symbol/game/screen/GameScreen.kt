@@ -69,7 +69,7 @@ class GameScreen(game: Symbol) : AbstractScreen(game) {
     }
 
     private fun initSystems() {
-        engine.run {
+        with (engine) {
             addSystem(MovementSystem())
             addSystem(MapCollisionSystem(game.res))
             addSystem(MapEntitySystem(player, game.res))
@@ -88,7 +88,7 @@ class GameScreen(game: Symbol) : AbstractScreen(game) {
     }
 
     private fun resetSystems() {
-        engine.run {
+        with (engine) {
             getSystem(MapCollisionSystem::class.java).setMapData(mapManager.mapObjects,
                     mapManager.mapWidth * TILE_SIZE, mapManager.mapHeight * TILE_SIZE)
             getSystem(ProjectileSystem::class.java).setMapData(mapManager.mapObjects)
