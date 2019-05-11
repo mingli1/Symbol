@@ -54,7 +54,7 @@ class Resources : Disposable {
     private val entityDetails: JsonValue
     private val technicalDetails: JsonValue
 
-    private val mapDatas = mutableListOf<MapData>()
+    val mapDatas = mutableListOf<MapData>()
     private val helpPages: MutableMap<String, HelpPage> = HashMap()
 
     init {

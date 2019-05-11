@@ -6,8 +6,10 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import com.symbol.game.Symbol
+import com.symbol.game.data.MapData
 import com.symbol.game.scene.dialog.MapDialog
 import com.symbol.game.scene.page.MapPage
+import com.symbol.game.scene.page.MapPage.MapPageType.*
 import com.symbol.game.scene.page.PagedScrollPane
 
 private const val HEADER_WIDTH = 116f
@@ -54,15 +56,16 @@ class MapSelectScreen(game: Symbol) : DefaultScreen(game) {
             disableAutoReset()
 
             addPadding(PAGE_TOP_PADDING)
-            addPage(MapPage(res, MapPage.MapPageType.Start, this@MapSelectScreen))
-            addPage(MapPage(res, MapPage.MapPageType.Right, this@MapSelectScreen))
-            addPage(MapPage(res, MapPage.MapPageType.Left, this@MapSelectScreen))
-            addPage(MapPage(res, MapPage.MapPageType.Right, this@MapSelectScreen))
-            addPage(MapPage(res, MapPage.MapPageType.Left, this@MapSelectScreen))
-            addPage(MapPage(res, MapPage.MapPageType.Right, this@MapSelectScreen))
-            addPage(MapPage(res, MapPage.MapPageType.Left, this@MapSelectScreen))
-            addPage(MapPage(res, MapPage.MapPageType.Right, this@MapSelectScreen))
-            addPage(MapPage(res, MapPage.MapPageType.EndLeft, this@MapSelectScreen))
+            res.mapDatas.let {
+                it.forEachIndexed { index, data ->
+                    val mapPageType = when (index) {
+                        0 -> Start
+                        it.size - 1 -> if (it.size % 2 == 0) EndRight else EndLeft
+                        else -> if (index % 2 == 0) Left else Right
+                    }
+                    addPage(MapPage(res, data, mapPageType, this@MapSelectScreen))
+                }
+            }
             addPadding(PAGE_BOTTOM_PADDING)
         }
 
@@ -119,13 +122,16 @@ class MapSelectScreen(game: Symbol) : DefaultScreen(game) {
         stage.addActor(headerContainer)
     }
 
-    fun showMapDialog(right: Boolean) {
-        if (!mapDialog.isDisplayed) {
-            mapDialog.setOrientation(right)
-            mapDialog.show(stage)
+    fun showMapDialog(mapData: MapData, right: Boolean) {
+        with (mapDialog) {
+            if (!isDisplayed) {
+                setOrientation(right)
+                setData(mapData)
+                show(stage)
 
-            val maxZIndex = stage.actors.size + 1
-            backButton.zIndex = maxZIndex
+                val maxZIndex = stage.actors.size + 1
+                backButton.zIndex = maxZIndex
+            }
         }
     }
 

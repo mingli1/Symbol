@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.symbol.game.data.MapData;
 import com.symbol.game.screen.MapSelectScreen;
 import com.symbol.game.util.Resources;
 
@@ -21,6 +22,7 @@ public class MapPage extends Table implements Page {
 
     private int pageIndex;
     private Label mapIconLabel;
+    private MapData mapData;
     private boolean right;
 
     public enum MapPageType {
@@ -37,9 +39,10 @@ public class MapPage extends Table implements Page {
         }
     }
 
-    public MapPage(Resources res, MapPageType type, MapSelectScreen parent) {
+    public MapPage(Resources res, MapData mapData, MapPageType type, MapSelectScreen parent) {
         this.res = res;
         this.parent = parent;
+        this.mapData = mapData;
         setBackground(new TextureRegionDrawable(res.getTexture(type.key)));
 
         createMapButton(type);
@@ -80,7 +83,7 @@ public class MapPage extends Table implements Page {
     }
 
     private void onMapButtonClicked() {
-        parent.showMapDialog(right);
+        parent.showMapDialog(mapData, right);
     }
 
     @Override

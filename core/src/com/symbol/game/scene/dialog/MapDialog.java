@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.symbol.game.Config;
+import com.symbol.game.data.MapData;
 import com.symbol.game.screen.MapSelectScreen;
 import com.symbol.game.util.Resources;
 
@@ -93,8 +94,8 @@ public class MapDialog extends Table {
         else add(enterButton).expandY().bottom().padLeft(4f).padBottom(3f);
     }
 
-    public void setData() {
-        // TODO: set map data
+    public void setData(MapData data) {
+
     }
 
     public boolean isDisplayed() {
