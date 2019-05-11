@@ -23,6 +23,7 @@ public class MapPage extends Table implements Page {
 
     private Resources res;
     private MapSelectScreen parent;
+    private MapPageType type;
 
     private int pageIndex;
     private Label mapIconLabel;
@@ -33,6 +34,10 @@ public class MapPage extends Table implements Page {
     private ImageButtonStyle mapCompleteStyle;
     private ImageButtonStyle mapIncompleteStyle;
     private ImageButtonStyle mapDisabledStyle;
+
+    private TextureRegionDrawable incompleteBg;
+    private TextureRegionDrawable complete1Bg;
+    private TextureRegionDrawable complete2Bg;
 
     public enum MapPageType {
         Start("map_page_start"),
@@ -52,13 +57,23 @@ public class MapPage extends Table implements Page {
         this.res = res;
         this.parent = parent;
         this.mapData = mapData;
-        setBackground(new TextureRegionDrawable(res.getTexture(type.key)));
+        this.type = type;
 
         mapCompleteStyle = res.getImageButtonStyle("map_complete");
         mapIncompleteStyle = res.getImageButtonStyle("map_incomplete");
         mapDisabledStyle = new ImageButtonStyle();
         mapDisabledStyle.imageUp = mapDisabledStyle.imageDown
                 = mapDisabledStyle.imageDisabled = new TextureRegionDrawable(res.getTexture("button_map_disabled"));
+
+        incompleteBg = new TextureRegionDrawable(res.getTexture(type.key));
+        if (type == MapPageType.Start || type == MapPageType.EndLeft || type == MapPageType.EndRight) {
+            complete1Bg = new TextureRegionDrawable(res.getTexture(type.key + "_c"));
+        } else {
+            complete1Bg = new TextureRegionDrawable(res.getTexture(type.key + "_c1"));
+            complete2Bg = new TextureRegionDrawable(res.getTexture(type.key + "_c2"));
+        }
+
+        setBackground(incompleteBg);
 
         createMapButton(type);
     }
@@ -102,18 +117,30 @@ public class MapPage extends Table implements Page {
 
     @Override
     public void reset() {
+        List<MapData> mapDatas = res.getMapDatas();
+        int prevIndex = mapData.getId() - 1;
+        int nextIndex = mapData.getId() + 1;
+
         mapButton.setTouchable(Touchable.enabled);
         if (!mapData.getCompleted()) {
-            mapButton.setTouchable(Touchable.disabled);
-            mapButton.setStyle(mapDisabledStyle);
+            if (prevIndex < 0 || mapDatas.get(prevIndex).getCompleted()) {
+                mapButton.setStyle(mapIncompleteStyle);
+
+                if (type == MapPageType.Left || type == MapPageType.Right) {
+                    setBackground(complete1Bg);
+                }
+            } else {
+                mapButton.setTouchable(Touchable.disabled);
+                mapButton.setStyle(mapDisabledStyle);
+            }
         }
         else {
-            List<MapData> mapDatas = res.getMapDatas();
-            int nextIndex = mapData.getId() + 1;
-            if (nextIndex < mapDatas.size() && mapDatas.get(nextIndex).getCompleted()) {
-                mapButton.setStyle(mapCompleteStyle);
+            mapButton.setStyle(mapCompleteStyle);
+
+            if (type == MapPageType.Start || type == MapPageType.EndLeft || type == MapPageType.EndRight) {
+                setBackground(complete1Bg);
             } else {
-                mapButton.setStyle(mapIncompleteStyle);
+                setBackground(complete2Bg);
             }
         }
     }

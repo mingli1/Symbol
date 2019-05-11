@@ -145,6 +145,7 @@ class MapSelectScreen(game: Symbol) : DefaultScreen(game) {
 
     private fun updateView() {
         // TODO: update header with number of maps player has completed from save
+        // also scroll to current incomplete map; if all are completed, only scroll to first map
         pagedScrollPane.resetAllPages()
     }
 
