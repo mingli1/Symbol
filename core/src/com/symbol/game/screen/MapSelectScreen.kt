@@ -143,9 +143,15 @@ class MapSelectScreen(game: Symbol) : DefaultScreen(game) {
 
     fun navigateToGameScreen() = fadeToScreen(game.gameScreen)
 
+    private fun updateView() {
+        // TODO: update header with number of maps player has completed from save
+        pagedScrollPane.resetAllPages()
+    }
+
     override fun show() {
         super.show()
         fadeIn(FADE_DURATION)
+        updateView()
     }
 
     override fun render(dt: Float) {

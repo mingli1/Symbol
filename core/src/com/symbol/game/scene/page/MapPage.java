@@ -3,8 +3,10 @@ package com.symbol.game.scene.page;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton.ImageButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -12,6 +14,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.symbol.game.data.MapData;
 import com.symbol.game.screen.MapSelectScreen;
 import com.symbol.game.util.Resources;
+
+import java.util.List;
 
 public class MapPage extends Table implements Page {
 
@@ -24,6 +28,11 @@ public class MapPage extends Table implements Page {
     private Label mapIconLabel;
     private MapData mapData;
     private boolean right;
+
+    private ImageButton mapButton;
+    private ImageButtonStyle mapCompleteStyle;
+    private ImageButtonStyle mapIncompleteStyle;
+    private ImageButtonStyle mapDisabledStyle;
 
     public enum MapPageType {
         Start("map_page_start"),
@@ -45,12 +54,17 @@ public class MapPage extends Table implements Page {
         this.mapData = mapData;
         setBackground(new TextureRegionDrawable(res.getTexture(type.key)));
 
+        mapCompleteStyle = res.getImageButtonStyle("map_complete");
+        mapIncompleteStyle = res.getImageButtonStyle("map_incomplete");
+        mapDisabledStyle = new ImageButtonStyle();
+        mapDisabledStyle.imageUp = mapDisabledStyle.imageDown
+                = mapDisabledStyle.imageDisabled = new TextureRegionDrawable(res.getTexture("button_map_disabled"));
+
         createMapButton(type);
     }
 
     private void createMapButton(MapPageType type) {
-        ImageButton.ImageButtonStyle mapIncompletedStyle = res.getImageButtonStyle("map_incomplete");
-        ImageButton mapButton = new ImageButton(mapIncompletedStyle);
+        mapButton = new ImageButton(mapDisabledStyle);
 
         Label.LabelStyle black = res.getLabelStyle(Color.BLACK);
         mapIconLabel = new Label("", black);
@@ -88,13 +102,24 @@ public class MapPage extends Table implements Page {
 
     @Override
     public void reset() {
-
+        mapButton.setTouchable(Touchable.enabled);
+        if (!mapData.getCompleted()) {
+            mapButton.setTouchable(Touchable.disabled);
+            mapButton.setStyle(mapDisabledStyle);
+        }
+        else {
+            List<MapData> mapDatas = res.getMapDatas();
+            int nextIndex = mapData.getId() + 1;
+            if (nextIndex < mapDatas.size() && mapDatas.get(nextIndex).getCompleted()) {
+                mapButton.setStyle(mapCompleteStyle);
+            } else {
+                mapButton.setStyle(mapIncompleteStyle);
+            }
+        }
     }
 
     @Override
-    public void notifySeen() {
-
-    }
+    public void notifySeen() {}
 
     @Override
     public boolean hasSeen() {

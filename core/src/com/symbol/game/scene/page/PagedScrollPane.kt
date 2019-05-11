@@ -122,6 +122,8 @@ class PagedScrollPane(private val horizontal: Boolean = true,
         }
     }
 
+    fun resetAllPages() = container.children.forEach { page -> (page as Page).reset() }
+
     fun hasAllSeen() = container.children.find { !(it as Page).hasSeen() } == null
 
     fun isCurrentPageSeen() = (getCurrentPage() as Page).hasSeen()
