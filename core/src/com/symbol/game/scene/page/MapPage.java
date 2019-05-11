@@ -83,7 +83,7 @@ public class MapPage extends Table implements Page {
     }
 
     private void onMapButtonClicked() {
-        parent.showMapDialog(mapData, right);
+        parent.showMapDialog(right, mapData);
     }
 
     @Override

@@ -133,8 +133,8 @@ class Resources : Disposable {
     fun getHelpPage(key: String) : HelpPage? = helpPages[key]
 
     private fun loadMapDatas() {
-        maps["maps"].forEach {
-            val mapData = MapData(name = it.getString("name"))
+        maps["maps"].forEachIndexed { index, data ->
+            val mapData = MapData(id = index, name = data.getString("name"))
             mapDatas.add(mapData)
         }
     }

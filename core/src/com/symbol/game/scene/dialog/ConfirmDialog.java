@@ -2,6 +2,7 @@ package com.symbol.game.scene.dialog;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.utils.Align;
 import com.symbol.game.Symbol;
 
 public class ConfirmDialog extends BaseModalDialog {
@@ -28,6 +29,7 @@ public class ConfirmDialog extends BaseModalDialog {
 
         Label messageLabel = new Label(message, game.getRes().getLabelStyle(Color.WHITE));
         messageLabel.setWrap(true);
+        messageLabel.setAlignment(Align.center);
         getContentTable().add(messageLabel).width(WIDTH).fill().space(4f);
 
         button(game.getRes().getString("affirmativeText"), AFFIRMATIVE_TAG);

@@ -122,12 +122,11 @@ class MapSelectScreen(game: Symbol) : DefaultScreen(game) {
         stage.addActor(headerContainer)
     }
 
-    fun showMapDialog(mapData: MapData, right: Boolean) {
+    fun showMapDialog(right: Boolean, mapData: MapData) {
         with (mapDialog) {
             if (!isDisplayed) {
-                setOrientation(right)
-                setData(mapData)
-                show(stage)
+                setData(right, mapData)
+                show(this@MapSelectScreen.stage)
 
                 val maxZIndex = stage.actors.size + 1
                 backButton.zIndex = maxZIndex
