@@ -29,6 +29,8 @@ class MapSelectScreen(game: Symbol) : DefaultScreen(game) {
     private lateinit var backButton: ImageButton
 
     private val mapDialog = MapDialog(game.res, this)
+    private var initialScroll = false
+    private var initialIndex = 0
 
     init {
         createPagedScrollPane()
@@ -106,7 +108,7 @@ class MapSelectScreen(game: Symbol) : DefaultScreen(game) {
 
         val progressGroup = HorizontalGroup().apply { space(6f) }
         val progressIcon = Image(res.getTexture("map_complete_icon"))
-        progressLabel = Label(res.getString("mapSelectProgress"), labelStyle)
+        progressLabel = Label("", labelStyle)
 
         progressGroup.addActor(progressIcon)
         progressGroup.addActor(progressLabel)
@@ -147,9 +149,16 @@ class MapSelectScreen(game: Symbol) : DefaultScreen(game) {
     }
 
     private fun updateView() {
-        // TODO: update header with number of maps player has completed from save
-        // also scroll to current incomplete map; if all are completed, only scroll to first map
+        val numCompleted = res.saveData.mapsCompleted
+        val totalMaps = res.mapDatas.size
+
+        progressLabel.setText(String.format(res.getString("mapSelectProgress")!!,
+                numCompleted, totalMaps))
         pagedScrollPane.resetAllPages()
+        if (numCompleted < totalMaps) {
+            initialScroll = true
+            initialIndex = numCompleted
+        }
     }
 
     override fun show() {
@@ -160,7 +169,10 @@ class MapSelectScreen(game: Symbol) : DefaultScreen(game) {
 
     override fun render(dt: Float) {
         super.render(dt)
-        game.profile("MapSelectScreen")
+        if (initialScroll) {
+            pagedScrollPane.scrollToIndex(initialIndex)
+            initialScroll = false
+        }
     }
 
     override fun exit() = hideMapDialog()
