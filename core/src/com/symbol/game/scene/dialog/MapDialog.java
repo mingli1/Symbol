@@ -30,6 +30,7 @@ public class MapDialog extends Table {
 
     private final Resources res;
     private MapSelectScreen mapSelectScreen;
+    private int mapIndex;
 
     private TextureRegionDrawable bgLeft;
     private TextureRegionDrawable bgRight;
@@ -71,7 +72,7 @@ public class MapDialog extends Table {
         enterButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                mapSelectScreen.navigateToGameScreen();
+                mapSelectScreen.navigateToGameScreen(mapIndex);
             }
         });
     }
@@ -95,6 +96,8 @@ public class MapDialog extends Table {
     }
 
     public void setData(boolean right, MapData data) {
+        mapIndex = data.getId();
+
         setBackground(right ? bgRight : bgLeft);
         setPosition(right ? POSITION_X_RIGHT : POSITION_X_LEFT, POSITION_Y);
 

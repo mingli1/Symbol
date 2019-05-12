@@ -25,6 +25,7 @@ import com.symbol.game.util.Resources
 const val TILE_SIZE = 8
 
 private const val DIR = "map/"
+private const val MAP_TAG = "map_"
 
 private const val PLAYER_SPAWN_LAYER = "player"
 private const val TILE_LAYER = "tile"
@@ -81,8 +82,8 @@ class MapManager(private val engine: PooledEngine, private val res: Resources) :
         dist1.toInt() - dist2.toInt()
     }
 
-    fun load(mapName: String) {
-        tiledMap = mapLoader.load("$DIR$mapName.tmx")
+    fun load(mapIndex: Int) {
+        tiledMap = mapLoader.load("$DIR$MAP_TAG$mapIndex.tmx")
 
         enemyLayer = tiledMap!!.layers[ENEMY_LAYER]
         mapEntityLayer = tiledMap!!.layers[MAP_ENTITY_LAYER]

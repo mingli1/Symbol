@@ -141,7 +141,10 @@ class MapSelectScreen(game: Symbol) : DefaultScreen(game) {
         }
     }
 
-    fun navigateToGameScreen() = fadeToScreen(game.gameScreen)
+    fun navigateToGameScreen(mapIndex: Int) {
+        game.gameScreen.mapIndex = mapIndex
+        fadeToScreen(game.gameScreen)
+    }
 
     private fun updateView() {
         // TODO: update header with number of maps player has completed from save

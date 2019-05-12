@@ -40,6 +40,7 @@ class GameScreen(game: Symbol) : AbstractScreen(game) {
 
     private val mapManager = MapManager(engine, game.res)
     private var canInvert = false
+    var mapIndex = 0
     var mapInverted = false
 
     private var player = Player(game.res)
@@ -108,7 +109,7 @@ class GameScreen(game: Symbol) : AbstractScreen(game) {
         engine.addEntity(player)
         player.reset()
 
-        mapManager.load("test_map")
+        mapManager.load(mapIndex)
         hud.setHelpPages(mapManager.helpPages)
         canInvert = mapManager.containsInvertSwitch()
         mapInverted = false
