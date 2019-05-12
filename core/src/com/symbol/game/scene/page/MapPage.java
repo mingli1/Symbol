@@ -119,7 +119,6 @@ public class MapPage extends Table implements Page {
     public void reset() {
         List<MapData> mapDatas = res.getMapDatas();
         int prevIndex = mapData.getId() - 1;
-        int nextIndex = mapData.getId() + 1;
 
         mapButton.setTouchable(Touchable.enabled);
         if (!mapData.getCompleted()) {

@@ -13,9 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
-import com.badlogic.gdx.utils.Disposable
-import com.badlogic.gdx.utils.JsonReader
-import com.badlogic.gdx.utils.JsonValue
+import com.badlogic.gdx.utils.*
 import com.symbol.game.data.*
 import com.symbol.game.map.TILE_SIZE
 import com.symbol.game.scene.page.HelpPage
@@ -33,6 +31,9 @@ const val TOGGLE_OFF = "_off"
 const val BRACKET_LEFT = "_left"
 const val BRACKET_RIGHT = "_right"
 
+private const val PREFERENCES_TAG = "SYMBOL_GAME_SAVE"
+private const val SAVE_KEY = "SAVE_KEY"
+
 private const val BUTTON = "button_"
 private const val BUTTON_UP = "_up"
 private const val BUTTON_DOWN = "_down"
@@ -46,6 +47,13 @@ class Resources : Disposable {
     val skin: Skin
     val invertShader: ShaderProgram
     private val font: BitmapFont
+
+    private val preferences = Gdx.app.getPreferences(PREFERENCES_TAG)
+    private val json = Json().apply {
+        setOutputType(JsonWriter.OutputType.json)
+        setUsePrototypes(false)
+    }
+    lateinit var saveData: SaveData private set
 
     private val jsonReader = JsonReader()
     private val maps: JsonValue
@@ -86,6 +94,14 @@ class Resources : Disposable {
 
         loadMapDatas()
         loadHelpPages()
+
+        loadSaveData()
+    }
+
+    fun save() {
+        val saveValue = json.toJson(saveData)
+        preferences.putString(SAVE_KEY, saveValue)
+        preferences.flush()
     }
 
     fun getTexture(key: String) : TextureRegion? = atlas.findRegion(key)
@@ -131,6 +147,15 @@ class Resources : Disposable {
     fun getColorFromHexKey(key: String) = Color(Color.valueOf(getColor(key)))
 
     fun getHelpPage(key: String) : HelpPage? = helpPages[key]
+
+    private fun loadSaveData() {
+        saveData = json.fromJson(SaveData::class.java, preferences.getString(SAVE_KEY)) ?:
+                SaveData()
+
+        for (i in 0 until saveData.mapsCompleted) {
+            mapDatas[i].completed = true
+        }
+    }
 
     private fun loadMapDatas() {
         maps["maps"].forEachIndexed { index, data ->
@@ -190,6 +215,9 @@ class Resources : Disposable {
     override fun dispose() {
         assetManager.dispose()
         atlas.dispose()
+        skin.dispose()
+        font.dispose()
+        invertShader.dispose()
     }
 
 }
