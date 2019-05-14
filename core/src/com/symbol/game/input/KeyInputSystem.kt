@@ -16,22 +16,8 @@ class KeyInputSystem(private val res: Resources) : EntitySystem(), KeyInputHandl
     private val playerComp: PlayerComponent by lazy { Mapper.PLAYER_MAPPER[player] }
     private val vel: VelocityComponent by lazy { Mapper.VEL_MAPPER[player] }
 
-    private var charging = false
-
     override fun addedToEngine(engine: Engine?) {
         player = engine!!.getEntitiesFor(Family.all(PlayerComponent::class.java).get())[0]
-    }
-
-    override fun update(dt: Float) {
-        if (charging) {
-            playerComp.chargeTime += dt
-            playerComp.chargeIndex = when {
-                playerComp.chargeTime < PLAYER_TIER_ONE_ATTACK_TIME -> 1
-                playerComp.chargeTime < PLAYER_TIER_TWO_ATTACK_TIME -> 2
-                playerComp.chargeTime < PLAYER_TIER_THREE_ATTACK_TIME -> 3
-                else -> 4
-            }
-        }
     }
 
     override fun move(right: Boolean) {
@@ -74,31 +60,21 @@ class KeyInputSystem(private val res: Resources) : EntitySystem(), KeyInputHandl
         }
     }
 
-    override fun startCharge() {
+    override fun shoot() {
         if (playerComp.canShoot) {
-            charging = true
-            playerComp.canShoot = false
-        }
-    }
-
-    override fun endCharge() {
-        if (charging) {
             val playerPos = Mapper.POS_MAPPER[player]
             val dir = Mapper.DIR_MAPPER[player]
-            val key = PLAYER_PROJECTILE_RES_KEY + if (playerComp.chargeIndex > 1) playerComp.chargeIndex else ""
+            val key = PLAYER_PROJECTILE_RES_KEY
             val texture = res.getTexture(key)!!
             val width = texture.regionWidth.toFloat()
             val height = texture.regionHeight.toFloat()
             val x = playerPos.x + (PLAYER_WIDTH / 2) - (width / 2)
             val y = playerPos.y + (PLAYER_HEIGHT / 2) - (height / 2)
 
-            playerComp.damage = playerComp.damageBoost
-            playerComp.damage += playerComp.chargeIndex
-
-            val builder = EntityBuilder.instance(engine as PooledEngine)
-                    .projectile(damage = playerComp.damage,
+            EntityBuilder.instance(engine as PooledEngine)
+                    .projectile(damage = PLAYER_DEFAULT_DAMAGE,
                             knockback = PLAYER_PROJECTILE_KNOCKBACK,
-                            playerType = playerComp.chargeIndex, textureStr = key)
+                            playerType = 1, textureStr = key)
                     .player()
                     .color(res.getColor(key)!!)
                     .position(x, y)
@@ -106,17 +82,14 @@ class KeyInputSystem(private val res: Resources) : EntitySystem(), KeyInputHandl
                             speed = PLAYER_PROJECTILE_SPEED)
                     .boundingBox(width, height)
                     .texture(texture, key)
-                    .direction().remove()
+                    .direction().remove().build()
 
-            if (playerComp.chargeIndex == 2) builder.statusEffect(apply = StatusEffect.Slow,
-                    duration = PLAYER_SLOW_DURATION, value = PLAYER_SLOW_PERCENTAGE)
-            if (playerComp.chargeIndex == 3) builder.statusEffect(apply = StatusEffect.Stun, duration = PLAYER_STUN_DURATION)
-
-            builder.build()
-
-            charging = false
-            playerComp.chargeTime = 0f
+            playerComp.canShoot = false
         }
+    }
+
+    override fun release() {
+
     }
 
 }

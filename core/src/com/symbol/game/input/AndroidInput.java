@@ -16,11 +16,13 @@ public class AndroidInput extends Scene {
 
     private static final float DIRECTIONAL_BUTTON_SIZE = 30f;
     private static final float ACTION_BUTTON_SIZE = 30f;
+    private static final float RELEASE_BUTTON_SIZE = 20f;
 
     private static final Vector2 LEFT_BUTTON_POSITION = new Vector2(5, 10);
     private static final Vector2 RIGHT_BUTTON_POSITION = new Vector2(35, 10);
-    private static final Vector2 JUMP_BUTTON_POSITION = new Vector2(134, 3);
-    private static final Vector2 SHOOT_BUTTON_POSITION = new Vector2(164, 25);
+    private static final Vector2 JUMP_BUTTON_POSITION = new Vector2(140, 0);
+    private static final Vector2 SHOOT_BUTTON_POSITION = new Vector2(165, 25);
+    private static final Vector2 RELEASE_BUTTON_POSITION = new Vector2(170, 5);
 
     private KeyInputHandler keyInputHandler;
 
@@ -28,6 +30,7 @@ public class AndroidInput extends Scene {
     private ImageButton rightButton;
     private ImageButton jumpButton;
     private ImageButton shootButton;
+    private ImageButton releaseButton;
 
     public AndroidInput(final Symbol game, KeyInputHandler keyInputHandler, Stage stage, Viewport viewport) {
         super(game, stage, viewport);
@@ -110,17 +113,26 @@ public class AndroidInput extends Scene {
         shootButton.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                keyInputHandler.startCharge();
+                keyInputHandler.shoot();
                 return true;
             }
+        });
+
+        releaseButton = new ImageButton(game.getRes().getImageButtonStyle("release"));
+        releaseButton.setPosition(RELEASE_BUTTON_POSITION.x, RELEASE_BUTTON_POSITION.y);
+        releaseButton.setSize(RELEASE_BUTTON_SIZE, RELEASE_BUTTON_SIZE);
+
+        releaseButton.addListener(new InputListener() {
             @Override
-            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                keyInputHandler.endCharge();
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                keyInputHandler.release();
+                return true;
             }
         });
 
         stage.addActor(jumpButton);
         stage.addActor(shootButton);
+        stage.addActor(releaseButton);
     }
 
     public void toggle(boolean toggle) {

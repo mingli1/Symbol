@@ -8,8 +8,8 @@ interface KeyInputHandler {
 
     fun jump()
 
-    fun startCharge()
+    fun shoot()
 
-    fun endCharge()
+    fun release()
 
 }

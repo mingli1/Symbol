@@ -223,6 +223,7 @@ public class Hud extends Scene {
             hpBarIcon.setDrawable(hpBarIconGreen);
         }
 
+        /*
         PlayerComponent playerComp = Mapper.INSTANCE.getPLAYER_MAPPER().get(player);
         if (playerComp.getChargeTime() >= CHARGE_BAR_ACTIVATION_TIME) {
             if (!chargeBarIcon.isVisible()) chargeBarIcon.setVisible(true);
@@ -236,6 +237,7 @@ public class Hud extends Scene {
             if (chargeBarIcon.isVisible()) chargeBarIcon.setVisible(false);
             if (chargeBarWidth != 0f) chargeBarWidth = 0f;
         }
+        */
     }
 
     private void renderHpBar() {
@@ -261,6 +263,7 @@ public class Hud extends Scene {
     }
 
     private void renderChargeBar() {
+        /*
         PlayerComponent playerComp = Mapper.INSTANCE.getPLAYER_MAPPER().get(player);
         if (playerComp.getChargeTime() >= CHARGE_BAR_ACTIVATION_TIME) {
             game.getBatch().draw(game.getRes().getTexture("black"), CHARGE_BAR_POSITION.x, CHARGE_BAR_POSITION.y,
@@ -278,6 +281,7 @@ public class Hud extends Scene {
             game.getBatch().draw(game.getRes().getTexture("black"),
                     CHARGE_BAR_POSITION.x + 1 + BAR_TWO_OFFSET, CHARGE_BAR_POSITION.y + 1, 1, CHARGE_BAR_HEIGHT);
         }
+        */
     }
 
     public Dialog getPauseDialog() {

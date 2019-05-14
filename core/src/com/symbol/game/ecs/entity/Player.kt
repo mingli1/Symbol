@@ -7,6 +7,7 @@ import com.symbol.game.util.Resources
 const val PLAYER_WIDTH = 8f
 const val PLAYER_HEIGHT = 8f
 
+const val PLAYER_DEFAULT_DAMAGE = 1
 const val PLAYER_PROJECTILE_SHOOT_DELAY = 0.3f
 const val PLAYER_PROJECTILE_SPEED = 80f
 const val PLAYER_PROJECTILE_RES_KEY = "p_dot"
@@ -24,7 +25,7 @@ const val PLAYER_STUN_DURATION = 2f
 const val PLAYER_JUMP_IMPULSE = 160f
 private const val PLAYER_SPEED = 35f
 private const val PLAYER_BOUNDS_WIDTH = 7f
-private const val PLAYER_BOUNDS_HEIGHT = 7f
+private const val PLAYER_BOUNDS_HEIGHT = 8f
 
 class Player(private val res: Resources) : Entity() {
 
