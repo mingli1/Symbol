@@ -22,6 +22,7 @@ import com.symbol.game.scene.dialog.HelpDialog;
 import com.symbol.game.scene.dialog.PauseDialog;
 import com.symbol.game.scene.page.Page;
 
+import static com.symbol.game.ecs.entity.PlayerKt.PLAYER_CHARGE_THRESHOLD;
 import static com.symbol.game.ecs.entity.PlayerKt.PLAYER_TIER_ONE_ATTACK_TIME;
 import static com.symbol.game.ecs.entity.PlayerKt.PLAYER_TIER_THREE_ATTACK_TIME;
 import static com.symbol.game.ecs.entity.PlayerKt.PLAYER_TIER_TWO_ATTACK_TIME;
@@ -29,7 +30,7 @@ import static com.symbol.game.ecs.entity.PlayerKt.PLAYER_TIER_TWO_ATTACK_TIME;
 public class Hud extends Scene {
 
     private static final Vector2 HP_BAR_POSITION = new Vector2(16, 107f);
-    private static final float HP_BAR_WIDTH = 44f;
+    private static final float HP_BAR_WIDTH = 43f;
     private static final float HP_BAR_HEIGHT = 4;
 
     private static final Vector2 CHARGE_BAR_POSITION = new Vector2(16, 97.5f);
@@ -37,10 +38,10 @@ public class Hud extends Scene {
     private static final float CHARGE_BAR_HEIGHT = 2;
 
     private static final float HP_BAR_DECAY_RATE = 18.f;
-    private static final float CHARGE_BAR_ACTIVATION_TIME = PLAYER_TIER_ONE_ATTACK_TIME;
-    private static final float MAX_CHARGE = PLAYER_TIER_THREE_ATTACK_TIME;
-    private static final float BAR_ONE_OFFSET = CHARGE_BAR_WIDTH * (PLAYER_TIER_ONE_ATTACK_TIME / MAX_CHARGE);
-    private static final float BAR_TWO_OFFSET = CHARGE_BAR_WIDTH * (PLAYER_TIER_TWO_ATTACK_TIME / MAX_CHARGE);
+    private static final float MAX_CHARGE = 1f;
+    private static final float BAR_ONE_OFFSET = 10f;
+    private static final float BAR_TWO_OFFSET = 21f;
+    private static final float BAR_THREE_OFFSET = 32f;
 
     private static final float HP_BAR_YELLOW_THRESHOLD = 0.5f;
     private static final float HP_BAR_ORANGE_THRESHOLD = 0.3f;
@@ -223,21 +224,12 @@ public class Hud extends Scene {
             hpBarIcon.setDrawable(hpBarIconGreen);
         }
 
-        /*
         PlayerComponent playerComp = Mapper.INSTANCE.getPLAYER_MAPPER().get(player);
-        if (playerComp.getChargeTime() >= CHARGE_BAR_ACTIVATION_TIME) {
-            if (!chargeBarIcon.isVisible()) chargeBarIcon.setVisible(true);
-            float currentCharge = playerComp.getChargeTime() - CHARGE_BAR_ACTIVATION_TIME;
-            chargeBarWidth = CHARGE_BAR_WIDTH * (currentCharge / MAX_CHARGE);
+        chargeBarWidth = CHARGE_BAR_WIDTH * (playerComp.getCharge() / MAX_CHARGE);
 
-            if (chargeBarWidth > CHARGE_BAR_WIDTH) chargeBarWidth = CHARGE_BAR_WIDTH;
-            chargeBarIcon.setDrawable(chargeBarTiers[playerComp.getChargeIndex() - 1]);
-        }
-        else {
-            if (chargeBarIcon.isVisible()) chargeBarIcon.setVisible(false);
-            if (chargeBarWidth != 0f) chargeBarWidth = 0f;
-        }
-        */
+        if (chargeBarWidth > CHARGE_BAR_WIDTH) chargeBarWidth = CHARGE_BAR_WIDTH;
+        int chargeIndex = playerComp.getChargeIndex();
+        if (chargeIndex > 0) chargeBarIcon.setDrawable(chargeBarTiers[chargeIndex - 1]);
     }
 
     private void renderHpBar() {
@@ -263,25 +255,25 @@ public class Hud extends Scene {
     }
 
     private void renderChargeBar() {
-        /*
         PlayerComponent playerComp = Mapper.INSTANCE.getPLAYER_MAPPER().get(player);
-        if (playerComp.getChargeTime() >= CHARGE_BAR_ACTIVATION_TIME) {
-            game.getBatch().draw(game.getRes().getTexture("black"), CHARGE_BAR_POSITION.x, CHARGE_BAR_POSITION.y,
-                    CHARGE_BAR_WIDTH + 2, CHARGE_BAR_HEIGHT + 2);
-            game.getBatch().draw(game.getRes().getTexture("hp_bar_bg_color"), CHARGE_BAR_POSITION.x + 1, CHARGE_BAR_POSITION.y + 1,
-                    CHARGE_BAR_WIDTH, CHARGE_BAR_HEIGHT);
+        game.getBatch().draw(game.getRes().getTexture("black"), CHARGE_BAR_POSITION.x, CHARGE_BAR_POSITION.y,
+                CHARGE_BAR_WIDTH + 2, CHARGE_BAR_HEIGHT + 2);
+        game.getBatch().draw(game.getRes().getTexture("hp_bar_bg_color"), CHARGE_BAR_POSITION.x + 1, CHARGE_BAR_POSITION.y + 1,
+                CHARGE_BAR_WIDTH, CHARGE_BAR_HEIGHT);
 
-            String hex = playerComp.getChargeIndex() == 1 ? game.getRes().getColor("p_dot")
-                    : game.getRes().getColor("p_dot" + playerComp.getChargeIndex());
-            game.getBatch().draw(game.getRes().getTexture(hex), CHARGE_BAR_POSITION.x + 1, CHARGE_BAR_POSITION.y + 1,
-                    chargeBarWidth, CHARGE_BAR_HEIGHT);
+        int chargeIndex = playerComp.getChargeIndex();
+        String hex = chargeIndex == 0 ? "zero_charge_color"
+                : chargeIndex == 1 ? game.getRes().getColor("p_dot") :
+                game.getRes().getColor("p_dot" + chargeIndex);
+        game.getBatch().draw(game.getRes().getTexture(hex), CHARGE_BAR_POSITION.x + 1, CHARGE_BAR_POSITION.y + 1,
+                chargeBarWidth, CHARGE_BAR_HEIGHT);
 
-            game.getBatch().draw(game.getRes().getTexture("black"),
-                    CHARGE_BAR_POSITION.x + 1 + BAR_ONE_OFFSET, CHARGE_BAR_POSITION.y + 1, 1, CHARGE_BAR_HEIGHT);
-            game.getBatch().draw(game.getRes().getTexture("black"),
-                    CHARGE_BAR_POSITION.x + 1 + BAR_TWO_OFFSET, CHARGE_BAR_POSITION.y + 1, 1, CHARGE_BAR_HEIGHT);
-        }
-        */
+        game.getBatch().draw(game.getRes().getTexture("black"),
+                CHARGE_BAR_POSITION.x + 1 + BAR_ONE_OFFSET, CHARGE_BAR_POSITION.y + 1, 1, CHARGE_BAR_HEIGHT);
+        game.getBatch().draw(game.getRes().getTexture("black"),
+                CHARGE_BAR_POSITION.x + 1 + BAR_TWO_OFFSET, CHARGE_BAR_POSITION.y + 1, 1, CHARGE_BAR_HEIGHT);
+        game.getBatch().draw(game.getRes().getTexture("black"),
+                CHARGE_BAR_POSITION.x + 1 + BAR_THREE_OFFSET, CHARGE_BAR_POSITION.y + 1, 1, CHARGE_BAR_HEIGHT);
     }
 
     public Dialog getPauseDialog() {

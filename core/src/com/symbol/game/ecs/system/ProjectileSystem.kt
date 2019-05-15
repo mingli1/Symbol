@@ -18,6 +18,7 @@ import com.symbol.game.ecs.component.enemy.EnemyComponent
 import com.symbol.game.ecs.component.map.MapEntityComponent
 import com.symbol.game.ecs.component.map.ToggleTileComponent
 import com.symbol.game.ecs.entity.MapEntityType
+import com.symbol.game.ecs.entity.PLAYER_CHARGE_GAIN
 import com.symbol.game.ecs.entity.Player
 import com.symbol.game.effects.particle.DEFAULT_INTESITY
 import com.symbol.game.effects.particle.DEFAULT_LIFETIME
@@ -162,6 +163,7 @@ class ProjectileSystem(private val player: Player, private val res: Resources, p
                         ev.dx = if (bb.rect.x < ebb.rect.x + ebb.rect.width / 2) pj.knockback else -pj.knockback
                         knockback.knockingBack = true
                     }
+                    charge(entity)
                     hit(e, pj.damage)
 
                     val se = Mapper.STATUS_EFFECT_MAPPER[entity]
@@ -217,6 +219,15 @@ class ProjectileSystem(private val player: Player, private val res: Resources, p
 
         handleTeleportation(entity)
         handleLastStand(entity)
+    }
+
+    private fun charge(entity: Entity?) {
+        Mapper.PLAYER_MAPPER[entity]?.run {
+            Mapper.PLAYER_MAPPER[player].run {
+                charge += PLAYER_CHARGE_GAIN
+                if (charge > 1f) charge = 1f
+            }
+        }
     }
 
     private fun handleMapEntityCollisions(entity: Entity?) {

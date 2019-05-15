@@ -52,7 +52,7 @@ class Symbol : Game() {
         profiler = GLProfiler(Gdx.graphics)
         if (Config.isDebug()) profiler.enable()
 
-        this.setScreen(mapSelectScreen)
+        this.setScreen(gameScreen)
     }
 
     fun profile(className: String) {
