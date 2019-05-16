@@ -65,6 +65,7 @@ public class Hud extends Scene {
     private float decayingChargeBarWidth;
     private boolean startChargeBarDecay = false;
     private Image chargeBarIcon;
+    private TextureRegionDrawable zeroChargeBar;
     private TextureRegionDrawable chargeBarTiers[] = new TextureRegionDrawable[4];
 
     private HelpDialog helpDialog;
@@ -163,6 +164,7 @@ public class Hud extends Scene {
     }
 
     private void createChargeBar() {
+        zeroChargeBar = new TextureRegionDrawable(game.getRes().getTexture("charge_bar_icon0"));
         chargeBarTiers[0] = new TextureRegionDrawable(game.getRes().getTexture("charge_bar_icon"));
         for (int i = 2; i <= 4; i++) {
             chargeBarTiers[i - 1] = new TextureRegionDrawable(game.getRes().getTexture("charge_bar_icon" + i));
@@ -229,6 +231,7 @@ public class Hud extends Scene {
         if (chargeBarWidth > CHARGE_BAR_WIDTH) chargeBarWidth = CHARGE_BAR_WIDTH;
         int chargeIndex = chargeComp.getChargeIndex();
         if (chargeIndex > 0) chargeBarIcon.setDrawable(chargeBarTiers[chargeIndex - 1]);
+        else chargeBarIcon.setDrawable(zeroChargeBar);
 
         if (chargeComp.getChargeChange()) {
             decayingChargeBarWidth = CHARGE_BAR_WIDTH * ((float) chargeComp.getChargeDelta() / MAX_CHARGE);
