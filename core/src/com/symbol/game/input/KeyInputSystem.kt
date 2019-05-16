@@ -3,7 +3,7 @@ package com.symbol.game.input
 import com.badlogic.ashley.core.*
 import com.symbol.game.ecs.EntityBuilder
 import com.symbol.game.ecs.Mapper
-import com.symbol.game.ecs.component.PlayerComponent
+import com.symbol.game.ecs.component.player.PlayerComponent
 import com.symbol.game.ecs.component.StatusEffect
 import com.symbol.game.ecs.component.VelocityComponent
 import com.symbol.game.ecs.entity.*
@@ -87,7 +87,8 @@ class KeyInputSystem(private val res: Resources) : EntitySystem(), KeyInputHandl
     }
 
     override fun release() {
-        val chargeIndex = playerComp.getChargeIndex()
+        val chargeComp = Mapper.CHARGE_MAPPER[player]
+        val chargeIndex = chargeComp.getChargeIndex()
 
         if (playerComp.canShoot) {
             if (chargeIndex == 1) {
@@ -129,7 +130,12 @@ class KeyInputSystem(private val res: Resources) : EntitySystem(), KeyInputHandl
                 builder.build()
             }
             playerComp.canShoot = false
-            playerComp.charge -= chargeIndex * PLAYER_CHARGE_THRESHOLD
+            val chargeDelta = chargeIndex * PLAYER_CHARGE_THRESHOLD
+            chargeComp.run {
+                charge -= chargeDelta
+                this.chargeDelta = chargeDelta
+                chargeChange = true
+            }
         }
     }
 

@@ -17,7 +17,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.symbol.game.Symbol;
 import com.symbol.game.ecs.Mapper;
 import com.symbol.game.ecs.component.HealthComponent;
-import com.symbol.game.ecs.component.PlayerComponent;
+import com.symbol.game.ecs.component.player.ChargeComponent;
 import com.symbol.game.ecs.entity.PlayerKt;
 import com.symbol.game.scene.dialog.HelpDialog;
 import com.symbol.game.scene.dialog.PauseDialog;
@@ -29,6 +29,7 @@ public class Hud extends Scene {
     private static final float HP_BAR_WIDTH = 43f;
     private static final float HP_BAR_HEIGHT = 4;
 
+    private static final float CHARGE_BAR_DECAY_RATE = 25.f;
     private static final Vector2 CHARGE_BAR_POSITION = new Vector2(16, 97.5f);
     private static final float CHARGE_BAR_WIDTH = HP_BAR_WIDTH;
     private static final float CHARGE_BAR_HEIGHT = 2;
@@ -61,6 +62,8 @@ public class Hud extends Scene {
     private TextureRegionDrawable hpBarIconRed;
 
     private float chargeBarWidth;
+    private float decayingChargeBarWidth;
+    private boolean startChargeBarDecay = false;
     private Image chargeBarIcon;
     private TextureRegionDrawable chargeBarTiers[] = new TextureRegionDrawable[4];
 
@@ -220,12 +223,25 @@ public class Hud extends Scene {
             hpBarIcon.setDrawable(hpBarIconGreen);
         }
 
-        PlayerComponent playerComp = Mapper.INSTANCE.getPLAYER_MAPPER().get(player);
-        chargeBarWidth = CHARGE_BAR_WIDTH * (playerComp.getCharge() / MAX_CHARGE);
+        ChargeComponent chargeComp = Mapper.INSTANCE.getCHARGE_MAPPER().get(player);
+        chargeBarWidth = CHARGE_BAR_WIDTH * (chargeComp.getCharge() / MAX_CHARGE);
 
         if (chargeBarWidth > CHARGE_BAR_WIDTH) chargeBarWidth = CHARGE_BAR_WIDTH;
-        int chargeIndex = playerComp.getChargeIndex();
+        int chargeIndex = chargeComp.getChargeIndex();
         if (chargeIndex > 0) chargeBarIcon.setDrawable(chargeBarTiers[chargeIndex - 1]);
+
+        if (chargeComp.getChargeChange()) {
+            decayingChargeBarWidth = CHARGE_BAR_WIDTH * ((float) chargeComp.getChargeDelta() / MAX_CHARGE);
+            startChargeBarDecay = true;
+            chargeComp.setChargeChange(false);
+        }
+        if (startChargeBarDecay) {
+            decayingChargeBarWidth -= CHARGE_BAR_DECAY_RATE * dt;
+            if (decayingChargeBarWidth <= 0) {
+                decayingChargeBarWidth = 0;
+                startChargeBarDecay = false;
+            }
+        }
     }
 
     private void renderHpBar() {
@@ -251,18 +267,24 @@ public class Hud extends Scene {
     }
 
     private void renderChargeBar() {
-        PlayerComponent playerComp = Mapper.INSTANCE.getPLAYER_MAPPER().get(player);
+        ChargeComponent chargeComp = Mapper.INSTANCE.getCHARGE_MAPPER().get(player);
         game.getBatch().draw(game.getRes().getTexture("black"), CHARGE_BAR_POSITION.x, CHARGE_BAR_POSITION.y,
                 CHARGE_BAR_WIDTH + 2, CHARGE_BAR_HEIGHT + 2);
         game.getBatch().draw(game.getRes().getTexture("hp_bar_bg_color"), CHARGE_BAR_POSITION.x + 1, CHARGE_BAR_POSITION.y + 1,
                 CHARGE_BAR_WIDTH, CHARGE_BAR_HEIGHT);
 
-        int chargeIndex = playerComp.getChargeIndex();
+        int chargeIndex = chargeComp.getChargeIndex();
         String hex = chargeIndex == 0 ? "zero_charge_color"
                 : chargeIndex == 1 ? game.getRes().getColor("p_dot") :
                 game.getRes().getColor("p_dot" + chargeIndex);
         game.getBatch().draw(game.getRes().getTexture(hex), CHARGE_BAR_POSITION.x + 1, CHARGE_BAR_POSITION.y + 1,
                 chargeBarWidth, CHARGE_BAR_HEIGHT);
+
+        if (startChargeBarDecay) {
+            game.getBatch().draw(game.getRes().getTexture(game.getRes().getColor("player")),
+                    CHARGE_BAR_POSITION.x + 1 + chargeBarWidth, CHARGE_BAR_POSITION.y + 1,
+                    decayingChargeBarWidth, CHARGE_BAR_HEIGHT);
+        }
 
         game.getBatch().draw(game.getRes().getTexture("black"),
                 CHARGE_BAR_POSITION.x + 1 + BAR_ONE_OFFSET, CHARGE_BAR_POSITION.y + 1, 1, CHARGE_BAR_HEIGHT);

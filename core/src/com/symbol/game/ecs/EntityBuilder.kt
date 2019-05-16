@@ -7,6 +7,8 @@ import com.badlogic.gdx.math.Rectangle
 import com.symbol.game.ecs.component.*
 import com.symbol.game.ecs.component.enemy.*
 import com.symbol.game.ecs.component.map.*
+import com.symbol.game.ecs.component.player.ChargeComponent
+import com.symbol.game.ecs.component.player.PlayerComponent
 import com.symbol.game.ecs.entity.EnemyAttackType
 import com.symbol.game.ecs.entity.EnemyMovementType
 import com.symbol.game.ecs.entity.EnemyType
@@ -26,6 +28,7 @@ class EntityBuilder(private val engine: PooledEngine) {
     private var gravityComponent: GravityComponent? = null
     private var jumpComponent: JumpComponent? = null
     private var healthComponent: HealthComponent? = null
+    private var chargeComponent: ChargeComponent? = null
     private var knockbackComponent: KnockbackComponent? = null
     private var positionComponent: PositionComponent? = null
     private var removeComponent: RemoveComponent? = null
@@ -151,6 +154,11 @@ class EntityBuilder(private val engine: PooledEngine) {
             this.hp = hp
             maxHp = hp
         }
+        return this
+    }
+
+    fun charge() : EntityBuilder {
+        chargeComponent = engine.createComponent(ChargeComponent::class.java)
         return this
     }
 
@@ -404,6 +412,7 @@ class EntityBuilder(private val engine: PooledEngine) {
         gravityComponent?.let { entity.add(it) }
         jumpComponent?.let { entity.add(it) }
         healthComponent?.let { entity.add(it) }
+        chargeComponent?.let { entity.add(it) }
         knockbackComponent?.let { entity.add(it) }
         positionComponent?.let { entity.add(it) }
         removeComponent?.let { entity.add(it) }

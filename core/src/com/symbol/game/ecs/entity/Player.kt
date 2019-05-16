@@ -2,6 +2,8 @@ package com.symbol.game.ecs.entity
 
 import com.badlogic.ashley.core.Entity
 import com.symbol.game.ecs.component.*
+import com.symbol.game.ecs.component.player.ChargeComponent
+import com.symbol.game.ecs.component.player.PlayerComponent
 import com.symbol.game.util.Resources
 
 const val PLAYER_WIDTH = 8f
@@ -38,6 +40,7 @@ class Player(private val res: Resources) : Entity() {
     private val texture = TextureComponent()
     private val velocity = VelocityComponent()
     private val health = HealthComponent()
+    private val charge = ChargeComponent()
     private val jump = JumpComponent()
     private val gravity = GravityComponent()
     private val statusEffect = StatusEffectComponent()
@@ -52,6 +55,7 @@ class Player(private val res: Resources) : Entity() {
         add(texture)
         add(velocity)
         add(health)
+        add(charge)
         add(jump)
         add(gravity)
         add(statusEffect)
@@ -67,6 +71,7 @@ class Player(private val res: Resources) : Entity() {
         texture.reset()
         velocity.reset()
         health.reset()
+        charge.reset()
         jump.reset()
         gravity.reset()
         statusEffect.reset()

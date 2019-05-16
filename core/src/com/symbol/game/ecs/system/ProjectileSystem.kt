@@ -223,8 +223,8 @@ class ProjectileSystem(private val player: Player, private val res: Resources, p
     }
 
     private fun charge(entity: Entity?, pj: ProjectileComponent) {
-        Mapper.PLAYER_MAPPER[entity]?.let {
-            Mapper.PLAYER_MAPPER[player].run {
+        Mapper.PLAYER_MAPPER[entity]?.run {
+            Mapper.CHARGE_MAPPER[player].run {
                 if (pj.playerType != 1 && !pj.sub) {
                     charge += PLAYER_CHARGE_GAIN
                     if (charge > PLAYER_MAX_CHARGE) charge = PLAYER_MAX_CHARGE

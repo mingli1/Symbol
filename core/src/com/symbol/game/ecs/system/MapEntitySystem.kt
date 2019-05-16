@@ -8,7 +8,7 @@ import com.badlogic.ashley.systems.IteratingSystem
 import com.badlogic.ashley.utils.ImmutableArray
 import com.symbol.game.ecs.Mapper
 import com.symbol.game.ecs.component.LastEntityComponent
-import com.symbol.game.ecs.component.PlayerComponent
+import com.symbol.game.ecs.component.player.PlayerComponent
 import com.symbol.game.ecs.component.ProjectileComponent
 import com.symbol.game.ecs.component.StatusEffect
 import com.symbol.game.ecs.component.enemy.EnemyComponent

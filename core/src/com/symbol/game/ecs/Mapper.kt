@@ -4,6 +4,8 @@ import com.badlogic.ashley.core.ComponentMapper
 import com.symbol.game.ecs.component.*
 import com.symbol.game.ecs.component.enemy.*
 import com.symbol.game.ecs.component.map.*
+import com.symbol.game.ecs.component.player.ChargeComponent
+import com.symbol.game.ecs.component.player.PlayerComponent
 
 object Mapper {
 
@@ -19,6 +21,7 @@ object Mapper {
     val REMOVE_MAPPER = ComponentMapper.getFor(RemoveComponent::class.java)!!
     val PROJ_MAPPER = ComponentMapper.getFor(ProjectileComponent::class.java)!!
     val HEALTH_MAPPER = ComponentMapper.getFor(HealthComponent::class.java)!!
+    val CHARGE_MAPPER = ComponentMapper.getFor(ChargeComponent::class.java)!!
     val KNOCKBACK_MAPPER = ComponentMapper.getFor(KnockbackComponent::class.java)!!
     val ORBIT_MAPPER = ComponentMapper.getFor(OrbitComponent::class.java)!!
     val STATUS_EFFECT_MAPPER = ComponentMapper.getFor(StatusEffectComponent::class.java)!!

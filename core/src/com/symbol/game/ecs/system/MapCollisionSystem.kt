@@ -12,6 +12,7 @@ import com.symbol.game.ecs.component.enemy.BlockComponent
 import com.symbol.game.ecs.component.map.MapEntityComponent
 import com.symbol.game.ecs.component.map.MovingPlatformComponent
 import com.symbol.game.ecs.component.map.ToggleTileComponent
+import com.symbol.game.ecs.component.player.PlayerComponent
 import com.symbol.game.effects.particle.DEFAULT_INTESITY
 import com.symbol.game.effects.particle.DEFAULT_LIFETIME
 import com.symbol.game.effects.particle.ParticleSpawner
