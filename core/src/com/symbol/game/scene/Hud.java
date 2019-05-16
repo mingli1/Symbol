@@ -18,6 +18,7 @@ import com.symbol.game.Symbol;
 import com.symbol.game.ecs.Mapper;
 import com.symbol.game.ecs.component.HealthComponent;
 import com.symbol.game.ecs.component.PlayerComponent;
+import com.symbol.game.ecs.entity.PlayerKt;
 import com.symbol.game.scene.dialog.HelpDialog;
 import com.symbol.game.scene.dialog.PauseDialog;
 import com.symbol.game.scene.page.Page;
@@ -33,7 +34,7 @@ public class Hud extends Scene {
     private static final float CHARGE_BAR_HEIGHT = 2;
 
     private static final float HP_BAR_DECAY_RATE = 18.f;
-    private static final float MAX_CHARGE = 1f;
+    private static final float MAX_CHARGE = PlayerKt.PLAYER_MAX_CHARGE;
     private static final float BAR_ONE_OFFSET = 10f;
     private static final float BAR_TWO_OFFSET = 21f;
     private static final float BAR_THREE_OFFSET = 32f;

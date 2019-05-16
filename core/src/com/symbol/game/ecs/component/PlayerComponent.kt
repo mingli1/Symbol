@@ -8,7 +8,7 @@ class PlayerComponent : Component, Pool.Poolable {
 
     var dead = false
 
-    var charge = 0f
+    var charge = 0
     var damageBoost = 0
 
     var canJump = false
@@ -20,11 +20,11 @@ class PlayerComponent : Component, Pool.Poolable {
     var healing = 0
     var healTime = 0f
 
-    fun getChargeIndex() = (charge / PLAYER_CHARGE_THRESHOLD).toInt()
+    fun getChargeIndex() = (charge.toFloat() / PLAYER_CHARGE_THRESHOLD).toInt()
 
     override fun reset() {
         dead = false
-        charge = 0f
+        charge = 0
         damageBoost = 0
         canJump = false
         canDoubleJump = false

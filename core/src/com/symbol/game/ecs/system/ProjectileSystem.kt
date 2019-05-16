@@ -19,6 +19,7 @@ import com.symbol.game.ecs.component.map.MapEntityComponent
 import com.symbol.game.ecs.component.map.ToggleTileComponent
 import com.symbol.game.ecs.entity.MapEntityType
 import com.symbol.game.ecs.entity.PLAYER_CHARGE_GAIN
+import com.symbol.game.ecs.entity.PLAYER_MAX_CHARGE
 import com.symbol.game.ecs.entity.Player
 import com.symbol.game.effects.particle.DEFAULT_INTESITY
 import com.symbol.game.effects.particle.DEFAULT_LIFETIME
@@ -224,10 +225,9 @@ class ProjectileSystem(private val player: Player, private val res: Resources, p
     private fun charge(entity: Entity?, pj: ProjectileComponent) {
         Mapper.PLAYER_MAPPER[entity]?.let {
             Mapper.PLAYER_MAPPER[player].run {
-                if (pj.playerType != 1) {
+                if (pj.playerType != 1 && !pj.sub) {
                     charge += PLAYER_CHARGE_GAIN
-                    if (charge > 1f) charge = 1f
-                    println("charge gained $charge")
+                    if (charge > PLAYER_MAX_CHARGE) charge = PLAYER_MAX_CHARGE
                 }
             }
         }
