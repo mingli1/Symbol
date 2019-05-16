@@ -17,23 +17,23 @@ public class ConfirmDialog extends BaseModalDialog {
     private Runnable affirmative;
     private Runnable dismissive;
 
-    public ConfirmDialog(final Symbol game,
+    public ConfirmDialog(final Symbol context,
                          String title, String message,
                          Runnable affirmative, Runnable dismissive) {
-        super(title, game.getRes().getSkin(), game);
+        super(title, context.getRes().getSkin(), context);
         this.affirmative = affirmative;
         this.dismissive = dismissive;
 
         getButtonTable().defaults().width(BUTTON_WIDTH);
         getButtonTable().defaults().height(BUTTON_HEIGHT);
 
-        Label messageLabel = new Label(message, game.getRes().getLabelStyle(Color.WHITE));
+        Label messageLabel = new Label(message, res.getLabelStyle(Color.WHITE));
         messageLabel.setWrap(true);
         messageLabel.setAlignment(Align.center);
         getContentTable().add(messageLabel).width(WIDTH).fill().space(4f);
 
-        button(game.getRes().getString("affirmativeText"), AFFIRMATIVE_TAG);
-        button(game.getRes().getString("dismissiveText"), DISMISSIVE_TAG);
+        button(res.getString("affirmativeText"), AFFIRMATIVE_TAG);
+        button(res.getString("dismissiveText"), DISMISSIVE_TAG);
 
         getButtonTable().pad(-16f, 4f, 4f, 4f);
     }

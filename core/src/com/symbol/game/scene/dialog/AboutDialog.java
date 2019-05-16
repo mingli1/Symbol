@@ -11,23 +11,23 @@ public class AboutDialog extends BaseModalDialog {
 
     private static final float MIN_HEIGHT = 65f;
 
-    public AboutDialog(final Symbol game) {
-        super(game.getRes().getString("aboutDialogTitle"), game.getRes().getSkin(), game);
+    public AboutDialog(final Symbol context) {
+        super(context.getRes().getString("aboutDialogTitle"), context.getRes().getSkin(), context);
 
         dismissable = true;
 
         getContentTable().left().bottom().padLeft(5f);
-        text(game.getRes().getString("aboutDialogContent"));
+        text(res.getString("aboutDialogContent"));
 
-        ImageButton githubButton = new ImageButton(game.getRes().getImageButtonStyle("github"));
+        ImageButton githubButton = new ImageButton(res.getImageButtonStyle("github"));
         githubButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                Gdx.net.openURI(game.getRes().getString("githubUrl"));
+                Gdx.net.openURI(res.getString("githubUrl"));
             }
         });
         button(githubButton);
-        getButtonTable().add(new Label(game.getRes().getString("sourceCodeLabel"), getSkin()));
+        getButtonTable().add(new Label(res.getString("sourceCodeLabel"), getSkin()));
         getButtonTable().pad(0f, 5f, 5f, 5f);
     }
 

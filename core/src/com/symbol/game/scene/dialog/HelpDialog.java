@@ -48,11 +48,11 @@ public class HelpDialog extends Table {
 
     private Label newPage;
 
-    public HelpDialog(final Symbol game, final Hud hud) {
-        res = game.getRes();
+    public HelpDialog(final Symbol context, final Hud hud) {
+        res = context.getRes();
         this.hud = hud;
 
-        shadow = new Image(game.getRes().getTexture("shadow"));
+        shadow = new Image(res.getTexture("shadow"));
         shadow.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) { hud.hideHelpDialog(); }

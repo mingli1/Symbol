@@ -22,13 +22,13 @@ public class DeathDialog extends Table {
     private static final float FADE_IN_TIME = 3f;
     private static final float BUTTON_WIDTH = 100f;
 
-    private final Symbol game;
+    private final Symbol context;
     private Resources res;
     private boolean displayed;
 
-    public DeathDialog(final Symbol game) {
-        this.game = game;
-        res = game.getRes();
+    public DeathDialog(final Symbol context) {
+        this.context = context;
+        res = context.getRes();
         setBackground(new TextureRegionDrawable(res.getTexture("death_shadow")));
         setFillParent(true);
         setTouchable(Touchable.enabled);
@@ -74,12 +74,12 @@ public class DeathDialog extends Table {
 
     private void onRespawnClicked() {
         hide();
-        game.getGameScreen().loadMap(true);
+        context.getGameScreen().loadMap(true);
     }
 
     private void onQuitClicked() {
         hide();
-        game.setScreen(game.getMenuScreen());
+        context.setScreen(context.getMenuScreen());
     }
 
     public boolean isDisplayed() {

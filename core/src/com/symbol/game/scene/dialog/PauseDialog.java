@@ -12,35 +12,35 @@ public class PauseDialog extends BaseModalDialog {
     private static final float BUTTON_HEIGHT = 15f;
     private static final float BUTTON_PADDING = 5f;
 
-    private final Symbol game;
+    private final Symbol context;
 
     private ConfirmDialog confirmDialog;
 
-    public PauseDialog(final Symbol game) {
-        super(game.getRes().getString("pauseDialogTitle"), game.getRes().getSkin(), game);
-        this.game = game;
+    public PauseDialog(final Symbol context) {
+        super(context.getRes().getString("pauseDialogTitle"), context.getRes().getSkin(), context);
+        this.context = context;
 
         getBackground().setMinHeight(WINDOW_MIN_HEIGHT);
 
         getButtonTable().defaults().width(BUTTON_WIDTH).padLeft(BUTTON_PADDING);
         getButtonTable().defaults().height(BUTTON_HEIGHT).padRight(BUTTON_PADDING);
 
-        TextButton resumeButton = new TextButton(game.getRes().getString("resumeButton"), getSkin());
-        button(resumeButton, game.getRes().getString("resumeButton"));
+        TextButton resumeButton = new TextButton(res.getString("resumeButton"), getSkin());
+        button(resumeButton, res.getString("resumeButton"));
 
         getButtonTable().row();
 
-        TextButton settingsButton = new TextButton(game.getRes().getString("settingsButton"), getSkin());
-        button(settingsButton, game.getRes().getString("settingsButton"));
+        TextButton settingsButton = new TextButton(res.getString("settingsButton"), getSkin());
+        button(settingsButton, res.getString("settingsButton"));
 
         getButtonTable().padBottom(TOP_BOTTOM_PADDING).row();
 
-        TextButton exitButton = new TextButton(game.getRes().getString("exitButton"), getSkin());
-        button(exitButton, game.getRes().getString("exitButton"));
+        TextButton exitButton = new TextButton(res.getString("exitButton"), getSkin());
+        button(exitButton, res.getString("exitButton"));
 
-        confirmDialog = new ConfirmDialog(game,
-                game.getRes().getString("exitConfirmTitle"),
-                game.getRes().getString("exitConfirmMessage"),
+        confirmDialog = new ConfirmDialog(context,
+                res.getString("exitConfirmTitle"),
+                res.getString("exitConfirmMessage"),
                 this::exit,
                 () -> {
                     confirmDialog.hide();
@@ -50,11 +50,11 @@ public class PauseDialog extends BaseModalDialog {
 
     @Override
     protected void result(Object object) {
-        if (object.equals(game.getRes().getString("resumeButton")) ||
-                object.equals(game.getRes().getString("settingsButton"))) {
-            game.getGameScreen().notifyResume();
+        if (object.equals(res.getString("resumeButton")) ||
+                object.equals(res.getString("settingsButton"))) {
+            context.getGameScreen().notifyResume();
         }
-        else if (object.equals(game.getRes().getString("exitButton"))) {
+        else if (object.equals(res.getString("exitButton"))) {
             confirmDialog.show(stage);
         }
     }
@@ -62,7 +62,7 @@ public class PauseDialog extends BaseModalDialog {
     private void exit() {
         hide(null);
         confirmDialog.hide(null);
-        game.setScreen(game.getMenuScreen());
+        context.setScreen(context.getMenuScreen());
     }
 
 }

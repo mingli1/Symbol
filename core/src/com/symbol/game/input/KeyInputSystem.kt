@@ -3,9 +3,9 @@ package com.symbol.game.input
 import com.badlogic.ashley.core.*
 import com.symbol.game.ecs.EntityBuilder
 import com.symbol.game.ecs.Mapper
-import com.symbol.game.ecs.component.player.PlayerComponent
 import com.symbol.game.ecs.component.StatusEffect
 import com.symbol.game.ecs.component.VelocityComponent
+import com.symbol.game.ecs.component.player.PlayerComponent
 import com.symbol.game.ecs.entity.*
 import com.symbol.game.ecs.system.MAP_OBJECT_JUMP_BOOST_PERCENTAGE
 import com.symbol.game.util.Resources

@@ -77,8 +77,8 @@ public class Hud extends Scene {
 
     private boolean toggle = true;
 
-    public Hud(final Symbol game, Entity player, Stage stage, Viewport viewport) {
-        super(game, stage, viewport);
+    public Hud(final Symbol context, Entity player, Stage stage, Viewport viewport) {
+        super(context, stage, viewport);
         this.player = player;
 
         root = new Table();
@@ -87,9 +87,9 @@ public class Hud extends Scene {
         root.top();
         stage.addActor(root);
 
-        hpBarColor = game.getRes().getTexture("hp_bar_green");
+        hpBarColor = res.getTexture("hp_bar_green");
 
-        pauseDialog = new PauseDialog(game);
+        pauseDialog = new PauseDialog(context);
 
         createHealthBar();
         createHelpButton();
@@ -98,21 +98,21 @@ public class Hud extends Scene {
         createChargeBar();
         createHelpButtonAlert();
 
-        stage.addActor(game.fps);
+        stage.addActor(context.fps);
     }
 
     private void createHealthBar() {
-        hpBarIconGreen = new TextureRegionDrawable(game.getRes().getTexture("player_hp_icon"));
-        hpBarIconYellow = new TextureRegionDrawable(game.getRes().getTexture("player_hp_icon_yellow"));
-        hpBarIconOrange = new TextureRegionDrawable(game.getRes().getTexture("player_hp_icon_orange"));
-        hpBarIconRed = new TextureRegionDrawable(game.getRes().getTexture("player_hp_icon_red"));
+        hpBarIconGreen = new TextureRegionDrawable(res.getTexture("player_hp_icon"));
+        hpBarIconYellow = new TextureRegionDrawable(res.getTexture("player_hp_icon_yellow"));
+        hpBarIconOrange = new TextureRegionDrawable(res.getTexture("player_hp_icon_orange"));
+        hpBarIconRed = new TextureRegionDrawable(res.getTexture("player_hp_icon_red"));
 
         hpBarIcon = new Image(hpBarIconGreen);
         root.add(hpBarIcon).pad(6f, 4f, 3f, 4f);
     }
 
     private void createHelpButton() {
-        ImageButton.ImageButtonStyle style = game.getRes().getImageButtonStyle("help");
+        ImageButton.ImageButtonStyle style = res.getImageButtonStyle("help");
         helpButton = new ImageButton(style);
         helpButton.setPosition(HELP_BUTTON_POSITION.x, HELP_BUTTON_POSITION.y);
         stage.addActor(helpButton);
@@ -133,18 +133,18 @@ public class Hud extends Scene {
     }
 
     private void createHelpButtonAlert() {
-        helpButtonAlert = new Image(game.getRes().getTexture("button_alert"));
+        helpButtonAlert = new Image(res.getTexture("button_alert"));
         helpButtonAlert.setTouchable(Touchable.disabled);
         helpButtonAlert.setPosition(171f, 112f);
         stage.addActor(helpButtonAlert);
     }
 
     private void createHelpDialog() {
-        helpDialog = new HelpDialog(game, this);
+        helpDialog = new HelpDialog(context, this);
     }
 
     private void createSettingsButton() {
-        ImageButton.ImageButtonStyle style = game.getRes().getImageButtonStyle("settings");
+        ImageButton.ImageButtonStyle style = res.getImageButtonStyle("settings");
         settingsButton = new ImageButton(style);
         root.add(settingsButton).expandX().right().padRight(4f).padTop(3f);
 
@@ -157,17 +157,17 @@ public class Hud extends Scene {
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 if (pointer == 0) {
                     pauseDialog.show(stage);
-                    game.getGameScreen().notifyPause();
+                    context.getGameScreen().notifyPause();
                 }
             }
         });
     }
 
     private void createChargeBar() {
-        zeroChargeBar = new TextureRegionDrawable(game.getRes().getTexture("charge_bar_icon0"));
-        chargeBarTiers[0] = new TextureRegionDrawable(game.getRes().getTexture("charge_bar_icon"));
+        zeroChargeBar = new TextureRegionDrawable(res.getTexture("charge_bar_icon0"));
+        chargeBarTiers[0] = new TextureRegionDrawable(res.getTexture("charge_bar_icon"));
         for (int i = 2; i <= 4; i++) {
-            chargeBarTiers[i - 1] = new TextureRegionDrawable(game.getRes().getTexture("charge_bar_icon" + i));
+            chargeBarTiers[i - 1] = new TextureRegionDrawable(res.getTexture("charge_bar_icon" + i));
         }
 
         chargeBarIcon = new Image(chargeBarTiers[0]);
@@ -209,19 +209,19 @@ public class Hud extends Scene {
         }
 
         if (hpPercentage <= HP_BAR_RED_THRESHOLD) {
-            hpBarColor = game.getRes().getTexture("hp_bar_color");
+            hpBarColor = res.getTexture("hp_bar_color");
             hpBarIcon.setDrawable(hpBarIconRed);
         }
         else if (hpPercentage <= HP_BAR_ORANGE_THRESHOLD) {
-            hpBarColor = game.getRes().getTexture("hp_bar_orange");
+            hpBarColor = res.getTexture("hp_bar_orange");
             hpBarIcon.setDrawable(hpBarIconOrange);
         }
         else if (hpPercentage <= HP_BAR_YELLOW_THRESHOLD) {
-            hpBarColor = game.getRes().getTexture("hp_bar_yellow");
+            hpBarColor = res.getTexture("hp_bar_yellow");
             hpBarIcon.setDrawable(hpBarIconYellow);
         }
         else {
-            hpBarColor = game.getRes().getTexture("hp_bar_green");
+            hpBarColor = res.getTexture("hp_bar_green");
             hpBarIcon.setDrawable(hpBarIconGreen);
         }
 
@@ -248,21 +248,21 @@ public class Hud extends Scene {
     }
 
     private void renderHpBar() {
-        game.getBatch().draw(game.getRes().getTexture("black"), HP_BAR_POSITION.x, HP_BAR_POSITION.y,
+        batch.draw(res.getTexture("black"), HP_BAR_POSITION.x, HP_BAR_POSITION.y,
                 HP_BAR_WIDTH + 2, HP_BAR_HEIGHT + 2);
-        game.getBatch().draw(game.getRes().getTexture("hp_bar_bg_color"), HP_BAR_POSITION.x + 1, HP_BAR_POSITION.y + 1,
+        batch.draw(res.getTexture("hp_bar_bg_color"), HP_BAR_POSITION.x + 1, HP_BAR_POSITION.y + 1,
                 HP_BAR_WIDTH, HP_BAR_HEIGHT);
-        game.getBatch().draw(hpBarColor, HP_BAR_POSITION.x + 1, HP_BAR_POSITION.y + 1,
+        batch.draw(hpBarColor, HP_BAR_POSITION.x + 1, HP_BAR_POSITION.y + 1,
                 hpBarWidth, HP_BAR_HEIGHT);
 
         if (startHpBarDecay) {
             if (damaged) {
-                game.getBatch().draw(game.getRes().getTexture("hp_bar_color"),
+                batch.draw(res.getTexture("hp_bar_color"),
                         HP_BAR_POSITION.x + 1 + hpBarWidth, HP_BAR_POSITION.y + 1,
                         decayingHpBarWidth, HP_BAR_HEIGHT);
             }
             else {
-                game.getBatch().draw(game.getRes().getTexture("hp_bar_heal_color"),
+                batch.draw(res.getTexture("hp_bar_heal_color"),
                         HP_BAR_POSITION.x + 1 + hpBarWidth - decayingHpBarWidth,
                         HP_BAR_POSITION.y + 1, decayingHpBarWidth, HP_BAR_HEIGHT);
             }
@@ -271,29 +271,29 @@ public class Hud extends Scene {
 
     private void renderChargeBar() {
         ChargeComponent chargeComp = Mapper.INSTANCE.getCHARGE_MAPPER().get(player);
-        game.getBatch().draw(game.getRes().getTexture("black"), CHARGE_BAR_POSITION.x, CHARGE_BAR_POSITION.y,
+        batch.draw(res.getTexture("black"), CHARGE_BAR_POSITION.x, CHARGE_BAR_POSITION.y,
                 CHARGE_BAR_WIDTH + 2, CHARGE_BAR_HEIGHT + 2);
-        game.getBatch().draw(game.getRes().getTexture("hp_bar_bg_color"), CHARGE_BAR_POSITION.x + 1, CHARGE_BAR_POSITION.y + 1,
+        batch.draw(res.getTexture("hp_bar_bg_color"), CHARGE_BAR_POSITION.x + 1, CHARGE_BAR_POSITION.y + 1,
                 CHARGE_BAR_WIDTH, CHARGE_BAR_HEIGHT);
 
         int chargeIndex = chargeComp.getChargeIndex();
         String hex = chargeIndex == 0 ? "zero_charge_color"
-                : chargeIndex == 1 ? game.getRes().getColor("p_dot") :
-                game.getRes().getColor("p_dot" + chargeIndex);
-        game.getBatch().draw(game.getRes().getTexture(hex), CHARGE_BAR_POSITION.x + 1, CHARGE_BAR_POSITION.y + 1,
+                : chargeIndex == 1 ? res.getColor("p_dot") :
+                res.getColor("p_dot" + chargeIndex);
+        batch.draw(res.getTexture(hex), CHARGE_BAR_POSITION.x + 1, CHARGE_BAR_POSITION.y + 1,
                 chargeBarWidth, CHARGE_BAR_HEIGHT);
 
         if (startChargeBarDecay) {
-            game.getBatch().draw(game.getRes().getTexture(game.getRes().getColor("player")),
+            batch.draw(res.getTexture(res.getColor("player")),
                     CHARGE_BAR_POSITION.x + 1 + chargeBarWidth, CHARGE_BAR_POSITION.y + 1,
                     decayingChargeBarWidth, CHARGE_BAR_HEIGHT);
         }
 
-        game.getBatch().draw(game.getRes().getTexture("black"),
+        batch.draw(res.getTexture("black"),
                 CHARGE_BAR_POSITION.x + 1 + BAR_ONE_OFFSET, CHARGE_BAR_POSITION.y + 1, 1, CHARGE_BAR_HEIGHT);
-        game.getBatch().draw(game.getRes().getTexture("black"),
+        batch.draw(res.getTexture("black"),
                 CHARGE_BAR_POSITION.x + 1 + BAR_TWO_OFFSET, CHARGE_BAR_POSITION.y + 1, 1, CHARGE_BAR_HEIGHT);
-        game.getBatch().draw(game.getRes().getTexture("black"),
+        batch.draw(res.getTexture("black"),
                 CHARGE_BAR_POSITION.x + 1 + BAR_THREE_OFFSET, CHARGE_BAR_POSITION.y + 1, 1, CHARGE_BAR_HEIGHT);
     }
 
@@ -322,14 +322,14 @@ public class Hud extends Scene {
         helpDialog.show(stage);
         helpButton.setZIndex(stage.getActors().size + 1);
         helpButtonAlert.setZIndex(stage.getActors().size + 1);
-        game.getGameScreen().notifyPause();
+        context.getGameScreen().notifyPause();
     }
 
     public void hideHelpDialog() {
         helpDialog.hide();
         helpButton.setZIndex(0);
         helpButtonAlert.setZIndex(1);
-        game.getGameScreen().notifyResume();
+        context.getGameScreen().notifyResume();
     }
 
     public boolean hasHelpPageNotSeen() {

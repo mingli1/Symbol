@@ -1,18 +1,26 @@
 package com.symbol.game.scene;
 
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.symbol.game.Symbol;
+import com.symbol.game.util.Resources;
 
 public abstract class Scene implements Disposable {
 
+    protected final Resources res;
+    protected final Batch batch;
+
     protected Stage stage;
     protected Viewport viewport;
-    protected Symbol game;
+    protected Symbol context;
 
-    public Scene(final Symbol game, Stage stage, Viewport viewport) {
-        this.game = game;
+    public Scene(final Symbol context, Stage stage, Viewport viewport) {
+        res = context.getRes();
+        batch = context.getBatch();
+
+        this.context = context;
         this.stage = stage;
         this.viewport = viewport;
     }

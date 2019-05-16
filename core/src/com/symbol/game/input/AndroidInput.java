@@ -32,8 +32,8 @@ public class AndroidInput extends Scene {
     private ImageButton shootButton;
     private ImageButton releaseButton;
 
-    public AndroidInput(final Symbol game, KeyInputHandler keyInputHandler, Stage stage, Viewport viewport) {
-        super(game, stage, viewport);
+    public AndroidInput(final Symbol context, KeyInputHandler keyInputHandler, Stage stage, Viewport viewport) {
+        super(context, stage, viewport);
         this.keyInputHandler = keyInputHandler;
 
         if (Config.INSTANCE.onAndroid()) {
@@ -44,11 +44,11 @@ public class AndroidInput extends Scene {
 
     private void createDirectionalButtons() {
         final ImageButton.ImageButtonStyle leftUp = new ImageButton.ImageButtonStyle();
-        leftUp.imageUp = new TextureRegionDrawable(game.getRes().getTexture("button_left_up"));
+        leftUp.imageUp = new TextureRegionDrawable(res.getTexture("button_left_up"));
         final ImageButton.ImageButtonStyle leftDown = new ImageButton.ImageButtonStyle();
-        leftDown.imageUp = new TextureRegionDrawable(game.getRes().getTexture("button_left_down"));
+        leftDown.imageUp = new TextureRegionDrawable(res.getTexture("button_left_down"));
 
-        leftButton = new ImageButton(game.getRes().getImageButtonStyle("left"));
+        leftButton = new ImageButton(res.getImageButtonStyle("left"));
         leftButton.setPosition(LEFT_BUTTON_POSITION.x, LEFT_BUTTON_POSITION.y);
         leftButton.setSize(DIRECTIONAL_BUTTON_SIZE, DIRECTIONAL_BUTTON_SIZE);
 
@@ -67,11 +67,11 @@ public class AndroidInput extends Scene {
         });
 
         final ImageButton.ImageButtonStyle rightUp = new ImageButton.ImageButtonStyle();
-        rightUp.imageUp = new TextureRegionDrawable(game.getRes().getTexture("button_right_up"));
+        rightUp.imageUp = new TextureRegionDrawable(res.getTexture("button_right_up"));
         final ImageButton.ImageButtonStyle rightDown = new ImageButton.ImageButtonStyle();
-        rightDown.imageUp = new TextureRegionDrawable(game.getRes().getTexture("button_right_down"));
+        rightDown.imageUp = new TextureRegionDrawable(res.getTexture("button_right_down"));
 
-        rightButton = new ImageButton(game.getRes().getImageButtonStyle("right"));
+        rightButton = new ImageButton(res.getImageButtonStyle("right"));
         rightButton.setPosition(RIGHT_BUTTON_POSITION.x, RIGHT_BUTTON_POSITION.y);
         rightButton.setSize(DIRECTIONAL_BUTTON_SIZE, DIRECTIONAL_BUTTON_SIZE);
 
@@ -94,7 +94,7 @@ public class AndroidInput extends Scene {
     }
 
     private void createActionButtons() {
-        jumpButton = new ImageButton(game.getRes().getImageButtonStyle("jump"));
+        jumpButton = new ImageButton(res.getImageButtonStyle("jump"));
         jumpButton.setPosition(JUMP_BUTTON_POSITION.x, JUMP_BUTTON_POSITION.y);
         jumpButton.setSize(ACTION_BUTTON_SIZE, ACTION_BUTTON_SIZE);
 
@@ -106,7 +106,7 @@ public class AndroidInput extends Scene {
             }
         });
 
-        shootButton = new ImageButton(game.getRes().getImageButtonStyle("shoot"));
+        shootButton = new ImageButton(res.getImageButtonStyle("shoot"));
         shootButton.setPosition(SHOOT_BUTTON_POSITION.x, SHOOT_BUTTON_POSITION.y);
         shootButton.setSize(ACTION_BUTTON_SIZE, ACTION_BUTTON_SIZE);
 
@@ -118,7 +118,7 @@ public class AndroidInput extends Scene {
             }
         });
 
-        releaseButton = new ImageButton(game.getRes().getImageButtonStyle("release"));
+        releaseButton = new ImageButton(res.getImageButtonStyle("release"));
         releaseButton.setPosition(RELEASE_BUTTON_POSITION.x, RELEASE_BUTTON_POSITION.y);
         releaseButton.setSize(RELEASE_BUTTON_SIZE, RELEASE_BUTTON_SIZE);
 
