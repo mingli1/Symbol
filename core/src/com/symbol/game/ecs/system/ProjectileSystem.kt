@@ -163,7 +163,7 @@ class ProjectileSystem(private val player: Player, private val res: Resources, p
                         ev.dx = if (bb.rect.x < ebb.rect.x + ebb.rect.width / 2) pj.knockback else -pj.knockback
                         knockback.knockingBack = true
                     }
-                    charge(entity)
+                    charge(entity, pj)
                     hit(e, pj.damage)
 
                     val se = Mapper.STATUS_EFFECT_MAPPER[entity]
@@ -221,11 +221,14 @@ class ProjectileSystem(private val player: Player, private val res: Resources, p
         handleLastStand(entity)
     }
 
-    private fun charge(entity: Entity?) {
-        Mapper.PLAYER_MAPPER[entity]?.run {
+    private fun charge(entity: Entity?, pj: ProjectileComponent) {
+        Mapper.PLAYER_MAPPER[entity]?.let {
             Mapper.PLAYER_MAPPER[player].run {
-                charge += PLAYER_CHARGE_GAIN
-                if (charge > 1f) charge = 1f
+                if (pj.playerType != 1) {
+                    charge += PLAYER_CHARGE_GAIN
+                    if (charge > 1f) charge = 1f
+                    println("charge gained $charge")
+                }
             }
         }
     }

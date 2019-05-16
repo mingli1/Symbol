@@ -16,8 +16,27 @@ class KeyInputSystem(private val res: Resources) : EntitySystem(), KeyInputHandl
     private val playerComp: PlayerComponent by lazy { Mapper.PLAYER_MAPPER[player] }
     private val vel: VelocityComponent by lazy { Mapper.VEL_MAPPER[player] }
 
+    private var shootThree = false
+    private var shootThreeCount = 0
+    private var shootThreeTimer = 0f
+
     override fun addedToEngine(engine: Engine?) {
         player = engine!!.getEntitiesFor(Family.all(PlayerComponent::class.java).get())[0]
+    }
+
+    override fun update(dt: Float) {
+        if (shootThree) {
+            shootThreeTimer += dt
+            if (shootThreeTimer >= PLAYER_RAPID_SHOOT_DELAY) {
+                createBaseProjectile(PLAYER_PROJECTILE_SPEED * 1.5f, 1)
+                shootThreeCount++
+                shootThreeTimer = 0f
+                if (shootThreeCount >= 3) {
+                    shootThree = false
+                    shootThreeCount = 0
+                }
+            }
+        }
     }
 
     override fun move(right: Boolean) {
@@ -62,34 +81,78 @@ class KeyInputSystem(private val res: Resources) : EntitySystem(), KeyInputHandl
 
     override fun shoot() {
         if (playerComp.canShoot) {
-            val playerPos = Mapper.POS_MAPPER[player]
-            val dir = Mapper.DIR_MAPPER[player]
-            val key = PLAYER_PROJECTILE_RES_KEY
-            val texture = res.getTexture(key)!!
-            val width = texture.regionWidth.toFloat()
-            val height = texture.regionHeight.toFloat()
-            val x = playerPos.x + (PLAYER_WIDTH / 2) - (width / 2)
-            val y = playerPos.y + (PLAYER_HEIGHT / 2) - (height / 2)
-
-            EntityBuilder.instance(engine as PooledEngine)
-                    .projectile(damage = PLAYER_DEFAULT_DAMAGE,
-                            knockback = PLAYER_PROJECTILE_KNOCKBACK,
-                            playerType = 1, textureStr = key)
-                    .player()
-                    .color(res.getColor(key)!!)
-                    .position(x, y)
-                    .velocity(dx = if (dir.facingRight) PLAYER_PROJECTILE_SPEED else -PLAYER_PROJECTILE_SPEED,
-                            speed = PLAYER_PROJECTILE_SPEED)
-                    .boundingBox(width, height)
-                    .texture(texture, key)
-                    .direction().remove().build()
-
+            createBaseProjectile()
             playerComp.canShoot = false
         }
     }
 
     override fun release() {
+        val chargeIndex = playerComp.getChargeIndex()
 
+        if (playerComp.canShoot) {
+            if (chargeIndex == 1) {
+                shootThree = true
+            }
+            else if (chargeIndex > 1) {
+                val playerPos = Mapper.POS_MAPPER[player]
+                val dir = Mapper.DIR_MAPPER[player]
+                val key = if (chargeIndex > 1) PLAYER_PROJECTILE_RES_KEY + chargeIndex else PLAYER_PROJECTILE_RES_KEY
+                val texture = res.getTexture(key)!!
+                val width = texture.regionWidth.toFloat()
+                val height = texture.regionHeight.toFloat()
+                val x = playerPos.x + (PLAYER_WIDTH / 2) - (width / 2)
+                val y = playerPos.y + (PLAYER_HEIGHT / 2) - (height / 2)
+
+                val builder = EntityBuilder.instance(engine as PooledEngine)
+                        .projectile(damage = chargeIndex + 1,
+                                knockback = PLAYER_PROJECTILE_KNOCKBACK,
+                                playerType = chargeIndex, textureStr = key)
+                        .player()
+                        .color(res.getColor(key)!!)
+                        .position(x, y)
+                        .velocity(dx = if (dir.facingRight) PLAYER_PROJECTILE_SPEED else -PLAYER_PROJECTILE_SPEED,
+                                speed = PLAYER_PROJECTILE_SPEED)
+                        .boundingBox(width, height)
+                        .texture(texture, key)
+                        .direction().remove()
+
+                when (chargeIndex) {
+                    2 -> builder.statusEffect(apply = StatusEffect.Slow,
+                            value = PLAYER_SLOW_PERCENTAGE,
+                            duration = PLAYER_SLOW_DURATION)
+                    3 -> builder.statusEffect(apply = StatusEffect.Snare,
+                            duration = PLAYER_SNARE_DURATION)
+                    4 -> builder.statusEffect(apply = StatusEffect.Stun,
+                            duration = PLAYER_STUN_DURATION)
+                }
+
+                builder.build()
+            }
+            playerComp.canShoot = false
+            playerComp.charge -= chargeIndex * PLAYER_CHARGE_THRESHOLD
+        }
+    }
+
+    private fun createBaseProjectile(speed: Float = PLAYER_PROJECTILE_SPEED, playerType: Int = 0) {
+        val playerPos = Mapper.POS_MAPPER[player]
+        val dir = Mapper.DIR_MAPPER[player]
+        val key = PLAYER_PROJECTILE_RES_KEY
+        val texture = res.getTexture(key)!!
+        val width = texture.regionWidth.toFloat()
+        val height = texture.regionHeight.toFloat()
+        val x = playerPos.x + (PLAYER_WIDTH / 2) - (width / 2)
+        val y = playerPos.y + (PLAYER_HEIGHT / 2) - (height / 2)
+
+        EntityBuilder.instance(engine as PooledEngine)
+                .projectile(damage = PLAYER_DEFAULT_DAMAGE, knockback = PLAYER_PROJECTILE_KNOCKBACK,
+                        textureStr = key, playerType = playerType)
+                .player()
+                .color(res.getColor(key)!!)
+                .position(x, y)
+                .velocity(dx = if (dir.facingRight) speed else -speed, speed = speed)
+                .boundingBox(width, height)
+                .texture(texture, key)
+                .direction().remove().build()
     }
 
 }

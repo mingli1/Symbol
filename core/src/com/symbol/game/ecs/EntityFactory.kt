@@ -16,7 +16,7 @@ object EntityFactory {
         when (type) {
             EnemyType.EConstant -> {
                 EntityBuilder.instance(engine)
-                        .enemy(enemyType = type, movementType = EnemyMovementType.BackAndForth, attackType = EnemyAttackType.ShootAtPlayer)
+                        .enemy(enemyType = type)
                         .statusEffect()
                         .activation(150f)
                         .attack(damage = 1, projectileSpeed = 45f, attackTexture = "p_dot", attackRate = 1.5f)
@@ -27,7 +27,7 @@ object EntityFactory {
                         .velocity(speed = 25f)
                         .direction(facingRight = facingRight)
                         .texture(texture, textureStr)
-                        .knockback().gravity().remove().build()
+                        .gravity().remove().build()
             }
             EnemyType.SquareRoot -> {
                 EntityBuilder.instance(engine)

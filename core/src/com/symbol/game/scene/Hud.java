@@ -22,11 +22,6 @@ import com.symbol.game.scene.dialog.HelpDialog;
 import com.symbol.game.scene.dialog.PauseDialog;
 import com.symbol.game.scene.page.Page;
 
-import static com.symbol.game.ecs.entity.PlayerKt.PLAYER_CHARGE_THRESHOLD;
-import static com.symbol.game.ecs.entity.PlayerKt.PLAYER_TIER_ONE_ATTACK_TIME;
-import static com.symbol.game.ecs.entity.PlayerKt.PLAYER_TIER_THREE_ATTACK_TIME;
-import static com.symbol.game.ecs.entity.PlayerKt.PLAYER_TIER_TWO_ATTACK_TIME;
-
 public class Hud extends Scene {
 
     private static final Vector2 HP_BAR_POSITION = new Vector2(16, 107f);
