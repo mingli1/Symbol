@@ -22,8 +22,9 @@ import com.symbol.game.effects.particle.DEFAULT_LIFETIME
 import com.symbol.game.effects.particle.ParticleSpawner
 import com.symbol.game.util.Resources
 
-class MapEntitySystem(private val player: Player, private val res: Resources) :
-        IteratingSystem(Family.all(MapEntityComponent::class.java).get()) {
+class MapEntitySystem(private val player: Player,
+                      private val res: Resources)
+    : IteratingSystem(Family.all(MapEntityComponent::class.java).get()) {
 
     private lateinit var portals: ImmutableArray<Entity>
     private lateinit var portalAffectedEntities: ImmutableArray<Entity>

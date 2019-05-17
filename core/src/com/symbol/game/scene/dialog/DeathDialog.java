@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.symbol.game.Symbol;
+import com.symbol.game.util.Data;
 import com.symbol.game.util.Resources;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.alpha;
@@ -24,11 +25,13 @@ public class DeathDialog extends Table {
 
     private final Symbol context;
     private Resources res;
+    private Data data;
     private boolean displayed;
 
     public DeathDialog(final Symbol context) {
         this.context = context;
         res = context.getRes();
+        data = context.getData();
         setBackground(new TextureRegionDrawable(res.getTexture("death_shadow")));
         setFillParent(true);
         setTouchable(Touchable.enabled);
@@ -36,15 +39,15 @@ public class DeathDialog extends Table {
     }
 
     private void createLayout() {
-        Label message = new Label(res.getString("deathMessage"), res.getLabelStyle(Color.WHITE));
+        Label message = new Label(data.getString("deathMessage"), res.getLabelStyle(Color.WHITE));
         message.setFontScale(4f);
         add(message).row();
 
-        TextButton respawnButton = new TextButton(res.getString("respawnButton"),
+        TextButton respawnButton = new TextButton(data.getString("respawnButton"),
                 res.getTextButtonStyle("menu", Color.WHITE));
         add(respawnButton).width(BUTTON_WIDTH).height(16f).space(8f).padTop(8f).row();
 
-        TextButton quitButton = new TextButton(res.getString("quitButton"), res.getSkin());
+        TextButton quitButton = new TextButton(data.getString("quitButton"), res.getSkin());
         add(quitButton).width(BUTTON_WIDTH).height(16f);
 
         respawnButton.addListener(new ClickListener() {

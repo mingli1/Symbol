@@ -14,9 +14,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import com.badlogic.gdx.utils.*
-import com.symbol.game.data.*
-import com.symbol.game.map.TILE_SIZE
-import com.symbol.game.scene.page.HelpPage
 
 const val TOP = "_t"
 const val TOP_RIGHT ="_tr"
@@ -30,9 +27,6 @@ const val TOGGLE_OFF = "_off"
 
 const val BRACKET_LEFT = "_left"
 const val BRACKET_RIGHT = "_right"
-
-private const val PREFERENCES_TAG = "SYMBOL_GAME_SAVE"
-private const val SAVE_KEY = "SAVE_KEY"
 
 private const val BUTTON = "button_"
 private const val BUTTON_UP = "_up"
@@ -48,36 +42,11 @@ class Resources : Disposable {
     val invertShader: ShaderProgram
     private val font: BitmapFont
 
-    private val preferences = Gdx.app.getPreferences(PREFERENCES_TAG)
-    private val json = Json().apply {
-        setOutputType(JsonWriter.OutputType.json)
-        setUsePrototypes(false)
-    }
-    lateinit var saveData: SaveData private set
-
-    private val jsonReader = JsonReader()
-    private val maps: JsonValue
-    private val strings: JsonValue
-    private val colors: JsonValue
-    private val entityDetails: JsonValue
-    private val technicalDetails: JsonValue
-
-    val mapDatas = mutableListOf<MapData>()
-    private val helpPages: MutableMap<String, HelpPage> = HashMap()
-
     init {
         assetManager.load("textures/textures.atlas", TextureAtlas::class.java)
         assetManager.finishLoading()
 
         atlas = assetManager.get("textures/textures.atlas", TextureAtlas::class.java)
-
-        with (jsonReader) {
-            maps = parse(Gdx.files.internal("data/maps.json"))
-            strings = parse(Gdx.files.internal("data/strings.json"))
-            colors = parse(Gdx.files.internal("data/colors.json"))
-            entityDetails = parse(Gdx.files.internal("data/entity_details.json"))
-            technicalDetails = parse(Gdx.files.internal("data/technical_details.json"))
-        }
 
         font = BitmapFont(Gdx.files.internal("font/font.fnt"), atlas.findRegion("font"), false).apply {
             setUseIntegerPositions(false)
@@ -91,26 +60,11 @@ class Resources : Disposable {
         ShaderProgram.pedantic = false
         invertShader = ShaderProgram(Gdx.files.internal("shader/invert.vsh"),
                 Gdx.files.internal("shader/invert.fsh"))
-
-        loadMapDatas()
-        loadHelpPages()
-
-        loadSaveData()
-    }
-
-    fun save() {
-        val saveValue = json.toJson(saveData)
-        preferences.putString(SAVE_KEY, saveValue)
-        preferences.flush()
     }
 
     fun getTexture(key: String) : TextureRegion? = atlas.findRegion(key)
 
     fun getNinePatch(key: String) : NinePatch? = atlas.createPatch(key)
-
-    fun getString(key: String) : String? = strings.getString(key)
-
-    fun getColor(key: String) : String? = colors.getString(key)
 
     fun getSubProjectileTextureFor(key: String) : TextureRegion? =
             when (key) {
@@ -143,74 +97,6 @@ class Resources : Disposable {
     }
 
     fun getLabelStyle(color: Color = Color.WHITE) = Label.LabelStyle(font, color)
-
-    fun getColorFromHexKey(key: String) = Color(Color.valueOf(getColor(key)))
-
-    fun getHelpPage(key: String) : HelpPage? = helpPages[key]
-
-    private fun loadSaveData() {
-        saveData = json.fromJson(SaveData::class.java, preferences.getString(SAVE_KEY)) ?:
-                SaveData()
-
-        for (i in 0 until saveData.mapsCompleted) {
-            mapDatas[i].completed = true
-        }
-    }
-
-    private fun loadMapDatas() {
-        maps["maps"].forEachIndexed { index, data ->
-            val mapData = MapData(id = index, name = data.getString("name"))
-            mapDatas.add(mapData)
-        }
-    }
-
-    private fun loadHelpPages() {
-        entityDetails["details"].forEach {
-            it.run {
-                val id = getString("id")
-                val imageStr = getString("image")!!
-
-                val image = if (imageStr.contains("tileset", true)) {
-                    val rc = imageStr.substring(7, imageStr.length).split("_")
-                    getTexture("tileset")!!.split(TILE_SIZE, TILE_SIZE)[rc[0].toInt()][rc[1].toInt()]
-                } else {
-                    getTexture(imageStr)
-                }
-                image?.flip(getBoolean("flip"), false)
-
-                val entityDetails = EntityDetails(
-                        id = id,
-                        name = getString("name"),
-                        entityType = getString("entityType"),
-                        image = image,
-                        description = getString("description"),
-                        additionalInfo = getString("additionalInfo")
-                )
-
-                helpPages[id] = HelpPage(this@Resources, entityDetails)
-            }
-        }
-
-        technicalDetails["details"].forEach { detail ->
-            detail.run {
-                val id = getString("id")
-                val technicalDetails = TechnicalDetails(
-                        id = id,
-                        title = getString("title"),
-                        imageSize = getInt("imageSize")
-                )
-
-                this["texts"].forEach { technicalDetails.texts.add(it.asString()) }
-                this["images"].forEach {
-                    val wrapper = ImageWrapper(getTexture(it.getString("image")),
-                            ImageAlign.valueOf(it.getString("align")))
-                    technicalDetails.images.add(wrapper)
-                }
-
-                helpPages[id] = HelpPage(this@Resources, technicalDetails)
-            }
-        }
-    }
 
     override fun dispose() {
         assetManager.dispose()

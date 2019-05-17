@@ -20,6 +20,7 @@ import com.symbol.game.ecs.entity.MapEntityType
 import com.symbol.game.map.camera.CameraUtil
 import com.symbol.game.scene.page.HelpPage
 import com.symbol.game.scene.page.Page
+import com.symbol.game.util.Data
 import com.symbol.game.util.Resources
 
 const val TILE_SIZE = 8
@@ -39,7 +40,9 @@ private const val MAP_OBJECT_DAMAGE = "damage"
 private const val TYPE = "type"
 private const val ENEMY_FACING_RIGHT = "facingRight"
 
-class MapManager(private val engine: PooledEngine, private val res: Resources) : Disposable {
+class MapManager(private val engine: PooledEngine,
+                 private val res: Resources,
+                 private val data: Data) : Disposable {
 
     private val mapLoader = TmxMapLoader()
     private var tiledMap: TiledMap? = null
@@ -147,7 +150,7 @@ class MapManager(private val engine: PooledEngine, private val res: Resources) :
                 val enemyObjectType = if (typeProp == null) EnemyType.None else EnemyType.getType(typeProp.toString())!!
                 val facingRight = if (facingRightProp == null) true else facingRightProp as Boolean
 
-                EntityFactory.createEnemy(engine, res, enemyObjectType, enemyObjectRect, facingRight)
+                EntityFactory.createEnemy(engine, res, data, enemyObjectType, enemyObjectRect, facingRight)
             }
         }
     }
@@ -177,8 +180,8 @@ class MapManager(private val engine: PooledEngine, private val res: Resources) :
             val mapEntity = Mapper.MAP_ENTITY_MAPPER[entity]
             var page: HelpPage? = null
 
-            if (enemy != null) page = res.getHelpPage(enemy.enemyType.typeStr)
-            else if (mapEntity != null) page = res.getHelpPage(mapEntity.mapEntityType.typeStr)
+            if (enemy != null) page = data.getHelpPage(enemy.enemyType.typeStr)
+            else if (mapEntity != null) page = data.getHelpPage(mapEntity.mapEntityType.typeStr)
 
             if (page != null) {
                 if (page.hasSeen() && !containsEntityType(oldEntities, entity)) oldEntities.add(entity)
@@ -187,7 +190,7 @@ class MapManager(private val engine: PooledEngine, private val res: Resources) :
         }
 
         mapObjects.forEach {
-            res.getHelpPage(it.type.typeStr)?.let { page ->
+            data.getHelpPage(it.type.typeStr)?.let { page ->
                 if (page.hasSeen() && !containsMapObjectType(oldMapObjects, it)) oldMapObjects.add(it)
                 else if (!page.hasSeen() && !containsMapObjectType(newMapObjects, it)) newMapObjects.add(it)
             }
@@ -224,12 +227,12 @@ class MapManager(private val engine: PooledEngine, private val res: Resources) :
             mapObjects.find { it.type == mapObject.type } != null
 
     private fun addEntityHelpPage(entity: Entity) {
-        Mapper.ENEMY_MAPPER[entity]?.let { helpPages.add(res.getHelpPage(it.enemyType.typeStr)) }
-        Mapper.MAP_ENTITY_MAPPER[entity]?.let { helpPages.add(res.getHelpPage(it.mapEntityType.typeStr)) }
+        Mapper.ENEMY_MAPPER[entity]?.let { helpPages.add(data.getHelpPage(it.enemyType.typeStr)) }
+        Mapper.MAP_ENTITY_MAPPER[entity]?.let { helpPages.add(data.getHelpPage(it.mapEntityType.typeStr)) }
     }
 
     private fun addMapObjectHelpPage(mapObject: MapObject) =
-            helpPages.add(res.getHelpPage(mapObject.type.typeStr))
+            helpPages.add(data.getHelpPage(mapObject.type.typeStr))
 
     fun containsInvertSwitch() : Boolean =
             engine.entities.find { Mapper.INVERT_SWITCH_MAPPER[it] != null } != null

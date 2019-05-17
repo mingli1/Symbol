@@ -22,13 +22,14 @@ private const val PAGE_BOTTOM_PADDING = 34f
 class MapSelectScreen(game: Symbol) : DefaultScreen(game) {
 
     private val res = game.res
+    private val data = game.data
 
     lateinit var pagedScrollPane: PagedScrollPane
     private lateinit var progressLabel: Label
     private lateinit var headerContainer: Container<Container<Table>>
     private lateinit var backButton: ImageButton
 
-    private val mapDialog = MapDialog(game.res, this)
+    private val mapDialog = MapDialog(game.res, game.data, this)
     private var initialScroll = false
     private var initialIndex = 0
 
@@ -58,14 +59,14 @@ class MapSelectScreen(game: Symbol) : DefaultScreen(game) {
             disableAutoReset()
 
             addPadding(PAGE_TOP_PADDING)
-            res.mapDatas.let {
-                it.forEachIndexed { index, data ->
+            data.mapDatas.let {
+                it.forEachIndexed { index, mapData ->
                     val mapPageType = when (index) {
                         0 -> Start
                         it.size - 1 -> if (it.size % 2 == 0) EndRight else EndLeft
                         else -> if (index % 2 == 0) Left else Right
                     }
-                    addPage(MapPage(res, data, mapPageType, this@MapSelectScreen))
+                    addPage(MapPage(res, data, mapData, mapPageType, this@MapSelectScreen))
                 }
             }
             addPadding(PAGE_BOTTOM_PADDING)
@@ -102,7 +103,7 @@ class MapSelectScreen(game: Symbol) : DefaultScreen(game) {
         val headerTable = Table().apply { setFillParent(true) }
 
         val labelStyle = res.getLabelStyle()
-        val prompt = Label(res.getString("mapSelectHeader"), labelStyle)
+        val prompt = Label(data.getString("mapSelectHeader"), labelStyle)
         prompt.setFontScale(1.5f)
         headerTable.add(prompt).expandX().padTop(4f).row()
 
@@ -149,10 +150,10 @@ class MapSelectScreen(game: Symbol) : DefaultScreen(game) {
     }
 
     private fun updateView() {
-        val numCompleted = res.saveData.mapsCompleted
-        val totalMaps = res.mapDatas.size
+        val numCompleted = data.saveData.mapsCompleted
+        val totalMaps = data.mapDatas.size
 
-        progressLabel.setText(String.format(res.getString("mapSelectProgress")!!,
+        progressLabel.setText(String.format(data.getString("mapSelectProgress")!!,
                 numCompleted, totalMaps))
         pagedScrollPane.resetAllPages()
         if (numCompleted < totalMaps) {

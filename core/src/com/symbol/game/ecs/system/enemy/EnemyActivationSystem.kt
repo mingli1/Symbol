@@ -7,7 +7,8 @@ import com.symbol.game.ecs.Mapper
 import com.symbol.game.ecs.component.enemy.EnemyComponent
 import com.symbol.game.ecs.entity.Player
 
-class EnemyActivationSystem(private val player: Player) : IteratingSystem(Family.all(EnemyComponent::class.java).get()) {
+class EnemyActivationSystem(private val player: Player)
+    : IteratingSystem(Family.all(EnemyComponent::class.java).get()) {
 
     override fun processEntity(entity: Entity?, deltaTime: Float) {
         Mapper.ACTIVATION_MAPPER[entity]?.run {

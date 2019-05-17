@@ -38,12 +38,12 @@ class GameScreen(game: Symbol) : AbstractScreen(game) {
     private val input: KeyInput
     private val androidInput: AndroidInput
 
-    private val mapManager = MapManager(engine, game.res)
+    private val mapManager = MapManager(engine, game.res, game.data)
     private var canInvert = false
     var mapIndex = 0
     var mapInverted = false
 
-    private var player = Player(game.res)
+    private var player = Player(game.res, game.data)
     private val background = Background(game.res.getTexture("background")!!,
             cam, Vector2(PARALLAX_SCALING, PARALLAX_SCALING))
 
@@ -56,7 +56,7 @@ class GameScreen(game: Symbol) : AbstractScreen(game) {
         engine.addEntity(player)
         initSystems()
 
-        val keyInputSystem = KeyInputSystem(game.res)
+        val keyInputSystem = KeyInputSystem(game.res, game.data)
         input = KeyInput(keyInputSystem)
         androidInput = AndroidInput(game, keyInputSystem, stage, viewport)
 
@@ -74,10 +74,10 @@ class GameScreen(game: Symbol) : AbstractScreen(game) {
             addSystem(MovementSystem())
             addSystem(MapCollisionSystem(game.res))
             addSystem(MapEntitySystem(player, game.res))
-            addSystem(ProjectileSystem(player, game.res, this@GameScreen))
+            addSystem(ProjectileSystem(player, game.res, game.data, this@GameScreen))
             addSystem(HealthSystem())
             addSystem(EnemyActivationSystem(player))
-            addSystem(EnemyAttackSystem(player, game.res))
+            addSystem(EnemyAttackSystem(player, game.res, game.data))
             addSystem(EnemyMovementSystem(player, game.res))
             addSystem(DirectionSystem())
             addSystem(GravitySystem())

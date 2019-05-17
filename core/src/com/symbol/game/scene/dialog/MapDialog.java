@@ -16,6 +16,7 @@ import com.badlogic.gdx.utils.Align;
 import com.symbol.game.Config;
 import com.symbol.game.data.MapData;
 import com.symbol.game.screen.MapSelectScreen;
+import com.symbol.game.util.Data;
 import com.symbol.game.util.Resources;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.fadeOut;
@@ -29,6 +30,7 @@ public class MapDialog extends Table {
     private static final float POSITION_Y = 16f;
 
     private final Resources res;
+    private final Data data;
     private MapSelectScreen mapSelectScreen;
     private int mapIndex;
 
@@ -41,8 +43,9 @@ public class MapDialog extends Table {
     private Label mapName;
     private TextButton enterButton;
 
-    public MapDialog(Resources res, MapSelectScreen mapSelectScreen) {
+    public MapDialog(Resources res, Data data, MapSelectScreen mapSelectScreen) {
         this.res = res;
+        this.data = data;
         this.mapSelectScreen = mapSelectScreen;
 
         emptyBackground = new Image();
@@ -54,7 +57,7 @@ public class MapDialog extends Table {
             }
         });
 
-        mapName = new Label("", res.getLabelStyle(res.getColorFromHexKey("player")));
+        mapName = new Label("", res.getLabelStyle(data.getColorFromHexKey("player")));
         mapName.setWrap(true);
         mapName.setAlignment(Align.center);
 
@@ -67,7 +70,7 @@ public class MapDialog extends Table {
     }
 
     private void createEnterButton() {
-        enterButton = new TextButton(res.getString("mapEnterButton"),
+        enterButton = new TextButton(data.getString("mapEnterButton"),
                 res.getTextButtonStyle("enter_map", Color.WHITE));
         enterButton.addListener(new ClickListener() {
             @Override

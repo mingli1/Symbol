@@ -9,10 +9,11 @@ import com.symbol.game.util.*
 
 object EntityFactory {
 
-    fun createEnemy(engine: PooledEngine, res: Resources, type: EnemyType, rect: Rectangle, facingRight: Boolean) {
+    fun createEnemy(engine: PooledEngine, res: Resources, data: Data,
+                    type: EnemyType, rect: Rectangle, facingRight: Boolean) {
         val textureStr = if (type == EnemyType.Because) "e_${type.typeStr}0" else "e_${type.typeStr}"
         val texture = res.getTexture(textureStr)!!
-        val color = res.getColor("e_${type.typeStr}")!!
+        val color = data.getColor("e_${type.typeStr}")!!
         when (type) {
             EnemyType.EConstant -> {
                 EntityBuilder.instance(engine)

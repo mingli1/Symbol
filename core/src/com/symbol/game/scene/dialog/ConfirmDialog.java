@@ -32,8 +32,8 @@ public class ConfirmDialog extends BaseModalDialog {
         messageLabel.setAlignment(Align.center);
         getContentTable().add(messageLabel).width(WIDTH).fill().space(4f);
 
-        button(res.getString("affirmativeText"), AFFIRMATIVE_TAG);
-        button(res.getString("dismissiveText"), DISMISSIVE_TAG);
+        button(data.getString("affirmativeText"), AFFIRMATIVE_TAG);
+        button(data.getString("dismissiveText"), DISMISSIVE_TAG);
 
         getButtonTable().pad(-16f, 4f, 4f, 4f);
     }

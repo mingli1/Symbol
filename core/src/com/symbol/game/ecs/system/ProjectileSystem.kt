@@ -34,7 +34,10 @@ const val DIAGONAL_PROJECTILE_SCALING = 0.75f
 private const val KNOCKBACK_TIME = 0.1f
 private const val GRAVITY_FLIP_TIME = 0.75f
 
-class ProjectileSystem(private val player: Player, private val res: Resources, private val gameScreen: GameScreen)
+class ProjectileSystem(private val player: Player,
+                       private val res: Resources,
+                       private val data: Data,
+                       private val gameScreen: GameScreen)
     : IteratingSystem(Family.all(ProjectileComponent::class.java).get()) {
 
     private var mapObjects: Array<MapObject> = Array()
@@ -322,18 +325,18 @@ class ProjectileSystem(private val player: Player, private val res: Resources, p
             val speed = if (vel.dx != 0f) Math.abs(vel.dx) else Math.abs(vel.dy)
             val texture = res.getSubProjectileTextureFor(pj.textureStr!!)!!
 
-            createSubProjectile(1, bounds, speed, 0f, texture, false, true, res.getColor("p_dot"))
-            createSubProjectile(1, bounds, 0f, -speed, texture, false, true, res.getColor("p_dot"))
-            createSubProjectile(1, bounds, -speed, 0f, texture, false, true, res.getColor("p_dot"))
-            createSubProjectile(1, bounds, 0f, speed, texture, false, true, res.getColor("p_dot"))
+            createSubProjectile(1, bounds, speed, 0f, texture, false, true, data.getColor("p_dot"))
+            createSubProjectile(1, bounds, 0f, -speed, texture, false, true, data.getColor("p_dot"))
+            createSubProjectile(1, bounds, -speed, 0f, texture, false, true, data.getColor("p_dot"))
+            createSubProjectile(1, bounds, 0f, speed, texture, false, true, data.getColor("p_dot"))
             createSubProjectile(1, bounds, speed * DIAGONAL_PROJECTILE_SCALING,
-                    -speed * DIAGONAL_PROJECTILE_SCALING, texture, false, true, res.getColor("p_dot"))
+                    -speed * DIAGONAL_PROJECTILE_SCALING, texture, false, true, data.getColor("p_dot"))
             createSubProjectile(1, bounds, -speed * DIAGONAL_PROJECTILE_SCALING,
-                    -speed * DIAGONAL_PROJECTILE_SCALING, texture, false, true, res.getColor("p_dot"))
+                    -speed * DIAGONAL_PROJECTILE_SCALING, texture, false, true, data.getColor("p_dot"))
             createSubProjectile(1, bounds, -speed * DIAGONAL_PROJECTILE_SCALING,
-                    speed * DIAGONAL_PROJECTILE_SCALING, texture, false, true, res.getColor("p_dot"))
+                    speed * DIAGONAL_PROJECTILE_SCALING, texture, false, true, data.getColor("p_dot"))
             createSubProjectile(1, bounds, speed * DIAGONAL_PROJECTILE_SCALING,
-                    speed * DIAGONAL_PROJECTILE_SCALING, texture, false, true, res.getColor("p_dot"))
+                    speed * DIAGONAL_PROJECTILE_SCALING, texture, false, true, data.getColor("p_dot"))
         }
     }
 

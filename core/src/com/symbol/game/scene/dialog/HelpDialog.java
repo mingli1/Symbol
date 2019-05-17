@@ -21,6 +21,7 @@ import com.symbol.game.Symbol;
 import com.symbol.game.scene.Hud;
 import com.symbol.game.scene.page.Page;
 import com.symbol.game.scene.page.PagedScrollPane;
+import com.symbol.game.util.Data;
 import com.symbol.game.util.Resources;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.fadeOut;
@@ -35,6 +36,7 @@ public class HelpDialog extends Table {
     private static final float SCROLL_PANE_HEIGHT = 72f;
 
     private Resources res;
+    private Data data;
     private Hud hud;
 
     private static final Vector2 POSITION = new Vector2(19f, 8f);
@@ -50,6 +52,7 @@ public class HelpDialog extends Table {
 
     public HelpDialog(final Symbol context, final Hud hud) {
         res = context.getRes();
+        data = context.getData();
         this.hud = hud;
 
         shadow = new Image(res.getTexture("shadow"));
@@ -101,12 +104,12 @@ public class HelpDialog extends Table {
         Table table = new Table();
         Table header = new Table();
 
-        Label.LabelStyle titleStyle = res.getLabelStyle(res.getColorFromHexKey("player"));
-        Label titleLabel = new Label(res.getString("helpDialogTitle"), titleStyle);
+        Label.LabelStyle titleStyle = res.getLabelStyle(data.getColorFromHexKey("player"));
+        Label titleLabel = new Label(data.getString("helpDialogTitle"), titleStyle);
         header.add(titleLabel).expandX().left();
 
-        Label.LabelStyle newStyle = res.getLabelStyle(res.getColorFromHexKey("p_dot"));
-        newPage = new Label(res.getString("helpDialogNew"), newStyle);
+        Label.LabelStyle newStyle = res.getLabelStyle(data.getColorFromHexKey("p_dot"));
+        newPage = new Label(data.getString("helpDialogNew"), newStyle);
         header.add(newPage).expandX().right();
 
         table.add(header).padBottom(2f).fill().row();

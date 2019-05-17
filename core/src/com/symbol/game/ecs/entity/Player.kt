@@ -4,6 +4,7 @@ import com.badlogic.ashley.core.Entity
 import com.symbol.game.ecs.component.*
 import com.symbol.game.ecs.component.player.ChargeComponent
 import com.symbol.game.ecs.component.player.PlayerComponent
+import com.symbol.game.util.Data
 import com.symbol.game.util.Resources
 
 const val PLAYER_WIDTH = 8f
@@ -29,9 +30,9 @@ const val PLAYER_STUN_DURATION = 2f
 const val PLAYER_JUMP_IMPULSE = 160f
 private const val PLAYER_SPEED = 35f
 private const val PLAYER_BOUNDS_WIDTH = 7f
-private const val PLAYER_BOUNDS_HEIGHT = 8f
+private const val PLAYER_BOUNDS_HEIGHT = 7f
 
-class Player(private val res: Resources) : Entity() {
+class Player(private val res: Resources, private val data: Data) : Entity() {
 
     private val player = PlayerComponent()
     private val position = PositionComponent()
@@ -78,7 +79,7 @@ class Player(private val res: Resources) : Entity() {
         direction.reset()
         remove.reset()
 
-        color.hex = res.getColor("player")
+        color.hex = data.getColor("player")
         bounds.rect.setSize(PLAYER_BOUNDS_WIDTH, PLAYER_BOUNDS_HEIGHT)
         texture.texture = res.getTexture("player")
         texture.textureStr = "player"

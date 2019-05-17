@@ -12,8 +12,10 @@ import com.symbol.game.util.Resources
 import com.symbol.game.util.TOP
 import com.symbol.game.util.TOP_RIGHT
 
-class RenderSystem(private val batch: Batch, private val cam: OrthographicCamera, private val res: Resources) :
-        IteratingSystem(Family.all(TextureComponent::class.java).get()) {
+class RenderSystem(private val batch: Batch,
+                   private val cam: OrthographicCamera,
+                   private val res: Resources)
+    : IteratingSystem(Family.all(TextureComponent::class.java).get()) {
 
     override fun processEntity(entity: Entity?, dt: Float) {
         val texture = Mapper.TEXTURE_MAPPER[entity]

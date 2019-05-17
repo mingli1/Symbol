@@ -8,9 +8,12 @@ import com.symbol.game.ecs.component.VelocityComponent
 import com.symbol.game.ecs.component.player.PlayerComponent
 import com.symbol.game.ecs.entity.*
 import com.symbol.game.ecs.system.MAP_OBJECT_JUMP_BOOST_PERCENTAGE
+import com.symbol.game.util.Data
 import com.symbol.game.util.Resources
 
-class KeyInputSystem(private val res: Resources) : EntitySystem(), KeyInputHandler {
+class KeyInputSystem(private val res: Resources,
+                     private val data: Data)
+    : EntitySystem(), KeyInputHandler {
 
     private lateinit var player: Entity
     private val playerComp: PlayerComponent by lazy { Mapper.PLAYER_MAPPER[player] }
@@ -109,7 +112,7 @@ class KeyInputSystem(private val res: Resources) : EntitySystem(), KeyInputHandl
                                 knockback = PLAYER_PROJECTILE_KNOCKBACK,
                                 playerType = chargeIndex, textureStr = key)
                         .player()
-                        .color(res.getColor(key)!!)
+                        .color(data.getColor(key)!!)
                         .position(x, y)
                         .velocity(dx = if (dir.facingRight) PLAYER_PROJECTILE_SPEED else -PLAYER_PROJECTILE_SPEED,
                                 speed = PLAYER_PROJECTILE_SPEED)
@@ -153,7 +156,7 @@ class KeyInputSystem(private val res: Resources) : EntitySystem(), KeyInputHandl
                 .projectile(damage = PLAYER_DEFAULT_DAMAGE, knockback = PLAYER_PROJECTILE_KNOCKBACK,
                         textureStr = key, playerType = playerType)
                 .player()
-                .color(res.getColor(key)!!)
+                .color(data.getColor(key)!!)
                 .position(x, y)
                 .velocity(dx = if (dir.facingRight) speed else -speed, speed = speed)
                 .boundingBox(width, height)

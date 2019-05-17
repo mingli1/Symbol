@@ -278,13 +278,13 @@ public class Hud extends Scene {
 
         int chargeIndex = chargeComp.getChargeIndex();
         String hex = chargeIndex == 0 ? "zero_charge_color"
-                : chargeIndex == 1 ? res.getColor("p_dot") :
-                res.getColor("p_dot" + chargeIndex);
+                : chargeIndex == 1 ? data.getColor("p_dot") :
+                data.getColor("p_dot" + chargeIndex);
         batch.draw(res.getTexture(hex), CHARGE_BAR_POSITION.x + 1, CHARGE_BAR_POSITION.y + 1,
                 chargeBarWidth, CHARGE_BAR_HEIGHT);
 
         if (startChargeBarDecay) {
-            batch.draw(res.getTexture(res.getColor("player")),
+            batch.draw(res.getTexture(data.getColor("player")),
                     CHARGE_BAR_POSITION.x + 1 + chargeBarWidth, CHARGE_BAR_POSITION.y + 1,
                     decayingChargeBarWidth, CHARGE_BAR_HEIGHT);
         }

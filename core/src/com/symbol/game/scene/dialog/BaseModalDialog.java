@@ -8,11 +8,13 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.symbol.game.Symbol;
+import com.symbol.game.util.Data;
 import com.symbol.game.util.Resources;
 
 public class BaseModalDialog extends Dialog {
 
     protected final Resources res;
+    protected final Data data;
 
     private static final float TITLE_PADDING = 20f;
 
@@ -24,10 +26,11 @@ public class BaseModalDialog extends Dialog {
     BaseModalDialog(String title, Skin skin, final Symbol context) {
         super(title, skin);
         res = context.getRes();
+        data = context.getData();
 
         getTitleLabel().setAlignment(Align.center);
         getTitleLabel().setFontScale(1.5f);
-        getTitleLabel().setColor(res.getColorFromHexKey("player"));
+        getTitleLabel().setColor(data.getColorFromHexKey("player"));
         getTitleTable().padTop(TITLE_PADDING);
 
         image = new Image(res.getTexture("shadow"));

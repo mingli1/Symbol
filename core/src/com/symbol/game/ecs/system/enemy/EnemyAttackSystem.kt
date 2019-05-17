@@ -23,6 +23,7 @@ import com.symbol.game.effects.particle.DEFAULT_INTESITY
 import com.symbol.game.effects.particle.DEFAULT_LIFETIME
 import com.symbol.game.effects.particle.ParticleSpawner
 import com.symbol.game.map.camera.CameraShake
+import com.symbol.game.util.Data
 import com.symbol.game.util.Direction
 import com.symbol.game.util.Resources
 import kotlin.math.abs
@@ -32,8 +33,10 @@ private const val CAMERA_SHAKE_DURATION = 0.7f
 
 private const val TRAP_EXPLODE_TIME = 2f
 
-class EnemyAttackSystem(private val player: Player, private val res: Resources) :
-        IteratingSystem(Family.all(EnemyComponent::class.java).get()) {
+class EnemyAttackSystem(private val player: Player,
+                        private val res: Resources,
+                        private val data: Data)
+    : IteratingSystem(Family.all(EnemyComponent::class.java).get()) {
 
     private var mapWidth = 0f
 
@@ -314,7 +317,7 @@ class EnemyAttackSystem(private val player: Player, private val res: Resources) 
                         collidesWithTerrain = false, collidesWithProjectiles = attackComp.projectileDestroyable,
                         textureStr = attackComp.attackTexture,
                         damage = attackComp.damage, detonateTime = attackComp.attackDetonateTime, acceleration = attackComp.projectileAcceleration)
-                .color(res.getColor(attackComp.attackTexture!!)!!)
+                .color(data.getColor(attackComp.attackTexture!!)!!)
                 .position(originX, originY)
                 .velocity(dx = dx, dy = dy, speed = abs(if (dx != 0f) dx else dy))
                 .boundingBox(bw.toFloat(), bh.toFloat())
@@ -332,7 +335,7 @@ class EnemyAttackSystem(private val player: Player, private val res: Resources) 
         return EntityBuilder.instance(engine as PooledEngine)
                 .projectile(collidesWithTerrain = false, collidesWithProjectiles = attackComp.projectileDestroyable,
                         textureStr = attackComp.attackTexture, damage = attackComp.damage)
-                .color(res.getColor(attackComp.attackTexture!!)!!)
+                .color(data.getColor(attackComp.attackTexture!!)!!)
                 .position(originX, originY)
                 .velocity(dx = dx, dy = dy, speed = abs(if (dx != 0f) dx else dy))
                 .boundingBox(bw.toFloat(), bh.toFloat())

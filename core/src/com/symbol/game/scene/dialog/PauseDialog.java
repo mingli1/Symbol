@@ -17,7 +17,7 @@ public class PauseDialog extends BaseModalDialog {
     private ConfirmDialog confirmDialog;
 
     public PauseDialog(final Symbol context) {
-        super(context.getRes().getString("pauseDialogTitle"), context.getRes().getSkin(), context);
+        super(context.getData().getString("pauseDialogTitle"), context.getRes().getSkin(), context);
         this.context = context;
 
         getBackground().setMinHeight(WINDOW_MIN_HEIGHT);
@@ -25,22 +25,22 @@ public class PauseDialog extends BaseModalDialog {
         getButtonTable().defaults().width(BUTTON_WIDTH).padLeft(BUTTON_PADDING);
         getButtonTable().defaults().height(BUTTON_HEIGHT).padRight(BUTTON_PADDING);
 
-        TextButton resumeButton = new TextButton(res.getString("resumeButton"), getSkin());
-        button(resumeButton, res.getString("resumeButton"));
+        TextButton resumeButton = new TextButton(data.getString("resumeButton"), getSkin());
+        button(resumeButton, data.getString("resumeButton"));
 
         getButtonTable().row();
 
-        TextButton settingsButton = new TextButton(res.getString("settingsButton"), getSkin());
-        button(settingsButton, res.getString("settingsButton"));
+        TextButton settingsButton = new TextButton(data.getString("settingsButton"), getSkin());
+        button(settingsButton, data.getString("settingsButton"));
 
         getButtonTable().padBottom(TOP_BOTTOM_PADDING).row();
 
-        TextButton exitButton = new TextButton(res.getString("exitButton"), getSkin());
-        button(exitButton, res.getString("exitButton"));
+        TextButton exitButton = new TextButton(data.getString("exitButton"), getSkin());
+        button(exitButton, data.getString("exitButton"));
 
         confirmDialog = new ConfirmDialog(context,
-                res.getString("exitConfirmTitle"),
-                res.getString("exitConfirmMessage"),
+                data.getString("exitConfirmTitle"),
+                data.getString("exitConfirmMessage"),
                 this::exit,
                 () -> {
                     confirmDialog.hide();
@@ -50,11 +50,11 @@ public class PauseDialog extends BaseModalDialog {
 
     @Override
     protected void result(Object object) {
-        if (object.equals(res.getString("resumeButton")) ||
-                object.equals(res.getString("settingsButton"))) {
+        if (object.equals(data.getString("resumeButton")) ||
+                object.equals(data.getString("settingsButton"))) {
             context.getGameScreen().notifyResume();
         }
-        else if (object.equals(res.getString("exitButton"))) {
+        else if (object.equals(data.getString("exitButton"))) {
             confirmDialog.show(stage);
         }
     }

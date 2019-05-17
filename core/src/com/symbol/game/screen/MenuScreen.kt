@@ -32,7 +32,7 @@ class MenuScreen(game: Symbol) : DefaultScreen(game) {
     private lateinit var playerImage: DynamicImage
     private lateinit var aboutButton: ImageButton
 
-    private val logoChars = game.res.getString("title")!!.toCharArray()
+    private val logoChars = game.data.getString("title")!!.toCharArray()
     private val letters = Array(6) {
         DynamicImage(game.res.getTexture("logo_${logoChars[it]}")!!)
     }
@@ -57,9 +57,9 @@ class MenuScreen(game: Symbol) : DefaultScreen(game) {
 
     private fun createButtons() {
         val blockImages = Array(NUM_BUTTONS) { Image(blockTexture) }
-        val buttonTexts = arrayOf(game.res.getString("playButton"),
-                game.res.getString("helpButton"),
-                game.res.getString("settingsButton"))
+        val buttonTexts = arrayOf(game.data.getString("playButton"),
+                game.data.getString("helpButton"),
+                game.data.getString("settingsButton"))
 
         playerImage = DynamicImage(game.res.getTexture("player")!!)
         playerImage.setPosition(34f, 64f)

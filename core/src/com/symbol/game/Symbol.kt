@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.symbol.game.input.MouseCursor
 import com.symbol.game.map.camera.Background
 import com.symbol.game.screen.*
+import com.symbol.game.util.Data
 import com.symbol.game.util.Resources
 import kotlin.math.min
 
@@ -19,6 +20,7 @@ class Symbol : Game() {
 
     lateinit var batch: Batch private set
     lateinit var res: Resources private set
+    lateinit var data: Data private set
     private var mouseCursor: MouseCursor? = null
     private lateinit var profiler: GLProfiler
 
@@ -38,6 +40,7 @@ class Symbol : Game() {
     override fun create() {
         batch = SpriteBatch()
         res = Resources()
+        data = Data(res)
 
         if (!Config.onAndroid()) {
             mouseCursor = MouseCursor()

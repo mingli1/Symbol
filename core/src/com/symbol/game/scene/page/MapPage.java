@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.symbol.game.data.MapData;
 import com.symbol.game.screen.MapSelectScreen;
+import com.symbol.game.util.Data;
 import com.symbol.game.util.Resources;
 
 import java.util.List;
@@ -22,6 +23,7 @@ public class MapPage extends Table implements Page {
     private static final float MAP_BUTTON_WIDTH = 21f;
 
     private Resources res;
+    private Data data;
     private MapSelectScreen parent;
     private MapPageType type;
 
@@ -53,8 +55,9 @@ public class MapPage extends Table implements Page {
         }
     }
 
-    public MapPage(Resources res, MapData mapData, MapPageType type, MapSelectScreen parent) {
+    public MapPage(Resources res, Data data, MapData mapData, MapPageType type, MapSelectScreen parent) {
         this.res = res;
+        this.data = data;
         this.parent = parent;
         this.mapData = mapData;
         this.type = type;
@@ -117,7 +120,7 @@ public class MapPage extends Table implements Page {
 
     @Override
     public void reset() {
-        List<MapData> mapDatas = res.getMapDatas();
+        List<MapData> mapDatas = data.getMapDatas();
         int prevIndex = mapData.getId() - 1;
 
         mapButton.setTouchable(Touchable.enabled);

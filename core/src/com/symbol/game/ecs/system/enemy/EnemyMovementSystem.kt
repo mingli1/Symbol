@@ -18,7 +18,8 @@ import com.symbol.game.util.Resources
 private const val MOVEMENT_FREQUENCY = 0.7f
 private const val JUMP_FREQUENCY = 1.2f
 
-class EnemyMovementSystem(private val player: Player, private val res: Resources)
+class EnemyMovementSystem(private val player: Player,
+                          private val res: Resources)
     : IteratingSystem(Family.all(EnemyComponent::class.java).get()) {
 
     override fun processEntity(entity: Entity?, dt: Float) {

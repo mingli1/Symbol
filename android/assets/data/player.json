@@ -1,0 +1,22 @@
+{
+  "width": 8.0,
+  "height": 8.0,
+  "hp": 8,
+  "defaultDamage": 1,
+  "shootDelay": 0.25,
+  "projSpeed": 80.0,
+  "projResKey": "p_dot",
+  "projKnockback": 75.0,
+  "chargeGain": 5,
+  "chargeThreshold": 25,
+  "maxCharge": 100,
+  "rapidShootDelay": 0.075,
+  "slowPercentage": 0.4,
+  "slowDuration": 2.0,
+  "snareDuration": 2.5,
+  "stunDuration": 2.0,
+  "jumpImpulse": 160.0,
+  "speed": 35.0,
+  "boundsWidth": 7.0,
+  "boundsHeight": 7.0
+}

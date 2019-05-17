@@ -23,8 +23,11 @@ private const val HP_BAR_Y_OFFSET = 3
 private const val SE_SIZE = 5f
 private const val SE_Y_OFFSET = 2
 
-class StatusRenderSystem(private val batch: Batch, private val res: Resources, private val cam: OrthographicCamera)
-    : IteratingSystem(Family.one(StatusEffectComponent::class.java, HealthComponent::class.java).exclude(ProjectileComponent::class.java).get()) {
+class StatusRenderSystem(private val batch: Batch,
+                         private val res: Resources,
+                         private val cam: OrthographicCamera)
+    : IteratingSystem(Family.one(StatusEffectComponent::class.java,
+        HealthComponent::class.java).exclude(ProjectileComponent::class.java).get()) {
 
     override fun processEntity(entity: Entity, dt: Float) {
         val pos = Mapper.POS_MAPPER[entity]
