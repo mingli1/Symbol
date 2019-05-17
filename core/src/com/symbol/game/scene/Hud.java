@@ -18,7 +18,6 @@ import com.symbol.game.Symbol;
 import com.symbol.game.ecs.Mapper;
 import com.symbol.game.ecs.component.HealthComponent;
 import com.symbol.game.ecs.component.player.ChargeComponent;
-import com.symbol.game.ecs.entity.PlayerKt;
 import com.symbol.game.scene.dialog.HelpDialog;
 import com.symbol.game.scene.dialog.PauseDialog;
 import com.symbol.game.scene.page.Page;
@@ -35,7 +34,6 @@ public class Hud extends Scene {
     private static final float CHARGE_BAR_HEIGHT = 2;
 
     private static final float HP_BAR_DECAY_RATE = 18.f;
-    private static final float MAX_CHARGE = PlayerKt.PLAYER_MAX_CHARGE;
     private static final float BAR_ONE_OFFSET = 10f;
     private static final float BAR_TWO_OFFSET = 21f;
     private static final float BAR_THREE_OFFSET = 32f;
@@ -226,15 +224,15 @@ public class Hud extends Scene {
         }
 
         ChargeComponent chargeComp = Mapper.INSTANCE.getCHARGE_MAPPER().get(player);
-        chargeBarWidth = CHARGE_BAR_WIDTH * (chargeComp.getCharge() / MAX_CHARGE);
+        chargeBarWidth = CHARGE_BAR_WIDTH * (chargeComp.getCharge() / data.getPlayerData("maxCharge").asFloat());
 
         if (chargeBarWidth > CHARGE_BAR_WIDTH) chargeBarWidth = CHARGE_BAR_WIDTH;
-        int chargeIndex = chargeComp.getChargeIndex();
+        int chargeIndex = chargeComp.getChargeIndex(data.getPlayerData("chargeThreshold").asInt());
         if (chargeIndex > 0) chargeBarIcon.setDrawable(chargeBarTiers[chargeIndex - 1]);
         else chargeBarIcon.setDrawable(zeroChargeBar);
 
         if (chargeComp.getChargeChange()) {
-            decayingChargeBarWidth = CHARGE_BAR_WIDTH * ((float) chargeComp.getChargeDelta() / MAX_CHARGE);
+            decayingChargeBarWidth = CHARGE_BAR_WIDTH * ((float) chargeComp.getChargeDelta() / data.getPlayerData("maxCharge").asFloat());
             startChargeBarDecay = true;
             chargeComp.setChargeChange(false);
         }
@@ -276,7 +274,7 @@ public class Hud extends Scene {
         batch.draw(res.getTexture("hp_bar_bg_color"), CHARGE_BAR_POSITION.x + 1, CHARGE_BAR_POSITION.y + 1,
                 CHARGE_BAR_WIDTH, CHARGE_BAR_HEIGHT);
 
-        int chargeIndex = chargeComp.getChargeIndex();
+        int chargeIndex = chargeComp.getChargeIndex(data.getPlayerData("chargeThreshold").asInt());
         String hex = chargeIndex == 0 ? "zero_charge_color"
                 : chargeIndex == 1 ? data.getColor("p_dot") :
                 data.getColor("p_dot" + chargeIndex);

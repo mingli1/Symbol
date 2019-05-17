@@ -2,11 +2,14 @@ package com.symbol.game.ecs.system
 
 import com.badlogic.ashley.core.EntitySystem
 import com.symbol.game.ecs.Mapper
-import com.symbol.game.ecs.entity.PLAYER_PROJECTILE_SHOOT_DELAY
 import com.symbol.game.ecs.entity.Player
 import com.symbol.game.screen.GameScreen
+import com.symbol.game.util.Data
 
-class PlayerSystem(private val player: Player, private val gameScreen: GameScreen) : EntitySystem() {
+class PlayerSystem(private val player: Player,
+                   private val data: Data,
+                   private val gameScreen: GameScreen)
+    : EntitySystem() {
 
     private var stateTime = 0f
     private var healTime = 0f
@@ -17,7 +20,7 @@ class PlayerSystem(private val player: Player, private val gameScreen: GameScree
 
         if (!playerComp.canShoot) {
             stateTime += dt
-            if (stateTime >= PLAYER_PROJECTILE_SHOOT_DELAY) {
+            if (stateTime >= data.getPlayerData("shootDelay").asFloat()) {
                 playerComp.canShoot = true
                 stateTime = 0f
             }

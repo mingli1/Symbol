@@ -61,7 +61,7 @@ class GameScreen(game: Symbol) : AbstractScreen(game) {
         androidInput = AndroidInput(game, keyInputSystem, stage, viewport)
 
         engine.addSystem(keyInputSystem)
-        engine.addSystem(PlayerSystem(player, this))
+        engine.addSystem(PlayerSystem(player, game.data, this))
 
         multiplexer.addProcessor(stage)
         if (!Config.onAndroid()) multiplexer.addProcessor(input)

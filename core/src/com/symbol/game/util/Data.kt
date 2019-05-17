@@ -21,6 +21,7 @@ class Data(private val res: Resources) {
     private val colors: JsonValue
     private val entityDetails: JsonValue
     private val technicalDetails: JsonValue
+    private val playerData: JsonValue
 
     val mapDatas = mutableListOf<MapData>()
     private val helpPages: MutableMap<String, HelpPage> = HashMap()
@@ -39,6 +40,7 @@ class Data(private val res: Resources) {
             colors = parse(Gdx.files.internal("data/colors.json"))
             entityDetails = parse(Gdx.files.internal("data/entity_details.json"))
             technicalDetails = parse(Gdx.files.internal("data/technical_details.json"))
+            playerData = parse(Gdx.files.internal("data/player.json"))
         }
 
         loadMapDatas()
@@ -68,6 +70,8 @@ class Data(private val res: Resources) {
     fun getColorFromHexKey(key: String) = Color(Color.valueOf(getColor(key)))
 
     fun getHelpPage(key: String) : HelpPage? = helpPages[key]
+
+    fun getPlayerData(key: String) = playerData[key]
 
     private fun loadMapDatas() {
         maps["maps"].forEachIndexed { index, data ->

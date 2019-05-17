@@ -50,7 +50,7 @@ object EntityFactory {
                         .enemy(enemyType = type, movementType = EnemyMovementType.Charge)
                         .statusEffect()
                         .activation(90f)
-                        .attack(damage = PLAYER_HP)
+                        .attack(damage = data.getPlayerData("hp").asInt())
                         .color(color)
                         .health(2)
                         .boundingBox(9f, 13f)

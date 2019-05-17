@@ -11,7 +11,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.symbol.game.Symbol
-import com.symbol.game.ecs.entity.PLAYER_JUMP_IMPULSE
 import com.symbol.game.ecs.system.GRAVITY
 import com.symbol.game.map.TILE_SIZE
 import com.symbol.game.scene.DynamicImage
@@ -78,7 +77,7 @@ class MenuScreen(game: Symbol) : DefaultScreen(game) {
 
             button.addListener(object: ClickListener() {
                 override fun clicked(event: InputEvent?, x: Float, y: Float) {
-                    playerImage.applyJump(-GRAVITY, PLAYER_JUMP_IMPULSE - 45f)
+                    playerImage.applyJump(-GRAVITY, game.data.getPlayerData("jumpImpulse").asFloat() - 45f)
                     transition = true
                     nextScreen = when (i) {
                         0 -> game.mapSelectScreen
