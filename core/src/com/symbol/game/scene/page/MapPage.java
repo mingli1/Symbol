@@ -3,6 +3,7 @@ package com.symbol.game.scene.page;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
@@ -11,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.symbol.game.Config;
 import com.symbol.game.data.MapData;
 import com.symbol.game.screen.MapSelectScreen;
 import com.symbol.game.util.Data;
@@ -105,6 +107,15 @@ public class MapPage extends Table implements Page {
                 break;
         }
 
+        mapButton.addListener(new InputListener() {
+            @Override
+            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+                if (!Config.INSTANCE.onAndroid() && pointer == -1) {
+                    res.playSound("map_button_hover", 1f);
+                }
+            }
+
+        });
         mapButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {

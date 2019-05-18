@@ -46,6 +46,7 @@ public class ConfirmDialog extends BaseModalDialog {
 
     @Override
     protected void result(Object object) {
+        res.playSound("std_button_click", 1f);
         if (object.equals(AFFIRMATIVE_TAG)) affirmative.run();
         else if (object.equals(DISMISSIVE_TAG)) dismissive.run();
     }

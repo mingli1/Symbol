@@ -106,12 +106,13 @@ class Resources : Disposable {
 
     fun getLabelStyle(color: Color = Color.WHITE) = Label.LabelStyle(font, color)
 
-    fun playSound(key: String, volume: Float = 1f) {
-        sounds[key]?.play(volume)
-    }
+    fun playSound(key: String, volume: Float = 1f) = sounds[key]?.play(volume)
 
     private fun loadSounds() {
         loadSound("std_button_hover")
+        loadSound("std_button_click")
+        loadSound("help_dialog_click")
+        loadSound("map_button_hover")
     }
 
     private fun loadSound(key: String, extension: String = ".ogg") {
@@ -121,6 +122,9 @@ class Resources : Disposable {
 
     private fun mapSounds() {
         mapSound("std_button_hover")
+        mapSound("std_button_click")
+        mapSound("help_dialog_click")
+        mapSound("map_button_hover")
     }
 
     private fun mapSound(key: String, extension: String = ".ogg") {

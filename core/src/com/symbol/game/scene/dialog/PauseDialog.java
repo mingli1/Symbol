@@ -53,6 +53,7 @@ public class PauseDialog extends BaseModalDialog {
 
     @Override
     protected void result(Object object) {
+        res.playSound("std_button_click", 1f);
         if (object.equals(data.getString("resumeButton")) ||
                 object.equals(data.getString("settingsButton"))) {
             context.getGameScreen().notifyResume();

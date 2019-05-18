@@ -79,6 +79,7 @@ class MenuScreen(game: Symbol) : DefaultScreen(game) {
 
             button.addListener(object: ClickListener() {
                 override fun clicked(event: InputEvent?, x: Float, y: Float) {
+                    game.res.playSound("std_button_click")
                     playerImage.applyJump(-GRAVITY, game.data.getPlayerData("jumpImpulse").asFloat() - 45f)
                     transition = true
                     nextScreen = when (i) {
@@ -117,6 +118,11 @@ class MenuScreen(game: Symbol) : DefaultScreen(game) {
     private fun createAboutButton() {
         aboutButton = ImageButton(game.res.getImageButtonStyle("about")).apply {
             setPosition(176f, 8f)
+            addListener(object: InputListener() {
+                override fun enter(event: InputEvent?, x: Float, y: Float, pointer: Int, fromActor: Actor?) {
+                    if (!Config.onAndroid() && pointer == -1) game.res.playSound("std_button_hover")
+                }
+            })
             addListener(object: ClickListener() {
                 override fun clicked(event: InputEvent?, x: Float, y: Float) {
                     aboutDialog.show(stage)

@@ -85,11 +85,12 @@ class MapSelectScreen(game: Symbol) : DefaultScreen(game) {
             setPosition(8f, 97f)
             addListener(object: InputListener() {
                 override fun enter(event: InputEvent?, x: Float, y: Float, pointer: Int, fromActor: Actor?) {
-                    //@TODO change this if (!Config.onAndroid() && pointer == -1) res.playSound("std_button_hover")
+                    if (!Config.onAndroid() && pointer == -1) res.playSound("std_button_hover")
                 }
             })
             addListener(object: ClickListener() {
                 override fun clicked(event: InputEvent?, x: Float, y: Float) {
+                    res.playSound("std_button_click")
                     fadeToScreen(game.menuScreen)
                 }
             })
