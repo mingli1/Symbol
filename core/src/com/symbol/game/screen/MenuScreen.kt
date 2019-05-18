@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.ImageButton
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
+import com.symbol.game.Config
 import com.symbol.game.Symbol
 import com.symbol.game.ecs.system.GRAVITY
 import com.symbol.game.map.TILE_SIZE
@@ -71,6 +72,7 @@ class MenuScreen(game: Symbol) : DefaultScreen(game) {
 
             button.addListener(object: InputListener() {
                 override fun enter(event: InputEvent?, x: Float, y: Float, pointer: Int, fromActor: Actor?) {
+                    if (!Config.onAndroid() && pointer == -1) game.res.playSound("std_button_hover")
                     if (!playerImage.moving()) playerImage.setPosition(34f, 64f - i * 24f)
                 }
             })

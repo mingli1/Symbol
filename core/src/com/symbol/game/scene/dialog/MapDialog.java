@@ -2,7 +2,9 @@ package com.symbol.game.scene.dialog;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Interpolation;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
@@ -72,6 +74,12 @@ public class MapDialog extends Table {
     private void createEnterButton() {
         enterButton = new TextButton(data.getString("mapEnterButton"),
                 res.getTextButtonStyle("enter_map", Color.WHITE));
+        enterButton.addListener(new InputListener() {
+            @Override
+            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+                if (!Config.INSTANCE.onAndroid() && pointer == -1) res.playSound("std_button_hover", 1f);
+            }
+        });
         enterButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {

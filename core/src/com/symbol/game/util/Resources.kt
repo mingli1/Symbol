@@ -2,6 +2,7 @@ package com.symbol.game.util
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.assets.AssetManager
+import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.NinePatch
@@ -33,6 +34,8 @@ private const val BUTTON_UP = "_up"
 private const val BUTTON_DOWN = "_down"
 private const val BUTTON_DISABLED = "_disabled"
 
+private const val SOUNDS_PATH = "sounds/"
+
 class Resources : Disposable {
 
     private val assetManager = AssetManager()
@@ -42,8 +45,11 @@ class Resources : Disposable {
     val invertShader: ShaderProgram
     private val font: BitmapFont
 
+    private val sounds: MutableMap<String, Sound> = HashMap()
+
     init {
         assetManager.load("textures/textures.atlas", TextureAtlas::class.java)
+        loadSounds()
         assetManager.finishLoading()
 
         atlas = assetManager.get("textures/textures.atlas", TextureAtlas::class.java)
@@ -60,6 +66,8 @@ class Resources : Disposable {
         ShaderProgram.pedantic = false
         invertShader = ShaderProgram(Gdx.files.internal("shader/invert.vsh"),
                 Gdx.files.internal("shader/invert.fsh"))
+
+        mapSounds()
     }
 
     fun getTexture(key: String) : TextureRegion? = atlas.findRegion(key)
@@ -98,12 +106,35 @@ class Resources : Disposable {
 
     fun getLabelStyle(color: Color = Color.WHITE) = Label.LabelStyle(font, color)
 
+    fun playSound(key: String, volume: Float = 1f) {
+        sounds[key]?.play(volume)
+    }
+
+    private fun loadSounds() {
+        loadSound("std_button_hover")
+    }
+
+    private fun loadSound(key: String, extension: String = ".ogg") {
+        val path = SOUNDS_PATH + key + extension
+        assetManager.load(path, Sound::class.java)
+    }
+
+    private fun mapSounds() {
+        mapSound("std_button_hover")
+    }
+
+    private fun mapSound(key: String, extension: String = ".ogg") {
+        val path = SOUNDS_PATH + key + extension
+        sounds[key] = assetManager.get(path, Sound::class.java)
+    }
+
     override fun dispose() {
         assetManager.dispose()
         atlas.dispose()
         skin.dispose()
         font.dispose()
         invertShader.dispose()
+        sounds.forEach { it.value.dispose() }
     }
 
 }

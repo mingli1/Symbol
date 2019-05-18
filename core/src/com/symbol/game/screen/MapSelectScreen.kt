@@ -1,10 +1,13 @@
 package com.symbol.game.screen
 
+import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.InputEvent
+import com.badlogic.gdx.scenes.scene2d.InputListener
 import com.badlogic.gdx.scenes.scene2d.ui.*
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
+import com.symbol.game.Config
 import com.symbol.game.Symbol
 import com.symbol.game.data.MapData
 import com.symbol.game.scene.dialog.MapDialog
@@ -80,6 +83,11 @@ class MapSelectScreen(game: Symbol) : DefaultScreen(game) {
         val buttonStyle = res.getImageButtonStyle("back")
         backButton = ImageButton(buttonStyle).apply {
             setPosition(8f, 97f)
+            addListener(object: InputListener() {
+                override fun enter(event: InputEvent?, x: Float, y: Float, pointer: Int, fromActor: Actor?) {
+                    //@TODO change this if (!Config.onAndroid() && pointer == -1) res.playSound("std_button_hover")
+                }
+            })
             addListener(object: ClickListener() {
                 override fun clicked(event: InputEvent?, x: Float, y: Float) {
                     fadeToScreen(game.menuScreen)

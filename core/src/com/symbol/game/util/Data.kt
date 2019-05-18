@@ -71,7 +71,7 @@ class Data(private val res: Resources) {
 
     fun getHelpPage(key: String) : HelpPage? = helpPages[key]
 
-    fun getPlayerData(key: String) = playerData[key]
+    fun getPlayerData(key: String) = playerData[key]!!
 
     private fun loadMapDatas() {
         maps["maps"].forEachIndexed { index, data ->

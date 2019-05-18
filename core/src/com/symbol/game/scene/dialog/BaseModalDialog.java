@@ -1,12 +1,16 @@
 package com.symbol.game.scene.dialog;
 
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
+import com.symbol.game.Config;
 import com.symbol.game.Symbol;
 import com.symbol.game.util.Data;
 import com.symbol.game.util.Resources;
@@ -55,6 +59,15 @@ public class BaseModalDialog extends Dialog {
     public void hide() {
         super.hide();
         image.remove();
+    }
+
+    protected void addSound(Button button) {
+        button.addListener(new InputListener() {
+            @Override
+            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+                if (!Config.INSTANCE.onAndroid() && pointer == -1) res.playSound("std_button_hover", 1f);
+            }
+        });
     }
 
 }

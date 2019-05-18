@@ -26,16 +26,19 @@ public class PauseDialog extends BaseModalDialog {
         getButtonTable().defaults().height(BUTTON_HEIGHT).padRight(BUTTON_PADDING);
 
         TextButton resumeButton = new TextButton(data.getString("resumeButton"), getSkin());
+        addSound(resumeButton);
         button(resumeButton, data.getString("resumeButton"));
 
         getButtonTable().row();
 
         TextButton settingsButton = new TextButton(data.getString("settingsButton"), getSkin());
+        addSound(settingsButton);
         button(settingsButton, data.getString("settingsButton"));
 
         getButtonTable().padBottom(TOP_BOTTOM_PADDING).row();
 
         TextButton exitButton = new TextButton(data.getString("exitButton"), getSkin());
+        addSound(exitButton);
         button(exitButton, data.getString("exitButton"));
 
         confirmDialog = new ConfirmDialog(context,
