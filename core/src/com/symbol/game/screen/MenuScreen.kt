@@ -125,6 +125,7 @@ class MenuScreen(game: Symbol) : DefaultScreen(game) {
             })
             addListener(object: ClickListener() {
                 override fun clicked(event: InputEvent?, x: Float, y: Float) {
+                    game.res.playSound("sec_button_click")
                     aboutDialog.show(stage)
                 }
             })

@@ -83,6 +83,7 @@ public class MapDialog extends Table {
         enterButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                res.playSound("std_button_click", 1f);
                 mapSelectScreen.navigateToGameScreen(mapIndex);
             }
         });

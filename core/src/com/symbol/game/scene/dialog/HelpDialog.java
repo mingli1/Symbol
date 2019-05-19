@@ -2,7 +2,9 @@ package com.symbol.game.scene.dialog;
 
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
@@ -17,6 +19,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
+import com.symbol.game.Config;
 import com.symbol.game.Symbol;
 import com.symbol.game.scene.Hud;
 import com.symbol.game.scene.page.Page;
@@ -90,13 +93,31 @@ public class HelpDialog extends Table {
 
         add(rightStack).padRight(3f);
 
+        leftButton.addListener(new InputListener() {
+            @Override
+            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+                if (!Config.INSTANCE.onAndroid() && pointer == -1) res.playSound("std_button_hover", 1f);
+            }
+        });
         leftButton.addListener(new ClickListener() {
             @Override
-            public void clicked(InputEvent event, float x, float y) { pagedScrollPane.scrollToPrevious(); }
+            public void clicked(InputEvent event, float x, float y) {
+                res.playSound("help_dialog_click", 1f);
+                pagedScrollPane.scrollToPrevious();
+            }
+        });
+        rightButton.addListener(new InputListener() {
+            @Override
+            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+                if (!Config.INSTANCE.onAndroid() && pointer == -1) res.playSound("std_button_hover", 1f);
+            }
         });
         rightButton.addListener(new ClickListener() {
             @Override
-            public void clicked(InputEvent event, float x, float y) { pagedScrollPane.scrollToNext(); }
+            public void clicked(InputEvent event, float x, float y) {
+                res.playSound("help_dialog_click", 1f);
+                pagedScrollPane.scrollToNext();
+            }
         });
     }
 
@@ -147,8 +168,12 @@ public class HelpDialog extends Table {
     }
 
     public void update(float dt) {
-        leftButton.setDisabled(pagedScrollPane.getScrollX() <= 0);
-        rightButton.setDisabled(pagedScrollPane.getScrollX() >= pagedScrollPane.getMaxX());
+        boolean leftDisabled = pagedScrollPane.getScrollX() <= 0;
+        boolean rightDisabled = pagedScrollPane.getScrollX() >= pagedScrollPane.getMaxX();
+        leftButton.setTouchable(leftDisabled ? Touchable.disabled : Touchable.enabled);
+        rightButton.setTouchable(rightDisabled ? Touchable.disabled : Touchable.enabled);
+        leftButton.setDisabled(leftDisabled);
+        rightButton.setDisabled(rightDisabled);
 
         newPage.setVisible(!pagedScrollPane.isCurrentPageSeen());
         rightButtonAlert.setVisible(!pagedScrollPane.isNextPageSeen());

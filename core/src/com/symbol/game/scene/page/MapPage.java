@@ -119,6 +119,7 @@ public class MapPage extends Table implements Page {
         mapButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                res.playSound("map_button_click", 1f);
                 parent.pagedScrollPane.scrollToIndex(pageIndex);
                 onMapButtonClicked();
             }

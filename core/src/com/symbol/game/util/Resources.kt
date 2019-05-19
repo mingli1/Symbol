@@ -111,8 +111,10 @@ class Resources : Disposable {
     private fun loadSounds() {
         loadSound("std_button_hover")
         loadSound("std_button_click")
+        loadSound("sec_button_click")
         loadSound("help_dialog_click")
         loadSound("map_button_hover")
+        loadSound("map_button_click")
     }
 
     private fun loadSound(key: String, extension: String = ".ogg") {
@@ -123,8 +125,10 @@ class Resources : Disposable {
     private fun mapSounds() {
         mapSound("std_button_hover")
         mapSound("std_button_click")
+        mapSound("sec_button_click")
         mapSound("help_dialog_click")
         mapSound("map_button_hover")
+        mapSound("map_button_click")
     }
 
     private fun mapSound(key: String, extension: String = ".ogg") {
